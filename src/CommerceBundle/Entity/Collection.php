@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="collection")
  * @ORM\Entity(repositoryClass="CommerceBundle\Repository\collectionRepository")
  */
-class collection
+class Collection
 {
     /**
      * @var int
