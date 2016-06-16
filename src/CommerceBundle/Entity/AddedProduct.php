@@ -1,6 +1,8 @@
 <?php
 
 namespace CommerceBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,8 +31,7 @@ class AddedProduct
     private $quantity;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product")
-    * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color")
     */
     private $color;
 
@@ -82,18 +83,34 @@ class AddedProduct
         return $this->quantity;
     }
 
-   //color
-    public function setColor(Color $color)
-    {
-      $this->color = $color;
+//Color
 
-      return $this;
-    }
+  public function __construct()
+  {
 
-    public function getColor()
-    {
-      return $this->color;
-    }
+    $this->colors = new ArrayCollection();
+  }
+
+  // Notez le singulier, on ajoute une seule catégorie à la fois
+  public function addColor(Color $color)
+  {
+    // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+    $this->colors[] = $color;
+
+    return $this;
+  }
+
+  public function removeColor(Color $color)
+  {
+    // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+    $this->colors->removeElement($color);
+  }
+
+  // Notez le pluriel, on récupère une liste de catégories ici !
+  public function getColors()
+  {
+    return $this->colors;
+  }
 
 
     //product

@@ -2,7 +2,9 @@
 
 namespace UserBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * User
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -19,7 +21,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -36,7 +38,7 @@ class User
     private $prenom;
 
      /**
-      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\UserAdress")
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\UserAdress", cascade={"persist"})
       * @ORM\JoinColumn(nullable=false)
       */
      private $adress;
@@ -107,7 +109,7 @@ class User
     }
 
     //adress
-    public function setAdress(Adress $adress)
+    public function setAdress(UserAdress $adress)
       {
         $this->adress = $adress;
 

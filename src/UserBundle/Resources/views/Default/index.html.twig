@@ -1,1 +1,35 @@
-Hello World!
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Please Sign In</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form" action="{{ path("fos_user_security_check") }}" method="post">
+
+                        <div class="form-group">
+                            <input type="text" id="username" name="_username" value="" placeholder="{{ 'security.login.username'|trans }}" required="required"  class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="password" name="_password" placeholder="{{ 'security.login.password'|trans }}" required="required" class="form-control"/>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="remember_me" name="_remember_me" value="on" class="checkbox"/>Remember me
+                            </label>
+                        </div>
+                        <!-- Change this to a button or input when using this as a form -->
+                        <input class="btn btn-lg btn-primary btn-block btn-signin" type="submit" id="_submit" name="_submit" value="Se connecter" />
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
