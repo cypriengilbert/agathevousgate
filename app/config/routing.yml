@@ -1,3 +1,8 @@
+compte:
+    resource: "@CompteBundle/Controller/"
+    type:     annotation
+    prefix:   /compte
+
 admin:
     resource: "@AdminBundle/Controller/"
     type:     annotation

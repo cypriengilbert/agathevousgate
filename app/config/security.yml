@@ -32,4 +32,4 @@ security:
                 key: %secret%
 
     access_control:
-        - { path: ^/admin, role: ROLE_SUPER_ADMIN}
+        - { path: ^/admin, role: ROLE_SUPER_ADMIN }

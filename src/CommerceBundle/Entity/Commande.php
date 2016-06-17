@@ -66,7 +66,7 @@ class Commande
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -89,7 +89,7 @@ class Commande
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -112,7 +112,7 @@ class Commande
     /**
      * Get paiementMethod
      *
-     * @return string 
+     * @return string
      */
     public function getPaiementMethod()
     {
@@ -135,7 +135,7 @@ class Commande
     /**
      * Get transportMethod
      *
-     * @return string 
+     * @return string
      */
     public function getTransportMethod()
     {
@@ -158,7 +158,7 @@ class Commande
     /**
      * Get isValid
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsValid()
     {
@@ -181,7 +181,7 @@ class Commande
     /**
      * Get isPanier
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsPanier()
     {

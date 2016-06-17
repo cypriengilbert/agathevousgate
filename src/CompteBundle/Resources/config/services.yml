@@ -1,0 +1,4 @@
+services:
+#    compte.example:
+#        class: CompteBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

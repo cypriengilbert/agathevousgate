@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Votre panier</h2>
+                    <?= var_dump($_SESSION); ?>
+                    <hr class="primary"><br />
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th class="text-center">Prix</th>
+                            <th class="text-center">Total</th>
+                            <th> </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+
+
+
+
+{% set totalsum = null %}
+														{% for listepanier in listePanier %}
+{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+
+
+                            <tr>
+
+
+                                    <td class="col-sm-8 col-md-6">
+
+																				{% for couleur in listepanier.color %}
+
+                                        {{ couleur.name }} <br>
+
+																				{% endfor %}
+                                        Name :           {{ listepanier.product.name }}<br />
+
+                                    </td>
+
+                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                        <input type="number" class="form-control" id="exampleInputEmail1" name="<?= $id ?>" value="{{ listepanier.quantity }}">
+                                    </td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ listepanier.product.price }} €</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
+
+                                    <td class="col-sm-1 col-md-1">
+                                            <a type="button" class="btn btn-sm btn-danger panier-delete" href="panier.php?del=<?= $id; ?>"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>
+                                        <br />
+                                        <button type="submit" class="btn btn-sm btn-warning">
+                                            <span class="glyphicon glyphicon-refresh"></span> Modifier
+                                        </button>
+                                    </td>
+                                </form>
+                            </tr>
+
+
+													{% endfor %}
+
+
+
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Sous-total</h5></td>
+                            <td class="text-right"><h5><strong>  {{ totalsum }} €</strong></h5></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Frais de livraison</h5></td>
+                            <td class="text-right"><h5><strong>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</strong></h5></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h3>Total</h3></td>
+                            <td class="text-right"><h3><strong>{{ totalsum + livraison }} €</strong></h3></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>
+                                <button type="button" class="btn btn-default">
+                                    <a href="index.php"><span class="glyphicon glyphicon-shopping-cart"></span> Retourner à l'accueil</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success">
+                                    &nbsp; Paiement via Paypal <span class="glyphicon glyphicon-play"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock %}

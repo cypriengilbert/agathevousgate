@@ -2,10 +2,96 @@
 
 
 {% block body %}
-    Hello Workd, ceci est ma page d'index
+<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
+	<!-- Message d'accueil -->
+    <section id="slider-homepage">
+        <div class="container">
+            <div id="carousel-example-generic" class="carousel slide index-carousel" data-ride="carousel">
+                <!-- Indicators -->
+                <!--<ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                </ol>-->
 
-    <button type="button" class="success button">Save</button>
-    <button type="button" class="alert button">Delete</button>
-    <a class="tiny button" href="#">So Tiny</a>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <a href="londres.php">
+                            <img src="{{ asset('img/slider-1.jpg') }}" alt="slider">
+                        </a>
+                        <!--<div class="carousel-caption">
+                            Londres
+                        </div>-->
+                    </div>
+                    <div class="item">
+                        <img src="{{ asset('img/slider-2.jpg') }}" alt="slider">
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Précédent</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Suivant</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="homepage-collections">
+        <div class="container-fluid">
+            <div class="row homepage-def">
+                <div class="col-md-6 logo-homepage hidden-sm hidden-xs">
+                    <img src="{{ asset('img/logocomplet-petit.png') }}" alt="Logo Agathe" class="homepage-social-img">
+                </div>
+                <div class="col-md-6 ">
+                    <p class="homepage-text-details">
+                        Les noeuds-papillon Agathe Vous Gâte sont
+                        innovants, tendances et personnalisés. Une
+                        invention pratique et facile fabriquée en
+                        France, pour habiller toute la famille !
+                        Hommes, femmes et enfants composent et
+                        accrochent leur noeud comme bon leur
+                        semble.<br/>
+                        <img src="{{ asset('img/madeinfrance.jpg') }}" alt="Made in France" class="homepage-made-in-france">
+                    </p>
+
+                </div>
+
+            </div>
+            <div class="homepage-collections-all" style="">
+                <br/>
+                <br/>
+                <br/>
+                <p class="homepage-text">
+                    Je découvre les collections
+                </p>
+                <div class="row homepage-collections-img">
+                    <a href="londres.php"><img class="img-responsive img-rounded" src="{{ asset('img/londres-mini-01.png') }}"/></a>
+                </div>
+                <div class="row homepage-collections-img">
+                    <img class="img-responsive img-rounded" src="{{ asset('img/dakar-mini-01.png') }}"/>
+                </div>
+                <div class="row homepage-collections-img">
+                    <img class="img-responsive img-rounded" src="{{ asset('img/paris-mini-01.png') }}"/>
+                </div>
+                <p class="homepage-text" style="margin-top: 60px;">
+                    Envoyez-nous vos créations !
+                </p>
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <img src="{{ asset('img/facebook.png') }}" alt="Facebook" class="img-responsive homepage-social-img">
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                        <img src="{{ asset('img/instagram.png') }}" alt="Instagram" class="img-responsive homepage-social-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 {% endblock %}
-

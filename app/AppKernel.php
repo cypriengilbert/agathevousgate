@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new CommerceBundle\CommerceBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new AdminBundle\AdminBundle(),
+            new CompteBundle\CompteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

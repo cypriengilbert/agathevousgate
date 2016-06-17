@@ -26,7 +26,7 @@ class Color
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class Color
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -69,7 +69,7 @@ class Color
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -92,7 +92,7 @@ class Color
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -115,7 +115,7 @@ class Color
     /**
      * Get colorCode
      *
-     * @return string 
+     * @return string
      */
     public function getColorCode()
     {

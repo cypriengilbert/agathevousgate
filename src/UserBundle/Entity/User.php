@@ -55,7 +55,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -78,7 +78,7 @@ class User extends BaseUser
     /**
      * Get nom
      *
-     * @return string 
+     * @return string
      */
     public function getNom()
     {
@@ -101,7 +101,7 @@ class User extends BaseUser
     /**
      * Get prenom
      *
-     * @return string 
+     * @return string
      */
     public function getPrenom()
     {
@@ -122,7 +122,7 @@ class User extends BaseUser
       }
 
 //parrain
-        public function setParrain(Parrain $parrain)
+        public function setParrain(User $parrain)
       {
         $this->parrain = $parrain;
 

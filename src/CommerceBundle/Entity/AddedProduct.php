@@ -33,7 +33,7 @@ class AddedProduct
     /**
      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color")
     */
-    private $color;
+    public $color;
 
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product")
@@ -44,16 +44,24 @@ class AddedProduct
 
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Commande")
-    * @ORM\JoinColumn(nullable=false)
+    * @ORM\JoinColumn(nullable=true)
     */
     private $commande;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+    * @ORM\JoinColumn(nullable=false)
+    */
+   private $client;
+
+
 
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -76,7 +84,7 @@ class AddedProduct
     /**
      * Get quantity
      *
-     * @return integer 
+     * @return integer
      */
     public function getQuantity()
     {
@@ -139,6 +147,21 @@ class AddedProduct
       {
         return $this->commande;
       }
+
+
+      //client
+              public function setClient(Client $client)
+            {
+              $this->client = $client;
+
+              return $this;
+            }
+
+            public function getClient()
+            {
+              return $this->client;
+            }
+
 
 
 }
