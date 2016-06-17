@@ -14,6 +14,8 @@ class CommerceController extends Controller
     {
 
 
+    
+
             return $this->render('CommerceBundle:Default:index.html.twig');
 
 
