@@ -1,0 +1,30 @@
+{% block adresses %}
+
+<table>
+   <thead>
+      <td> Nom
+      </td>
+      <td> Adresse
+      </td>
+      <td> Code Postal
+      </td>
+      <td> Ville
+      </td>
+      </thead>
+   <tbody>
+
+       <tr>
+         <td>
+         </td>
+         <td> {{ user.adress.adress }}</br>{{ user.adress.adressMore }}
+         </td>
+         <td>{{ user.adress.zipcode }}
+         </td>
+         <td>{{ user.adress.city }}
+         </td>
+       </tr>
+
+   </tbody>
+
+</table>
+{% endblock %}

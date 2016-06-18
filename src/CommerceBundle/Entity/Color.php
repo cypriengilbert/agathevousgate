@@ -26,7 +26,7 @@ class Color
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    public $name;
+    private $name;
 
     /**
      * @var string

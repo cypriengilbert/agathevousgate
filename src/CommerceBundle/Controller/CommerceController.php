@@ -71,8 +71,8 @@ public function panierAction()
     $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
-    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-    $nbarticlepanier  = count($repository->findBy(array('isValid' => true, 'client' => $id_user)));
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+    $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
 
 
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');

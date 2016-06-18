@@ -1,0 +1,22 @@
+{% block commandedone %}
+
+<table>
+   <thead>
+      <td> Numéro de commande
+      </td>
+      <td> Date
+      </td>
+      </thead>
+   <tbody>
+    {% for liste in listeCommandeDone %}
+       <tr>
+         <td>{{ liste.id }}
+         </td>
+         <td> {{ liste.date|date("d/m/Y")}}
+         </td>
+       </tr>
+  {% endfor %}
+   </tbody>
+
+</table>
+{% endblock %}
