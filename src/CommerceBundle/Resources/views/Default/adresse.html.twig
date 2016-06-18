@@ -1,30 +1,21 @@
-{% block adresses %}
+{% trans_default_domain 'FOSUserBundle' %}
 
-<table>
-   <thead>
-      <td> Nom
-      </td>
-      <td> Adresse
-      </td>
-      <td> Code Postal
-      </td>
-      <td> Ville
-      </td>
-      </thead>
-   <tbody>
+<table style="width:100%">
+  <thead>
 
-       <tr>
-         <td>
-         </td>
-         <td> {{ user.adress.adress }}</br>{{ user.adress.adressMore }}
-         </td>
-         <td>{{ user.adress.zipcode }}
-         </td>
-         <td>{{ user.adress.city }}
-         </td>
-       </tr>
+    <td>Nom</td>
+    <td>Adresse</td>
+    <td>Code Postal</td>
+<td>Ville</td>
+</thead>
+<tbody>
+  <tr>
+<td>Jackson</td>
+    <td>{{ user.adress.adress}}</td>
+    <td>{{ user.adress.zipcode}}</td>
+    <td>{{ user.adress.city}}</td>
+  </tr>
 
-   </tbody>
+  <tbody>
 
 </table>
-{% endblock %}

@@ -1,22 +1,22 @@
-{% block commandeencours %}
+{% trans_default_domain 'FOSUserBundle' %}
 
-<table>
-   <thead>
-      <td> Numéro de commande
-      </td>
-      <td> Date
-      </td>
-      </thead>
-   <tbody>
-    {% for liste in listeCommande %}
-       <tr>
-         <td>{{ liste.id }}
-         </td>
-         <td> {{ liste.date|date("d/m/Y")}}
-         </td>
-       </tr>
-  {% endfor %}
-   </tbody>
+<table style="width:100%">
+  <thead>
+
+    <td>Numéro</td>
+    <td>Date</td>
+
+<td>Ville</td>
+</thead>
+<tbody>
+
+{% for liste in listeCommande %}
+<tr>
+    <td>{{ liste.id}}</td>
+    <td></td>
+    <td></td>
+  </tr>
+{% endfor %}
+  <tbody>
 
 </table>
-{% endblock %}

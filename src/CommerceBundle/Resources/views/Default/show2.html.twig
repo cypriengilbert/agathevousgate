@@ -1,0 +1,21 @@
+{% extends 'baseAccount.html.twig' %}
+
+{% block account_information %}
+{% include "CommerceBundle:Default:edit_content.html.twig" %}
+{% endblock account_information %}
+
+{% block commandeencours %}
+{% include "CommerceBundle:Default:commandeEncours.html.twig" %}
+{% endblock %}
+
+{% block commandedone %}
+{% include "CommerceBundle:Default:commandeDone.html.twig" %}
+{% endblock %}
+
+{% block adresses %}
+{% include "CommerceBundle:Default:adresse.html.twig" %}
+{% endblock %}
+
+{% block password %}
+{% include "CommerceBundle:Default:changePassword_content2.html.twig" %}
+{% endblock %}

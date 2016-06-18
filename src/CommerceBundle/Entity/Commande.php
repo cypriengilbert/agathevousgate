@@ -49,7 +49,12 @@ class Commande
      */
     private $isValid;
 
-
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_panier", type="boolean")
+     */
+    private $isPanier;
 
       /**
       * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
@@ -160,7 +165,28 @@ class Commande
         return $this->isValid;
     }
 
+    /**
+     * Set isPanier
+     *
+     * @param boolean $isPanier
+     * @return Commande
+     */
+    public function setIsPanier($isPanier)
+    {
+        $this->isPanier = $isPanier;
 
+        return $this;
+    }
+
+    /**
+     * Get isPanier
+     *
+     * @return boolean
+     */
+    public function getIsPanier()
+    {
+        return $this->isPanier;
+    }
 
 
 //client
