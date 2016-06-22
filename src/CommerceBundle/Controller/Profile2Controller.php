@@ -28,7 +28,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  *
  * @author Christophe Coevoet <stof@notk.org>
  */
-class ProfileController2 extends Controller
+class Profile2Controller extends Controller
 {
     /**
     * @Route("/compte_user", name="compte")
@@ -105,7 +105,7 @@ if ($formPassword->isValid()) {
     $userManager->updateUser($user);
 
     if (null === $response = $event->getResponse()) {
-        $url = $this->generateUrl('fos_user_profile_show');
+        $url = $this->generateUrl('compte');
         $response = new RedirectResponse($url);
     }
 

@@ -1,21 +1,16 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-<table style="width:100%">
-  <thead>
 
-    <td>Nom</td>
-    <td>Adresse</td>
-    <td>Code Postal</td>
-<td>Ville</td>
-</thead>
-<tbody>
-  <tr>
-<td>Jackson</td>
-    <td>{{ user.adress.adress}}</td>
-    <td>{{ user.adress.zipcode}}</td>
-    <td>{{ user.adress.city}}</td>
-  </tr>
+<div class="panel panel-info">
 
-  <tbody>
+    <div class="panel-heading"><h3 class="panel-title">Adresse 1  <a style="position:relative; left:70%">modifier</a> </h3>
+    </div>
+    <div class="panel-body">
+        {{ user.adress.adress}}<br>
+        {{ user.adress.zipcode}} {{ user.adress.city}}<br>
 
-</table>
+    </div>
+</div>
+
+
+
