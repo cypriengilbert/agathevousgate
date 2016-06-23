@@ -4,6 +4,8 @@ namespace CommerceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 class CommerceController extends Controller
 {
@@ -71,8 +73,8 @@ public function panierAction()
     $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
-    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-    $nbarticlepanier  = count($repository->findBy(array('isValid' => true, 'client' => $id_user)));
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+    $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
 
 
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -86,10 +88,42 @@ $listeAddedProduct = null;
 
 
   return $this->render('CommerceBundle:Default:panier.html.twig', array(
+  'iduser' => $id_user,
   'listePanier' => $listeAddedProduct,
 'nbarticlepanier' => $nbarticlepanier,
 ));
 }
+
+/**
+ * @Route("/delete/{id}", name="deleteproduct")
+ */
+public function deleteProductAction($id)
+{
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+    $em = $this->getDoctrine()->getManager();
+
+    $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+    $repository    = $em->getRepository('CommerceBundle:AddedProduct');
+    $articletodelete  = $repository->findOneBy(array('id' => $id));
+    $em->remove($articletodelete);
+    $em->flush();
+}
+  else{
+  $nbarticlepanier = 0;
+$listeAddedProduct = null;
+  }
+
+                $url = $this->generateUrl('panier');
+                $response = new RedirectResponse($url);
+
+  return $response;
+}
+
+
 
 
 }

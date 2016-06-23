@@ -4,14 +4,20 @@ namespace CompteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Ps\PdfBundle\Annotation\Pdf;
+
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+    * @Pdf()
+     * @Route("/generatepdf")
      */
     public function indexAction()
     {
-        return $this->render('CompteBundle:Default:index.html.twig');
+
+         $format = $this->get('request')->get('_format');
+
+           return $this->render(sprintf('test.pdf.twig', $format));
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace CommerceBundle\Entity;
+use UserBundle\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -190,7 +191,7 @@ class Commande
 
 
 //client
-        public function setClient(Client $client)
+        public function setClient(User $client)
       {
         $this->client = $client;
 

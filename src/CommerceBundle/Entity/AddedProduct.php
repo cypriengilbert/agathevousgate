@@ -2,7 +2,7 @@
 
 namespace CommerceBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use UserBundle\Entity\User;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -150,7 +150,7 @@ class AddedProduct
 
 
       //client
-              public function setClient(Client $client)
+              public function setClient(User $client)
             {
               $this->client = $client;
 

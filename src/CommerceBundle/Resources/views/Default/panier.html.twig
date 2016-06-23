@@ -8,23 +8,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Votre panier</h2>
-                    <?= var_dump($_SESSION); ?>
+                    <h2 class="section-heading">Votre panier {% if not listePanier %} est vide {% endif %}</h2>
+
                     <hr class="primary"><br />
                 </div>
             </div>
         </div>
+        {% if listePanier %}
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-12">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>Produit</th>
-                            <th>Quantité</th>
-                            <th class="text-center">Prix</th>
-                            <th class="text-center">Total</th>
-                            <th> </th>
+                            <th class="text-center"> Action</th>
+                            <th class="text-center">Produit</th>
+                            <th class="text-center">Quantité</th>
+                            <th class="text-right">Prix</th>
+                            <th class="text-right">Total</th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -40,33 +42,32 @@
 
 
                             <tr>
+                                <td class="col-sm-1 col-md-1 text-center">
+                                    <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
 
 
-                                    <td class="col-sm-8 col-md-6">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+
+                                </td>
+
+                                    <td class="col-sm-8 col-md-6 text-center">
 
 																				{% for couleur in listepanier.color %}
 
                                         {{ couleur.name }} <br>
 
 																				{% endfor %}
-                                        Name :           {{ listepanier.product.name }}<br />
+                                      {{ listepanier.product.name }}<br />
 
                                     </td>
 
                                     <td class="col-sm-1 col-md-1" style="text-align: center">
                                         <input type="number" class="form-control" id="exampleInputEmail1" name="<?= $id ?>" value="{{ listepanier.quantity }}">
                                     </td>
-                                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ listepanier.product.price }} €</strong></td>
-                                    <td class="col-sm-1 col-md-1 text-center"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price }} €</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
 
-                                    <td class="col-sm-1 col-md-1">
-                                            <a type="button" class="btn btn-sm btn-danger panier-delete" href="panier.php?del=<?= $id; ?>"><span class="glyphicon glyphicon-remove"></span> Supprimer</a>
-                                        <br />
-                                        <button type="submit" class="btn btn-sm btn-warning">
-                                            <span class="glyphicon glyphicon-refresh"></span> Modifier
-                                        </button>
-                                    </td>
-                                </form>
+
                             </tr>
 
 
@@ -117,6 +118,6 @@
         </div>
     </section>
 
-
+    {% endif %}
 
 {% endblock %}
