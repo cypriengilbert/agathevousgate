@@ -46,6 +46,9 @@ $nbarticlepanier = 0;
       $listeUser  = $repository->findAll();
 
 
+      
+
+
       return $this->render('CommerceBundle:Default:index.html.twig', array(
           'listeAddedProduct' => $listeAddedProduct,
           'listeCollection' => $listeCollection,

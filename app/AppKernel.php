@@ -22,8 +22,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new CompteBundle\CompteBundle(),
              new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-              new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle(),
-              new Ps\PdfBundle\PsPdfBundle(),
+
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
