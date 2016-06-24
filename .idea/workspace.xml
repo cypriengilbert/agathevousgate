@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67465944-1e86-4372-beab-2c75d7096a3a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/CompteBundle/Controller/FacturationController.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/CompteBundle/Controller/DefaultController.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/AppKernel.php" afterPath="$PROJECT_DIR$/app/AppKernel.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/config/config.yml" afterPath="$PROJECT_DIR$/app/config/config.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CommerceBundle/Controller/CommerceController.php" afterPath="$PROJECT_DIR$/src/CommerceBundle/Controller/CommerceController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CommerceBundle/Resources/views/Default/commandeDone.html.twig" afterPath="$PROJECT_DIR$/src/CommerceBundle/Resources/views/Default/commandeDone.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CommerceBundle/Resources/views/Default/test.html.twig" afterPath="$PROJECT_DIR$/src/CommerceBundle/Resources/views/Default/test.html.twig" />
     </list>
     <ignored path="agathevousgate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -590,12 +583,12 @@
       <workItem from="1466102570645" duration="2000" />
       <workItem from="1466614633119" duration="7254000" />
       <workItem from="1466700885945" duration="5006000" />
-      <workItem from="1466785638596" duration="5962000" />
+      <workItem from="1466785638596" duration="6136000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31668000" />
+    <option name="totallyTimeSpent" value="31842000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
