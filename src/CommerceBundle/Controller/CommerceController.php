@@ -46,7 +46,7 @@ $nbarticlepanier = 0;
       $listeUser  = $repository->findAll();
 
 
-      
+
 
 
       return $this->render('CommerceBundle:Default:index.html.twig', array(
@@ -126,7 +126,30 @@ $listeAddedProduct = null;
   return $response;
 }
 
+/**
+ * @Route("/produit/{id}", name="produit")
+ */
+public function produitAction($id)
+{
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = 0;
+}
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
 
+      $collection = $repository->findOneBy(array('id' => $id));
+
+      $colors = $collection->getColors();
+
+
+  return $this->render('CommerceBundle:Default:produit.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors));
+}
 
 
 }

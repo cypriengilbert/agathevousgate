@@ -42,13 +42,13 @@ class Collection
      /**
      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      */
-     private $color;
+     private $colors;
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -71,7 +71,7 @@ class Collection
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -94,7 +94,7 @@ class Collection
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {

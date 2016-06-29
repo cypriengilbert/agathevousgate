@@ -3,6 +3,7 @@
 namespace CommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Color
@@ -41,6 +42,9 @@ class Color
      * @ORM\Column(name="color_code", type="string", length=255, nullable=true)
      */
     private $colorCode;
+
+        
+
 
 
     /**
@@ -121,4 +125,32 @@ class Color
     {
         return $this->colorCode;
     }
+
+    public function __construct()
+    {
+      $this->collections = new ArrayCollection();
+    }
+
+    // Notez le singulier, on ajoute une seule catégorie à la fois
+    public function addCollection(Collection $collection)
+    {
+      // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+      $this->collections[] = $collection;
+
+      return $this;
+    }
+
+    public function removeCollection(Collection $collection)
+    {
+      // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+      $this->collections->removeElement($collection);
+    }
+
+    // Notez le pluriel, on récupère une liste de catégories ici !
+    public function getCollection()
+    {
+      return $this->collections;
+    }
+
+
 }
