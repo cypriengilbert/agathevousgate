@@ -4,6 +4,8 @@ namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends Controller
 {
@@ -59,14 +61,28 @@ class DefaultController extends Controller
 }
 
 /**
- * @Route("/validate{id}", name="encours")
+ * @Route("/validate/{id}", name="validate")
  */
 
-public function validateCommandeAction($id)
+public function validateCommandeAction(Request $request, $id)
 {
-  
+  $commande = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande')->find($id);
+        if (null === $commande) {
+            throw new NotFoundHttpException("La commande est inexistante");
+        }
 
-));
+        $datetime = new \Datetime('now');
+        $commande->setIsValid(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($commande);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+            $newId = $commande->getId();
+            return $this->redirect($this->generateUrl('encours', array(
+                'id' => $id,
+                'validate' => 'Reception clôturée'
+            )));
 }
 
 
