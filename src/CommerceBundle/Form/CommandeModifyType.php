@@ -1,24 +1,25 @@
 <?php
 
-namespace UserBundle\Form;
+namespace CommerceBundle\Form;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserAdressType extends AbstractType
+class CommandeModifyType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
-            */
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('zipcode')
-            ->add('adress')
-            ->add('city')
-            ->add('adressMore')
+
+            ->add('transportMethod', ChoiceType::class, array(
+            'choices' => array('laposte' => 'La Poste', 'DHL' => 'DHL','Express' => 'express' )))
+            ->add('client')
         ;
     }
 
@@ -28,7 +29,7 @@ class UserAdressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UserBundle\Entity\UserAdress'
+            'data_class' => 'CommerceBundle\Entity\Commande'
         ));
     }
 }

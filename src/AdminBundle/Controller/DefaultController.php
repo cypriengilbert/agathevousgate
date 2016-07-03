@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="dashboard")
      */
     public function indexAction()
     {
@@ -61,6 +61,21 @@ class DefaultController extends Controller
 }
 
 /**
+ * @Route("/done", name="done")
+ */
+public function commandeDoneAction()
+{
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $listeCommande  = $repository->findBy(['isValid' => true], ['date' => 'ASC']);
+
+return $this->render('AdminBundle:Default:commandedone.html.twig', array(
+'listeCommande' => $listeCommande
+
+
+));
+}
+
+/**
  * @Route("/validate/{id}", name="validate")
  */
 
@@ -84,6 +99,43 @@ public function validateCommandeAction(Request $request, $id)
                 'validate' => 'Reception clôturée'
             )));
 }
+
+
+/**
+ * @Route("/modify/{id}", name="modify")
+ */
+
+public function modifyCommandeAction(Request $request, $id)
+{
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $listeCommande  = $repository->findBy(['isValid' => true], ['date' => 'ASC']);
+
+
+  $commande = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande')->find($id);
+        if (null === $commande) {
+            throw new NotFoundHttpException("La commande est inexistante");
+        }
+
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\CommandeModifyType', $commande);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($commande);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                    $newId = $commande->getId();
+                    return $this->redirect($this->generateUrl('encours', array(
+                     'id' => $id,
+
+                        'validate' => 'Reception modifiée'
+                    )));
+                }
+                return $this->render('AdminBundle:Default:CommandeModify.html.twig', array(
+                    'form' => $form->createView(),
+ 'listeCommande' => $listeCommande,
+                ));
+}
+
 
 
 
