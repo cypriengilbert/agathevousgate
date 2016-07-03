@@ -43,7 +43,7 @@ class AddedProduct
 
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Commande")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Commande", inversedBy="addedproducts")
     * @ORM\JoinColumn(nullable=true)
     */
     private $commande;

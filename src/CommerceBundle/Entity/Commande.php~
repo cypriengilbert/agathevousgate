@@ -242,37 +242,4 @@ class Commande
     public function __construct() {
            $this->addedproducts = new ArrayCollection();
        }
-
-    /**
-     * Add addedproducts
-     *
-     * @param \CommerceBundle\Entity\AddedProduct $addedproducts
-     * @return Commande
-     */
-    public function addAddedproduct(\CommerceBundle\Entity\AddedProduct $addedproducts)
-    {
-        $this->addedproducts[] = $addedproducts;
-
-        return $this;
-    }
-
-    /**
-     * Remove addedproducts
-     *
-     * @param \CommerceBundle\Entity\AddedProduct $addedproducts
-     */
-    public function removeAddedproduct(\CommerceBundle\Entity\AddedProduct $addedproducts)
-    {
-        $this->addedproducts->removeElement($addedproducts);
-    }
-
-    /**
-     * Get addedproducts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAddedproducts()
-    {
-        return $this->addedproducts;
-    }
 }

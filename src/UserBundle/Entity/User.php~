@@ -200,27 +200,4 @@ class User extends BaseUser
     {
         return $this->naissance;
     }
-
-    /**
-     * Set isPro
-     *
-     * @param boolean $isPro
-     * @return User
-     */
-    public function setIsPro($isPro)
-    {
-        $this->isPro = $isPro;
-
-        return $this;
-    }
-
-    /**
-     * Get isPro
-     *
-     * @return boolean 
-     */
-    public function getIsPro()
-    {
-        return $this->isPro;
-    }
 }

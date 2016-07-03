@@ -20,7 +20,7 @@ class DefaultController extends Controller
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
             $listeColor  = $repository->findAll();
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-            $listeCommande  = $repository->findAll();
+            $listeCommande  = $repository->findBy([], ['date' => 'ASC']);
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $listeProduct  = $repository->findAll();
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
@@ -38,7 +38,37 @@ class DefaultController extends Controller
                 'listePromoCode' => $listePromoCode,
                 'listeUser' => $listeUser,
 
+
   ));
 
     }
+
+    /**
+     * @Route("/encours", name="encours")
+     */
+    public function commandeEnCoursAction()
+    {
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+      $listeCommande  = $repository->findBy(['isValid' => false], ['date' => 'ASC']);
+
+  return $this->render('AdminBundle:Default:commandeencours.html.twig', array(
+'listeCommande' => $listeCommande
+
+
+));
+}
+
+/**
+ * @Route("/validate{id}", name="encours")
+ */
+
+public function validateCommandeAction($id)
+{
+  
+
+));
+}
+
+
+
 }

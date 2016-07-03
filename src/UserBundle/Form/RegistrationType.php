@@ -1,6 +1,8 @@
 <?php
 
 namespace UserBundle\Form;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+
 
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,8 +22,12 @@ class RegistrationType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
+            ->add('naissance')
+            ->add('genre', ChoiceType::class, array(
+            'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
             ->add('adress', new UserAdressType())
             ->add('parrain' )
+
         ;
     }
 
@@ -42,7 +48,7 @@ class RegistrationType extends AbstractType
         {
             return $this->getBlockPrefix();
         }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
