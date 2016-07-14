@@ -1,0 +1,63 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+
+<div class="mdl-cell mdl-cell--12-col mdl-grid" style="height:60%; padding:20px;">
+<div class="mdl-cell mdl-cell--4-col">
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+<center>
+
+<div style="padding-bottom:20px;"><h5>Ajouter une commande</h5></div>
+{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+
+<div class="form-group">
+    {{ form_label(form.paiementMethod, "Paiement", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.paiementMethod) }}
+    {{ form_widget(form.paiementMethod, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+
+<div class="form-group">
+    {{ form_label(form.transportMethod, "Transport", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.transportMethod) }}
+    {{ form_widget(form.transportMethod, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.client, "Client", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.client) }}
+    {{ form_widget(form.client, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div>
+        <input type="submit" value="Suivant" class="btn btn-primary" />
+</div>
+{{ form_end(form) }}
+</center>
+</div>
+<div class=" mdl-cell mdl-cell--4-col">
+</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

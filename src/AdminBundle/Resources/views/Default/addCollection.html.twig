@@ -1,0 +1,145 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+<style>
+#collection_colors input {
+display: block;
+width: 100%;
+height: 34px;
+padding: 20px 12px;
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+background-image: none;
+border: 1px solid #ccc;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+
+}
+</style>
+
+
+
+<div class="mdl-grid demo-content">
+
+<div class="mdl-cell mdl-cell--12-col mdl-grid" style="height:60%; padding:20px;">
+<div class="mdl-cell mdl-cell--4-col">
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+<center>
+
+<div style="padding-bottom:20px;"><h5>Créer une nouvelle collection</h5></div>
+{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+
+<div class="form-group">
+    {{ form_label(form.title, "Nom", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.description) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_row(form.colors) }}
+    </div>
+
+
+
+<div>
+        <input type="submit" value="Suivant" class="btn btn-primary" />
+</div>
+{{ form_end(form) }}
+</center>
+</div>
+<div class=" mdl-cell mdl-cell--4-col">
+</div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    var $container = $('div#collection_colors');
+    var $addLink = $('<a href="#" id="add_color" class="btn btn-default">Ajouter une couleur</a>');
+    $container.append($addLink);
+
+
+    $addLink.click(function(e) {
+      addColor($container);
+      e.preventDefault();
+      return false;
+    });
+
+
+    var index = $container.find(':input').length;
+
+
+    if (index == 0) {
+      addColor($container);
+    } else {
+
+      $container.children('div').each(function() {
+        addDeleteLink($(this));
+      });
+    }
+
+
+    function addColor($container) {
+
+      var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Color n°' + (index+1))
+          .replace(/__name__/g, index));
+
+      // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
+      addDeleteLink($prototype);
+
+      // On ajoute le prototype modifié à la fin de la balise <div>
+      $container.append($prototype);
+
+      // Enfin, on incrémente le compteur pour que le prochain ajout se fasse avec un autre numéro
+      index++;
+    }
+
+    // La fonction qui ajoute un lien de suppression d'une catégorie
+    function addDeleteLink($prototype) {
+      // Création du lien
+      $deleteLink = $('<a href="#" class="btn btn-danger">Supprimer</a>');
+
+      // Ajout du lien
+      $prototype.append($deleteLink);
+
+      // Ajout du listener sur le clic du lien
+      $deleteLink.click(function(e) {
+        $prototype.remove();
+        e.preventDefault(); // évite qu'un # apparaisse dans l'URL
+        return false;
+      });
+    }
+  });
+</script>
+
+
+{% endblock %}
