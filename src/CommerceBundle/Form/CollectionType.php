@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use CommerceBundle\Form\ColorType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 
 
@@ -21,11 +23,20 @@ class CollectionType extends AbstractType
         $builder
             ->add('title')
 
-            ->add('colors', 'collection', array(
-          'type'         => ColorType::class,
-          'allow_add'    => true,
-          'allow_delete' => true
-          ))
+
+
+          ->add('colors', EntityType::class, array(
+                                   // query choices from this entity
+                                   'class' => 'CommerceBundle:Color',
+
+                                   // use the User.username property as the visible option string
+                                   'choice_label' => 'name',
+
+                                  'multiple' => true,
+                                  'expanded' => true,
+
+                                   'required' => true,
+                               ))
             ->add('description')
 
         ;

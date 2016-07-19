@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
+use CommerceBundle\Entity\Color;
+
 
 
 
@@ -270,6 +272,44 @@ public function newcollectionAction(Request $request)
                     )));
                 }
                 return $this->render('AdminBundle:Default:addCollection.html.twig', array(
+                    'form' => $form->createView(),
+                    'listeCommande' => $listeCommande,
+
+
+
+                ));
+}
+
+/**
+ * @Route("/newcolor", name="newColor")
+ */
+
+public function newcolorAction(Request $request)
+{
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande  = $repository->findBy(['isValid' => false], ['date' => 'ASC']);
+
+
+
+        $newColor = new Color();
+
+
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\ColorType', $newColor);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newColor);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');
+
+                    return $this->redirect($this->generateUrl('newColor', array(
+                     'validate' => 'Collection bien ajouté',
+
+                     'listeCommande' => $listeCommande,
+
+
+                    )));
+                }
+                return $this->render('AdminBundle:Default:addColor.html.twig', array(
                     'form' => $form->createView(),
                     'listeCommande' => $listeCommande,
 

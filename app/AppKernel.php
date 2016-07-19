@@ -22,6 +22,8 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new CompteBundle\CompteBundle(),
              new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
+             new Vich\UploaderBundle\VichUploaderBundle(),
+
 
         );
 

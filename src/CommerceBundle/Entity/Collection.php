@@ -37,6 +37,13 @@ class Collection
      */
     private $description;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="active", type="integer")
+     */
+    private $active;
+
 
 
      /**
@@ -128,4 +135,28 @@ class Collection
       {
         return $this->colors;
       }
+
+    /**
+     * Set active
+     *
+     * @param integer $active
+     *
+     * @return Collection
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return integer
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 }

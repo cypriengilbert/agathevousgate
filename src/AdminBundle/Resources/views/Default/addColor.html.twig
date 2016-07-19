@@ -41,31 +41,50 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
 <center>
 
-<div style="padding-bottom:20px;"><h5>Créer une nouvelle collection</h5></div>
+<div style="padding-bottom:20px;"><h5>Créer une nouvelle couleur</h5></div>
 {{ form_start(form, {'attr': { 'class': '' } }) }}
 
 
 <div class="form-group">
-    {{ form_label(form.title, "Nom", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.title) }}
-    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.name, "Nom", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
 
 </div>
 
 <div class="form-group">
-    {{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.description) }}
-    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+    {{ form_label(form.colorFile, "Miniature", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.colorFile) }}
+    {{ form_widget(form.colorFile, {'attr': {'class': 'form-control'}}) }}
 
 </div>
+
 <div class="form-group">
-    {{ form_row(form.colors) }}
+    {{ form_label(form.colorNoeud1File, "Image Exterieur", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.colorNoeud1File) }}
+    {{ form_widget(form.colorNoeud1File, {'attr': {'class': 'form-control'}}) }}
+
 </div>
+
+<div class="form-group">
+    {{ form_label(form.colorNoeud2File, "Image Interieur", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.colorNoeud2File) }}
+    {{ form_widget(form.colorNoeud2File, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.colorNoeud3File, "Image milieu", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.colorNoeud3File) }}
+    {{ form_widget(form.colorNoeud3File, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
 
 
 
 <div>
-        <input type="submit" value="Suivant" class="btn btn-primary" />
+        <input type="submit" value="Valider" class="btn btn-primary" />
 </div>
 {{ form_end(form) }}
 </center>

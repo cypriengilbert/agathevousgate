@@ -34,6 +34,9 @@ $nbarticlepanier = 0;
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
       $listeColor  = $repository->findAll();
 
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collectionActive  = $repository->findBy(array('active' => 1));
+
 
 
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -58,6 +61,8 @@ $nbarticlepanier = 0;
           'listeCommande2' => $listeCommande2,
           'listePromoCode' => $listePromoCode,
           'listeUser' => $listeUser,
+          'collection' => $collectionActive,
+
 ));
 
 
@@ -69,6 +74,8 @@ $nbarticlepanier = 0;
  */
 public function panierAction()
 {
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
@@ -94,6 +101,7 @@ $listeAddedProduct = null;
   'iduser' => $id_user,
   'listePanier' => $listeAddedProduct,
 'nbarticlepanier' => $nbarticlepanier,
+ 'collection' => $collectionActive,
 ));
 }
 
@@ -102,6 +110,8 @@ $listeAddedProduct = null;
  */
 public function deleteProductAction($id)
 {
+
+
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
@@ -131,6 +141,9 @@ $listeAddedProduct = null;
  */
 public function produitAction($id)
 {
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
+
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
@@ -148,7 +161,7 @@ $nbarticlepanier = 0;
       $colors = $collection->getColors();
 
 
-  return $this->render('CommerceBundle:Default:produit.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors));
+  return $this->render('CommerceBundle:Default:produit.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors, 'collection' => $collectionActive));
 }
 
 

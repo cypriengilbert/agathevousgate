@@ -5,6 +5,8 @@ namespace CommerceBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class ColorType extends AbstractType
 {
@@ -16,8 +18,26 @@ class ColorType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('url')
-            ->add('colorCode')
+            ->add('colorFile', 'vich_image', array(
+              'required'      => true,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('colorNoeud1File', 'vich_image', array(
+              'required'      => true,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('colorNoeud2File', 'vich_image', array(
+              'required'      => true,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('colorNoeud3File', 'vich_image', array(
+              'required'      => true,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
         ;
     }
 

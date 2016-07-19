@@ -92,3 +92,36 @@ knp_snappy:
         enabled:    true
         binary:     /usr/local/bin/wkhtmltoimage
         options:    []
+
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        colorFile:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/thumbnail
+            upload_destination: %kernel.root_dir%/../web//upload/color/thumbnail
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        colorNoeud1File:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/noeud1
+            upload_destination: %kernel.root_dir%/../web//upload/color/noeud1
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        colorNoeud2File:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/noeud2
+            upload_destination: %kernel.root_dir%/../web//upload/color/noeud2
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        colorNoeud3File:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/noeud3
+            upload_destination: %kernel.root_dir%/../web//upload/color/noeud3
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

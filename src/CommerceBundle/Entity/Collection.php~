@@ -37,6 +37,13 @@ class Collection
      */
     private $description;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="active", type="integer")
+     */
+    private $active;
+
 
 
      /**

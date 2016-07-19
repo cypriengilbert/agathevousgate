@@ -7,6 +7,7 @@
 <body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
 
 	 <h2 class="section-heading title-acc first-title">Je personnalise mon noeud</h2>
+
 	 <hr>
 
 	 <section  id="noeudPap" style="padding-top: 20px; padding-bottom: 0;">
@@ -40,20 +41,8 @@
 																			 {% for colors in listecolor %}
 																							 <li class='small-image pull-left thumbnail' ng-class='' ">
 																							<a href ng-click='noeudPap.selectColor(".$value->couleur_id.")' >
-																							{% if colors.url %}
-																							<img src="{{ asset('' ~ colors.url) }}" />
-																							{% elseif colors.colorCode %}
-																							<div style="background-color:{{ colors.colorCode }}; display: block; width:40px;height:40px;
-    padding: 4px;
-    line-height: 1.42857143;
+																							<img src="{{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}" />
 
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    -webkit-transition: border .2s ease-in-out;
-    -o-transition: border .2s ease-in-out;
-    transition: border .2s ease-in-out;"></div>
-
-{% endif %}
 																							 </a>
 																							 </li>
 
@@ -68,7 +57,7 @@
 																	 {% for colors in listecolor %}
 																					 <li class='small-image pull-left thumbnail' ng-class=''>
 																					<a href ng-click='noeudPap.selectColor(".$value->couleur_id.")' >
-																					<img src="{{ asset('' ~ colors.url) }}" >
+																					<img src="{{ asset('upload/color/thumbnail/' ~ colors.imageColorName ) }}" />
 																					 </a>
 																					 </li>
 
@@ -83,7 +72,8 @@
 																	 {% for colors in listecolor %}
 																					 <li class='small-image pull-left thumbnail' ng-class=''>
 																					<a href ng-click='noeudPap.selectColor(".$value->couleur_id.")' >
-																					<img src="{{ asset('' ~ colors.url) }}" >
+
+																					<img src="{{ asset('upload/color/thumbnail/' ~ colors.imageColorName ) }}" />
 																					 </a>
 																					 </li>
 
