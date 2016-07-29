@@ -9,6 +9,8 @@ use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\defined_product;
+
 
 
 
@@ -152,10 +154,11 @@ public function modifyCommandeAction(Request $request, $id)
 
 public function addCommandeAction(Request $request)
 {
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande  = $repository->findBy(['isValid' => false], ['date' => 'ASC']);
         $newCommande = new Commande();
-        $newCommande->setIsValid(true);
+        $newCommande->setIsValid(false);
         $newCommande->setIsPanier(false);
         $newCommande->setPrice(0);
         $datetime = new \Datetime('now');
@@ -197,6 +200,8 @@ public function addAddedProductAction(Request $request, $id, $client)
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
       $nouveauID = $repository->findOneBy(array('id' => $id));
       $totalprice = 0 ;
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $listeProduct  = $repository->findAll();
 
 
         $newProduct = new AddedProduct();
@@ -217,6 +222,9 @@ public function addAddedProductAction(Request $request, $id, $client)
                     $totalprice = $totalprice + ($value->getProduct()->getPrice() * $value->getQuantity());
 
                     }
+                    if($totalprice < 49.90){
+                    $totalprice = $totalprice + 4;
+                    }
                     $nouveauID->setPrice($totalprice);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($nouveauID);
@@ -228,6 +236,8 @@ public function addAddedProductAction(Request $request, $id, $client)
                       'id' => $id,
                       'client' => $client,
                      'listeCommande' => $listeCommande,
+                     'listeProduct' => $listeProduct,
+
 
 
                     )));
@@ -235,6 +245,8 @@ public function addAddedProductAction(Request $request, $id, $client)
                 return $this->render('AdminBundle:Default:addAddedProduct.html.twig', array(
                     'form' => $form->createView(),
                     'listeCommande' => $listeCommande,
+                    'listeProduct' => $listeProduct,
+
 
 
 
@@ -319,5 +331,167 @@ public function newcolorAction(Request $request)
 }
 
 
+/**
+ * @Route("/add_defined_product", name="addDefinedProduct")
+ */
+
+public function addDefinedProductAction(Request $request)
+{
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+  $listeProduct  = $repository->findAll();
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $listeCommande  = $repository->findBy(['isValid' => false], ['date' => 'ASC']);
+
+        $newProduct = new defined_product();
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\defined_productType', $newProduct);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newProduct);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+
+                    return $this->redirect($this->generateUrl('addDefinedProduct', array(
+                     'validate' => 'Produit bien ajouté',
+'listeProduct' => $listeProduct,
+'listeCommande' => $listeCommande,
+
+
+
+
+                    )));
+                }
+                return $this->render('AdminBundle:Default:addDefinedProduct.html.twig', array(
+                    'form' => $form->createView(),
+'listeProduct' => $listeProduct,
+'listeCommande' => $listeCommande,
+
+
+
+
+
+                ));
+}
+/**
+ * @Route("/definedProduct", name="definedProduct")
+ */
+public function viewDefinedProductAction()
+{
+
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande  = $repository->findBy([], ['date' => 'ASC']);
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $listeDefinedProduct  = $repository->findAll();
+
+
+        return $this->render('AdminBundle:Default:defined_product.html.twig', array(
+            'listeCommande' => $listeCommande,
+            'listeDefinedProduct' => $listeDefinedProduct,
+
+
+));
+
+}
+
+
+/**
+ * @Route("/editDefinedProduct/{id}", name="editDefinedProduct")
+ */
+public function editDefinedProductAction(Request $request, $id)
+{
+          $produit = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product')->find($id);
+                if (null === $produit) {
+                    throw new NotFoundHttpException("La commande est inexistante");
+                }
+
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande  = $repository->findBy([], ['date' => 'ASC']);
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $listeDefinedProduct  = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+        $listeProduct  = $repository->findAll();
+
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\defined_productType', $produit);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($produit);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+
+                    return $this->redirect($this->generateUrl('definedProduct', array(
+                     'validate' => 'Produit bien ajouté',
+                      'listeDefinedProduct' => $listeDefinedProduct,
+                      'listeCommande' => $listeCommande,
+
+
+
+
+                    )));
+                }
+                return $this->render('AdminBundle:Default:addDefinedProduct.html.twig', array(
+                    'form' => $form->createView(),
+                    'listeProduct' => $listeProduct,
+                    'listeCommande' => $listeCommande,
+
+
+
+
+
+                ));
+
+}
+
+
+/**
+ * @Route("/changeDefinedProduct/{id}", name="changeDefinedProduct")
+ */
+public function changeDefinedProductAction(Request $request, $id)
+{
+
+              $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+              $listeCommande  = $repository->findBy([], ['date' => 'ASC']);
+
+              $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+              $listeDefinedProduct  = $repository->findAll();
+
+
+              $produit = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product')->find($id);
+                if (null === $produit) {
+                    throw new NotFoundHttpException("La commande est inexistante");
+                }
+
+
+
+                  if ($produit->getIsactive() == true) {
+                    $produit->setIsactive(false);
+                    $statut = 'deactivate';
+                  }
+                  elseif($produit->getIsactive() == false) {
+                    $produit->setIsactive(true);
+                    $statut = 'activate';
+
+
+                  }
+
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($produit);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                    return $this->redirect($this->generateUrl('definedProduct', array(
+                      'validate' => $statut,
+                      'listeDefinedProduct' => $listeDefinedProduct,
+                      'listeCommande' => $listeCommande,
+
+
+                    )));
+
+}
 
 }

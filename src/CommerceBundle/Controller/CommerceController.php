@@ -165,4 +165,38 @@ $nbarticlepanier = 0;
 }
 
 
+
+
+/**
+ * @Route("/listeProduit/{id}", name="listeproduit")
+ */
+public function listeProduitAction($id)
+{
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+  $listeProduitActive  = $repository->findBy(array('isactive' => true, 'collection' => $id));
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = 0;
+}
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+
+      $collection = $repository->findOneBy(array('id' => $id));
+
+      $colors = $collection->getColors();
+
+
+  return $this->render('CommerceBundle:Default:listeProduit.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors, 'listeProduit' => $listeProduitActive, 'collection' => $collectionActive));
+}
+
+
+
 }

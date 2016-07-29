@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
+	<!-- Message d'accueil -->
+    <section id="slider-homepage">
+        <div class="container">
+				<div class="row text-center">
+
+			{% for listeProduit in listeProduit %}
+
+				<div class="col-md-3 col-sm-6 hero-feature">
+						<div class="thumbnail">
+								<img  style="max-height:150px; max-width:250px" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
+								<div class="caption">
+										<h3>{{ listeProduit.collection.title }}</h3>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+										<p>
+												<a href="#" class="btn btn-primary">Ajouter au panier</a> <a href="#" class="btn btn-default">Details</a>
+										</p>
+								</div>
+						</div>
+				</div>
+
+	{% endfor %}
+
+
+
+		</div>
+
+        </div>
+    </section>
+
+    <section id="homepage-collections">
+        <div class="container-fluid">
+
+        </div>
+    </section>
+
+
+{% endblock %}

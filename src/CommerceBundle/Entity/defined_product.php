@@ -1,20 +1,20 @@
 <?php
 
 namespace CommerceBundle\Entity;
-use Doctrine\Common\Collections\ArrayCollection;
-use UserBundle\Entity\User;
-use CommerceBundle\Entity\Accessoire;
-
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * AddedProduct
+ * defined_product
  *
- * @ORM\Table(name="added_product")
- * @ORM\Entity(repositoryClass="CommerceBundle\Repository\AddedProductRepository")
+ * @ORM\Table(name="defined_product")
+ * @ORM\Entity(repositoryClass="CommerceBundle\Repository\defined_productRepository")
+ * @Vich\Uploadable
  */
-class AddedProduct
+class defined_product
 {
     /**
      * @var int
@@ -24,18 +24,12 @@ class AddedProduct
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantity", type="integer")
-     */
-    private $quantity;
-
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
     * @ORM\JoinColumn(nullable=true)
     */
+
+
     public $color1;
 
     /**
@@ -98,35 +92,48 @@ class AddedProduct
     */
     private $product;
 
-
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Commande", inversedBy="addedproducts")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
     * @ORM\JoinColumn(nullable=true)
     */
-    private $commande;
-
-    /**
-    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-    * @ORM\JoinColumn(nullable=false)
-    */
-   private $client;
-
-
-   /**
-   * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Accessoire")
-   * @ORM\JoinColumn(nullable=true)
-   */
-   private $accessoire;
+    public $collection;
 
 
 
+        /**
+         * @var bool
+         *
+         * @ORM\Column(name="is_active", type="boolean")
+         */
+        private $isactive;
 
+        /**
+         *
+         * @Vich\UploadableField(mapping="image", fileNameProperty="imageName", maxSize = "5M")
+         *
+         * @var File
+         */
+        private $image;
+
+        /**
+         * @ORM\Column(type="string", length=255)
+         *
+         * @var string
+         */
+        private $imageName;
+
+        /**
+         * @ORM\Column(type="datetime")
+         *
+         * @var \DateTime
+         */
+        private $updatedAt;
 
 
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -134,78 +141,11 @@ class AddedProduct
     }
 
     /**
-     * Set quantity
-     *
-     * @param integer $quantity
-     * @return AddedProduct
-     */
-    public function setQuantity($quantity)
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * Get quantity
-     *
-     * @return integer
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
-
-    //product
-    public function setProduct(Product $product)
-    {
-      $this->product = $product;
-
-      return $this;
-    }
-
-    public function getProduct()
-    {
-      return $this->product;
-    }
-
-
-//commande
-        public function setCommande(Commande $commande)
-      {
-        $this->commande = $commande;
-
-        return $this;
-      }
-
-      public function getCommande()
-      {
-        return $this->commande;
-      }
-
-
-      //client
-              public function setClient(User $client)
-            {
-              $this->client = $client;
-
-              return $this;
-            }
-
-            public function getClient()
-            {
-              return $this->client;
-            }
-
-
-
-
-    /**
      * Set color1
      *
      * @param \CommerceBundle\Entity\Color $color1
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor1(\CommerceBundle\Entity\Color $color1 = null)
     {
@@ -228,7 +168,8 @@ class AddedProduct
      * Set color2
      *
      * @param \CommerceBundle\Entity\Color $color2
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor2(\CommerceBundle\Entity\Color $color2 = null)
     {
@@ -251,7 +192,8 @@ class AddedProduct
      * Set color3
      *
      * @param \CommerceBundle\Entity\Color $color3
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor3(\CommerceBundle\Entity\Color $color3 = null)
     {
@@ -274,7 +216,8 @@ class AddedProduct
      * Set color4
      *
      * @param \CommerceBundle\Entity\Color $color4
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor4(\CommerceBundle\Entity\Color $color4 = null)
     {
@@ -297,7 +240,8 @@ class AddedProduct
      * Set color5
      *
      * @param \CommerceBundle\Entity\Color $color5
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor5(\CommerceBundle\Entity\Color $color5 = null)
     {
@@ -320,7 +264,8 @@ class AddedProduct
      * Set color6
      *
      * @param \CommerceBundle\Entity\Color $color6
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor6(\CommerceBundle\Entity\Color $color6 = null)
     {
@@ -343,7 +288,8 @@ class AddedProduct
      * Set color7
      *
      * @param \CommerceBundle\Entity\Color $color7
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor7(\CommerceBundle\Entity\Color $color7 = null)
     {
@@ -366,7 +312,8 @@ class AddedProduct
      * Set color8
      *
      * @param \CommerceBundle\Entity\Color $color8
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor8(\CommerceBundle\Entity\Color $color8 = null)
     {
@@ -389,7 +336,8 @@ class AddedProduct
      * Set color9
      *
      * @param \CommerceBundle\Entity\Color $color9
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor9(\CommerceBundle\Entity\Color $color9 = null)
     {
@@ -412,7 +360,8 @@ class AddedProduct
      * Set color10
      *
      * @param \CommerceBundle\Entity\Color $color10
-     * @return AddedProduct
+     *
+     * @return defined_product
      */
     public function setColor10(\CommerceBundle\Entity\Color $color10 = null)
     {
@@ -432,26 +381,146 @@ class AddedProduct
     }
 
     /**
-     * Set accessoire
+     * Set product
      *
-     * @param \UserBundle\Entity\Accessoire $accessoire
+     * @param \CommerceBundle\Entity\Product $product
      *
-     * @return AddedProduct
+     * @return defined_product
      */
-    public function setAccessoire(\CommerceBundle\Entity\Accessoire $accessoire)
+    public function setProduct(\CommerceBundle\Entity\Product $product)
     {
-        $this->accessoire = $accessoire;
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * Get accessoire
+     * Get product
      *
-     * @return \UserBundle\Entity\Accessoire
+     * @return \CommerceBundle\Entity\Product
      */
-    public function getAccessoire()
+    public function getProduct()
     {
-        return $this->accessoire;
+        return $this->product;
+    }
+
+    /**
+     * Set isactive
+     *
+     * @param boolean $isactive
+     *
+     * @return defined_product
+     */
+    public function setIsactive($isactive)
+    {
+        $this->isactive = $isactive;
+
+        return $this;
+    }
+
+    /**
+     * Get isactive
+     *
+     * @return boolean
+     */
+    public function getIsactive()
+    {
+        return $this->isactive;
+    }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return defined_product
+     */
+    public function setImage(File $image = null)
+    {
+        $this->image = $image;
+
+        if ($image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTime('now');
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string $imageColorName
+     *
+     * @return defined_product
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return defined_product
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set collection
+     *
+     * @param \CommerceBundle\Entity\Collection $collection
+     *
+     * @return defined_product
+     */
+    public function setCollection(\CommerceBundle\Entity\Collection $collection = null)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Get collection
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 }

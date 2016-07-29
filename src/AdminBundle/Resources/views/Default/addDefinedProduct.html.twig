@@ -22,7 +22,7 @@
 <div style="height:130%" class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
 <center>
 
-<div style="padding-bottom:20px;"><h5>Ajouter une commande</h5></div>
+<div style="padding-bottom:20px;"><h5>Ajouter un produit prédéfini</h5></div>
 
 {{ form_start(form, {'attr': { 'class': '' } }) }}
 
@@ -32,21 +32,20 @@
     {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()'}}) }}
 
 </div>
+<div class="form-group">
+    {{ form_label(form.collection, "Collection", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.collection) }}
+    {{ form_widget(form.collection, {'attr': {'class': 'form-control'}}) }}
 
-<div class="form-group" >
-    {{ form_label(form.accessoire, "Accessoire", {'label_attr': {'class': 'radio'}}) }}
-    {{ form_errors(form.accessoire) }}
-    {{ form_widget(form.accessoire, {'attr': {'class': ''}}) }}
+</div>
+
+<div class="form-group">
+    {{ form_label(form.image, "Image", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.image) }}
+    {{ form_widget(form.image, {'attr': {'class': ''}}) }}
 
 </div>
 
-
-<div class="form-group" >
-    {{ form_label(form.quantity, "Quantité", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.quantity) }}
-    {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
-
-</div>
 
 
 <div class="form-group" id="color1" style="display:none">
@@ -131,6 +130,13 @@
 
 </div>
 
+<div class="form-group" >
+    {{ form_label(form.isactive, "Active ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.isactive) }}
+    {{ form_widget(form.isactive, {'attr': {'class': ''}}) }}
+
+</div>
+
 
 
 
@@ -140,7 +146,6 @@
 
 <div>
         <input type="submit" value="Enregistrer" class="btn btn-primary" style="margin-bottom:20px" />
-      <a href="{{ path('encours') }}"><input value="Terminer" class="btn btn-primary" /></a>
 </div>
 {{ form_end(form) }}
 
@@ -162,7 +167,7 @@ var liste = {
 
 
 var onchange = 0;
-onchange = document.getElementById("add_added_product_product").value;
+onchange = document.getElementById("defined_product_product").value;
 
 
 

@@ -21,8 +21,9 @@
                <th width=5%>ID</th>
                <th width=20%>Acheteur</th>
                <th width=25% >Adresse de livraison</th>
-               <th width=20%>Date de commande</th>
+               <th width=10%>Date de commande</th>
                <th width=20%>Produit</th>
+                <th width=10%>Price</th>
                <th width=10%>Action</th>
            </tr>
        </thead>
@@ -36,8 +37,43 @@
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
                       {% for product in commande.addedproducts %}
-                        {{ product.product.name }} : {{ product.quantity }}<br>
+                        <b>{{ product.product.name }} {{ product.accessoire.name }} : {{ product.quantity }}<br></b>
+                        {% if product.Color1 %}
+                        {{ product.Color1.name }} /
+                          {% endif %}
+                          {% if product.color2 %}
+                          {{ product.Color2.name }} /
+                            {% endif %}
+                            {% if product.Color3 %}
+                            {{ product.Color3.name }} /
+                              {% endif %}
+                              {% if product.Color4 %}
+                              {{ product.Color4.name }} /
+                                {% endif %}
+                                {% if product.Color5 %}
+                                {{ product.Color5.name }} /
+                                  {% endif %}
+                                  {% if product.Color6 %}
+                                  {{ product.Color6.name }} /
+                                    {% endif %}
+                                    {% if product.Color7 %}
+                                    {{ product.Color7.name }} /
+                                      {% endif %}
+                                      {% if product.Color8 %}
+                                      {{ product.Color8.name }} /
+                                        {% endif %}
+                                        {% if product.Color9 %}
+                                        {{ product.Color9.name }} /
+                                          {% endif %}
+                                          {% if product.Color10 %}
+                                          {{ product.Color10.name }} /
+                                            {% endif %}
+
+                        <br>
                       {% endfor %}
+                  </td>
+                  <td>
+                {{ commande.price }}
                   </td>
                   <td> <a href="{{ path('validate',{'id':commande.id}) }}"><i class="material-icons">mode_edit</i> </a></td>
               </tr>
