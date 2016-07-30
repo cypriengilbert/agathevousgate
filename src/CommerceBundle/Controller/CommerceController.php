@@ -16,11 +16,33 @@ class CommerceController extends Controller
     /**
      * @Route("/", name="accueil")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+      $session = $this->get('session');
+      if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
+
       if (TRUE === $this->get('security.authorization_checker')->isGranted(
      'ROLE_USER'
     )) {
+      $user = $this->container->get('security.context')->getToken()->getUser();
+      $listeAddedProduct = $session->get('panier_session');
+
+    foreach( $listeAddedProduct as $value ) {
+      $rajoutpanier = $value;
+      $rajoutpanier->setClient($user);
+      $this->getDoctrine()->getManager()->merge($rajoutpanier);
+      $this->getDoctrine()->getManager()->flush();
+      $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+
+
+}
+$this->get('session')->remove('panier_session');
+
       $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
@@ -29,7 +51,7 @@ class CommerceController extends Controller
 
       }
       else{
-$nbarticlepanier = 0;
+$nbarticlepanier = $session->get('nb_article');
 }
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
       $listeAddedProduct = $repository->findAll();
@@ -76,15 +98,24 @@ $nbarticlepanier = 0;
 /**
  * @Route("/panier", name="panier")
  */
-public function panierAction()
+public function panierAction(Request $request)
 {
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
   $collectionActive  = $repository->findBy(array('active' => 1));
-  $session = $this->get('session');
+  $session = $this->getRequest()->getSession();
 
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
+
+
 
     $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
@@ -97,11 +128,18 @@ public function panierAction()
   $listeAddedProduct = $repository->findBy(array('commande' => null, 'client' => $id_user));
 }
   else{
-  $nbarticlepanier = 0;
-  $id_user = null;
-  $listeAddedProduct = $session->get('panier_session');
+$id_user = null;
 
-  }
+
+$listeAddedProduct = $session->get('panier_session');
+
+
+  $nbarticlepanier = $session->get('nb_article');
+
+
+
+//  }
+}
 
 
 
@@ -112,6 +150,7 @@ public function panierAction()
  'collection' => $collectionActive,
 ));
 }
+
 
 /**
  * @Route("/delete/{id}", name="deleteproduct")
@@ -145,10 +184,52 @@ $listeAddedProduct = null;
 }
 
 /**
+ * @Route("/delete_session/{id}", name="deleteproduct_session")
+ */
+public function deleteProductSessionAction($id)
+{
+
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+}
+
+  else{
+$session = $this->getRequest()->getSession();
+
+  $listeAddedProduct = $session->get('panier_session');
+  unset($listeAddedProduct[$id]);
+  $listeAddedProduct = array_values($listeAddedProduct);
+  $session->set('panier_session', $listeAddedProduct);
+
+
+
+
+
+  }
+
+                $url = $this->generateUrl('panier');
+                $response = new RedirectResponse($url);
+
+  return $response;
+
+}
+
+
+/**
  * @Route("/personnalisation", name="personnalisation")
  */
 public function personnalisationAction(Request $request)
 {
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
   $collectionActive  = $repository->findBy(array('active' => 1));
 
@@ -160,7 +241,7 @@ public function personnalisationAction(Request $request)
       $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
 }
 else{
-$nbarticlepanier = 0;
+$nbarticlepanier = $session->get('nb_article');
 }
 
 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -182,28 +263,31 @@ if (TRUE === $this->get('security.authorization_checker')->isGranted(
 }
 
 $added_product->setCommande(null);
-$session = $this->get('session');
 
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
 
 
         if ($form->handleRequest($request)->isValid()) {
-
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($added_product);
           if (TRUE === $this->get('security.authorization_checker')->isGranted(
           'ROLE_USER'
           )) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($added_product);
+
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
             }
             else{
 
-            $cart = $session->get('panier_session', array());
-            array_push($cart, $added_product);
-            $session->set('panier_session', $cart);
-              }
+
+            $listeAddedProduct = $session->get('panier_session');
+            array_push($listeAddedProduct, $added_product);
+            $session->set('panier_session', $listeAddedProduct);
+            $session->set('nb_article', count($listeAddedProduct));
+
+
+            }
 
 
             return $this->redirect($this->generateUrl('panier', array(
@@ -214,7 +298,7 @@ $session = $this->get('session');
         return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
             'form' => $form->createView(),
             'product_coffret' => $product_coffret,
-            'nbarticlepanier' => $nbarticlepanier,
+            'nbarticlepanier' => $session->get('nb_article'),
             'collection' => $collectionActive,
              'product_noeud' => $product_noeud,
             'accessoire' => $accessoire
@@ -234,6 +318,13 @@ $session = $this->get('session');
  */
 public function listeProduitAction($id)
 {
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
   $listeProduitActive  = $repository->findBy(array('isactive' => true, 'collection' => $id));
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');

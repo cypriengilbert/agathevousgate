@@ -70,7 +70,7 @@
                         <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?"></a>
                     </li>
                     <li class="menu-panier <?= $icone_panier; ?>">
-                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{{ nbarticlepanier }}</span></a>
+                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{{ nbarticlepanier }}{% else %}{{app.request.session.get("nb_article")}}{% endif %}</span></a>
                     </li>
                     <li class="menu-account <?php if($page_actuelle == 'account'){echo 'active';} ?>">
                         <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -134,7 +134,7 @@
        <!-- Bootstrap Core JavaScript -->
        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-    
+
 
        <!-- Plugin JavaScript -->
        <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
