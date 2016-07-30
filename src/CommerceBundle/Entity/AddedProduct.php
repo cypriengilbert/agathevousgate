@@ -119,6 +119,14 @@ class AddedProduct
    private $accessoire;
 
 
+       /**
+        * @var string
+        *
+        * @ORM\Column(name="size", type="string", length=255)
+        */
+       private $size;
+
+
 
 
 
@@ -172,7 +180,7 @@ class AddedProduct
 
 
 //commande
-        public function setCommande(Commande $commande)
+        public function setCommande(Commande $commande = null)
       {
         $this->commande = $commande;
 
@@ -453,5 +461,29 @@ class AddedProduct
     public function getAccessoire()
     {
         return $this->accessoire;
+    }
+
+    /**
+     * Set size
+     *
+     * @param string $size
+     *
+     * @return AddedProduct
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * Get size
+     *
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
     }
 }

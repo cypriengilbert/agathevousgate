@@ -8,6 +8,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Entity\Color;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+
 
 
 class addAddedProductType extends AbstractType
@@ -92,9 +96,19 @@ class addAddedProductType extends AbstractType
    		'placeholder' => 'Choose an option',
    		'class' => 'CommerceBundle:Accessoire',
    		'choice_label' => 'name',
-   		'expanded' => true,
    		'multiple' => false
-   	));
+   	))
+    ->add('size', ChoiceType::class , array(
+      'choices'  => array(
+          'Mini' => 'Mini',
+          'Standard' => 'Standard',
+      ),
+    ))
+    ->add('save', SubmitType::class, array('label' => 'Ajouter au Panier')); //here is the problem
+
+
+
+;
    	}
 
     /**

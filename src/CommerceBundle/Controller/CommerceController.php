@@ -5,6 +5,10 @@ namespace CommerceBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use CommerceBundle\Entity\AddedProduct;
+use Symfony\Component\HttpFoundation\Request;
+
+
 
 
 class CommerceController extends Controller
@@ -76,6 +80,8 @@ public function panierAction()
 {
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
   $collectionActive  = $repository->findBy(array('active' => 1));
+  $session = $this->get('session');
+
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
@@ -88,11 +94,13 @@ public function panierAction()
 
 
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-  $listeAddedProduct = $repository->findBy(array('commande' => null));
+  $listeAddedProduct = $repository->findBy(array('commande' => null, 'client' => $id_user));
 }
   else{
   $nbarticlepanier = 0;
-$listeAddedProduct = null;
+  $id_user = null;
+  $listeAddedProduct = $session->get('panier_session');
+
   }
 
 
@@ -137,9 +145,9 @@ $listeAddedProduct = null;
 }
 
 /**
- * @Route("/produit/{id}", name="produit")
+ * @Route("/personnalisation", name="personnalisation")
  */
-public function produitAction($id)
+public function personnalisationAction(Request $request)
 {
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
   $collectionActive  = $repository->findBy(array('active' => 1));
@@ -154,14 +162,68 @@ public function produitAction($id)
 else{
 $nbarticlepanier = 0;
 }
-      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
 
-      $collection = $repository->findOneBy(array('id' => $id));
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+$product_noeud  = $repository->findOneBy(array('name' => 'Noeud'));
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+$product_coffret = $repository->findOneBy(array('name' => 'Coffret'));
 
-      $colors = $collection->getColors();
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+$accessoire  = $repository->findAll();
+
+$added_product = new AddedProduct();
+if (TRUE === $this->get('security.authorization_checker')->isGranted(
+'ROLE_USER'
+)) {
+
+  $user = $this->container->get('security.context')->getToken()->getUser();
+  $added_product->setClient($user);
+
+}
+
+$added_product->setCommande(null);
+$session = $this->get('session');
 
 
-  return $this->render('CommerceBundle:Default:produit.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors, 'collection' => $collectionActive));
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
+
+
+        if ($form->handleRequest($request)->isValid()) {
+
+          if (TRUE === $this->get('security.authorization_checker')->isGranted(
+          'ROLE_USER'
+          )) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($added_product);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+            }
+            else{
+
+            $cart = $session->get('panier_session', array());
+            array_push($cart, $added_product);
+            $session->set('panier_session', $cart);
+              }
+
+
+            return $this->redirect($this->generateUrl('panier', array(
+
+            'validate' => 'Reception modifiée'
+            )));
+        }
+        return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
+            'form' => $form->createView(),
+            'product_coffret' => $product_coffret,
+            'nbarticlepanier' => $nbarticlepanier,
+            'collection' => $collectionActive,
+             'product_noeud' => $product_noeud,
+            'accessoire' => $accessoire
+
+        ));
+
+
+
+
 }
 
 

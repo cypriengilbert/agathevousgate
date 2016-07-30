@@ -52,11 +52,39 @@
 
                                     <td class="col-sm-8 col-md-6 text-center">
 
-																				{% for couleur in listepanier.color %}
+                                    {% if listepanier.Color1 %}
+                                    {{ listepanier.Color1.name }} /
+                                      {% endif %}
+                                      {% if listepanier.color2 %}
+                                      {{ listepanier.Color2.name }} /
+                                        {% endif %}
+                                        {% if listepanier.Color3 %}
+                                        {{ listepanier.Color3.name }} /
+                                          {% endif %}
+                                          {% if listepanier.Color4 %}
+                                          {{ listepanier.Color4.name }} /
+                                            {% endif %}
+                                            {% if listepanier.Color5 %}
+                                            {{ listepanier.Color5.name }} /
+                                              {% endif %}
+                                              {% if listepanier.Color6 %}
+                                              {{ listepanier.Color6.name }} /
+                                                {% endif %}
+                                                {% if listepanier.Color7 %}
+                                                {{ listepanier.Color7.name }} /
+                                                  {% endif %}
+                                                  {% if listepanier.Color8 %}
+                                                  {{ listepanier.Color8.name }} /
+                                                    {% endif %}
+                                                    {% if listepanier.Color9 %}
+                                                    {{ listepanier.Color9.name }} /
+                                                      {% endif %}
+                                                      {% if listepanier.Color10 %}
+                                                      {{ listepanier.Color10.name }} /
+                                                        {% endif %}
+<br>
 
-                                        {{ couleur.name }} <br>
 
-																				{% endfor %}
                                       {{ listepanier.product.name }}<br />
 
                                     </td>

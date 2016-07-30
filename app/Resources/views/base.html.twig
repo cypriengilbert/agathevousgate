@@ -60,7 +60,7 @@
                     {% for col in collection %}
 
                     <li class="">
-                        <a class="page-scroll" href="{{ path('produit', {'id': col.id }) }}">{{ col.title }}</a>
+                        <a class="page-scroll" href="{{ path('personnalisation') }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
@@ -134,11 +134,7 @@
        <!-- Bootstrap Core JavaScript -->
        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 
-       <!-- AngularJS -->
-       <script src="{{ asset('js/angular.min.js') }}"></script>
-
-       <!-- Script JS pour le plugin de noeud pap -->
-       <script src="{{ asset('js/app_winnie.js') }}"></script>
+    
 
        <!-- Plugin JavaScript -->
        <script src="{{ asset('js/jquery.easing.min.js') }}"></script>

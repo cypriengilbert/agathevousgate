@@ -119,6 +119,14 @@ class AddedProduct
    private $accessoire;
 
 
+       /**
+        * @var string
+        *
+        * @ORM\Column(name="size", type="string", length=255)
+        */
+       private $size;
+
+
 
 
 
