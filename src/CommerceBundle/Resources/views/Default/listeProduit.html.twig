@@ -17,7 +17,7 @@
 										<h3>{{ listeProduit.collection.title }}</h3>
 										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 										<p>
-												<a href="{{ path('adddefinedtocart', {'id': listeProduit.id, 'id_collection': listeProduit.collection.id, 'size':'Petit'}) }}" class="btn btn-primary">Ajouter le petit</a>
+												<a href="{{ path('adddefinedtocart', {'id': listeProduit.id, 'id_collection': listeProduit.collection.id, 'size':'Petit', 'color1':listeProduit.color1.id, 'color2':listeProduit.color2.id, 'color3':listeProduit.color3.id, 'product':listeProduit.product.id}) }}" class="btn btn-primary">Ajouter le petit</a>
 												<a href="{{ path('adddefinedtocart', {'id': listeProduit.id, 'id_collection': listeProduit.collection.id, 'size':'Grand'}) }}" class="btn btn-primary">Ajouter le grand</a> <a href="" class="btn btn-default">Details</a>
 										</p>
 								</div>

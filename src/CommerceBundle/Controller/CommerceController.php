@@ -371,31 +371,100 @@ else{  $session->set('panier_session', array());}
 
   $added_product = new AddedProduct();
 
-  $added_product->setColor1($product_selected->getColor1());
-  $added_product->setColor2($product_selected->getColor2());
-  $added_product->setColor3($product_selected->getColor3());
-  $added_product->setColor4($product_selected->getColor4());
-  $added_product->setColor5($product_selected->getColor5());
-  $added_product->setColor6($product_selected->getColor6());
-  $added_product->setColor7($product_selected->getColor7());
-  $added_product->setColor8($product_selected->getColor8());
-  $added_product->setColor9($product_selected->getColor9());
-  $added_product->setColor10($product_selected->getColor10());
-  $added_product->setProduct($product_selected->getProduct());
+  $idColor1 = $product_selected->getColor1()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color1 = $repository->findOneBy(array('id' => $idColor1));
+  $added_product->setColor1($color1);
+
+
+  $idColor2 = $product_selected->getColor2()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color2 = $repository->findOneBy(array('id' => $idColor2));
+  $added_product->setColor2($color2);
+
+
+  $idColor3 = $product_selected->getColor3()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color3 = $repository->findOneBy(array('id' => $idColor3));
+  $added_product->setColor3($color3);
+
+  if($product_selected->getColor4()){
+    $idColor4 = $product_selected->getColor4()->getId();
+    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+    $color4 = $repository->findOneBy(array('id' => $idColor4));
+    $added_product->setColor4($color4);
+
+}
+
+if($product_selected->getColor5()){
+
+  $idColor5 = $product_selected->getColor5()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color5 = $repository->findOneBy(array('id' => $idColor5));
+  $added_product->setColor5($color5);
+
+}
+  if($product_selected->getColor6()){
+  $idColor6 = $product_selected->getColor6()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color6 = $repository->findOneBy(array('id' => $idColor6));
+  $added_product->setColor6($color6);
+
+}
+  if($product_selected->getColor7()){
+  $idColor7 = $product_selected->getColor7()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color7 = $repository->findOneBy(array('id' => $idColor7));
+  $added_product->setColor7($color7);
+
+
+}
+if($product_selected->getColor8()){
+  $idColor8 = $product_selected->getColor8()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color8 = $repository->findOneBy(array('id' => $idColor8));
+  $added_product->setColor8($color8);
+
+}
+  if($product_selected->getColor9()){
+  $idColor9 = $product_selected->getColor9()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color9 = $repository->findOneBy(array('id' => $idColor9));
+  $added_product->setColor9($color9);
+
+}
+  if($product_selected->getColor10()){
+  $idColor10 = $product_selected->getColor10()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color10 = $repository->findOneBy(array('id' => $idColor10));
+  $added_product->setColor10($color10);
+
+}
+  $idProduct = $product_selected->getProduct()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+  $product = $repository->findOneBy(array('id' => $idProduct));
+
+
+
+
+  $added_product->setProduct($product);
   $added_product->setCommande(null);
   $added_product->setQuantity(1);
   $added_product->setSize($size);
-
-
-
-
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $user = $this->container->get('security.context')->getToken()->getUser();
+  $added_product->setClient($user);
+  }
+  $em = $this->getDoctrine()->getManager();
+  $em->persist($added_product);
 
 
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
-    $user = $this->container->get('security.context')->getToken()->getUser();
-    $added_product->setClient($user);
+
     $em = $this->getDoctrine()->getManager();
     $em->persist($added_product);
     $em->flush();
