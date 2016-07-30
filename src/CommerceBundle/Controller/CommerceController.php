@@ -352,4 +352,75 @@ $nbarticlepanier = 0;
 
 
 
+/**
+ * @Route("/addDefinedToCart/{id}/{id_collection}/{size}", name="adddefinedtocart")
+ */
+public function addDefinedToCartAction($id, $id_collection, $size, Request $request)
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
+
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+  $product_selected = $repository->findOneBy(array('id' => $id));
+
+  $added_product = new AddedProduct();
+
+  $added_product->setColor1($product_selected->getColor1());
+  $added_product->setColor2($product_selected->getColor2());
+  $added_product->setColor3($product_selected->getColor3());
+  $added_product->setColor4($product_selected->getColor4());
+  $added_product->setColor5($product_selected->getColor5());
+  $added_product->setColor6($product_selected->getColor6());
+  $added_product->setColor7($product_selected->getColor7());
+  $added_product->setColor8($product_selected->getColor8());
+  $added_product->setColor9($product_selected->getColor9());
+  $added_product->setColor10($product_selected->getColor10());
+  $added_product->setProduct($product_selected->getProduct());
+  $added_product->setCommande(null);
+  $added_product->setQuantity(1);
+  $added_product->setSize($size);
+
+
+
+
+
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+    $user = $this->container->get('security.context')->getToken()->getUser();
+    $added_product->setClient($user);
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($added_product);
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+
+
+}
+else{
+
+  $listeAddedProduct = $session->get('panier_session');
+  array_push($listeAddedProduct, $added_product);
+  $session->set('panier_session', $listeAddedProduct);
+  $session->set('nb_article', count($listeAddedProduct));
+
+$nbarticlepanier = $session->get('nb_article');
+}
+
+$url = $this->generateUrl('listeproduit', array('id' => $id_collection));
+$response = new RedirectResponse($url);
+
+return $response;
+
+}
+
+
+
+
 }
