@@ -53,18 +53,18 @@ h2{
 h3{
 	font-size:1.188em;
 	color:#292929;
-	font-family: "Roboto", Times, serif;
+	font-family: 'Roboto' !important;
 	font-weight: bold;
 }
 p{
 	font-size:1em;
 	color:#3B3B3B;
-	font-family: "Roboto", Times, serif;
+	font-family: 'Roboto' !important;
 }
 a{
 	font-size:1em;
 	color:#242258;
-	font-family: "Roboto", Times, serif;
+	font-family: 'Roboto' !important;
 	font-weight: bold;
 }
 
