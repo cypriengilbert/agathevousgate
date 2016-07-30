@@ -29,8 +29,13 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/sequence-theme.modern-slide-in.css') }}" rel="stylesheet" media="all">
+     <!-- BB: Ca fait bugé la homme page attendons avant de reactiver -6
+    <link rel="stylesheet" href="{{ asset('css/creative.css') }}" type="text/css">-->
 
-    <link rel="stylesheet" href="{{ asset('css/creative.css') }}" type="text/css">
+    <!-- BB CSS homepage -->
+    <link rel="stylesheet" href="{{ asset('css/styles_home.css') }}" type="text/css">
+    <!-- BB CSS menu -->
+    <link rel="stylesheet" href="{{ asset('css/styles_menu.css') }}" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,10 +45,71 @@
     <![endif]-->
 
 </head>
+<!--MENU-->
+<nav class="navbar navbar-default navbar-fixed-top nav_agathe_1">
+  <div class="container-fluid nav_agathe_2">
+    <div class="navbar-header nav_agathe_3">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('images/logo_test.jpg') }}" style="width:100%;height:auto; max-width:75px;"></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Collection <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+              {% for col in collection %}
 
+                    <li class="">
+                        <a class="page-scroll" href="{{ path('produit', {'id': col.id }) }}">{{ col.title }}</a>
+                    </li>
+
+                    {% endfor %}
+          </ul>
+        </li>
+        <li><a href="#">Médiatheque</a></li>
+        <li><a href="#">Page 3</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right menu-right">
+                    <li>
+                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none;"></a>
+                    </li>
+                    <li class="menu-panier <?= $icone_panier; ?>">
+                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{{ nbarticlepanier }}</span></a>
+                    </li>
+                    <li class="menu-account <?php if($page_actuelle == 'account'){echo 'active';} ?>">
+                        <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
+                            {% if is_granted('ROLE_USER') %}
+                                <li><a href="{{ path('compte') }}">Mon compte</a></li>
+                                <li><a href="{{ path('compte') }}">Mes commandes</a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                            {% else %}
+                                <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
+                                <li><a href="{{ path('fos_user_registration_register') }}">Créer un compte</a></li>
+                                <li><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié?</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </li>
+                    <!--<li>
+                        <a class="page-scroll" href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-2x fa-user"></i></a>
+                    </li>-->
+        </ul>
+    </div>
+  </div>
+</nav>
+<!--MENU FIN-->
+<!-- Menu de Cyprien, je le hide pour l'instant
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Brand and toggle get grouped for better mobile display --
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Changer la navigation</span>
@@ -54,7 +120,7 @@
                 <a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('img/logo-principal-menu.png') }}"></a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+            <!-- Collect the nav links, forms, and other content for toggling --
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left menu-left">
                     {% for col in collection %}
@@ -91,21 +157,22 @@
                     </li>
                     <!--<li>
                         <a class="page-scroll" href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-2x fa-user"></i></a>
-                    </li>-->
+                    </li>--
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
+            <!-- /.navbar-collapse --
         </div>
-        <!-- /.container-fluid -->
-    </nav>
+        <!-- /.container-fluid --
+    </nav> -->
 
 
 
 
-    <body style="margin-top:150px; margin-bottom:150px">
+    <body style="/*margin-top:150px; margin-bottom:150px*/">
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
+    <!--footer Cyprien : pareil 
     <footer class="general-footer">
         <div class="row footer-content">
             <div class="col-md-4">
@@ -123,7 +190,7 @@
             </div>
         </div>
         Copyright 2016 - Agathe Lefeuvre
-    </footer>
+    </footer>-->
 
     <!-- jQuery -->
        <script src="{{ asset('js/jquery.js') }}"></script>

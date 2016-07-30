@@ -1,0 +1,79 @@
+body{
+    background-color: #FFFFFF;
+    padding-top: 70px;
+}
+.logo_div {
+    background-color: #FFFFFF;
+}
+.customisation_noeud{
+    background-color: #252259;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.nos_collections{
+padding-right: 0px;
+padding-left: 0px;
+}
+
+.produits_populaires{
+	background-color: #E8E8E8;
+	padding-bottom: 20px;
+}
+
+.made_in_france{
+			padding-top: 10%;
+			padding-bottom: 10%;
+			height:80%;
+
+
+}
+.footer{
+		background-color: #3B3B3B;
+		color:#F5F5F5;
+		padding-top: 10px;
+		padding-bottom: 10px;
+}
+
+
+/*Police responsive*/
+h1{
+	font-size:1.5em;
+	font-family: "Courrier", Times, serif;
+	font-weight: bold;
+	color:#242258;
+}
+
+h2{
+	font-size:1.313em;
+	font-family: "Courrier", Times, serif;
+	color:#A94141;
+
+}
+h3{
+	font-size:1.188em;
+	color:#292929;
+	font-family: 'Roboto' !important;
+	font-weight: bold;
+}
+p{
+	font-size:1em;
+	color:#3B3B3B;
+	font-family: 'Roboto' !important;
+}
+a{
+	font-size:1em;
+	color:#242258;
+	font-family: 'Roboto' !important;
+	font-weight: bold;
+}
+
+.header h2{
+color:#25225B;
+font-size:1.75em;
+}
+
+.customisation_noeud h2{
+color:#FFFFFF;
+font-size:1.75em;
+}
