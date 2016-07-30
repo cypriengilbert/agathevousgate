@@ -29,8 +29,11 @@
 
     <!-- Custom CSS -->
     <link href="{{ asset('css/sequence-theme.modern-slide-in.css') }}" rel="stylesheet" media="all">
+     <!-- BB: Ca fait bugé la homme page attendons avant de reactiver -6
+    <link rel="stylesheet" href="{{ asset('css/creative.css') }}" type="text/css">-->
 
-    <link rel="stylesheet" href="{{ asset('css/creative.css') }}" type="text/css">
+    <!-- BB CSS homepage -->
+    <link rel="stylesheet" href="{{ asset('css/styles_home.css') }}" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -40,10 +43,10 @@
     <![endif]-->
 
 </head>
-
+<!-- Menu de Cyprien, je le hide pour l'instant
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Brand and toggle get grouped for better mobile display --
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Changer la navigation</span>
@@ -54,7 +57,7 @@
                 <a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('img/logo-principal-menu.png') }}"></a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+            <!-- Collect the nav links, forms, and other content for toggling --
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-left menu-left">
                     {% for col in collection %}
@@ -96,8 +99,8 @@
             </div>
             <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container-fluid -->
-    </nav>
+        <!-- /.container-fluid --
+    </nav> -->
 
 
 
@@ -106,6 +109,7 @@
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
+    <!--footer Cyprien : pareil 
     <footer class="general-footer">
         <div class="row footer-content">
             <div class="col-md-4">
@@ -123,7 +127,7 @@
             </div>
         </div>
         Copyright 2016 - Agathe Lefeuvre
-    </footer>
+    </footer>-->
 
     <!-- jQuery -->
        <script src="{{ asset('js/jquery.js') }}"></script>

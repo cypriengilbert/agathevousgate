@@ -32,8 +32,40 @@
 <body>
 
 <section id="Follow_us"></section>
-<!-- Future place dans le menu-->
 
+<!--MENU-->
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#"><img src="images/logo_test.jpg" alt="Noeud_papillion_agathevousgate" style="width:100%;height:auto; max-width:75px; "></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Collection 1<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Page 1-1</a></li>
+            <li><a href="#">Page 1-2</a></li>
+            <li><a href="#">Page 1-3</a></li>
+          </ul>
+        </li>
+        <li><a href="#">Médiatheque</a></li>
+        <li><a href="#">Page 3</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--MENU FIN-->
 
 
 <section id="Header"></section>
@@ -43,6 +75,7 @@
         <div class="col-sm-2 col-xs-6 logo_div"><img src="images/logo_test.jpg" alt="Noeud_papillion_agathevousgate" style="width:100%;height:auto; min-width:150px;"></div>
         <div class="col-sm-5 col-xs-3"></div>
       </div>
+
 
       <div class="row">
         <div class="col-sm-12">
@@ -124,7 +157,7 @@
 <!-- Generer via base de donnée ? Responsifs ? juste des exemples ?--> 
 <section id="nos_collections"></section>
 
-<div class="container nos_collections text-center">
+<div class="container text-center">
       <div class="row">
         <div class="col-sm-12 col-xs-12">Retrouvez toute nos collections</div>
       </div>
@@ -165,17 +198,17 @@
       </div>
       <div class="row text-center">
         <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10">Les noeuds-papillon Agathe Vous Gâte sont innovants, tendances et personnalisés</div>
+        <div class="col-sm-10 col-xs-10"><p>Les noeuds-papillon Agathe Vous Gâte sont innovants, tendances et personnalisés</p></div>
         <div class="col-sm-1 col-xs-1"></div>
       </div>
       <div class="row text-center">
         <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10">Une invention pratique et facile, fabriquée en France, pour habiller toute la famille !</div>
+        <div class="col-sm-10 col-xs-10"><p>Une invention pratique et facile, fabriquée en France, pour habiller toute la famille !</p></div>
         <div class="col-sm-1 col-xs-1"></div>
       </div>
       <div class="row text-center">
         <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10">Hommes, femmes et enfants composent et accrochent leur noeud comme bon leur semble.</div>
+        <div class="col-sm-10 col-xs-10"><p>Hommes, femmes et enfants composent et accrochent leur noeud comme bon leur semble.</p></div>
         <div class="col-sm-1 col-xs-1"></div>
       </div>
 
