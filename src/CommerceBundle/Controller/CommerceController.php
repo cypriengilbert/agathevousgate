@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\AddedProduct;
+use CommerceBundle\Entity\Commande;
+
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -478,8 +480,7 @@ else{
   array_push($listeAddedProduct, $added_product);
   $session->set('panier_session', $listeAddedProduct);
   $session->set('nb_article', count($listeAddedProduct));
-
-$nbarticlepanier = $session->get('nb_article');
+  $nbarticlepanier = $session->get('nb_article');
 }
 
 $url = $this->generateUrl('listeproduit', array('id' => $id_collection));
@@ -495,7 +496,7 @@ return $response;
 public function paiementAction()
 {
 
-$session = $this->get('session');
+  $session = $this->get('session');
   $nbarticle = $session->get('nb_article');
 
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
@@ -512,21 +513,46 @@ $session = $this->get('session');
 /**
  * @Route("/charge", name="charge")
  */
-public function chargeAction()
+public function chargeAction(Request $request)
 {
   \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
 
   // Get the credit card details submitted by the form
 $token = $_POST['stripeToken'];
+$user = $this->container->get('security.context')->getToken()->getUser();
+$repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+$commandeEnCours  = $repository->findOneBy(array('client' => $user, 'isPanier' => true));
+if ($commandeEnCours)
+{
+  $price = $commandeEnCours->getPrice()*100;
 
   //Create the charge on Stripe's servers - this will charge the user's card
   try {
     $charge = \Stripe\Charge::create(array(
-      "amount" => 1000, // amount in cents, again
+      "amount" => $price, // amount in cents, again
       "currency" => "eur",
       "source" => $token,
       "description" => "Example charge"
       ));
+      $commandeEnCours->setIsPanier(false);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($commandeEnCours);
+      $em->flush();
+      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+      $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $listePanier  = $repository->findBy(array('client' => $user, 'commande' => null));
+      foreach ($listePanier as $value) {
+      $value->setCommande($commandeEnCours);
+      $em = $this->getDoctrine()->getManager();
+      $em->persist($value);
+      $em->flush();
+      $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+}
+
+
+
+
       $url = $this->generateUrl('accueil');
       $response = new RedirectResponse($url);
 
@@ -538,7 +564,59 @@ return $response;
 
 return $response;
   }
+}
+}
 
+
+/**
+ * @Route("/choixpaiement", name="choixpaiement")
+ */
+public function choixPaiementAction(Request $request)
+{
+  $session = $this->get('session');
+  $nbarticle = $session->get('nb_article');
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $user = $this->container->get('security.context')->getToken()->getUser();
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $listePanier  = $repository->findBy(array('client' => $user, 'commande' => null));
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $commandeEnCours  = $repository->findOneBy(array('client' => $user, 'isPanier' => true));
+  if ($commandeEnCours){
+
+$newcommande = $commandeEnCours;
+}
+else {
+  $newcommande = new Commande();
+}
+$total_commande = 0;
+foreach ($listePanier as $value) {
+  $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+  }
+
+  $newcommande->setClient($user);
+  $newcommande->setIsValid(false);
+  $newcommande->setIsPanier(true);
+  $datetime = new \Datetime('now');
+  $newcommande->setDate($datetime);
+
+  $newcommande->setPrice($total_commande);
+
+              $em = $this->getDoctrine()->getManager();
+              $em->persist($newcommande);
+              $em->flush();
+              $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+    return $this->render('CommerceBundle:Default:choixpaiement.html.twig', array('collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
+
+
+
+}
 }
 
 }

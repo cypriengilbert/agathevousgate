@@ -34,14 +34,14 @@ class Commande
     /**
      * @var string
      *
-     * @ORM\Column(name="paiement_method", type="string", length=255)
+     * @ORM\Column(name="paiement_method", type="string", length=255, nullable=true)
      */
     private $paiementMethod;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="transport_method", type="string", length=255)
+     * @ORM\Column(name="transport_method", type="string", length=255, nullable=true)
      */
     private $transportMethod;
 
@@ -269,7 +269,7 @@ class Commande
     /**
      * Get addedproducts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAddedproducts()
     {
