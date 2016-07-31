@@ -489,7 +489,56 @@ return $response;
 
 }
 
+/**
+ * @Route("/paiement", name="paiement")
+ */
+public function paiementAction()
+{
+
+$session = $this->get('session');
+  $nbarticle = $session->get('nb_article');
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
 
 
+
+
+  return $this->render('CommerceBundle:Default:paiement.html.twig', array('collection' => $collectionActive, 'nbarticlepanier' => $nbarticle));
+
+
+}
+
+/**
+ * @Route("/charge", name="charge")
+ */
+public function chargeAction()
+{
+  \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+
+  // Get the credit card details submitted by the form
+$token = $_POST['stripeToken'];
+
+  //Create the charge on Stripe's servers - this will charge the user's card
+  try {
+    $charge = \Stripe\Charge::create(array(
+      "amount" => 1000, // amount in cents, again
+      "currency" => "eur",
+      "source" => $token,
+      "description" => "Example charge"
+      ));
+      $url = $this->generateUrl('accueil');
+      $response = new RedirectResponse($url);
+
+return $response;
+
+  } catch(\Stripe\Error\Card $e) {
+    $url = $this->generateUrl('personnalisation');
+    $response = new RedirectResponse($url);
+
+return $response;
+  }
+
+}
 
 }

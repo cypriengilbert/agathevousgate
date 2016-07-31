@@ -1,3 +1,4 @@
+
 compte:
     resource: "@CompteBundle/Controller/"
     type:     annotation

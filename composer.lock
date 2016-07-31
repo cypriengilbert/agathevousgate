@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d23fd9e5ba3bed4c6ae6df0fd9026751",
-    "content-hash": "45c8254617d0a674bfe7ae45e5733c70",
+    "hash": "7b2cc837622baaebe1485ceaae81a990",
+    "content-hash": "510b0aecfc35738e3187016fa498c78a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1268,6 +1268,58 @@
             "time": "2015-11-12 13:51:40"
         },
         {
+            "name": "mmoreram/symfony-bundle-dependencies",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mmoreram/symfony-bundle-dependencies.git",
+                "reference": "34b33b947558d1ab3a018f3de8255ecfc1135b01"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mmoreram/symfony-bundle-dependencies/zipball/34b33b947558d1ab3a018f3de8255ecfc1135b01",
+                "reference": "34b33b947558d1ab3a018f3de8255ecfc1135b01",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4|^7.0",
+                "symfony/http-kernel": "^2.2|^3.0"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.11",
+                "mmoreram/php-formatter": "1.1.0",
+                "phpunit/phpunit": "4.8.19"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mmoreram\\SymfonyBundleDependencies\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Morera",
+                    "email": "yuhu@mmoreram.com"
+                }
+            ],
+            "description": "Dependencies resolver for Symfony Bundles",
+            "keywords": [
+                "bundle",
+                "dependencies",
+                "symfony"
+            ],
+            "time": "2015-12-10 19:34:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.20.0",
             "source": {
@@ -1455,6 +1507,131 @@
                 "random"
             ],
             "time": "2016-04-03 06:00:07"
+        },
+        {
+            "name": "paymentsuite/payment-core-bundle",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PaymentSuite/PaymentCoreBundle.git",
+                "reference": "4152651c06102f850eee24454f34ed511b102444"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PaymentSuite/PaymentCoreBundle/zipball/4152651c06102f850eee24454f34ed511b102444",
+                "reference": "4152651c06102f850eee24454f34ed511b102444",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4|^7.0",
+                "psr/log": "~1.0",
+                "symfony/config": "^2.7|^3.0",
+                "symfony/dependency-injection": "^2.7|^3.0",
+                "symfony/event-dispatcher": "^2.7|^3.0",
+                "symfony/http-kernel": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "elcodi/fixtures-booster-bundle": "^2.0",
+                "elcodi/test-common-bundle": "^2.0",
+                "phpunit/phpunit": "^4.8.19"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PaymentSuite\\PaymentCoreBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Morera",
+                    "email": "yuhu@mmoreram.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/PaymentSuite/paymentsuite/contributors"
+                }
+            ],
+            "description": "PaymentCore PaymentSuite Component",
+            "keywords": [
+                "ecommerce",
+                "payment",
+                "paymentsuite"
+            ],
+            "time": "2016-01-30 22:39:34"
+        },
+        {
+            "name": "paymentsuite/stripe-bundle",
+            "version": "v2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PaymentSuite/StripeBundle.git",
+                "reference": "3012df833519cb276991e821e1bdfef7197a552d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PaymentSuite/StripeBundle/zipball/3012df833519cb276991e821e1bdfef7197a552d",
+                "reference": "3012df833519cb276991e821e1bdfef7197a552d",
+                "shasum": ""
+            },
+            "require": {
+                "mmoreram/symfony-bundle-dependencies": "^1.0",
+                "paymentsuite/payment-core-bundle": "^2.0",
+                "php": "^5.4|^7.0",
+                "stripe/stripe-php": "3.4.0",
+                "symfony/config": "^2.7|^3.0",
+                "symfony/dependency-injection": "^2.7|^3.0",
+                "symfony/form": "^2.7|^3.0",
+                "symfony/framework-bundle": "^2.7|^3.0",
+                "symfony/http-foundation": "^2.7|^3.0",
+                "symfony/http-kernel": "^2.7|^3.0",
+                "twig/twig": "^1.23.1"
+            },
+            "require-dev": {
+                "elcodi/fixtures-booster-bundle": "^2.0",
+                "elcodi/test-common-bundle": "^2.0",
+                "phpunit/phpunit": "^4.8.19"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PaymentSuite\\StripeBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Morera",
+                    "email": "yuhu@mmoreram.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/PaymentSuite/paymentsuite/contributors"
+                }
+            ],
+            "description": "Stripe PaymentSuite Component",
+            "keywords": [
+                "ecommerce",
+                "payment",
+                "stripe"
+            ],
+            "time": "2016-01-30 23:03:14"
         },
         {
             "name": "psliwa/pdf-bundle",
@@ -1802,6 +1979,61 @@
                 "spraed"
             ],
             "time": "2016-03-22 13:59:57"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "c22eb5b8d5a3549c3bf83302fbbbc9ff49e2842c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c22eb5b8d5a3549c3bf83302fbbbc9ff49e2842c",
+                "reference": "c22eb5b8d5a3549c3bf83302fbbbc9ff49e2842c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.6.1",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2015-09-14 23:29:09"
         },
         {
             "name": "swiftmailer/swiftmailer",

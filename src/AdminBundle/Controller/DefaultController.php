@@ -266,6 +266,7 @@ public function newcollectionAction(Request $request)
 
 
         $newCollection = new Collection();
+        $newCollection->setActive(true);
 
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CollectionType', $newCollection);

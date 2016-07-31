@@ -48,6 +48,8 @@ class Profile2Controller extends Controller
         $listeCommandeencours = $repository->findBy(array('isValid' => false, 'client' => $id_user));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommandedone = $repository->findBy(array('isValid' => true, 'client' => $id_user));
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collectionActive  = $repository->findBy(array('active' => 1));
 
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
@@ -64,7 +66,6 @@ class Profile2Controller extends Controller
 
         $form = $formFactory->createForm();
         $form->setData($user);
-
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -120,6 +121,8 @@ if ($formPassword->isValid()) {
             'listeCommande' => $listeCommandeencours,
             'nbarticlepanier' => $nbarticlepanier,
             'listeCommandeDone' => $listeCommandedone,
+
+            'collection' => $collectionActive,
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView()
 
