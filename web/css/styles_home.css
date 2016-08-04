@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500italic,700,300);
+
 body{
     background-color: #FFFFFF;
     padding-top: 70px;
@@ -22,8 +24,8 @@ padding-left: 0px;
 }
 
 .made_in_france{
-			padding-top: 10%;
-			padding-bottom: 10%;
+			padding-top: 3%;
+			padding-bottom: 3%;
 			height:80%;
 
 
@@ -33,6 +35,23 @@ padding-left: 0px;
 		color:#F5F5F5;
 		padding-top: 10px;
 		padding-bottom: 10px;
+}
+.produits_populaires_image{
+		padding-left: 7.5px;
+		padding-right: 7.5px;
+}
+.produits_populaires_image_left{
+		padding-left: 0px;
+		padding-right:15px;
+}
+.produits_populaires_image_right{
+		padding-left: 15px;
+		padding-right:0px;
+}
+
+.no_padding{
+		padding-left: 0px;
+		padding-right: 0px;
 }
 
 
