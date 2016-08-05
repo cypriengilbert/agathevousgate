@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<body>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Votre paiement</h2>
+
+                    Choisissez votre mode de livraison
+
+                    {{ form_start(form) }}
+
+                    <div class="form-group">
+                        {{ form_label(form.transportMethod, "Moyen de Livraison ?", {'label_attr': {'class': ''}}) }}
+                        {{ form_errors(form.transportMethod) }}
+                        {{ form_widget(form.transportMethod, {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+
+                    {{ form_end(form) }}
+
+
+                    <hr class="primary"><br />
+                </div>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}

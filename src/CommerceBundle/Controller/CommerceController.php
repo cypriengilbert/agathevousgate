@@ -204,6 +204,8 @@ $session = $this->getRequest()->getSession();
   unset($listeAddedProduct[$id]);
   $listeAddedProduct = array_values($listeAddedProduct);
   $session->set('panier_session', $listeAddedProduct);
+  $session->set('nb_article', count($listeAddedProduct));
+  $nbarticlepanier = $session->get('nb_article');
 
 
 
@@ -241,10 +243,9 @@ else{  $session->set('panier_session', array());}
       $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
       $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
-}
-else{
-$nbarticlepanier = $session->get('nb_article');
-}
+        }
+        else{
+        }
 
 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
 $product_noeud  = $repository->findOneBy(array('name' => 'Noeud'));
@@ -297,10 +298,11 @@ $added_product->setCommande(null);
             'validate' => 'Reception modifiée'
             )));
         }
+
         return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
             'form' => $form->createView(),
             'product_coffret' => $product_coffret,
-            'nbarticlepanier' => $session->get('nb_article'),
+            'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
              'product_noeud' => $product_noeud,
             'accessoire' => $accessoire
@@ -569,12 +571,113 @@ return $response;
 
 
 /**
+ * @Route("/choixlivraison", name="choixlivraison")
+ */
+public function choixLivraisonAction(Request $request)
+{
+  $session = $this->get('session');
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+    $user = $this->container->get('security.context')->getToken()->getUser();
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+
+  $nbarticle  = count($repository->findBy(array('commande' => null, 'client' => $user)));
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $commandeEnCours  = $repository->findOneBy(array('client' => $user, 'isPanier' => true));
+  }
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
+
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      if ($commandeEnCours){
+      $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
+
+          if ($form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($commandeEnCours);
+
+              $em->flush();
+              $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+              $url = $this->generateUrl('choixpaiement');
+              $response = new RedirectResponse($url);
+
+            return $response;
+
+              }
+            else{
+                return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array('form' => $form->createView(),'collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
+
+}
+
+  }
+
+else{
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $listePanier  = $repository->findBy(array('client' => $user, 'commande' => null));
+  $newcommande = new Commande();
+  $total_commande = 0;
+  foreach ($listePanier as $value) {
+    $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+    }
+
+    $newcommande->setClient($user);
+    $newcommande->setIsValid(false);
+    $newcommande->setIsPanier(true);
+    $datetime = new \Datetime('now');
+    $newcommande->setDate($datetime);
+  $total_commande_100 = $total_commande * 100;
+
+    $newcommande->setPrice($total_commande);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($newcommande);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $newcommande);
+                if ($form->handleRequest($request)->isValid()) {
+                  $em = $this->getDoctrine()->getManager();
+                  $em->persist($commandeEnCours);
+
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+                    $url = $this->generateUrl('choixpaiement');
+                    $response = new RedirectResponse($url);
+
+                  return $response;
+
+                    }else{
+                      return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array('form' => $form->createView(),'collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
+
+                }
+
+
+
+
+}
+
+}
+
+
+
+    $url = $this->generateUrl('fos_user_security_login');
+    $response = new RedirectResponse($url);
+
+  return $response;
+
+}
+
+/**
  * @Route("/choixpaiement", name="choixpaiement")
  */
 public function choixPaiementAction(Request $request)
 {
   $session = $this->get('session');
-  $nbarticle = $session->get('nb_article');
 
   $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
   $collectionActive  = $repository->findBy(array('active' => 1));
@@ -582,7 +685,12 @@ public function choixPaiementAction(Request $request)
   if (TRUE === $this->get('security.authorization_checker')->isGranted(
   'ROLE_USER'
   )) {
+
   $user = $this->container->get('security.context')->getToken()->getUser();
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+
+  $nbarticle  = count($repository->findBy(array('commande' => null, 'client' => $user)));
+
   $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
   $listePanier  = $repository->findBy(array('client' => $user, 'commande' => null));
   $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -594,6 +702,7 @@ $newcommande = $commandeEnCours;
 else {
   $newcommande = new Commande();
 }
+
 $total_commande = 0;
 foreach ($listePanier as $value) {
   $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
@@ -604,6 +713,7 @@ foreach ($listePanier as $value) {
   $newcommande->setIsPanier(true);
   $datetime = new \Datetime('now');
   $newcommande->setDate($datetime);
+$total_commande_100 = $total_commande * 100;
 
   $newcommande->setPrice($total_commande);
 
@@ -612,7 +722,7 @@ foreach ($listePanier as $value) {
               $em->flush();
               $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
-    return $this->render('CommerceBundle:Default:choixpaiement.html.twig', array('collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
+    return $this->render('CommerceBundle:Default:paiement.html.twig', array('collection' => $collectionActive, 'nbarticlepanier' => $nbarticle, 'prixtotal' => $total_commande_100));
 
 
 
