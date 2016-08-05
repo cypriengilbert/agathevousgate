@@ -1,12 +1,35 @@
 .nav_agathe_1{
 	background-color: rgba(255, 255, 255, 0.7);
 	height: 3em;
+	margin-bottom: 0px;
+	border-bottom: 3px solid red;
+	border-top: 3px solid blue;
 }
 .nav_agathe_2{
 	background-color: rgba(255, 255, 255, 0.7);
 	height: 3em;
+	padding-left: 0px;
 }
 .nav_agathe_3{
 	background-color: rgba(255, 255, 255, 0.7);
 	height: 3em;
+}
+.navbar-nav > li:hover{
+border-bottom: 5px solid red;
+	border-top: 5px solid blue;
+	height: 3.3em;
+}
+
+.navbar-default .navbar-nav > .active > a{
+
+	height: 3.3em;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+.navbar-default .navbar-nav > .active > a:hover{
+	height: 3.3em;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+.navbar-default .navbar-nav > li > a:hover {
+    padding-top: 10px;
+    padding-bottom: 15px;
 }
