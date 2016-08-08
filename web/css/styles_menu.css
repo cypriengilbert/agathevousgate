@@ -4,6 +4,7 @@
 	margin-bottom: 0px;
 	border-bottom: 3px solid red;
 	border-top: 3px solid blue;
+	/*top: 40px;*/
 }
 .nav_agathe_2{
 	background-color: rgba(255, 255, 255, 0.7);
@@ -33,3 +34,17 @@ border-bottom: 5px solid red;
     padding-top: 10px;
     padding-bottom: 15px;
 }
+
+.flwus{
+	background-color: rgba(255, 255, 255, 0.7);
+	height: 3em;
+	/*top: 40px;*/
+}
+.affix {
+      top: 0;
+      width: 100%;
+      position: fixed;
+      z-index: 10;
+  }
+.affix + .container {
+    padding-top:100px;}
