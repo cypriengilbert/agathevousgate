@@ -55,8 +55,8 @@
         <div class="col-sm-2 col-xs-6">
             <div class="row text-center">
             <div class="col-sm-6 col-xs-4 no_padding"><p>Nous suivre:</p></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1em;"></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2em;"></div>
+            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:0.6em;"></div>
+            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:1.2em;"></div>
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
                     <li>
-                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none;"></a>
+                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none; padding-bottom:5px;"></a>
                     </li>
                     <li class="menu-panier <?= $icone_panier; ?>">
                         <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{{ nbarticlepanier }}</span></a>
