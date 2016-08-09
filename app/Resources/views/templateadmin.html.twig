@@ -124,12 +124,16 @@
       {% endif %}
     {% endfor %}
 
+
     {% set totalHomme = 0 %}
     {% for commande in listeCommande %}
       {% if (commande.client.genre == "monsieur") %}
         {% set totalHomme = totalHomme + commande.price %}
       {% endif %}
     {% endfor %}
+
+
+
 
     {% set total_2030 = 0 %}
     {% set total_020 = 0 %}
@@ -230,6 +234,27 @@
 
       ],
     colors: ['#191970', '#eeba30', '#b10821', '#9361b5', '#849612', '#eb6111']
+    });
+    </script>
+
+    <script>
+    Morris.Bar({
+      element: 'meilleure_vente',
+      data: [
+
+      {% for t in tableau_produit %}
+      {% for x,y in t %}
+      {% if loop.index is divisibleby(2) %}a: {{ y }} },{% else %}{y: "{{ y }}",{% endif %}
+      {% endfor %}
+      {% endfor %}
+
+
+
+      ],
+      xkey: 'y',
+      ykeys: ['a'],
+      labels: ['Series A']
+
     });
     </script>
 
