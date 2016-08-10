@@ -36,7 +36,9 @@
                   <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
+                      {% if commande.addedproducts %}
                       {% for product in commande.addedproducts %}
+
                         <b>{{ product.product.name }} {{ product.accessoire.name }} : {{ product.quantity }}<br></b>
                         {% if product.Color1 %}
                         {{ product.Color1.name }} /
@@ -71,6 +73,7 @@
 
                         <br>
                       {% endfor %}
+{% endif %}
                   </td>
                   <td>
                 {{ commande.price }}
