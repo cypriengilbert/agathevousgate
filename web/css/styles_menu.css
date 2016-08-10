@@ -1,6 +1,6 @@
 .nav_agathe_1{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 	margin-bottom: 0px;
 	border-bottom: 3px solid #A94141;
 	border-top: 3px solid #242258;
@@ -8,32 +8,32 @@
 }
 .nav_agathe_2{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 	padding-left: 0px;
 }
 .nav_agathe_3{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 }
 .navbar-nav > li:hover{
 border-bottom: 5px solid #A94141;
 	border-top: 5px solid #242258
 ;
-	height: 3.3em;
+	/*height: 3.3em;*/
 }
 
 .navbar-default .navbar-nav > .active > a{
 
-	height: 3.3em;
+	/*height: 3.3em;*/
 	background-color: rgba(255, 255, 255, 0);
 }
 .navbar-default .navbar-nav > .active > a:hover{
-	height: 3.3em;
+	/*height: 3.3em;*/
 	background-color: rgba(255, 255, 255, 0);
 }
 .navbar-default .navbar-nav > li > a:hover {
-    padding-top: 10px;
-    padding-bottom: 15px;
+    /*padding-top: 10px;
+    padding-bottom: 15px;*/
     color: #A94141;
 }
 .navbar-default .navbar-nav > li > a,.navbar-default .navbar-nav > .active > a{
@@ -47,7 +47,7 @@ border-bottom: 5px solid #A94141;
 }
 .flwus{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;/
 	/*top: 40px;*/
 	padding-top:5px;
 }
