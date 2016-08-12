@@ -251,6 +251,7 @@ else{  $session->set('panier_session', array());}
       $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
         }
         else{
+$nbarticlepanier = null;
         }
 
 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
