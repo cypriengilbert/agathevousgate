@@ -18,6 +18,9 @@
 	background-color: rgba(255, 255, 255, 0.7);
 	/*height: 3em;*/
 }
+.navbar-nav {
+    margin-left:0px;}
+
 .navbar-nav > li:hover{
 	border-bottom: 5px solid #A94141;
 	border-top: 5px solid #242258;
@@ -80,3 +83,13 @@
   }
 .affix + .container {
     padding-top:100px;}
+.footer{
+		background-color: #3B3B3B;
+		color:#F5F5F5;
+		padding-top: 20px;
+    	padding-bottom: 10px;
+}
+.general-footer{
+position: fixed;
+    bottom: 0;
+    width: 100%;}
