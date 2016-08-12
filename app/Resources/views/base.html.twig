@@ -104,9 +104,12 @@
                     {% endfor %}
           </ul>
         </li>
+        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
         {% endif %}
 
-        <li><a href="#">Médiatheque</a></li>
+        <li><a href="{{ path('agatheque') }}">Agathèque</a></li>
+        <li class=""><a href="{{ path('faq') }}">FAQ</a></li>
+        <li class=""><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
@@ -122,6 +125,7 @@
           </ul>
         </li>
           {% endif %}
+
 
 
           {% if app.user.isPro == 1 %}
@@ -165,6 +169,65 @@
 
 
     <body style="/*margin-top:150px; margin-bottom:150px*/">
+    <style>
+    @media screen and (min-width: 1500px){
+
+
+    .resume_cart{
+    	border:1px solid rgb(169, 65, 65);
+    	min-height: 250px;
+    	min-width: 150px;
+    	width:10%;
+    	position: fixed;
+    	top:110px;
+    	right:5px;
+      background-color: white;
+
+    }
+    .resume_cart_h2{
+    	border-bottom: 1px solid rgb(36, 34, 88);
+    }
+    .resume_cart_checkout{
+    	position: absolute;
+    	bottom:5px;
+    	margin-top: 10px;
+    }
+    .resume_cart_article, .resume_cart_h2, .resume_cart_checkout {
+    	width:100%;
+
+    }
+    .resume_cart_article{
+    	margin-left: 5px;
+    }
+}
+@media screen and (max-width: 1500px){
+.resume_cart{
+display:none;
+}
+}
+    </style>
+    {% if listePanier is defined %}
+
+    <div class="resume_cart">
+    	<h2 class="resume_cart_h2">
+    		<center>Panier</center>
+    	</h2>
+      {% for listepanier in listePanier %}
+
+    	<div class="resume_cart_article">
+    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;"></span>
+    	</div>
+      {% endfor %}
+
+    		<div class="resume_cart_article" style="height:50px">
+    		<span>  </span> <span style="position:absolute; right:5px;"></span>
+    	</div>
+    	<div class="resume_cart_checkout">
+    		<center><button type="submit" class="btn btn-primary btn-lg active btn_send">Payer</button></center>
+    	</div>
+    </div>
+    {% endif %}
+
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

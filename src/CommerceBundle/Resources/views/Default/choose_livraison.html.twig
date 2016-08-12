@@ -8,26 +8,87 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Votre paiement</h2>
+                    <h2 class="section-heading">Votre livraison</h2>
 
+                    <h3>Votre adresse</h3>
+                    <div class="col-lg-4 text-center">
+
+                    </div>
+                    <div class="col-lg-4 text-center">
+                    {{ app.user.nom }} {{ app.user.prenom }}<br>
+                    {{ app.user.adress.adress}}<br>
+                    {{ app.user.adress.zipcode}} {{ app.user.adress.city}}<br>
+                    <center><a  href="{{ path('compte') }}" class="btn btn-primary btn-lg active btn_send" >Changer d'adresse</a></center>
+
+                    </div>
+                    <div class="col-lg-4 text-center">
+
+                    </div>
+</div>
+<div class="col-lg-12 text-center">
+
+
+                    <div class="col-lg-6 text-center">
+                    <center><button type="submit" onclick="livraison()"  class="btn btn-primary btn-lg active btn_send" >Livraison</button></center>
+
+                    </div>
+                    <div class="col-lg-6 text-center">
+                    <center><button type="submit" onclick="retrait()"  class="btn btn-primary btn-lg active btn_send" >Retrait en atelier</button></center>
+                    </div>
+
+
+                    <div class="col-lg-4 text-center">
+
+                    </div>
+                    <div class="col-lg-4 text-center">
+                    <div class="form-group" style="display:none" id="btn_livraison">
+                    {{ form_start(form) }}
                     Choisissez votre mode de livraison
 
-                    {{ form_start(form) }}
 
-                    <div class="form-group">
-                        {{ form_label(form.transportMethod, "Moyen de Livraison ?", {'label_attr': {'class': ''}}) }}
+                        {{ form_label(form.transportMethod, " ", {'label_attr': {'class': ''}}) }}
                         {{ form_errors(form.transportMethod) }}
                         {{ form_widget(form.transportMethod, {'attr': {'class': 'form-control'}}) }}
+                        <button type="submit" class="btn btn-primary btn-lg active btn_send" >Confirmer</button>
+                        {{ form_end(form) }}
+
 
                     </div>
 
-                    {{ form_end(form) }}
+                    <div class="form-group" style="display:none" id="btn_atelier">
+                    {% for atelier in ateliers %}
+                        {{ atelier.name }}<br>
+                        {{ atelier.adresse1 }}<br>
+                        {% if atelier.adresse2 is not empty %}{{ atelier.adresse2 }}<br>{% endif %}
+                        {{ atelier.zipcode }} {{ atelier.city }}<br>
+                        <center><a class="btn btn-primary btn-lg active btn_send" href="{{ path('choosen_atelier', {'id': atelier.id }) }}" >Je choisi cet atelier</a></center>
+
+                    {% endfor %}
+
+                    </div>
+                    </div>
+                    <div class="col-lg-4 text-center">
+                    </div>
+
 
 
                     <hr class="primary"><br />
                 </div>
             </div>
         </div>
+
+<script>
+function retrait(){
+document.getElementById('btn_livraison').style.display = 'none';
+document.getElementById('btn_atelier').style.display = 'block';
+
+}
+function livraison(){
+document.getElementById('btn_atelier').style.display = 'none';
+document.getElementById('btn_livraison').style.display = 'block';
+
+}
+</script>
 
 
 

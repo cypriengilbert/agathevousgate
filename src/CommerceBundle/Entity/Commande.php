@@ -77,6 +77,12 @@ class Commande
       */
          private $addedproducts;
 
+         /**
+         * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Atelier")
+         * @ORM\JoinColumn(nullable=true)
+         */
+          private $atelier_livraison;
+
     /**
      * Get id
      *
@@ -274,5 +280,34 @@ class Commande
     public function getAddedproducts()
     {
         return $this->addedproducts;
+    }
+
+
+
+
+
+
+    /**
+     * Set atelierLivraison
+     *
+     * @param \CommerceBundle\Entity\Atelier $atelierLivraison
+     *
+     * @return Commande
+     */
+    public function setAtelierLivraison(\CommerceBundle\Entity\Atelier $atelierLivraison = null)
+    {
+        $this->atelier_livraison = $atelierLivraison;
+
+        return $this;
+    }
+
+    /**
+     * Get atelierLivraison
+     *
+     * @return \CommerceBundle\Entity\Atelier
+     */
+    public function getAtelierLivraison()
+    {
+        return $this->atelier_livraison;
     }
 }
