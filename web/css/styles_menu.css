@@ -90,5 +90,20 @@
     	padding-bottom: 10px;
 }
 .general-footer{
-    bottom: 0;
-    width: 100%;}
+    /*bottom: 0;
+    width: 100%;*/}
+  * {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+    height: 100px; /* .push must be the same height as .footer */
+}
