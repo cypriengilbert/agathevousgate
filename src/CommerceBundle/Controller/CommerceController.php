@@ -1129,4 +1129,36 @@ $collection  = $repository->findAll();
 }
 
 
+/**
+ * @Route("/collections", name="collections")
+ */
+public function collectionAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:collections.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collections' => $collection));
+
+
+
+}
+
+
 }

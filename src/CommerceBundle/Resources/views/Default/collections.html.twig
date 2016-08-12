@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<body>
+
+{% for collection in collections %}
+
+{% if collection.active == true %}
+afficher la collection
+{% else %}
+{% if app.user.isPro == 1 %}
+afficher collection
+{% endif %}
+{% endif %}
+
+{% endfor %}
+</body>
+
+
+
+{% endblock %}

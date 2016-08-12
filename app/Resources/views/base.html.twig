@@ -93,21 +93,11 @@
         <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
 
         {% if collection is defined %}
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Collection <span class="caret"></span></a>
-          <ul class="dropdown-menu">
+        <li class=""><a href="{{ path('collections') }}">Collections</a></li>
 
-              {% for col in collection %}
-
-                    <li class="">
-                        <a class="page-scroll" href="{{ path('listeproduit', {'id': col.id }) }}">{{ col.title }}</a>
-                    </li>
-
-                    {% endfor %}
-          </ul>
-        </li>
-        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
         {% endif %}
+
+        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
 
         <li><a href="{{ path('agatheque') }}">Agathèque</a></li>
         <li class=""><a href="{{ path('faq') }}">FAQ</a></li>
