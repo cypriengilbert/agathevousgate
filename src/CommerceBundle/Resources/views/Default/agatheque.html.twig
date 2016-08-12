@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
+	<!-- Message d'accueil -->
+    <section id="slider-homepage">
+        <div class="container">
+				<div class="row text-center">
+
+<iframe src="//widgets-code.websta.me/w/ab02edb3daea?ck=MjAxNi0wOC0xMVQxODoyMTo1MS45MTVa" allowtransparency="true" frameborder="0" scrolling="no" style="border:none;overflow:auto;height:2740px;width:2720px;"></iframe> <!-- WEBSTA WIDGETS - widgets.websta.me -->	<div class="col-md-3 col-sm-6 hero-feature">
+			<div class="thumbnail">
+					<img  style="max-height:150px; height:150px;max-width:250px" src="{{ asset('/img/livraisonofferte.png') }}" alt="">
+					<div class="caption">
+							<h3>Personnalisation</h3>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+							<p>
+									<a href="{{ path('personnalisation') }}" class="btn btn-primary">Je personnalise moi même</a><a href="" class="btn btn-default"></a>
+							</p>
+					</div>
+			</div>
+	</div>
+
+
+
+		</div>
+
+        </div>
+    </section>
+
+    <section id="homepage-collections">
+        <div class="container-fluid">
+
+        </div>
+    </section>
+
+
+{% endblock %}

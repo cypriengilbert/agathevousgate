@@ -20,15 +20,21 @@ class ChooseLivraisonType extends AbstractType
     {
         $builder
 
-            ->add('transportMethod', ChoiceType::class, array(
-    'choices'  => array(
-        'La Poste' =>  'La Poste',
-        'Chronopost' => 'Chronopost',
-        'Fedex' => 'Fedex',
-        'DHL' => 'DHL',
+        ->add('colors', EntityType::class, array(
+                                 // query choices from this entity
+                                 'class' => 'CommerceBundle:Color',
+
+                                 // use the User.username property as the visible option string
+                                 'choice_label' => 'name',
+
+                                'multiple' => true,
+                                'expanded' => true,
+
+                                 'required' => true,
+                          ))
 
 
-    ),))
+        ->add('save', SubmitType::class, array('label' => 'Confirmation')); //here is the problem
         ;
     }
 

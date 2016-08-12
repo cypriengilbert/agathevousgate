@@ -36,7 +36,8 @@
     <link rel="stylesheet" href="{{ asset('css/styles_home.css') }}" type="text/css">
     <!-- BB CSS menu -->
     <link rel="stylesheet" href="{{ asset('css/styles_menu.css') }}" type="text/css">
-
+ <!-- BB CSS FAQ -->
+    <link rel="stylesheet" href="{{ asset('css/styles_faq.css') }}" type="text/css">
     <!--Roboto Font-->
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
@@ -55,14 +56,29 @@
         <div class="col-sm-2 col-xs-6">
             <div class="row text-center">
             <div class="col-sm-6 col-xs-4 no_padding"><p>Nous suivre:</p></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1em;"></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2em;"></div>
+            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:0.6em;"></div>
+            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:1.2em;"></div>
             </div>
         </div>
     </div>
 </div>
 <!--MENU-->
-<nav class="navbar navbar-default navbar-fixed-top nav_agathe_1">
+<!--<nav class="navbar navbar-default navbar-fixed-top flwus">
+    <div class="container text-center">
+    <ul class="nav navbar-nav navbar-right menu-right">
+                    <li>
+                        <p>Nous suivre:</p>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1em;"></a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2em;"></a>
+                    </li>
+    </ul>
+    </div>
+</nav>-->
+<nav class="navbar navbar-default nav_agathe_1" data-spy="affix" data-offset-top="48">
   <div class="container nav_agathe_2">
     <div class="navbar-header nav_agathe_3">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -74,29 +90,45 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
+        <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
+
         {% if collection is defined %}
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Collection <span class="caret"></span></a>
+        <li class=""><a href="{{ path('collections') }}">Collections</a></li>
+
+        {% endif %}
+
+        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
+
+        <li><a href="{{ path('agatheque') }}">Agathèque</a></li>
+        <li class=""><a href="{{ path('faq') }}">FAQ</a></li>
+        <li class=""><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
+        {% if is_granted('ROLE_USER') %}
+          {% if app.user.isPro == 2 %}
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
               {% for col in collection %}
 
                     <li class="">
-                        <a class="page-scroll" href="{{ path('listeproduit', {'id': col.id }) }}">{{ col.title }}</a>
+                        <a class="page-scroll" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
           </ul>
         </li>
+          {% endif %}
+
+
+
+          {% if app.user.isPro == 1 %}
+          <li class="active"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
+          {% endif %}
         {% endif %}
 
-        <li><a href="#">Médiatheque</a></li>
-        <li><a href="#">Page 3</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
                     <li>
-                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none;"></a>
+                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none; padding-bottom:5px;"></a>
                     </li>
                     <li class="menu-panier <?= $icone_panier; ?>">
                         <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
@@ -128,7 +160,67 @@
 
 
 
+
     <body style="/*margin-top:150px; margin-bottom:150px*/">
+    <style>
+    @media screen and (min-width: 1500px){
+
+
+    .resume_cart{
+    	border:1px solid rgb(169, 65, 65);
+    	min-height: 250px;
+    	min-width: 150px;
+    	width:10%;
+    	position: fixed;
+    	top:110px;
+    	right:5px;
+      background-color: white;
+
+    }
+    .resume_cart_h2{
+    	border-bottom: 1px solid rgb(36, 34, 88);
+    }
+    .resume_cart_checkout{
+    	position: absolute;
+    	bottom:5px;
+    	margin-top: 10px;
+    }
+    .resume_cart_article, .resume_cart_h2, .resume_cart_checkout {
+    	width:100%;
+
+    }
+    .resume_cart_article{
+    	margin-left: 5px;
+    }
+}
+@media screen and (max-width: 1500px){
+.resume_cart{
+display:none;
+}
+}
+    </style>
+    {% if listePanier is defined %}
+
+    <div class="resume_cart">
+    	<h2 class="resume_cart_h2">
+    		<center>Panier</center>
+    	</h2>
+      {% for listepanier in listePanier %}
+
+    	<div class="resume_cart_article">
+    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;"></span>
+    	</div>
+      {% endfor %}
+
+    		<div class="resume_cart_article" style="height:50px">
+    		<span>  </span> <span style="position:absolute; right:5px;"></span>
+    	</div>
+    	<div class="resume_cart_checkout">
+    		<center><button type="submit" class="btn btn-primary btn-lg active btn_send">Payer</button></center>
+    	</div>
+    </div>
+    {% endif %}
+
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7b2cc837622baaebe1485ceaae81a990",
-    "content-hash": "510b0aecfc35738e3187016fa498c78a",
+    "hash": "428c553c11f7fe1f792f73f57433242d",
+    "content-hash": "efc328a6477a2e2045973ed689b0b89b",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -33,6 +33,49 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "time": "2014-12-30 15:22:37"
+        },
+        {
+            "name": "cosenary/instagram",
+            "version": "v2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cosenary/Instagram-PHP-API.git",
+                "reference": "fbf4c82e2cc7e9a7fd6f9fd7bba1fd2c506102a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cosenary/Instagram-PHP-API/zipball/fbf4c82e2cc7e9a7fd6f9fd7bba1fd2c506102a5",
+                "reference": "fbf4c82e2cc7e9a7fd6f9fd7bba1fd2c506102a5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MetzWeb\\Instagram\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Metz",
+                    "email": "christian-metz1@gmx.net",
+                    "homepage": "http://metzweb.net"
+                }
+            ],
+            "description": "An easy-to-use PHP Class for accessing Instagram's API.",
+            "homepage": "https://github.com/cosenary/Instagram-PHP-API",
+            "keywords": [
+                "api",
+                "instagram"
+            ],
+            "time": "2014-11-29 13:10:42"
         },
         {
             "name": "doctrine/annotations",

@@ -40,6 +40,19 @@ class DefaultController extends Controller
             $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $listeUser  = $repository->findAll();
 
+            $tableau_produit = array();
+              $null = null;
+              foreach($listeProduct as $valueProduct){
+
+                    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                    $quantity_product = count($repository->findBy(array('product' => $valueProduct->getId())));
+                    $ligne_tableau_produit = array($valueProduct->getName(),$quantity_product);
+                    array_push($tableau_produit, $ligne_tableau_produit);
+
+
+              }
+
+
 
             return $this->render('AdminBundle:Default:index.html.twig', array(
                 'listeAddedProduct' => $listeAddedProduct,
@@ -49,6 +62,7 @@ class DefaultController extends Controller
                 'listeCommande' => $listeCommande,
                 'listePromoCode' => $listePromoCode,
                 'listeUser' => $listeUser,
+                'tableau_produit'=> $tableau_produit
 
 
   ));

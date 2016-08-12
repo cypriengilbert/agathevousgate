@@ -68,7 +68,7 @@ class User extends BaseUser
      /**
       * @var bool
       *
-      * @ORM\Column(name="is_pro", type="boolean")
+      * @ORM\Column(name="is_pro", type="integer", nullable=true)
       */
      private $isPro;
 
@@ -217,7 +217,7 @@ class User extends BaseUser
     /**
      * Get isPro
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsPro()
     {

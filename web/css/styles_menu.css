@@ -1,35 +1,94 @@
 .nav_agathe_1{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 	margin-bottom: 0px;
-	border-bottom: 3px solid red;
-	border-top: 3px solid blue;
+	border-bottom: 3px solid #A94141;
+	border-top: 3px solid #242258;
+
+	/*top: 40px;*/
+	/*test-centré better*/
+	/*padding-top:5px*/
 }
 .nav_agathe_2{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 	padding-left: 0px;
 }
 .nav_agathe_3{
 	background-color: rgba(255, 255, 255, 0.7);
-	height: 3em;
+	/*height: 3em;*/
 }
+.navbar-nav {
+    margin-left:0px;}
+
 .navbar-nav > li:hover{
-border-bottom: 5px solid red;
-	border-top: 5px solid blue;
-	height: 3.3em;
+	border-bottom: 5px solid #A94141;
+	border-top: 5px solid #242258;
+	height: 56px;
+
+	/*height: 3.3em;*/
 }
+.navbar-nav > li:active{
+	border-bottom: 5px solid #A94141;
+	border-top: 5px solid #242258;
+	/*height: 3.3em;*/
+}
+.navbar-nav >.active {
+	border-bottom: 5px solid rgb(169, 65, 65);
+	 border-top: 5px solid rgb(36, 34, 88);
+	 height: 56px;
+}
+
 
 .navbar-default .navbar-nav > .active > a{
 
-	height: 3.3em;
-	background-color: rgba(255, 255, 255, 0.7);
+	/*height: 3.3em;*/
+	background-color: rgba(255, 255, 255, 0);
 }
 .navbar-default .navbar-nav > .active > a:hover{
-	height: 3.3em;
-	background-color: rgba(255, 255, 255, 0.7);
+	/*height: 3.3em;*/
+	background-color: rgba(255, 255, 255, 0);
 }
 .navbar-default .navbar-nav > li > a:hover {
-    padding-top: 10px;
-    padding-bottom: 15px;
+    
+    color: #A94141;
+    /*test center-better*/
+    /*padding-top: 10px;
+    padding-bottom: 15px;*/
 }
+.navbar-default .navbar-nav > li > a,.navbar-default .navbar-nav > .active > a{
+	color: #A94141;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border-color: #e7e7e7;
+    padding-right: 0px;
+    padding-left:0px;
+}
+.flwus{
+	background-color: rgba(255, 255, 255, 0.7);
+	/*height: 3em;/
+	/*top: 40px;*/
+	padding-top:5px;
+}
+
+.fa-2x {
+    font-size: 1.7em !important;
+}
+.affix {
+      top: 0;
+      width: 100%;
+      position: fixed;
+      z-index: 10;
+  }
+.affix + .container {
+    padding-top:100px;}
+.footer{
+		background-color: #3B3B3B;
+		color:#F5F5F5;
+		padding-top: 20px;
+    	padding-bottom: 10px;
+}
+.general-footer{
+    bottom: 0;
+    width: 100%;}

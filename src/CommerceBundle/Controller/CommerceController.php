@@ -33,6 +33,10 @@ else{  $session->set('panier_session', array());}
     )) {
       $user = $this->container->get('security.context')->getToken()->getUser();
       $listeAddedProduct = $session->get('panier_session');
+      $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+
+      $listePanier  = $repository->findBy(array('client' => $user, 'commande' => null));
+
 
     foreach( $listeAddedProduct as $value ) {
       $rajoutpanier = $value;
@@ -53,6 +57,7 @@ $this->get('session')->remove('panier_session');
 
       }
       else{
+$listePanier = null;
 $nbarticlepanier = $session->get('nb_article');
 }
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -90,6 +95,7 @@ $nbarticlepanier = $session->get('nb_article');
           'listePromoCode' => $listePromoCode,
           'listeUser' => $listeUser,
           'collection' => $collectionActive,
+          'listePanier' => $listePanier
 
 ));
 
@@ -245,6 +251,7 @@ else{  $session->set('panier_session', array());}
       $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
         }
         else{
+$nbarticlepanier = null;
         }
 
 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -555,13 +562,13 @@ if ($commandeEnCours)
 
 
 
-      $url = $this->generateUrl('accueil');
+      $url = $this->generateUrl('paiementconfirmation');
       $response = new RedirectResponse($url);
 
 return $response;
 
   } catch(\Stripe\Error\Card $e) {
-    $url = $this->generateUrl('personnalisation');
+    $url = $this->generateUrl('paiementechec');
     $response = new RedirectResponse($url);
 
 return $response;
@@ -596,9 +603,13 @@ public function choixLivraisonAction(Request $request)
   'ROLE_USER'
   )) {
       if ($commandeEnCours){
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+        $ateliers  = $repository->findAll();
       $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
 
           if ($form->handleRequest($request)->isValid()) {
+  $commandeEnCours->setAtelierLivraison(null);
             $em = $this->getDoctrine()->getManager();
             $em->persist($commandeEnCours);
 
@@ -611,7 +622,7 @@ public function choixLivraisonAction(Request $request)
 
               }
             else{
-                return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array('form' => $form->createView(),'collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
+                return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array('ateliers' => $ateliers, 'form' => $form->createView(),'collection' => $collectionActive, 'nbarticlepanier' => $nbarticle,));
 
 }
 
@@ -641,6 +652,7 @@ else{
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $newcommande);
                 if ($form->handleRequest($request)->isValid()) {
+
                   $em = $this->getDoctrine()->getManager();
                   $em->persist($commandeEnCours);
 
@@ -665,6 +677,8 @@ else{
 
 
 
+
+
     $url = $this->generateUrl('fos_user_security_login');
     $response = new RedirectResponse($url);
 
@@ -672,6 +686,35 @@ else{
 
 }
 
+
+/**
+ * @Route("/choosen_atelier/{id}", name="choosen_atelier")
+ */
+public function choosenAtelierAction(Request $request, $id)
+{
+  $user = $this->container->get('security.context')->getToken()->getUser();
+
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $commandeEnCours  = $repository->findOneBy(array('client' => $user, 'isPanier' => true));
+  $commandeEnCours->setTransportMethod('Atelier');
+  $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+  $atelier  = $repository->findOneBy(array('id' => $id));
+
+  $commandeEnCours->setAtelierLivraison($atelier);
+
+
+  $em = $this->getDoctrine()->getManager();
+  $em->persist($commandeEnCours);
+
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+    $url = $this->generateUrl('choixpaiement');
+    $response = new RedirectResponse($url);
+
+  return $response;
+
+
+}
 /**
  * @Route("/choixpaiement", name="choixpaiement")
  */
@@ -728,5 +771,394 @@ $total_commande_100 = $total_commande * 100;
 
 }
 }
+
+
+/**
+ * @Route("/franchise/tissu/{id}", name="listeFranchise")
+ */
+public function listeTissuAction($id)
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collectionActive  = $repository->findBy(array('active' => 1));
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = 0;
+}
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+
+      $collection = $repository->findOneBy(array('id' => $id));
+
+      $colors = $collection->getColors();
+
+
+  return $this->render('CommerceBundle:Default:produitFranchise.html.twig', array('nbarticlepanier' => $nbarticlepanier, 'listecolor' => $colors,'collection' => $collection));
+}
+
+
+/**
+ * @Route("/addedTissutoCart/{id}_{idCollection}", name="addedTissutoCart")
+ */
+public function addedTissutoCartAction($id, $idCollection, Request $request)
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
+
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $product_selected = $repository->findOneBy(array('id' => $id));
+
+  $added_product = new AddedProduct();
+
+
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+  $product = $repository->findOneBy(array('name' => 'Tissu'));
+
+  $added_product->setProduct($product);
+$added_product->setColor1($product_selected);
+  $added_product->setCommande(null);
+  $added_product->setQuantity(1);
+  $added_product->setSize(null);
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $user = $this->container->get('security.context')->getToken()->getUser();
+  $added_product->setClient($user);
+  }
+  $em = $this->getDoctrine()->getManager();
+  $em->persist($added_product);
+
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($added_product);
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+
+
+}
+else{
+
+  $listeAddedProduct = $session->get('panier_session');
+  array_push($listeAddedProduct, $added_product);
+  $session->set('panier_session', $listeAddedProduct);
+  $session->set('nb_article', count($listeAddedProduct));
+  $nbarticlepanier = $session->get('nb_article');
+}
+
+$url = $this->generateUrl('listeFranchise', array('id' => $idCollection));
+$response = new RedirectResponse($url);
+
+return $response;
+
+}
+
+
+/**
+ * @Route("/pro/Rectangle/", name="listeProRectangle")
+ */
+public function listeProRectangleAction()
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collection  = $repository->findAll();
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = 0;
+}
+
+
+
+  return $this->render('CommerceBundle:Default:produitProRectangle.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+}
+
+
+/**
+ * @Route("/addRectangle/{id}_{product}", name="addRectangle")
+ */
+public function addedRectangleAction($id, $product, Request $request)
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+
+
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $product_selected = $repository->findOneBy(array('id' => $id));
+
+  $added_product = new AddedProduct();
+
+
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+  $product = $repository->findOneBy(array('name' => $product));
+
+  $added_product->setProduct($product);
+  $added_product->setColor1($product_selected);
+  $added_product->setCommande(null);
+  $added_product->setQuantity(1);
+  $added_product->setSize(null);
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $user = $this->container->get('security.context')->getToken()->getUser();
+  $added_product->setClient($user);
+  }
+  $em = $this->getDoctrine()->getManager();
+  $em->persist($added_product);
+
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($added_product);
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+
+
+}
+else{
+
+  $listeAddedProduct = $session->get('panier_session');
+  array_push($listeAddedProduct, $added_product);
+  $session->set('panier_session', $listeAddedProduct);
+  $session->set('nb_article', count($listeAddedProduct));
+  $nbarticlepanier = $session->get('nb_article');
+}
+
+$url = $this->generateUrl('listeProRectangle');
+$response = new RedirectResponse($url);
+
+return $response;
+
+}
+
+
+/**
+ * @Route("/agatheque", name="agatheque")
+ */
+public function agathequeAction()
+{
+
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+}
+else{  $session->set('panier_session', array());}
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+  $collection  = $repository->findAll();
+
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = 0;
+}
+
+
+
+  return $this->render('CommerceBundle:Default:agatheque.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+}
+
+/**
+ * @Route("/FAQ", name="faq")
+ */
+public function faqAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:faq.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+
+
+}
+
+
+/**
+ * @Route("/quisommesnous", name="quisommesnous")
+ */
+public function quiSommesNousAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+
+
+
+}
+
+/**
+ * @Route("/paiement/echec", name="paiementechec")
+ */
+public function echecPaiementAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:echecPaiement.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+
+
+
+}
+
+/**
+ * @Route("/paiement/confirmation", name="paiementconfirmation")
+ */
+public function confirmationPaiementAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:confirmationPaiement.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collection' => $collection));
+
+
+
+}
+
+
+/**
+ * @Route("/collections", name="collections")
+ */
+public function collectionAction()
+{
+  $session = $this->get('session');
+  if ($session->get('panier_session')){
+
+  }
+  else{  $session->set('panier_session', array());}
+  if (TRUE === $this->get('security.authorization_checker')->isGranted(
+  'ROLE_USER'
+  )) {
+  $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+  $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
+
+}
+else{
+$nbarticlepanier = null;
+}
+$repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+$collection  = $repository->findAll();
+  return $this->render('CommerceBundle:Default:collections.html.twig', array('nbarticlepanier' => $nbarticlepanier,'collections' => $collection));
+
+
+
+}
+
 
 }

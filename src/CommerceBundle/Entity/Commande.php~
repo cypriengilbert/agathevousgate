@@ -34,14 +34,14 @@ class Commande
     /**
      * @var string
      *
-     * @ORM\Column(name="paiement_method", type="string", length=255)
+     * @ORM\Column(name="paiement_method", type="string", length=255, nullable=true)
      */
     private $paiementMethod;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="transport_method", type="string", length=255)
+     * @ORM\Column(name="transport_method", type="string", length=255, nullable=true)
      */
     private $transportMethod;
 
@@ -76,6 +76,12 @@ class Commande
       * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
       */
          private $addedproducts;
+
+         /**
+         * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Atelier")
+         * @ORM\JoinColumn(nullable=true)
+         */
+          private $atelier_livraison;
 
     /**
      * Get id
@@ -242,4 +248,42 @@ class Commande
     public function __construct() {
            $this->addedproducts = new ArrayCollection();
        }
+
+    /**
+     * Add addedproducts
+     *
+     * @param \CommerceBundle\Entity\AddedProduct $addedproducts
+     * @return Commande
+     */
+    public function addAddedproduct(\CommerceBundle\Entity\AddedProduct $addedproducts)
+    {
+        $this->addedproducts[] = $addedproducts;
+
+        return $this;
+    }
+
+    /**
+     * Remove addedproducts
+     *
+     * @param \CommerceBundle\Entity\AddedProduct $addedproducts
+     */
+    public function removeAddedproduct(\CommerceBundle\Entity\AddedProduct $addedproducts)
+    {
+        $this->addedproducts->removeElement($addedproducts);
+    }
+
+    /**
+     * Get addedproducts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAddedproducts()
+    {
+        return $this->addedproducts;
+    }
+
+
+
+
+
 }
