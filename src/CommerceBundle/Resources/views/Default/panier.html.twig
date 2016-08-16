@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row text-center">
         <div class="col-sm-12"><h1 style="padding: 30px 0px;">FOIRE AU QUESTIONS</h1></div>
-    </div> 
+    </div>
 </div>
 <div class="container text-center">
  <div class="panel-group" id="accordion">
@@ -22,7 +22,7 @@
             <div class="col-sm-1">
                 <i class="fa fa-2x fa-plus" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
             </div>
-        </div> 
+        </div>
     </div>
     <div id="collapse1" class="panel-collapse collapse in">
       <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -43,7 +43,7 @@
             <div class="col-sm-1">
                 <i class="fa fa-2x fa-plus" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
             </div>
-        </div> 
+        </div>
     </div>
     <div id="collapse2" class="panel-collapse collapse">
       <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -63,7 +63,7 @@
             <div class="col-sm-1">
                 <i class="fa fa-2x fa-plus" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
             </div>
-        </div> 
+        </div>
     </div>
     <div id="collapse3" class="panel-collapse collapse">
       <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -83,7 +83,7 @@
             <div class="col-sm-1">
                 <i class="fa fa-2x fa-plus" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse4"></i>
             </div>
-        </div> 
+        </div>
     </div>
     <div id="collapse4" class="panel-collapse collapse">
       <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -102,7 +102,7 @@
 <div class="container">
     <div class="row text-center">
         <div class="col-sm-12"><h1 style="padding: 30px 0px;">AGATHE VOUS GATE</h1></div>
-    </div> 
+    </div>
     <div class="row text-center">
         <div class="col-sm-12"><img src="{{ asset('images/Face_Agathe.jpg')}}" class="img-circle"alt="Face_agathevousgate" style="max-width:25vw"></br><h2>Agathe Lefeuvre</h2></div>
     </div>
@@ -110,21 +110,21 @@
         <div class="col-sm-12">
             <p>Un trou noir possède une masse donnée, concentrée en un point que l’on appelle singularité gravitationnelle. Cette masse permet de définir une sphère appelée horizon du trou noir, centrée sur la singularité et dont le rayon est une limite maximale en deçà de laquelle le trou noir empêche tout rayonnement et a fortiori toute matière de s’échapper. Cette sphère représente en quelque sorte l’extension spatiale du trou noir. C’est ainsi que le terme « trou » est inapproprié : il serait plus correct de parler de « boule noire » pour conceptualiser concrètement sa forme physique réelle tridimensionnelle dans l’espace. Pour un trou noir de masse égale à celle du Soleil, son rayon vaut environ 3 kilomètresNote 1. À une distance interstellaire (en millions de kilomètres), un trou noir n’exerce pas plus d’attraction que n’importe quel autre corps de même masse ; il ne s’agit donc pas d’un « aspirateur » irrésistible. Par exemple, si le Soleil se trouvait remplacé par un trou noir de même masse, les orbites des corps tournant autour (planètes et autres) resteraient pour l'essentiel inchangées (seuls les passages à proximité de l'horizon induiraient un changement notable).</p>
         </div>
-    </div> 
+    </div>
     <div class="row text-center">
         <div class="col-sm-12">
             <p>Un trou noir est un objet astrophysique comme un autre. Il se caractérise par le fait qu’il est très difficile à observer directement (voir ci-dessous), et que sa région centrale ne peut être décrite de façon satisfaisante par les théories physiques en leur état du début du XXIe siècle, car elle abrite une singularité gravitationnelle. Cette dernière ne peut être décrite que dans le cadre d’une théorie de la gravitation quantique, manquante à ce jourNote 2. En revanche, on sait parfaitement décrire les conditions physiques qui règnent dans son voisinage immédiat, de même que son influence sur son environnement, ce qui permet de les détecter par diverses méthodes indirectes.</p>
         </div>
-    </div> 
+    </div>
     <div class="row text-center">
         <div class="col-sm-12">
             <p>L’existence des trous noirs est envisagée dès le XVIIIe siècle indépendamment par John Michell9 et Pierre-Simon de Laplace. Il s’agissait alors d’objets prédits comme suffisamment denses pour que leur vitesse de libération soit supérieure à la vitesse de la lumière — c’est-à-dire que même la lumière ne peut vaincre leur force gravitationnelle. Plutôt qu’une telle force (qui est un concept newtonien), il est plus juste de dire que la lumière subit en fait un décalage vers le rouge infini.</p>
         </div>
-    </div> 
+    </div>
 </div>
 
 
- <!--   <section>
+ <section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
@@ -176,7 +176,6 @@
 {% endif %}
 
 
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>
 
                                 </td>
 
@@ -220,7 +219,12 @@
                                     </td>
 
                                     <td class="col-sm-1 col-md-1" style="text-align: center">
-                                        <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}">
+                                    {% if listepanier.id %}
+
+                                      <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div><a href="{{ path('minusproduct',{'id':listepanier.id} ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% else %}
+                                      <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div>  <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% endif %}
                                     </td>
                                     <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price }} €</strong></td>
                                     <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
@@ -277,5 +281,4 @@
     </section>
 
     {% endif %}
--->
 {% endblock %}

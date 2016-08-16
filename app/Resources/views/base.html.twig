@@ -92,10 +92,8 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
 
-        {% if collection is defined %}
         <li class=""><a href="{{ path('collections') }}">Collections</a></li>
 
-        {% endif %}
 
         <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
 
@@ -192,6 +190,13 @@
     .resume_cart_article{
     	margin-left: 5px;
     }
+    .resume_cart_quit{
+      color:grey;
+      cursor:pointer;
+      position:absolute;
+      top : 3px;
+      right:6px;
+    }
 }
 @media screen and (max-width: 1500px){
 .resume_cart{
@@ -201,22 +206,38 @@ display:none;
     </style>
     {% if listePanier is defined %}
 
-    <div class="resume_cart">
+    <div class="resume_cart" id="resume_cart">
+      <div class="resume_cart_quit">
+        <a onclick="resume_cart_exit()"><i class="fa fa-times fa-1" aria-hidden="true"></i></a>
+      </div>
     	<h2 class="resume_cart_h2">
     		<center>Panier</center>
     	</h2>
+      {% set numero_ligne = 0 %}
+
       {% for listepanier in listePanier %}
 
     	<div class="resume_cart_article">
-    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;"></span>
+    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;">
+
+          {% if listepanier.id %}
+            <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+            {% else  %}
+
+          <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+
+
+          {% endif %}
+        </a>{{ listepanier.id }}</span>
     	</div>
+{% set numero_ligne = numero_ligne + 1 %}
       {% endfor %}
 
     		<div class="resume_cart_article" style="height:50px">
     		<span>  </span> <span style="position:absolute; right:5px;"></span>
     	</div>
     	<div class="resume_cart_checkout">
-    		<center><button type="submit" class="btn btn-primary btn-lg active btn_send">Payer</button></center>
+    		<center><a href="{{ path('panier') }}" class="btn btn-primary btn-lg active btn_send">Voir le panier</a></center>
     	</div>
     </div>
     {% endif %}
@@ -278,6 +299,12 @@ display:none;
           $('#checkbox-coffret').change(function() {
               $('#couleurs-coffret').toggle();
           });
+      </script>
+
+      <script>
+        function resume_cart_exit(){
+document.getElementById('resume_cart').style.display = 'none';
+}
       </script>
 
 
