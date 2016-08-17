@@ -38,6 +38,23 @@ class CollectionType extends AbstractType
                                    'required' => true,
                                ))
             ->add('description')
+            ->add('imageCollection', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('imageCollectionCarre', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('imageCollectionIcone', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+
+
 
         ;
     }

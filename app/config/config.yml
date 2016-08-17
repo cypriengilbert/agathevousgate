@@ -134,3 +134,24 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+        imageCollection:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        imageCollectionCarre:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        imageCollectionIcone:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

@@ -20,6 +20,7 @@ class CommerceController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $page = 'accueil';
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -89,6 +90,8 @@ class CommerceController extends Controller
         $listePromoCode = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $first3collection =  $repository->findBy(array('active' => 1), null, 3);
 
 
 
@@ -104,7 +107,10 @@ class CommerceController extends Controller
             'listePromoCode' => $listePromoCode,
             'listeUser' => $listeUser,
             'collection' => $collectionActive,
-            'listePanier' => $listePanier
+            'listePanier' => $listePanier,
+            'page' => $page,
+            'first3collection' => $first3collection
+
 
         ));
 
@@ -117,6 +123,8 @@ class CommerceController extends Controller
      */
     public function panierAction(Request $request)
     {
+        $page = 'panier';
+
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -170,7 +178,9 @@ class CommerceController extends Controller
             'iduser' => $id_user,
             'listePanier' => $listeAddedProduct,
             'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collectionActive
+            'collection' => $collectionActive,
+            'page' => $page
+
         ));
     }
 
@@ -334,6 +344,9 @@ class CommerceController extends Controller
     public function personnalisationAction(Request $request)
     {
 
+      $page = 'personnalisation';
+
+
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -415,7 +428,9 @@ class CommerceController extends Controller
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
             'product_noeud' => $product_noeud,
-            'accessoire' => $accessoire
+            'accessoire' => $accessoire,
+            'page' => $page
+
 
         ));
 
@@ -432,6 +447,7 @@ class CommerceController extends Controller
      */
     public function listeProduitAction($id)
     {
+      $page = 'listeproduit';
 
         $session = $this->get('session');
         if ($session->get('panier_session')) {
@@ -448,6 +464,12 @@ class CommerceController extends Controller
         $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive   = $repository->findBy(array(
             'active' => 1
+        ));
+        $collectionPlus   = $repository->findOneBy(array(
+            'id' => $id+1
+        ));
+        $collectionMoins   = $repository->findOneBy(array(
+            'id' => $id-1
         ));
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -469,11 +491,17 @@ class CommerceController extends Controller
         $colors = $collection->getColors();
 
 
+
         return $this->render('CommerceBundle:Default:listeProduit.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'listecolor' => $colors,
             'listeProduit' => $listeProduitActive,
-            'collection' => $collectionActive
+            'collection' => $collectionActive,
+            'page' => $page,
+              'collectionPlus' => $collectionPlus,
+              'collectionMoins' => $collectionMoins
+
+
         ));
     }
 
@@ -959,6 +987,7 @@ class CommerceController extends Controller
      */
     public function listeTissuAction($id)
     {
+      $page = 'tissu';
 
         $session = $this->get('session');
         if ($session->get('panier_session')) {
@@ -994,7 +1023,9 @@ class CommerceController extends Controller
         return $this->render('CommerceBundle:Default:produitFranchise.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'listecolor' => $colors,
-            'collection' => $collection
+            'collection' => $collection,
+            'page' => $page
+
         ));
     }
 
@@ -1072,6 +1103,9 @@ class CommerceController extends Controller
      */
     public function listeProRectangleAction()
     {
+      $page = 'rectangle';
+
+
 
         $session = $this->get('session');
         if ($session->get('panier_session')) {
@@ -1098,7 +1132,9 @@ class CommerceController extends Controller
 
         return $this->render('CommerceBundle:Default:produitProRectangle.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collection
+            'collection' => $collection,
+            'page' => $page
+
         ));
     }
 
@@ -1174,6 +1210,7 @@ class CommerceController extends Controller
      */
     public function agathequeAction()
     {
+      $page = 'agatheque';
 
         $session = $this->get('session');
         if ($session->get('panier_session')) {
@@ -1200,7 +1237,9 @@ class CommerceController extends Controller
 
         return $this->render('CommerceBundle:Default:agatheque.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collection
+            'collection' => $collection,
+            'page' => $page
+
         ));
     }
 
@@ -1209,6 +1248,8 @@ class CommerceController extends Controller
      */
     public function faqAction()
     {
+        $page = 'faq';
+
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -1232,7 +1273,9 @@ class CommerceController extends Controller
         $collection = $repository->findAll();
         return $this->render('CommerceBundle:Default:faq.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collection
+            'collection' => $collection,
+            'page' => $page
+
         ));
 
 
@@ -1243,7 +1286,8 @@ class CommerceController extends Controller
      * @Route("/quisommesnous", name="quisommesnous")
      */
     public function quiSommesNousAction()
-    {
+    {      $page = 'quisommesnous';
+
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -1267,7 +1311,9 @@ class CommerceController extends Controller
         $collection = $repository->findAll();
         return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collection
+            'collection' => $collection,
+            'page' => $page
+
         ));
 
 
@@ -1350,6 +1396,8 @@ class CommerceController extends Controller
      */
     public function collectionAction()
     {
+      $page = 'collection';
+
         $session = $this->get('session');
         if ($session->get('panier_session')) {
 
@@ -1373,7 +1421,9 @@ class CommerceController extends Controller
         $collection = $repository->findAll();
         return $this->render('CommerceBundle:Default:collections.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collections' => $collection
+            'collections' => $collection,
+            'page' => $page
+
         ));
 
 

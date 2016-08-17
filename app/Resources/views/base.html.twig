@@ -88,21 +88,24 @@
       </button>
       <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('images/logo_test.jpg') }}" style="width:100%;height:auto; max-width:75px;"></a>-->
     </div>
+    {% if page is not defined %}
+    {% set page = 'vide' %}
+    {% endif %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
+        <li class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
 
-        <li class=""><a href="{{ path('collections') }}">Collections</a></li>
+        <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
 
-        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
+        <li class="{% if page == 'personnalisation' %}active{% endif%}"><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
 
-        <li><a href="{{ path('agatheque') }}">Agathèque</a></li>
-        <li class=""><a href="{{ path('faq') }}">FAQ</a></li>
-        <li class=""><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
+        <li class="{% if page == 'agatheque' %}active{% endif%}"><a href="{{ path('agatheque') }}">Agathèque</a></li>
+        <li class="{% if page == 'faq' %}active{% endif%}"><a href="{{ path('faq') }}">FAQ</a></li>
+        <li class="{% if page == 'quisommesnous' %}active{% endif%}"><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
+        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
               {% for col in collection %}
@@ -119,19 +122,17 @@
 
 
           {% if app.user.isPro == 1 %}
-          <li class="active"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
+          <li class="{% if page == 'rectangle' %}active{% endif%}"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
           {% endif %}
         {% endif %}
 
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
-                    <li>
-                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none; padding-bottom:5px;"></a>
-                    </li>
-                    <li class="menu-panier <?= $icone_panier; ?>">
+
+                    <li class="menu-panier {% if page == 'panier' %}active{% endif%}">
                         <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
-                    <li class="menu-account <?php if($page_actuelle == 'account'){echo 'active';} ?>">
+                    <li class="menu-account {% if page == 'compte' %}active{% endif%}">
                         <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>

@@ -5,17 +5,87 @@
 
 <body>
 
+
+<div class="container text-center">
+      <div class="row">
+        <div class="col-sm-12 col-xs-12"><h1 style="font-size: 1.5em;">RETROUVEZ TOUTE NOTRE COLLECTION</h1></div>
+      </div>
 {% for collection in collections %}
+  {% if collection.active == true %}
+      {% if loop.index is divisibleby(2) %}
+      <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
 
-{% if collection.active == true %}
-afficher la collection
-{% else %}
-{% if app.user.isPro == 1 %}
-afficher collection
-{% endif %}
-{% endif %}
+      <div class="row">
 
-{% endfor %}
+        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
+      </div>
+      </a>
+
+      {% else %}
+      <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
+
+      <div class="row">
+
+      <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
+
+        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+      </div>
+      </a>
+
+
+      {% endif %}
+    {% else %}
+        {% if app.user.isPro == 1 %}
+          {% if loop.index is divisibleby(2) %}
+          <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
+
+            <div class="row">
+              <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+              <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
+            </div>
+</a>
+          {% else %}
+          <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
+            <div class="row">
+            <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
+
+            <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+            </div>
+          </a>
+      {% endif %}
+    {% endif %}
+    {% endif %}
+
+
+
+
+{% endfor  %}
+<div class="row">
+
+<div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; margin-top:40px;margin-bottom:40px">
+<div class="container customisation_noeud">
+  <div class="row text-center">
+    <div class="col-sm-4 col-xs-4"></div>
+    <div class="col-sm-4 col-xs-4"><img src="/Agathe/agathevousgate/web/images/noeud_personnalisation.svg" alt="logo noeud" style="width: 100%; height: auto; min-width: 4em; max-width:13em;"></div>
+    <div class="col-sm-4 col-xs-4"></div>
+  </div>
+  <div class="row text-center">
+    <div class="col-sm-3 col-xs-1"></div>
+    <div class="col-sm-6 col-xs-10"><h2>CRÉER VOTRE PROPRE NOEUD</h2></div>
+    <div class="col-sm-3 col-xs-1"></div>
+  </div>
+  <div class="row text-center creer_bottom">
+    <div class="col-sm-4 col-xs-1"></div>
+    <div class="col-sm-4 col-xs-10"><a href="/agathevousgate/web/app_dev.php/personnalisation" class="btn btn-primary btn-lg active btn_agathe" role="button">Ok, LET'S GO !</a></div>
+    <div class="col-sm-4 col-xs-1"></div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+
 </body>
 
 

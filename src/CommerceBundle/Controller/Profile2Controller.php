@@ -36,7 +36,7 @@ class Profile2Controller extends Controller
     public function showAction(Request $request)
     {
 
-
+        $page = 'compte';
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -121,7 +121,7 @@ if ($formPassword->isValid()) {
             'listeCommande' => $listeCommandeencours,
             'nbarticlepanier' => $nbarticlepanier,
             'listeCommandeDone' => $listeCommandedone,
-
+            'page' => $page,
             'collection' => $collectionActive,
             'form' => $form->createView(),
             'formPassword' => $formPassword->createView()

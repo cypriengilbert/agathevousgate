@@ -2,7 +2,9 @@
 
 namespace CommerceBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * collection
  *
  * @ORM\Table(name="collection")
+ * @Vich\Uploadable
  * @ORM\Entity(repositoryClass="CommerceBundle\Repository\collectionRepository")
  */
 class Collection
@@ -50,6 +53,53 @@ class Collection
      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      */
      private $colors;
+
+
+     /**
+      *
+      * @Vich\UploadableField(mapping="imageCollection", fileNameProperty="imageName", maxSize = "5M")
+      *
+      * @var File
+      */
+     private $imageCollection;
+
+     /**
+      * @ORM\Column(type="string", length=255)
+      *
+      * @var string
+      */
+     private $imageName;
+
+     /**
+      *
+      * @Vich\UploadableField(mapping="imageCollectionCarre", fileNameProperty="imageNameCarre", maxSize = "5M")
+      *
+      * @var File
+      */
+     private $imageCollectionCarre;
+
+     /**
+      * @ORM\Column(type="string", length=255)
+      *
+      * @var string
+      */
+     private $imageNameCarre;
+
+     /**
+      *
+      * @Vich\UploadableField(mapping="imageCollectionIcone", fileNameProperty="imageNameIcone", maxSize = "5M")
+      *
+      * @var File
+      */
+     private $imageCollectionIcone;
+
+     /**
+      * @ORM\Column(type="string", length=255)
+      *
+      * @var string
+      */
+     private $imageNameIcone;
+
 
 
     /**
@@ -159,4 +209,143 @@ class Collection
     {
         return $this->active;
     }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return collection
+     */
+    public function setImageCollection(File $imageCollection = null)
+    {
+        $this->imageCollection = $imageCollection;
+
+        if ($imageCollection) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getImageCollection()
+    {
+        return $this->imageCollection;
+    }
+
+    /**
+     * @param string $imageName
+     *
+     * @return collection
+     */
+    public function setImageName($imageName)
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageName()
+    {
+        return $this->imageName;
+    }
+
+
+        /**
+         * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+         *
+         * @return collection
+         */
+        public function setImageCollectionCarre(File $imageCollectionCarre = null)
+        {
+            $this->imageCollectionCarre = $imageCollectionCarre;
+
+            if ($imageCollectionCarre) {
+                // It is required that at least one field changes if you are using doctrine
+                // otherwise the event listeners won't be called and the file is lost
+
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return File
+         */
+        public function getImageCollectionCarre()
+        {
+            return $this->imageCollectionCarre;
+        }
+
+        /**
+         * @param string $imageName
+         *
+         * @return collection
+         */
+        public function setImageNameCarre($imageNameCarre)
+        {
+            $this->imageNameCarre = $imageNameCarre;
+
+            return $this;
+        }
+
+        /**
+         * @return string
+         */
+        public function getImageNameCarre()
+        {
+            return $this->imageNameCarre;
+        }
+
+        /**
+         * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+         *
+         * @return collection
+         */
+        public function setImageCollectionIcone(File $imageCollectionIcone = null)
+        {
+            $this->imageCollectionIcone = $imageCollectionIcone;
+
+            if ($imageCollectionIcone) {
+                // It is required that at least one field changes if you are using doctrine
+                // otherwise the event listeners won't be called and the file is lost
+
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return File
+         */
+        public function getImageCollectionIcone()
+        {
+            return $this->imageCollectionIcone;
+        }
+
+        /**
+         * @param string $imageName
+         *
+         * @return collection
+         */
+        public function setImageNameIcone($imageNameIcone)
+        {
+            $this->imageNameIcone = $imageNameIcone;
+
+            return $this;
+        }
+
+        /**
+         * @return string
+         */
+        public function getImageNameIcone()
+        {
+            return $this->imageNameIcone;
+        }
 }

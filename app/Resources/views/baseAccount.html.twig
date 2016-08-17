@@ -45,67 +45,86 @@
     <![endif]-->
 
 </head>
-   <nav class="navbar navbar-default navbar-fixed-top nav_agathe_1">
-     <div class="container-fluid nav_agathe_2">
-       <div class="navbar-header nav_agathe_3">
-         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-           <span class="icon-bar"></span>
-         </button>
-         <a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('images/logo_test.jpg') }}" style="width:100%;height:auto; max-width:75px;"></a>
-       </div>
-       <div class="collapse navbar-collapse" id="myNavbar">
-         <ul class="nav navbar-nav">
-           <li class="active"><a href="#">Home</a></li>
-           <li class="dropdown">
-             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Collection <span class="caret"></span></a>
-             <ul class="dropdown-menu">
-                 {% for col in collection %}
+<nav class="navbar navbar-default nav_agathe_1" data-spy="affix" data-offset-top="48">
+  <div class="container nav_agathe_2">
+    <div class="navbar-header nav_agathe_3">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('images/logo_test.jpg') }}" style="width:100%;height:auto; max-width:75px;"></a>-->
+    </div>
+    {% if page is not defined %}
+    {% set page = 'vide' %}
+    {% endif %}
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
 
-                       <li class="">
-                           <a class="page-scroll" href="{{ path('listeproduit', {'id': col.id }) }}">{{ col.title }}</a>
-                       </li>
+        <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
-                       {% endfor %}
-             </ul>
-           </li>
-           <li><a href="#">Médiatheque</a></li>
-           <li><a href="#">Page 3</a></li>
-         </ul>
-         <ul class="nav navbar-nav navbar-right menu-right">
-                       <li>
-                           <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none;"></a>
-                       </li>
-                       <li class="menu-panier <?= $icone_panier; ?>">
-                           <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{{ nbarticlepanier }}</span></a>
-                       </li>
-                       <li class="menu-account <?php if($page_actuelle == 'account'){echo 'active';} ?>">
-                           <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                               <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
-                           </a>
-                           <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
-                               {% if is_granted('ROLE_USER') %}
-                                   <li><a href="{{ path('compte') }}">Mon compte</a></li>
-                                   <li><a href="{{ path('compte') }}">Mes commandes</a></li>
-                                   <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
-                               {% else %}
-                                   <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
-                                   <li><a href="{{ path('fos_user_registration_register') }}">Créer un compte</a></li>
-                                   <li><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié?</a></li>
-                               {% endif %}
 
-                           </ul>
-                       </li>
-                       <!--<li>
-                           <a class="page-scroll" href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-2x fa-user"></i></a>
-                       </li>-->
-           </ul>
-       </div>
-     </div>
-   </nav>
-   <body style="margin-top:150px; margin-bottom:150px">
-      <div class="row">
+        <li class="{% if page == 'personnalisation' %}active{% endif%}"><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
+
+        <li class="{% if page == 'agatheque' %}active{% endif%}"><a href="{{ path('agatheque') }}">Agathèque</a></li>
+        <li class="{% if page == 'faq' %}active{% endif%}"><a href="{{ path('faq') }}">FAQ</a></li>
+        <li class="{% if page == 'quisommesnous' %}active{% endif%}"><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
+        {% if is_granted('ROLE_USER') %}
+          {% if app.user.isPro == 2 %}
+        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+
+              {% for col in collection %}
+
+                    <li class="">
+                        <a class="page-scroll" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
+                    </li>
+
+                    {% endfor %}
+          </ul>
+        </li>
+          {% endif %}
+
+
+
+          {% if app.user.isPro == 1 %}
+          <li class="{% if page == 'rectangle' %}active{% endif%}"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
+          {% endif %}
+        {% endif %}
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right menu-right">
+
+                    <li class="menu-panier {% if page == 'panier' %}active{% endif%}">
+                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                    </li>
+                    <li class="menu-account {% if page == 'compte' %}active{% endif%}">
+                        <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
+                            {% if is_granted('ROLE_USER') %}
+                                <li><a href="{{ path('compte') }}">Mon compte</a></li>
+                                <li><a href="{{ path('compte') }}">Mes commandes</a></li>
+                                <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+                            {% else %}
+                                <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
+                                <li><a href="{{ path('fos_user_registration_register') }}">Créer un compte</a></li>
+                                <li><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié?</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </li>
+                    <!--<li>
+                        <a class="page-scroll" href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-2x fa-user"></i></a>
+                    </li>-->
+        </ul>
+    </div>
+  </div>
+</nav>
+   <body style="">
+      <div style="margin-top:100px" class="">
          <div class="col-xs-1 col-sm-3">
          </div>
          <div class="col-xs-10 col-sm-6 row" style="background-color:#ddd;" >
