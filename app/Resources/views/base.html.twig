@@ -50,6 +50,7 @@
 
 </head>
 <!-- Follow Us -->
+<div class="wrapper">
 <div class="container flwus">
       <div class="row text-center">
         <div class="col-sm-10 col-xs-6"></div>
@@ -96,6 +97,7 @@
         <li class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
 
         <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
+
 
 
         <li class="{% if page == 'personnalisation' %}active{% endif%}"><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
@@ -246,6 +248,8 @@ display:none;
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
+    <div class="push"></div>
+</div>
 <footer class="general-footer">
     <div class="container-fluid footer">
           <div class="row text-center">
@@ -300,6 +304,13 @@ display:none;
           $('#checkbox-coffret').change(function() {
               $('#couleurs-coffret').toggle();
           });
+          /*Test script menu active
+          $(function() {
+            $('nav a[href^="/' + location.pathname+ '"]').addClass('active');
+            alert('nav a[href="' + location.pathname + '"]');
+
+        });*/
+
       </script>
 
       <script>
