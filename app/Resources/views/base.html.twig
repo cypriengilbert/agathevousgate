@@ -91,8 +91,9 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
-
+        
+        <!--<li class="active"><a href="{{ path('accueil') }}">Home</a></li> Test script active-->
+        <li><a href="{{ path('accueil') }}" class="active">Home</a></li>
         {% if collection is defined %}
         <li class=""><a href="{{ path('collections') }}">Collections</a></li>
 
@@ -281,6 +282,13 @@ display:none;
           $('#checkbox-coffret').change(function() {
               $('#couleurs-coffret').toggle();
           });
+          /*Test script menu active
+          $(function() {
+            $('nav a[href^="/' + location.pathname+ '"]').addClass('active');
+            alert('nav a[href="' + location.pathname + '"]');
+
+        });*/
+
       </script>
 
 
