@@ -413,6 +413,141 @@ public function viewDefinedProductAction()
 
 
 /**
+ * @Route("/users", name="users")
+ */
+public function usersAction()
+{
+
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+/**
+ * @Route("/desactive_user/{id}", name="desactiveuser")
+ */
+public function desactiveUserAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        if($User->isEnabled(true)){
+        $User->setEnabled(false);
+      }  else{$User->setEnabled(true);}
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+
+/**
+ * @Route("/setToPro/{id}", name="settopro")
+ */
+public function setToProAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        $User->setIsPro(2);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+
+/**
+ * @Route("/setToUser/{id}", name="settouser")
+ */
+public function setToUserAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        $User->setIsPro(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+/**
+ * @Route("/setToFranchise/{id}", name="settofranchise")
+ */
+public function setToFranchiseAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        $User->setIsPro(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+/**
  * @Route("/editDefinedProduct/{id}", name="editDefinedProduct")
  */
 public function editDefinedProductAction(Request $request, $id)
