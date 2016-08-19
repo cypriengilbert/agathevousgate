@@ -27,9 +27,7 @@
 		
 		<!-- Partie 1.2.1: Aperçu Début-->
 		<div class="col-sm-7 text-center preview">
-			<h3>Aperçu</h3>
-				
-
+				<h3>Aperçu</h3>
 		</div>
 		<!-- Partie 1.2.1: Aperçu fin-->
 		
@@ -186,15 +184,60 @@
 			<h1>Je choisis un accessoire</h1>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<strong>Prix : {{ product_noeud.price }}€</strong>
+			<div class="checkbox checkbox-success">
+				{% for accessoire in accessoire %}
+				<input type="radio" name="radio_accessoire" id="{{ accessoire.name }}"  onclick="get_data()" value="{{ accessoire.id }}"/>
+				<label for="{{ accessoire.name }}">
+					{{ accessoire.name }}
+				</label>
+					{% endfor %}
+			</div>
+		</div>
+	</div>
+
 </div>
+</section>
+<section  id="size">
+<div class="container">
+	<div class="row">
+		<div class="col-sm-12 text-center">
+			<h1>Je choisis la taille</h1>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-6 text-center">
+			<div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
+				<input type="radio" name="radio_taille" id="radio-standard" value="Standard">
+				<label for="radio-standard"><h3>Taille standard</h3><br/>
+				<img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-standard.png') }}">
+				</label>
+			</div>
+		</div>
+		<div class="col-sm-6 text-center">
+			<div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
+				<input type="radio" name="radio_taille" id="radio-mini" value="Mini">
+				<label for="radio-mini"> <h3>Taille mini</h3><br/>
+				<img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-mini.png') }}">
+				</label>
+			</div>
+		</div>
+		</div>
+</div>
+
+
+
 </section>
 <!--Partie 2: Choix accesoire Fin-->
 
 
 
 
-<!-- Début du cimetierre -->
-
+<!---------------------------------------------------------------------Début du cimetierre ------------------------------------------------------- -->
 <!-- Début du cimetierre -->
 	 <h2 class="section-heading title-acc first-title text-center">Début du cimetierre</h2>
 
