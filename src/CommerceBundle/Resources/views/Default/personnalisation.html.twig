@@ -73,10 +73,11 @@
 									<input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
 									<label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 									</div>
-								{% if X1 == 6 %}
-									</div>
+									{% set X1 = X1+1 %}
+									{% if X1 == 6 %}
+										</div>
 									{% set X1 = 1 %}
-								{% endif %}
+									{% endif %}
 								{% endfor %}
 							{% endif %}
 						{% endfor %}
@@ -88,11 +89,11 @@
 				<div class="panel-body">
 					<ul class="img-thumbnails pull-left">
 						{% set X2 = 1 %}
-						{% set selected_collection = 13 %}
+						{% set selected_collection = 4 %}
 						{% for collection in collection %}
 							{% if collection.id == selected_collection %}
 								{% for colors in collection.colors %}
-								{% if X2 == 1 %}
+									{% if X2 == 1 %}
 										<div class="row">
 									{% endif %}
 									<div class="col-sm-2 text-center color_token">
@@ -102,10 +103,11 @@
 									<input type="radio" id="{{ colors.imageColorName }}_2" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
 									<label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
 									</div>
-								{% if X2 == 6 %}
-									</div>
-									{% set X2 = 1 %}
-								{% endif %}
+									{% set X2 = X2+1 %}
+									{% if X2 == 6 %}
+										</div>
+										{% set X2 = 1 %}
+									{% endif %}
 								{% endfor %}
 							{% endif %}
 						{% endfor %}
@@ -131,6 +133,7 @@
 									<input type="radio" id="{{ colors.imageColorName }}_3" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
 									<label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
 									</div>
+									{% set X3 = X3+1 %}
 								{% if X3 == 6 %}
 									</div>
 									{% set X3 = 1 %}
@@ -175,7 +178,17 @@
 </div>
 </section>
 <!--Partie 1: Customisation du noeud FIN-->
-
+<!--Partie 2: Choix accesoire Debut-->
+<section <section  id="accesory">
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<h1>Je choisis un accessoire</h1>
+		</div>
+	</div>
+</div>
+</section>
+<!--Partie 2: Choix accesoire Fin-->
 
 
 
