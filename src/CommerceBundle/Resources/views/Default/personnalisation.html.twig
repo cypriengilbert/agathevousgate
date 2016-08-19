@@ -1,4 +1,3 @@
-
 {% extends 'base.html.twig' %}
 
 
@@ -28,18 +27,182 @@
 		
 		<!-- Partie 1.2.1: Aperçu Début-->
 		<div class="col-sm-7 text-center preview">
-			bite
+			<h3>Aperçu</h3>
+			<div id="rendu-noeud">
+											 <div style="position: absolute;" >
+													 <?php
+													 foreach($products as $value){
+															 echo "<section class='section-noeud' ng-show='noeudPap.isSelectedS(".$value->couleur_id.")'>";
+															 echo '<img ng-src="img/tissu/'.$value->couleur_img_sec.'" class="img-responsive" alt="Couleur secondaire">';
+															 echo '</section>';
+													 }
+													 ?>
+											 </div>
+											 <div style="position: absolute;">
+													 <?php
+													 foreach($products as $value){
+															 echo "<section class='section-noeud' ng-show='noeudPap.isSelected(".$value->couleur_id.")'>";
+															 echo '<img ng-src="img/tissu/'.$value->couleur_img_princ.'" class="img-responsive" alt="Couleur principale">';
+															 echo '</section>';
+													 }
+													 ?>
+											 </div>
+											 <div style="position: absolute;">
+													 <?php
+													 foreach($products as $value){
+															 echo "<section class='section-noeud' ng-show='noeudPap.isSelectedM(".$value->couleur_id.")'>";
+															 echo '<img ng-src="img/tissu/'.$value->couleur_img_milieu.'" class="img-responsive" alt="Couleur du milieu">';
+															 echo '</section>';
+													 }
+													 ?>
+											 </div>
+											 <div>
+													 <section class='section-noeud'>
+															 <img ng-src="img/tissu/background-noeud.png">
+													 </section>
+											 </div>
+									 </div>
+
 		</div>
 		<!-- Partie 1.2.1: Aperçu fin-->
 		
 		<!-- Partie 1.2.2: choix couleurs Début-->
 		<div class="col-sm-5 text-center">
-			bite
+			<style>
+			input[type="radio"].radio_colors {
+				display:none;
+			}
+			input[type="radio"].radio_colors + label {
+				display:inline-block;
+				border-radius:50%;
+				width:40px;
+				height:40px;
+				cursor:pointer}
+			input[type="radio"].radio_colors:checked + label {
+				border:3px solid black;
+				padding:2px}
+			</style>
+
+			<h3>Choix des couleurs</h3>
+			<div class="container-fluid couleurs">
+			<!-- Debug test -->
+			<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="tab-princ">
+			<h3>Couleurs du noeud principal</h3></br>
+				<div class="panel-body">
+					<ul class="img-thumbnails pull-left">
+						{% set X1 = 1 %}
+						{% set selected_collection = 13 %}
+						{% for collection in collection %}
+							{% if collection.id == selected_collection %}
+								{% for colors in collection.colors %}
+									{% if X1 == 1 %}
+										<div class="row">
+									{% endif %}
+									<div class="col-sm-2 text-center color_token">
+									<style>
+										input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})left top no-repeat !important;}
+									</style>
+									<input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
+									<label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+									</div>
+								{% if X1 == 6 %}
+									</div>
+									{% set X1 = 1 %}
+								{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane active" id="tab-sec">
+			<br/></h3>Couleurs du noeud secondaire</h3><br/>
+				<div class="panel-body">
+					<ul class="img-thumbnails pull-left">
+						{% set X2 = 1 %}
+						{% set selected_collection = 13 %}
+						{% for collection in collection %}
+							{% if collection.id == selected_collection %}
+								{% for colors in collection.colors %}
+								{% if X2 == 1 %}
+										<div class="row">
+									{% endif %}
+									<div class="col-sm-2 text-center color_token">
+									<style>
+										input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})left top no-repeat !important;}
+									</style>
+									<input type="radio" id="{{ colors.imageColorName }}_2" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
+									<label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+									</div>
+								{% if X2 == 6 %}
+									</div>
+									{% set X2 = 1 %}
+								{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+			<div role="tabpanel" class="tab-pane active" id="tab-milieu">
+			<br/>Couleurs du noeud du milieu<br/>
+				<div class="panel-body">
+					<ul class="img-thumbnails pull-left">
+						{% set X3 = 1 %}
+						{% set selected_collection = 13 %}
+						{% for collection in collection %}
+							{% if collection.id == selected_collection %}
+								{% for colors in collection.colors %}
+								{% if X3 == 1 %}
+										<div class="row">
+									{% endif %}
+									<div class="col-sm-2 text-center color_token">
+									<style>
+										input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})left top no-repeat !important;}
+									</style>
+									<input type="radio" id="{{ colors.imageColorName }}_3" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
+									<label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+									</div>
+								{% if X3 == 6 %}
+									</div>
+									{% set X3 = 1 %}
+								{% endif %}
+								{% endfor %}
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div><!-- FIN TABS -->
+		<!-- Debug Test fin-->
+
+
+		</div>
+			
 		</div>
 		<!-- Partie 1.2.2: choix couleurs fin-->
 	</div>
 <!-- Partie 1.2: Aperçu et choix couleur fin-->
-
+	<!-- Partie 1.3: Choix noeud Début-->
+	<div class="container">
+	<div class="row">
+		<div class="col-sm-12 text-center">
+	<ul class="nav nav-pills nav-tab-noeud" role="tablist">
+		<li role="presentation" class="active" style="border-right: 1px solid #A8AAAD;">
+			<a href="#tab-princ" aria-controls="Principal" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-princ.png') }}" class="icone-tab"></a>
+		</li>
+		<li role="presentation" style="border-right: 1px solid #A8AAAD;">
+			<a href="#tab-sec" aria-controls="Secondaire" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-sec.png') }}" class="icone-tab"></a>
+		</li>
+		<li role="presentation">
+			<a href="#tab-milieu" aria-controls="messages" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-milieu.png') }}" class="icone-tab"></a>
+		</li>
+	</ul>
+		</div>
+	</div>
+</div>
+	<!-- Partie 1.3: Choix noeud fin-->
 </div>
 </section>
 <!--Partie 1: Customisation du noeud FIN-->
@@ -51,7 +214,7 @@
 <!-- Début du cimetierre -->
 
 <!-- Début du cimetierre -->
-	 <h2 class="section-heading title-acc first-title">Je personnalise mon noeud</h2>
+	 <h2 class="section-heading title-acc first-title text-center">Début du cimetierre</h2>
 
 	 <hr>
 
@@ -110,7 +273,7 @@
 																									<style>
 
 																										input[type="radio"] + .{{ colors.name }}_1 {
-																										background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}) left top no-repeat !important;
+																										background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
 																										}
 																									</style>
 																							 <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
@@ -134,7 +297,7 @@
 																							<style>
 
 																								input[type="radio"] + .{{ colors.name }}_2 {
-																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}) left top no-repeat !important;
+																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
 																								}
 																							</style>
 																					 <input type="radio" id="{{ colors.imageColorName }}_2" name="color2"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
@@ -158,7 +321,7 @@
 																							<style>
 
 																								input[type="radio"] + .{{ colors.name }}_3 {
-																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}) left top no-repeat !important;
+																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
 																								}
 																							</style>
 																					 <input type="radio" id="{{ colors.imageColorName }}_3" name="color3"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>

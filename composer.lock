@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "428c553c11f7fe1f792f73f57433242d",
+    "hash": "f4fd80e8a313a9918541e9d692652c68",
     "content-hash": "efc328a6477a2e2045973ed689b0b89b",
     "packages": [
         {
@@ -427,16 +427,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "1.6.3",
+            "version": "1.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "fd51907c6c76acaa8a5234822a4f901c1500afc1"
+                "reference": "dd40b0a7fb16658cda9def9786992b8df8a49be7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/fd51907c6c76acaa8a5234822a4f901c1500afc1",
-                "reference": "fd51907c6c76acaa8a5234822a4f901c1500afc1",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/dd40b0a7fb16658cda9def9786992b8df8a49be7",
+                "reference": "dd40b0a7fb16658cda9def9786992b8df8a49be7",
                 "shasum": ""
             },
             "require": {
@@ -445,6 +445,7 @@
                 "jdorn/sql-formatter": "~1.1",
                 "php": ">=5.3.2",
                 "symfony/console": "~2.3|~3.0",
+                "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/doctrine-bridge": "~2.2|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
@@ -503,7 +504,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2016-04-21 19:55:56"
+            "time": "2016-08-10 15:35:22"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -850,12 +851,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "f2abacc3d24c297b4ef649eb0a27c2059ec60037"
+                "reference": "07ec96d93f03650e7480e0637fcd51eee6575c12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/f2abacc3d24c297b4ef649eb0a27c2059ec60037",
-                "reference": "f2abacc3d24c297b4ef649eb0a27c2059ec60037",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/07ec96d93f03650e7480e0637fcd51eee6575c12",
+                "reference": "07ec96d93f03650e7480e0637fcd51eee6575c12",
                 "shasum": ""
             },
             "require": {
@@ -914,7 +915,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2016-07-30 09:42:39"
+            "time": "2016-08-04 10:13:39"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1364,16 +1365,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.20.0",
+            "version": "1.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "55841909e2bcde01b5318c35f2b74f8ecc86e037"
+                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/55841909e2bcde01b5318c35f2b74f8ecc86e037",
-                "reference": "55841909e2bcde01b5318c35f2b74f8ecc86e037",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f42fbdfd53e306bda545845e4dbfd3e72edb4952",
+                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952",
                 "shasum": ""
             },
             "require": {
@@ -1438,7 +1439,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-07-02 14:02:10"
+            "time": "2016-07-29 03:23:52"
         },
         {
             "name": "ocramius/proxy-manager",
@@ -1726,16 +1727,16 @@
         },
         {
             "name": "psliwa/php-pdf",
-            "version": "1.2.9",
+            "version": "1.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psliwa/PHPPdf.git",
-                "reference": "de9df6bd8d9c77d600f32bed12ff749896b0f06c"
+                "reference": "7055c857a34003b8bf2af6200d5fad18360a67a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psliwa/PHPPdf/zipball/de9df6bd8d9c77d600f32bed12ff749896b0f06c",
-                "reference": "de9df6bd8d9c77d600f32bed12ff749896b0f06c",
+                "url": "https://api.github.com/repos/psliwa/PHPPdf/zipball/7055c857a34003b8bf2af6200d5fad18360a67a6",
+                "reference": "7055c857a34003b8bf2af6200d5fad18360a67a6",
                 "shasum": ""
             },
             "require": {
@@ -1744,7 +1745,7 @@
             },
             "require-dev": {
                 "imagine/imagine": ">=0.2.0,<0.6.0",
-                "phpunit/phpunit": ">=4,<6.0.0",
+                "phpunit/phpunit": ">=4,<5.4.0",
                 "zendframework/zend-barcode": "^2.0",
                 "zendframework/zend-validator": "^2.0"
             },
@@ -1776,7 +1777,7 @@
                 "PHPPdf",
                 "pdf"
             ],
-            "time": "2016-03-06 18:15:51"
+            "time": "2016-08-14 22:50:47"
         },
         {
             "name": "psr/log",
@@ -1818,16 +1819,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.7",
+            "version": "v5.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a"
+                "reference": "f8ace5c71ee309492b027ef71215577f5a52b4ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
-                "reference": "a9c4723cbdbc6cf7fbfdfde3c639cb1943f0293a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/f8ace5c71ee309492b027ef71215577f5a52b4ea",
+                "reference": "f8ace5c71ee309492b027ef71215577f5a52b4ea",
                 "shasum": ""
             },
             "require": {
@@ -1866,7 +1867,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2016-06-23 16:11:33"
+            "time": "2016-08-17 18:16:49"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3027,16 +3028,16 @@
         },
         {
             "name": "vich/uploader-bundle",
-            "version": "1.2.0",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dustin10/VichUploaderBundle.git",
-                "reference": "0f40b0eabcc50732ec50fb5ce8adc15f8e5b055c"
+                "reference": "667ead816ba05634e225a1f9c9bbc762c73c2e0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/0f40b0eabcc50732ec50fb5ce8adc15f8e5b055c",
-                "reference": "0f40b0eabcc50732ec50fb5ce8adc15f8e5b055c",
+                "url": "https://api.github.com/repos/dustin10/VichUploaderBundle/zipball/667ead816ba05634e225a1f9c9bbc762c73c2e0c",
+                "reference": "667ead816ba05634e225a1f9c9bbc762c73c2e0c",
                 "shasum": ""
             },
             "require": {
@@ -3104,7 +3105,7 @@
                 "file uploads",
                 "upload"
             ],
-            "time": "2016-07-14 21:22:59"
+            "time": "2016-08-17 11:15:39"
         },
         {
             "name": "zendframework/zend-cache",
