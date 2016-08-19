@@ -68,7 +68,7 @@
 									{% endif %}
 									<div class="col-sm-2 text-center color_token">
 									<style>
-										input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});}
+										input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})left top no-repeat !important;}
 									</style>
 									<input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
 									<label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
@@ -97,7 +97,7 @@
 									{% endif %}
 									<div class="col-sm-2 text-center color_token">
 									<style>
-										input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});}
+										input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})left top no-repeat !important;}
 									</style>
 									<input type="radio" id="{{ colors.imageColorName }}_2" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
 									<label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
