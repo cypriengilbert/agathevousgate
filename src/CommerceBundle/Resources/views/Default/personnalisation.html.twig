@@ -24,13 +24,13 @@
 
 <!-- Partie 1.2: Aperçu et choix couleur Début-->
 	<div class="row">
-		
+
 		<!-- Partie 1.2.1: Aperçu Début-->
 		<div class="col-sm-7 text-center preview">
 				<h3>Aperçu</h3>
 		</div>
 		<!-- Partie 1.2.1: Aperçu fin-->
-		
+
 		<!-- Partie 1.2.2: choix couleurs Début-->
 		<div class="col-sm-5 text-center">
 			<style>
@@ -57,7 +57,7 @@
 				<div class="panel-body">
 					<ul class="img-thumbnails pull-left">
 						{% set X1 = 1 %}
-						{% set selected_collection = 4 %}
+						{% set selected_collection = 13 %}
 						{% for collection in collection %}
 							{% if collection.id == selected_collection %}
 								{% for colors in collection.colors %}
@@ -87,7 +87,7 @@
 				<div class="panel-body">
 					<ul class="img-thumbnails pull-left">
 						{% set X2 = 1 %}
-						{% set selected_collection = 4 %}
+						{% set selected_collection = 13 %}
 						{% for collection in collection %}
 							{% if collection.id == selected_collection %}
 								{% for colors in collection.colors %}
@@ -117,7 +117,7 @@
 				<div class="panel-body">
 					<ul class="img-thumbnails pull-left">
 						{% set X3 = 1 %}
-						{% set selected_collection = 4 %}
+						{% set selected_collection = 13 %}
 						{% for collection in collection %}
 							{% if collection.id == selected_collection %}
 								{% for colors in collection.colors %}
@@ -147,7 +147,7 @@
 
 
 		</div>
-			
+
 		</div>
 		<!-- Partie 1.2.2: choix couleurs fin-->
 	</div>

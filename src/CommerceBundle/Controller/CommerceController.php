@@ -700,6 +700,7 @@ class CommerceController extends Controller
         // Get the credit card details submitted by the form
         $token           = $_POST['stripeToken'];
         $user            = $this->container->get('security.context')->getToken()->getUser();
+        $UserEmail = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $commandeEnCours = $repository->findOneBy(array(
             'client' => $user,
@@ -735,6 +736,21 @@ class CommerceController extends Controller
                     $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
 
+
+                    $message = \Swift_Message::newInstance()
+                       ->setSubject('Confirmation de Commande')
+                       ->setFrom('cyprien@cypriengilbert.com')
+                       ->setTo($UserEmail)
+                       ->setBody(
+                          $this->renderView(
+                   // app/Resources/views/Emails/registration.html.twig
+                             'emails/confirmation_commande.html.twig',
+                             array('user' => $user, 'listePanier' => $listePanier)
+                         ),
+                         'text/html'
+                     )
+       ;
+       $this->get('mailer')->send($message);
 
 
 
@@ -997,9 +1013,7 @@ class CommerceController extends Controller
         }
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collectionActive = $repository->findBy(array(
-            'active' => 1
-        ));
+        $collectionActive = $repository->findAll();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
@@ -1023,7 +1037,8 @@ class CommerceController extends Controller
         return $this->render('CommerceBundle:Default:produitFranchise.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'listecolor' => $colors,
-            'collection' => $collection,
+            'thiscollection' => $collection,
+            'collection' => $collectionActive,
             'page' => $page
 
         ));
@@ -1419,9 +1434,13 @@ class CommerceController extends Controller
         }
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
+        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $listeCollection   = $repository->findBy(array('active' => true));
+
         return $this->render('CommerceBundle:Default:collections.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
-            'collections' => $collection,
+            'collection' => $collection,
+            'collections' => $listeCollection,
             'page' => $page
 
         ));
