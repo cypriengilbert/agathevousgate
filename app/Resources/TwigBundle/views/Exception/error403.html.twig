@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style type="text/css">
+body{
+	font-family: 'Love Ya Like A Sister', cursive;
+}
+
+.wrap{
+	margin:0 auto;
+	width:1000px;
+}
+.logo{
+	text-align:center;
+	margin-top:100px;
+}
+.logo img{
+	width:350px;
+}
+.logo p{
+	color:#272727;
+	font-size:40px;
+	margin-top:1px;
+}
+.logo p span{
+	color:lightgreen;
+}
+
+
+</style>
+<div class="wrap">
+ <div class="logo">
+     <h2>Oups, vous n'êtes pas autorisé à venir ici...</h2>
+     <img src="{{ asset('img/403-1.png') }}"/>
+     <div class="sub">
+       <p><a class="btn btn-primary btn-lg btn_send" href="{{ path('accueil') }}">Retour à l'accueil </a></p>
+     </div>
+ </div>
+</div>
+
+
+
+{% endblock %}
