@@ -31,12 +31,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class Profile2Controller extends Controller
 {
     /**
-    * @Route("/compte_user", name="compte")
+    * @Route("/compte", name="compte")
      */
     public function showAction(Request $request)
     {
 
-
+        $page = 'compte';
         $user = $this->getUser();
         if (!is_object($user) || !$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -116,14 +116,31 @@ if ($formPassword->isValid()) {
 }
 
 
+//change adresse
+
+$userAdress = $user->getAdress();
+
+$formAdress = $this->get('form.factory')->create('UserBundle\Form\UserAdressType', $userAdress);
+
+if ($formAdress->handleRequest($request)->isValid()) {
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($userAdress);
+
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Adresse bien enregistrée.');
+
+
+}
+
         return $this->render('CommerceBundle:Default:show2.html.twig', array(
             'user' => $user,
             'listeCommande' => $listeCommandeencours,
             'nbarticlepanier' => $nbarticlepanier,
             'listeCommandeDone' => $listeCommandedone,
-
+            'page' => $page,
             'collection' => $collectionActive,
             'form' => $form->createView(),
+            'formAdress' => $formAdress->createView(),
             'formPassword' => $formPassword->createView()
 
         ));

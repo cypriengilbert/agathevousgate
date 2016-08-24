@@ -167,6 +167,25 @@ margin-top: 30px;
 border-radius: 1000px;
 margin-top: 30px;
 }
+.btn_blue{
+	background-color: rgb(36, 34, 88)!important;
+	border-color: rgb(36, 34, 88) !important;
+	color:#FFF !important;
+	-webkit-border-radius: 1000px;
+-moz-border-radius: 1000px;
+border-radius: 1000px;
+margin-top: 30px;
+text-align: center;
+}
+.btn_blue:hover{
+	background-color: #FFF!important;
+	border-color: rgb(36, 34, 88) !important;
+	color:rgb(36, 34, 88) !important;
+	-webkit-border-radius: 1000px;
+-moz-border-radius: 1000px;
+border-radius: 1000px;
+margin-top: 30px;
+}
 .btn_send{
 	background-color: #A94141!important;
 	border-color: #A94141 !important;
@@ -184,4 +203,78 @@ margin-top: 30px;
 -moz-border-radius: 1000px;
 border-radius: 1000px;
 margin-top: 30px;
+}
+
+.details_menu_account {
+  display:;
+text-decoration: none;
+color:black;
+cursor:pointer
+}
+@media (min-width: 990px) {
+.div_account_top_mobile{
+display: none;
+}
+}
+.account_div{
+margin-top: 100px
+}
+@media (max-width: 1500px) {
+  .details_menu_account {
+    display:none;
+}
+#logo_mdp, #logo_adresse, #logo_info, #logo_encours, #logo_done{
+font-size:30px;
+text-align:center;
+margin-left:25%
+}
+.account_div{
+margin-top: 100px
+}
+  }
+
+  @media (max-width: 990px) {
+    .details_menu_account {
+      display:none;
+  }
+  #logo_mdp, #logo_adresse, #logo_info, #logo_encours, #logo_done{
+  font-size:30px;
+  text-align:center;
+  margin-left:0
+  }
+.menu_account_div_top{
+display:none;
+
+}
+.account_div{
+margin-top: 20px;
+z-index: 1;
+}
+    }
+
+    @media (max-width: 990px) {
+      #logo_mdp, #logo_adresse, #logo_info, #logo_encours, #logo_done{
+      font-size:20px;
+      text-align:center;
+      z-index: 2
+
+}
+
+
+}
+
+@media (max-width: 401px) {
+  .col-xs-1.col-sm-3
+{
+  display:none;
+
+}
+#logo_mdp, #logo_adresse, #logo_info, #logo_encours, #logo_done{
+font-size:20px;
+position:relative;
+left:-5px;
+margin-left: 0;
+z-index: 2
+
+}
 }

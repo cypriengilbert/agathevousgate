@@ -85,6 +85,11 @@
           </div>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+        {% if is_granted('ROLE_SUPER_ADMIN') == false %}
+        <a class="mdl-navigation__link" href="{{ path('encours') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">playlist_play</i>Commandes en cours</a>
+        <a class="mdl-navigation__link" href="{{ path('done') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">playlist_add_check</i>Commande terminées</a>
+
+{% else %}
           <a class="mdl-navigation__link" href="{{ path('dashboard') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">dashboard</i>Dashboard</a>
           <a class="mdl-navigation__link" href="{{ path('encours') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">playlist_play</i>Commandes en cours</a>
           <a class="mdl-navigation__link" href="{{ path('done') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">playlist_add_check</i>Commande terminées</a>
@@ -93,6 +98,8 @@
           <a class="mdl-navigation__link" href="{{ path('newColor') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Nouvelle couleur</a>
           <a class="mdl-navigation__link" href="{{ path('addDefinedProduct') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Nouveau produit défini</a>
           <a class="mdl-navigation__link" href="{{ path('definedProduct') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Voir produit défini</a>
+<a class="mdl-navigation__link" href="{{ path('users') }}"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">note_add</i>Voir Users</a>
+{% endif %}
 
 
           <div class="mdl-layout-spacer"></div>
@@ -103,7 +110,11 @@
 
 
         {% block body %}
+
+
         {% endblock %}
+
+
 
       <a href="https://github.com/google/material-design-lite/blob/master/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">View Source</a>
     <script src="{{ asset('js/material.min.js') }}"></script>

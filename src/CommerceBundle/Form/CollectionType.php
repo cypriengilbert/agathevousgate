@@ -5,7 +5,7 @@ namespace CommerceBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+/*use Symfony\Component\Form\Extension\Core\Type\CollectionType;*/
 use CommerceBundle\Form\ColorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -38,6 +38,23 @@ class CollectionType extends AbstractType
                                    'required' => true,
                                ))
             ->add('description')
+            ->add('imageCollection', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('imageCollectionCarre', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('imageCollectionIcone', 'vich_image', array(
+              'required'      => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+
+
 
         ;
     }

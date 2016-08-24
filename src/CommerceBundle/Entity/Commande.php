@@ -72,6 +72,15 @@ class Commande
       */
       private $price;
 
+
+      /**
+       * @var float
+       *
+       * @ORM\Column(name="remise", type="float")
+       */
+       private $remise;
+
+
       /**
       * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
       */
@@ -309,5 +318,29 @@ class Commande
     public function getAtelierLivraison()
     {
         return $this->atelier_livraison;
+    }
+
+    /**
+     * Set remise
+     *
+     * @param float $remise
+     *
+     * @return Commande
+     */
+    public function setRemise($remise)
+    {
+        $this->remise = $remise;
+
+        return $this;
+    }
+
+    /**
+     * Get remise
+     *
+     * @return float
+     */
+    public function getRemise()
+    {
+        return $this->remise;
     }
 }

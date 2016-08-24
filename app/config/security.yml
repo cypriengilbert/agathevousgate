@@ -5,8 +5,9 @@ security:
         UserBundle\Entity\User: sha512
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_USER:        ROLE_USER
+        ROLE_ADMIN:       [ROLE_USER, ROLE_ADMIN]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
@@ -32,4 +33,10 @@ security:
                 key: %secret%
 
     access_control:
-        - { path: ^/admin, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/encours, role: ROLE_ADMIN }
+        - { path: ^/admin/done, role: ROLE_ADMIN }
+        - { path: ^/admin/validate, role: ROLE_ADMIN }
+        - { path: ^/admin/s, role: ROLE_SUPER_ADMIN }
+        - { path: ^/paiement, role: ROLE_USER }
+        - { path: ^/franchise, role: ROLE_ADMIN}
+        - { path: ^/pro, role: ROLE_ADMIN}

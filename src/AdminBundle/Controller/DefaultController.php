@@ -9,6 +9,7 @@ use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 
 
@@ -20,7 +21,7 @@ use CommerceBundle\Entity\defined_product;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="dashboard")
+     * @Route("/s", name="dashboard")
      */
     public function indexAction()
     {
@@ -126,7 +127,7 @@ public function validateCommandeAction(Request $request, $id)
 
 
 /**
- * @Route("/modify/{id}", name="modify")
+ * @Route("/s/modify/{id}", name="modify")
  */
 
 public function modifyCommandeAction(Request $request, $id)
@@ -163,7 +164,7 @@ public function modifyCommandeAction(Request $request, $id)
 
 
 /**
- * @Route("/add", name="add")
+ * @Route("/s/add", name="add")
  */
 
 public function addCommandeAction(Request $request)
@@ -202,7 +203,38 @@ public function addCommandeAction(Request $request)
 }
 
 /**
- * @Route("/add/{client}/{id}", name="addProduct")
+ * @Route("/s/addCodePromo", name="addCodePromo")
+ */
+
+public function addCodePromoAction(Request $request)
+{
+
+
+        $newCodePromo = new CodePromo();
+
+        $datetime = new \Datetime('now');
+        $newCodePromo->setDateCreation($datetime);
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\CodePromoType', $newCodePromo);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newCodePromo);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Code Promo bien enregistrée.');
+
+                    return $this->redirect($this->generateUrl('addCodePromo', array(
+                     'validate' => 'Code Promo ajoutée',
+
+
+                    )));
+                }
+                return $this->render('AdminBundle:Default:addCodePromo.html.twig', array(
+                    'form' => $form->createView(),
+
+                ));
+}
+
+/**
+ * @Route("/s/add/{client}/{id}", name="addProduct")
  */
 
 public function addAddedProductAction(Request $request, $id, $client)
@@ -269,7 +301,7 @@ public function addAddedProductAction(Request $request, $id, $client)
 
 
 /**
- * @Route("/newcollection", name="newcollection")
+ * @Route("/s/newcollection", name="newcollection")
  */
 
 public function newcollectionAction(Request $request)
@@ -308,7 +340,7 @@ public function newcollectionAction(Request $request)
 }
 
 /**
- * @Route("/newcolor", name="newColor")
+ * @Route("/s/newcolor", name="newColor")
  */
 
 public function newcolorAction(Request $request)
@@ -347,7 +379,7 @@ public function newcolorAction(Request $request)
 
 
 /**
- * @Route("/add_defined_product", name="addDefinedProduct")
+ * @Route("/s/add_defined_product", name="addDefinedProduct")
  */
 
 public function addDefinedProductAction(Request $request)
@@ -389,7 +421,7 @@ public function addDefinedProductAction(Request $request)
                 ));
 }
 /**
- * @Route("/definedProduct", name="definedProduct")
+ * @Route("/s/definedProduct", name="definedProduct")
  */
 public function viewDefinedProductAction()
 {
@@ -413,7 +445,145 @@ public function viewDefinedProductAction()
 
 
 /**
- * @Route("/editDefinedProduct/{id}", name="editDefinedProduct")
+ * @Route("/s/users", name="users")
+ */
+public function usersAction()
+{
+
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+/**
+ * @Route("/s/desactive_user/{id}", name="desactiveuser")
+ */
+public function desactiveUserAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        if($User->isEnabled(true)){
+        $User->setEnabled(false);
+      }  else{$User->setEnabled(true);}
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+
+/**
+ * @Route("/s/setToPro/{id}", name="settopro")
+ */
+public function setToProAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        $User->setIsPro(2);
+        $User->setRoles(array('ROLE_USER'));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+
+/**
+ * @Route("/s/setToUser/{id}", name="settouser")
+ */
+public function setToUserAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+
+        $User->setIsPro(0);
+        $User->setRoles(array('ROLE_USER'));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+
+/**
+ * @Route("/s/setToFranchise/{id}", name="settofranchise")
+ */
+public function setToFranchiseAction($id, Request $request)
+{
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $User = $repository->findOneBy(array('id' => $id));
+        $User->setRoles(array('ROLE_ADMIN'));
+        $User->setIsPro(1);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($User);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
+
+
+
+
+        return $this->render('AdminBundle:Default:users.html.twig', array(
+            'listeUser' => $listeUser
+
+
+));
+
+}
+/**
+ * @Route("/s/editDefinedProduct/{id}", name="editDefinedProduct")
  */
 public function editDefinedProductAction(Request $request, $id)
 {
@@ -464,7 +634,7 @@ public function editDefinedProductAction(Request $request, $id)
 
 
 /**
- * @Route("/changeDefinedProduct/{id}", name="changeDefinedProduct")
+ * @Route("/s/changeDefinedProduct/{id}", name="changeDefinedProduct")
  */
 public function changeDefinedProductAction(Request $request, $id)
 {

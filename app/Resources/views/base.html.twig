@@ -17,8 +17,11 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
     <!-- Custom Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister' rel='stylesheet' type='text/css'>
+
     <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" type="text/css">
 
     <!-- Plugin CSS -->
@@ -36,8 +39,10 @@
     <link rel="stylesheet" href="{{ asset('css/styles_home.css') }}" type="text/css">
     <!-- BB CSS menu -->
     <link rel="stylesheet" href="{{ asset('css/styles_menu.css') }}" type="text/css">
- <!-- BB CSS FAQ -->
+    <!-- BB CSS FAQ -->
     <link rel="stylesheet" href="{{ asset('css/styles_faq.css') }}" type="text/css">
+     <!-- BB CSS Plugin -->
+    <link rel="stylesheet" href="{{ asset('css/styles_plugin.css') }}" type="text/css">
     <!--Roboto Font-->
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
@@ -50,6 +55,7 @@
 
 </head>
 <!-- Follow Us -->
+<div class="wrapper">
 <div class="container flwus">
       <div class="row text-center">
         <div class="col-sm-10 col-xs-6"></div>
@@ -88,23 +94,26 @@
       </button>
       <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img class="img-responsive img-principal-menu" src="{{ asset('images/logo_test.jpg') }}" style="width:100%;height:auto; max-width:75px;"></a>-->
     </div>
+    {% if page is not defined %}
+    {% set page = 'vide' %}
+    {% endif %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{{ path('accueil') }}">Home</a></li>
+        <li class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
 
-        {% if collection is defined %}
-        <li class=""><a href="{{ path('collections') }}">Collections</a></li>
+        <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
-        {% endif %}
 
-        <li class=""><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
 
-        <li><a href="{{ path('agatheque') }}">Agathèque</a></li>
-        <li class=""><a href="{{ path('faq') }}">FAQ</a></li>
-        <li class=""><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
+        <li class="{% if page == 'personnalisation' %}active{% endif%}"><a href="{{ path('personnalisation') }}">Créer son noeud</a></li>
+
+        <li class="{% if page == 'agatheque' %}active{% endif%}"><a href="{{ path('agatheque') }}">Agathèque</a></li>
+        <li class="{% if page == 'faq' %}active{% endif%}"><a href="{{ path('faq') }}">FAQ</a></li>
+        <li class="{% if page == 'quisommesnous' %}active{% endif%}"><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
+            {% if collection is defined %}
+        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
               {% for col in collection %}
@@ -117,23 +126,23 @@
           </ul>
         </li>
           {% endif %}
+          {% endif %}
+
 
 
 
           {% if app.user.isPro == 1 %}
-          <li class="active"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
+          <li class="{% if page == 'rectangle' %}active{% endif%}"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
           {% endif %}
         {% endif %}
 
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
-                    <li>
-                        <a href="#"><img class="img-menu-question" src="{{ asset('img/Logo-questionmark-menu.png') }}" title="Comment assembler mon noeud?" style="height: auto; max-height: 1.85em; float: none; padding-bottom:5px;"></a>
-                    </li>
-                    <li class="menu-panier <?= $icone_panier; ?>">
+
+                    <li class="menu-panier {% if page == 'panier' %}active{% endif%}">
                         <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
-                    <li class="menu-account <?php if($page_actuelle == 'account'){echo 'active';} ?>">
+                    <li class="menu-account {% if page == 'compte' %}active{% endif%}">
                         <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>
@@ -192,6 +201,13 @@
     .resume_cart_article{
     	margin-left: 5px;
     }
+    .resume_cart_quit{
+      color:grey;
+      cursor:pointer;
+      position:absolute;
+      top : 3px;
+      right:6px;
+    }
 }
 @media screen and (max-width: 1500px){
 .resume_cart{
@@ -201,22 +217,38 @@ display:none;
     </style>
     {% if listePanier is defined %}
 
-    <div class="resume_cart">
+    <div class="resume_cart" id="resume_cart">
+      <div class="resume_cart_quit">
+        <a onclick="resume_cart_exit()"><i class="fa fa-times fa-1" aria-hidden="true"></i></a>
+      </div>
     	<h2 class="resume_cart_h2">
     		<center>Panier</center>
     	</h2>
+      {% set numero_ligne = 0 %}
+
       {% for listepanier in listePanier %}
 
     	<div class="resume_cart_article">
-    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;"></span>
+    		<span> {{ listepanier.quantity }} {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;">
+
+          {% if listepanier.id %}
+            <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+            {% else  %}
+
+          <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+
+
+          {% endif %}
+        </a></span>
     	</div>
+{% set numero_ligne = numero_ligne + 1 %}
       {% endfor %}
 
     		<div class="resume_cart_article" style="height:50px">
     		<span>  </span> <span style="position:absolute; right:5px;"></span>
     	</div>
     	<div class="resume_cart_checkout">
-    		<center><button type="submit" class="btn btn-primary btn-lg active btn_send">Payer</button></center>
+    		<center><a href="{{ path('panier') }}" class="btn btn-primary btn-lg active btn_send">Voir le panier</a></center>
     	</div>
     </div>
     {% endif %}
@@ -224,6 +256,8 @@ display:none;
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
+    <div class="push"></div>
+</div>
 <footer class="general-footer">
     <div class="container-fluid footer">
           <div class="row text-center">
@@ -278,6 +312,19 @@ display:none;
           $('#checkbox-coffret').change(function() {
               $('#couleurs-coffret').toggle();
           });
+          /*Test script menu active
+          $(function() {
+            $('nav a[href^="/' + location.pathname+ '"]').addClass('active');
+            alert('nav a[href="' + location.pathname + '"]');
+
+        });*/
+
+      </script>
+
+      <script>
+        function resume_cart_exit(){
+document.getElementById('resume_cart').style.display = 'none';
+}
       </script>
 
 

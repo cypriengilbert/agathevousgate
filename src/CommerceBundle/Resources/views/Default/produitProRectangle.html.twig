@@ -9,11 +9,11 @@
 
 {% if app.user.isPro == 1 %}
 {% for collection in collection %}
-
-		<h2>Collection {{ collection.title }}</2>
+{% if collection.colors is not empty %}
 
 				<div class="row text-center" style="margin-top:30px;">
 
+				<h2>Collection {{ collection.title }}</h2>
 
 				{% for color in collection.colors %}
 
@@ -33,6 +33,8 @@
 						</div>
 				</div>
 				{% endfor %}
+				{% endif %}
+
 	{% endfor %}
 	{% else %}
 
