@@ -124,6 +124,31 @@ class CommerceController extends Controller
     public function panierAction(Request $request)
     {
         $page = 'panier';
+        $session = $this->get('session');
+        $request = Request::createFromGlobals();
+        $codePromo = $request->query->get('code');
+        if ($codePromo){
+          $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+          $EntiteCode = $repository->findOneBy(array(
+              'code' => $codePromo
+          ));
+          $datetime = new \Datetime('now');
+
+        if($EntiteCode){
+          if (
+        $EntiteCode->getDateDebut() <= $datetime && $EntiteCode->getDateFin() >= $datetime){
+
+          }
+          else
+        { $EntiteCode = null;}}
+
+        $session->set('codePromo',$EntiteCode);
+
+}else{
+
+$EntiteCode = null;
+}
+
 
         $session = $this->get('session');
         if ($session->get('panier_session')) {
@@ -179,7 +204,8 @@ class CommerceController extends Controller
             'listePanier' => $listeAddedProduct,
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
-            'page' => $page
+            'page' => $page,
+            'codePromo' => $EntiteCode
 
         ));
     }
@@ -846,8 +872,24 @@ class CommerceController extends Controller
                 $newcommande->setIsPanier(true);
                 $datetime = new \Datetime('now');
                 $newcommande->setDate($datetime);
-                $total_commande_100 = $total_commande * 100;
 
+                $session = $this->get('session');
+                $codePromo = $session->get('codePromo');
+                if($codePromo){
+                  if ($total_commande >= $codePromo->getMinimumCommande()){
+                    if($codePromo->getGenre() == 'pourcentage'){
+                      $remise = round($total_commande * $codePromo->getMontant() / 100,2);
+                        }
+                        elseif($codePromo->getGenre() == 'remise'){
+                          $remise = $codePromo->getMontant();
+
+                        }
+                        $total_commande = $total_commande - $remise;
+                        }
+
+                }
+                $total_commande_100 = $total_commande * 100;
+                $newcommande->setRemise($remise);
                 $newcommande->setPrice($total_commande);
 
                 $em = $this->getDoctrine()->getManager();
@@ -977,8 +1019,23 @@ class CommerceController extends Controller
             $newcommande->setIsPanier(true);
             $datetime = new \Datetime('now');
             $newcommande->setDate($datetime);
-            $total_commande_100 = $total_commande * 100;
+            $session = $this->get('session');
+            $codePromo = $session->get('codePromo');
+            if($codePromo){
+              if ($total_commande >= $codePromo->getMinimumCommande()){
+                if($codePromo->getGenre() == 'pourcentage'){
+                  $remise = round($total_commande * $codePromo->getMontant() / 100,2);
+                    }
+                    elseif($codePromo->getGenre() == 'remise'){
+                      $remise = $codePromo->getMontant();
 
+                    }
+                    $total_commande = $total_commande - $remise;
+                    }
+
+            }
+            $total_commande_100 = $total_commande * 100;
+            $newcommande->setRemise($remise);
             $newcommande->setPrice($total_commande);
 
             $em = $this->getDoctrine()->getManager();

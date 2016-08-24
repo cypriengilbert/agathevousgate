@@ -37,6 +37,6 @@ security:
         - { path: ^/admin/done, role: ROLE_ADMIN }
         - { path: ^/admin/validate, role: ROLE_ADMIN }
         - { path: ^/admin/s, role: ROLE_SUPER_ADMIN }
-        - { path: ^/paiement, role: ROLE_USER, requires_channel: https }
+        - { path: ^/paiement, role: ROLE_USER }
         - { path: ^/franchise, role: ROLE_ADMIN}
         - { path: ^/pro, role: ROLE_ADMIN}

@@ -9,6 +9,7 @@ use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 
 
@@ -197,6 +198,37 @@ public function addCommandeAction(Request $request)
                 return $this->render('AdminBundle:Default:addCommande.html.twig', array(
                     'form' => $form->createView(),
                     'listeCommande' => $listeCommande,
+
+                ));
+}
+
+/**
+ * @Route("/s/addCodePromo", name="addCodePromo")
+ */
+
+public function addCodePromoAction(Request $request)
+{
+
+
+        $newCodePromo = new CodePromo();
+
+        $datetime = new \Datetime('now');
+        $newCodePromo->setDateCreation($datetime);
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\CodePromoType', $newCodePromo);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newCodePromo);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Code Promo bien enregistrée.');
+
+                    return $this->redirect($this->generateUrl('addCodePromo', array(
+                     'validate' => 'Code Promo ajoutée',
+
+
+                    )));
+                }
+                return $this->render('AdminBundle:Default:addCodePromo.html.twig', array(
+                    'form' => $form->createView(),
 
                 ));
 }

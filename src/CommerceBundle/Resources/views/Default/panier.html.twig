@@ -41,7 +41,8 @@
 
 
 
-{% set totalsum = null %}{% set numero_ligne = 0 %}
+{% set totalsum = null %}{% set numero_ligne = 0 %}{% set remise = 0 %}
+
 
 														{% for listepanier in listePanier %}
 {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
@@ -126,7 +127,29 @@
                             <td>   </td>
                             <td><h5>Sous-total</h5></td>
                             <td class="text-right"><h5><strong>  {{ totalsum }} €</strong></h5></td>
+                        </tr>{% set codePromo = app.session.get('codePromo') %}
+                          {% if codePromo %}
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+
+                            <td><h5>Remise</h5></td>
+
+                            {% if totalsum >= codePromo.minimumCommande %}
+                                {% if codePromo.genre == 'pourcentage' %}
+                                {% set remise = totalsum * codePromo.montant / 100 %}
+                                {% elseif codePromo.genre  == 'remise' %}
+                                {% set remise = codePromo.montant %}
+                                {% endif %}
+                            {% endif %}
+
+
+                            <td class="text-right"><h5><strong>  {{ remise|round(2, 'floor') }} €</strong></h5></td>
+
+                            {% set totalsum = totalsum - remise|round(2, 'floor') %}
                         </tr>
+{% endif %}
                         <tr>
                             <td>   </td>
                             <td>   </td>
@@ -143,8 +166,14 @@
                         </tr>
                         <tr>
                             <td>   </td>
-                            <td>   </td>
-                            <td>   </td>
+                            <td align="right"><input id="input_promo" type="text" />
+</td>
+                            <td>
+                            <button type="button" class="btn btn-default">
+
+                                <a onclick="verifCode()"><span class="glyphicon glyphicon-shopping-cart"></span> Valider</a>
+                            </button>
+                            </td>
                             <td>
                                 <button type="button" class="btn btn-default">
                                     <a href="index.php"><span class="glyphicon glyphicon-shopping-cart"></span> Retourner à l'accueil</a>
@@ -162,6 +191,19 @@
             </div>
         </div>
     </section>
+<script>
+function verifCode(){
+var codepromo = document.getElementById("input_promo").value;
+{% set codepromo_twig %}codepromo{% endset %}
+
+var url = "{{ path('panier', { 'code': 'twig' }) }}";
+url = url.replace("twig", codepromo);
+window.location.replace(url);
+
+
+}
+
+</script>
 
     {% endif %}
 
