@@ -31,7 +31,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class Profile2Controller extends Controller
 {
     /**
-    * @Route("/compte_user", name="compte")
+    * @Route("/compte", name="compte")
      */
     public function showAction(Request $request)
     {
