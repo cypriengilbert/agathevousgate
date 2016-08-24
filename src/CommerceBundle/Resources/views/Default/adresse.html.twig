@@ -3,14 +3,57 @@
 
 <div class="panel panel-info">
 
-    <div class="panel-heading"><h3 class="panel-title">Adresse 1  <a style="position:relative; left:70%">modifier</a> </h3>
+    <div class="panel-heading" style="position:relative;"><h3 class="panel-title">Adresse principale </h3> <a onclick="showForm()" style="position:absolute;color:#ffffff; cursor:pointer;right:10px; top: 10px"><i class="fa fa-pencil-square-o fa-2" aria-hidden="true"></i></a>
     </div>
     <div class="panel-body">
         {{ user.adress.adress}}<br>
         {{ user.adress.zipcode}} {{ user.adress.city}}<br>
 
     </div>
+
+
+
 </div>
 
+<div id="form" style="display:none">
+{{ form_start(formAdress) }}
 
 
+<div class="form-group">
+    {{ form_label(formAdress.adress, "Numéro et Rue", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(formAdress.adress) }}
+    {{ form_widget(formAdress.adress, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(formAdress.adressMore, "Complément d'adresse", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(formAdress.adressMore) }}
+    {{ form_widget(formAdress.adressMore, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(formAdress.zipcode, "Code Postal", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(formAdress.zipcode) }}
+    {{ form_widget(formAdress.zipcode, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(formAdress.city, "Ville", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(formAdress.city) }}
+    {{ form_widget(formAdress.city, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div>
+      <center>  <input type="submit" class="btn btn-primary btn-lg active btn_blue" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-primary" /></center>
+</div>
+{{ form_end(formAdress) }}
+</div>
+
+<script>
+function showForm(){
+document.getElementById('form').style.display='';
+}
+</script>

@@ -691,7 +691,7 @@ class CommerceController extends Controller
     }
 
     /**
-     * @Route("/charge", name="charge")
+     * @Route("/paiement/charge", name="charge")
      */
     public function chargeAction(Request $request)
     {
@@ -771,7 +771,7 @@ class CommerceController extends Controller
 
 
     /**
-     * @Route("/choixlivraison", name="choixlivraison")
+     * @Route("/paiement/choixlivraison", name="choixlivraison")
      */
     public function choixLivraisonAction(Request $request)
     {
@@ -896,7 +896,7 @@ class CommerceController extends Controller
 
 
     /**
-     * @Route("/choosen_atelier/{id}", name="choosen_atelier")
+     * @Route("/paiement/choosen_atelier/{id}", name="choosen_atelier")
      */
     public function choosenAtelierAction(Request $request, $id)
     {
@@ -929,7 +929,7 @@ class CommerceController extends Controller
 
     }
     /**
-     * @Route("/choixpaiement", name="choixpaiement")
+     * @Route("/paiement/choixpaiement", name="choixpaiement")
      */
     public function choixPaiementAction(Request $request)
     {
@@ -1046,7 +1046,7 @@ class CommerceController extends Controller
 
 
     /**
-     * @Route("/addedTissutoCart/{id}_{idCollection}", name="addedTissutoCart")
+     * @Route("franchise/addedTissutoCart/{id}_{idCollection}", name="addedTissutoCart")
      */
     public function addedTissutoCartAction($id, $idCollection, Request $request)
     {
@@ -1155,7 +1155,7 @@ class CommerceController extends Controller
 
 
     /**
-     * @Route("/addRectangle/{id}_{product}", name="addRectangle")
+     * @Route("pro/addRectangle/{id}_{product}", name="addRectangle")
      */
     public function addedRectangleAction($id, $product, Request $request)
     {

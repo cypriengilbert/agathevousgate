@@ -30,6 +30,8 @@
 
        <tbody>
             {% for commande in listeCommande %}
+            {% if commande.AtelierLivraison %}
+            {% if (commande.AtelierLivraison.franchise == app.user or is_granted('ROLE_SUPER_ADMIN')) %}
                 <tr>
                   <td>{{ commande.id }}</td>
                   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
@@ -86,6 +88,63 @@
     window.location.href = '{{ path("validate",{"id": commande.id}) }}'
 }"><i class="material-icons">mode_edit</i> </a></td>
               </tr>
+
+              {% endif %}
+              {% elseif is_granted('ROLE_SUPER_ADMIN') %}
+              <tr>
+                <td>{{ commande.id }}</td>
+                <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
+                <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
+                <td>{{ commande.date|date("d-m-Y") }}</td>
+                <td>
+                    {% for product in commande.addedproducts %}
+                      <b>{{ product.product.name }} {{ product.accessoire.name }} : {{ product.quantity }}<br></b>
+                      {% if product.Color1 %}
+                      {{ product.Color1.name }} /
+                        {% endif %}
+                        {% if product.color2 %}
+                        {{ product.Color2.name }} /
+                          {% endif %}
+                          {% if product.Color3 %}
+                          {{ product.Color3.name }} /
+                            {% endif %}
+                            {% if product.Color4 %}
+                            {{ product.Color4.name }} /
+                              {% endif %}
+                              {% if product.Color5 %}
+                              {{ product.Color5.name }} /
+                                {% endif %}
+                                {% if product.Color6 %}
+                                {{ product.Color6.name }} /
+                                  {% endif %}
+                                  {% if product.Color7 %}
+                                  {{ product.Color7.name }} /
+                                    {% endif %}
+                                    {% if product.Color8 %}
+                                    {{ product.Color8.name }} /
+                                      {% endif %}
+                                      {% if product.Color9 %}
+                                      {{ product.Color9.name }} /
+                                        {% endif %}
+                                        {% if product.Color10 %}
+                                        {{ product.Color10.name }} /
+                                          {% endif %}
+
+                      <br>
+
+                    {% endfor %}
+                </td>
+                <td>
+              {{ commande.price }}
+                </td>
+
+                <td>
+
+<a onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
+  window.location.href = '{{ path("validate",{"id": commande.id}) }}'
+}"><i class="material-icons">mode_edit</i> </a></td>
+              </tr>
+              {% endif %}
             {% endfor %}
        </tbody>
   </table>

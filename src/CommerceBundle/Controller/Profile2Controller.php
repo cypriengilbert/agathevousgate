@@ -116,6 +116,22 @@ if ($formPassword->isValid()) {
 }
 
 
+//change adresse
+
+$userAdress = $user->getAdress();
+
+$formAdress = $this->get('form.factory')->create('UserBundle\Form\UserAdressType', $userAdress);
+
+if ($formAdress->handleRequest($request)->isValid()) {
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($userAdress);
+
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Adresse bien enregistrée.');
+
+
+}
+
         return $this->render('CommerceBundle:Default:show2.html.twig', array(
             'user' => $user,
             'listeCommande' => $listeCommandeencours,
@@ -124,6 +140,7 @@ if ($formPassword->isValid()) {
             'page' => $page,
             'collection' => $collectionActive,
             'form' => $form->createView(),
+            'formAdress' => $formAdress->createView(),
             'formPassword' => $formPassword->createView()
 
         ));
