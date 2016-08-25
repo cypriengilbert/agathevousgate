@@ -20,176 +20,177 @@
             </div>
         </div>
         {% if listePanier %}
+
+
+
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-12">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th class="text-center"> Action</th>
-                            <th class="text-center">Produit</th>
-                            <th class="text-center">Quantité</th>
-                            <th class="text-right">Prix</th>
-                            <th class="text-right">Total</th>
+                        <div class="col-md-9" >
+                                {% set totalsum = null %}{% set numero_ligne = 0 %}
+                                  {% set remise = 0 %}
+                                    {% for listepanier in listePanier %}
+                                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                             <div class="col-sm-12 col-md-12" style="border-bottom:1px solid grey">
 
-                        </tr>
-                        </thead>
-                        <tbody>
-
-
-
-
-
-
-{% set totalsum = null %}{% set numero_ligne = 0 %}{% set remise = 0 %}
-
-
-														{% for listepanier in listePanier %}
-{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-
-
-                            <tr>
-                                <td class="col-sm-1 col-md-1 text-center">
-{% if listepanier.id %}
-                                    <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
-                                    {% else  %}
-
-<a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
-
-
-{% endif %}
-
-
-
-                                </td>
-
-                                    <td class="col-sm-8 col-md-6 text-center">
-
-                                    {% if listepanier.Color1 %}
-                                    {{ listepanier.Color1.name }} /
-                                      {% endif %}
-                                      {% if listepanier.color2 %}
-                                      {{ listepanier.Color2.name }} /
+                            <div class="col-md-3" style="">
+                                <img src="hhh" style="width:90%; height:200px; margin-top:5px;">
+                            </div>
+                            <div class="col-md-8" style="">
+                                <div style="height:200px; width:100%; position:relative">
+                                    <h2>{{ listepanier.product.name }} - {{ listepanier.product.price }}€ </h2>
+                                    <p>Collection Londres</p>
+                                    <p>
+                                        {% if listepanier.Color1 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color2 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                         {% endif %}
                                         {% if listepanier.Color3 %}
-                                        {{ listepanier.Color3.name }} /
-                                          {% endif %}
-                                          {% if listepanier.Color4 %}
-                                          {{ listepanier.Color4.name }} /
-                                            {% endif %}
-                                            {% if listepanier.Color5 %}
-                                            {{ listepanier.Color5.name }} /
-                                              {% endif %}
-                                              {% if listepanier.Color6 %}
-                                              {{ listepanier.Color6.name }} /
-                                                {% endif %}
-                                                {% if listepanier.Color7 %}
-                                                {{ listepanier.Color7.name }} /
-                                                  {% endif %}
-                                                  {% if listepanier.Color8 %}
-                                                  {{ listepanier.Color8.name }} /
-                                                    {% endif %}
-                                                    {% if listepanier.Color9 %}
-                                                    {{ listepanier.Color9.name }} /
-                                                      {% endif %}
-                                                      {% if listepanier.Color10 %}
-                                                      {{ listepanier.Color10.name }} /
-                                                        {% endif %}
-<br>
-
-
-                                      {{ listepanier.product.name }}<br />
-
-                                    </td>
-
-                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color4 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color5 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color6 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color7 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color8 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color9 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                        {% if listepanier.Color10 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                        {% endif %}
+                                    </p>
+                                    <p>
                                     {% if listepanier.id %}
 
-                                      <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div><a href="{{ path('minusproduct',{'id':listepanier.id} ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
-                                      {% else %}
-                                      <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div>  <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
-                                      {% endif %}
-                                    </td>
-                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price }} €</strong></td>
-                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
+                                        <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
+                                            <div style="position:relative; top:20px; left:35px">
+                                                <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                            </div>
+                                        </a>
+                                        <div>
+                                        <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                        </div>
+                                        <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
+                                            <div>
+                                                <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                                </i>
+                                            </div>
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+                                            <div style="position:relative; top:20px; left:35px">
+                                                <i class="fa fa-plus fa-1" aria-hidden="true">
+                                                </i>
+                                            </div>
+                                        </a>
+                                        <div>
+                                            <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                        </div>
+                                        <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+                                            <div>
+                                                <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                                </i>
+                                            </div>
+                                        </a>
+                                          {% endif %}
+                                    </p>
+                                    <p style="position:absolute; right:10px; bottom:10px">
+                                        {{ listepanier.product.price * listepanier.quantity }} €
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-1" style="">
+                                <div style="height:200px; width:100%; position:relative">
+                                    {% if listepanier.id %}
+                                    <p style="position:absolute; left:10px; top:15px">
+                                        <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}">
+                                            <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                        </a>
+                                    {% else  %}
+                                        <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}">
+                                            <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                        </a>
+                                    {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                                                </div>
 
+                        {% set numero_ligne = numero_ligne + 1 %}
+                        {% endfor %}
+                        </div>
 
-                            </tr>
+                        <div class="col-md-3">
+                        <div class="col-md-12"  style="border:1px solid #A94141">
+                            <div class="row">
+                            <div class="col-xs-7 " style="">
+                                <p></p>
+                                <p>Sous-total</p>
+                                <p>Livraison</p>
+                                <p>Remise</p>
+                                <p>Total</p>
+                            </div>
+                            <div class="col-xs-5" >
+                                <p></p>
+                                <p><strong>  {{ totalsum }} €</strong></p>
+                                <p><strong>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</strong></p>
+                                {% set codePromo = app.session.get('codePromo') %}
+                                    {% if codePromo %}
+                                     {% if codePromo.genre == 'pourcentage' %}
+                                        {% set remise = totalsum * codePromo.montant / 100 %}
+                                        {% elseif codePromo.genre  == 'remise' %}
+                                        {% set remise = codePromo.montant %}
+                                        {% endif %}
+                                        <p><strong>  {{ remise|round(2, 'floor') }} €</strong></p>
+                                        {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                                     {% else %}
+                                     <p>0</p>
 
-{% set numero_ligne = numero_ligne + 1 %}
-													{% endfor %}
+                                    {% endif %}
+                                <p><strong>  {{ totalsum -livraison }} €</strong></p>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="position:relative">
+                            <div class="col-md-4" style="">
+                                <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px">
+                            </div>
 
+                            <a onclick="verifCode()"> <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px;">
+                            <div class="col-md-12">
+                             <center>  <p style="color:white; position:absolute; top:5px; "> Valider le coupon </p></center>
+                             </div>
 
+                            </div>
+                            </a>                       </div>
+                        <div class="col-md-12" style="position:relative; top:29px;height:30px; background-color:#242258" >
+                            <div class="col-md-3">
+                            </div>
 
-                        <tr>
-                            <td>   </td>
-                            <td>   </td>
-                            <td>   </td>
-                            <td><h5>Sous-total</h5></td>
-                            <td class="text-right"><h5><strong>  {{ totalsum }} €</strong></h5></td>
-                        </tr>{% set codePromo = app.session.get('codePromo') %}
-                          {% if codePromo %}
-                        <tr>
-                            <td>   </td>
-                            <td>   </td>
-                            <td>   </td>
-
-                            <td><h5>Remise</h5></td>
-
-                            {% if totalsum >= codePromo.minimumCommande %}
-                                {% if codePromo.genre == 'pourcentage' %}
-                                {% set remise = totalsum * codePromo.montant / 100 %}
-                                {% elseif codePromo.genre  == 'remise' %}
-                                {% set remise = codePromo.montant %}
-                                {% endif %}
-                            {% endif %}
-
-
-                            <td class="text-right"><h5><strong>  {{ remise|round(2, 'floor') }} €</strong></h5></td>
-
-                            {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                        </tr>
-{% endif %}
-                        <tr>
-                            <td>   </td>
-                            <td>   </td>
-                            <td>   </td>
-                            <td><h5>Frais de livraison</h5></td>
-                            <td class="text-right"><h5><strong>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</strong></h5></td>
-                        </tr>
-                        <tr>
-                            <td>   </td>
-                            <td>   </td>
-                            <td>   </td>
-                            <td><h3>Total</h3></td>
-                            <td class="text-right"><h3><strong>{{ totalsum + livraison }} €</strong></h3></td>
-                        </tr>
-                        <tr>
-                            <td>   </td>
-                            <td align="right"><input id="input_promo" type="text" />
-</td>
-                            <td>
-                            <button type="button" class="btn btn-default">
-
-                                <a onclick="verifCode()"><span class="glyphicon glyphicon-shopping-cart"></span> Valider</a>
-                            </button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-default">
-                                    <a href="index.php"><span class="glyphicon glyphicon-shopping-cart"></span> Retourner à l'accueil</a>
-                                </button>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-success">
-                                      <a href="{{ path('choixlivraison') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Payer </a><span class="glyphicon glyphicon-play"></span>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            <div class="col-md-6">
+                                <a href="{{ path('choixlivraison') }}"><p style="color:white; position:absolute; top:5px; "><span class="glyphicon glyphicon-shopping-cart"></span> Payer </p></a>
+                            </div>
+                            <div class="col-md-3">
+                            </div>
+                        </div>
+                        </div>
                 </div>
             </div>
         </div>
+        {% endif %}
     </section>
 <script>
 function verifCode(){
@@ -205,6 +206,5 @@ window.location.replace(url);
 
 </script>
 
-    {% endif %}
 
 {% endblock %}

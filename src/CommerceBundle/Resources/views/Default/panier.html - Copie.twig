@@ -1,0 +1,210 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<body>
+
+
+
+ <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Votre panier {% if not listePanier %} est vide {% endif %}</h2>
+
+
+
+                    <hr class="primary"><br />
+                </div>
+            </div>
+        </div>
+        {% if listePanier %}
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center"> Action</th>
+                            <th class="text-center">Produit</th>
+                            <th class="text-center">Quantité</th>
+                            <th class="text-right">Prix</th>
+                            <th class="text-right">Total</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+
+
+
+
+{% set totalsum = null %}{% set numero_ligne = 0 %}{% set remise = 0 %}
+
+
+														{% for listepanier in listePanier %}
+{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+
+
+                            <tr>
+                                <td class="col-sm-1 col-md-1 text-center">
+{% if listepanier.id %}
+                                    <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+                                    {% else  %}
+
+<a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+
+
+{% endif %}
+
+
+
+                                </td>
+
+                                    <td class="col-sm-8 col-md-6 text-center">
+
+                                    {% if listepanier.Color1 %}
+                                    {{ listepanier.Color1.name }} /
+                                      {% endif %}
+                                      {% if listepanier.color2 %}
+                                      {{ listepanier.Color2.name }} /
+                                        {% endif %}
+                                        {% if listepanier.Color3 %}
+                                        {{ listepanier.Color3.name }} /
+                                          {% endif %}
+                                          {% if listepanier.Color4 %}
+                                          {{ listepanier.Color4.name }} /
+                                            {% endif %}
+                                            {% if listepanier.Color5 %}
+                                            {{ listepanier.Color5.name }} /
+                                              {% endif %}
+                                              {% if listepanier.Color6 %}
+                                              {{ listepanier.Color6.name }} /
+                                                {% endif %}
+                                                {% if listepanier.Color7 %}
+                                                {{ listepanier.Color7.name }} /
+                                                  {% endif %}
+                                                  {% if listepanier.Color8 %}
+                                                  {{ listepanier.Color8.name }} /
+                                                    {% endif %}
+                                                    {% if listepanier.Color9 %}
+                                                    {{ listepanier.Color9.name }} /
+                                                      {% endif %}
+                                                      {% if listepanier.Color10 %}
+                                                      {{ listepanier.Color10.name }} /
+                                                        {% endif %}
+<br>
+
+
+                                      {{ listepanier.product.name }}<br />
+
+                                    </td>
+
+                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                    {% if listepanier.id %}
+
+                                      <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div><a href="{{ path('minusproduct',{'id':listepanier.id} ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% else %}
+                                      <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div>  <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% endif %}
+                                    </td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price }} €</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
+
+
+                            </tr>
+
+{% set numero_ligne = numero_ligne + 1 %}
+													{% endfor %}
+
+
+
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Sous-total</h5></td>
+                            <td class="text-right"><h5><strong>  {{ totalsum }} €</strong></h5></td>
+                        </tr>{% set codePromo = app.session.get('codePromo') %}
+                          {% if codePromo %}
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+
+                            <td><h5>Remise</h5></td>
+
+                            {% if totalsum >= codePromo.minimumCommande %}
+                                {% if codePromo.genre == 'pourcentage' %}
+                                {% set remise = totalsum * codePromo.montant / 100 %}
+                                {% elseif codePromo.genre  == 'remise' %}
+                                {% set remise = codePromo.montant %}
+                                {% endif %}
+                            {% endif %}
+
+
+                            <td class="text-right"><h5><strong>  {{ remise|round(2, 'floor') }} €</strong></h5></td>
+
+                            {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                        </tr>
+{% endif %}
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Frais de livraison</h5></td>
+                            <td class="text-right"><h5><strong>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</strong></h5></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h3>Total</h3></td>
+                            <td class="text-right"><h3><strong>{{ totalsum + livraison }} €</strong></h3></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td align="right"><input id="input_promo" type="text" />
+</td>
+                            <td>
+                            <button type="button" class="btn btn-default">
+
+                                <a onclick="verifCode()"><span class="glyphicon glyphicon-shopping-cart"></span> Valider</a>
+                            </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-default">
+                                    <a href="index.php"><span class="glyphicon glyphicon-shopping-cart"></span> Retourner à l'accueil</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success">
+                                      <a href="{{ path('choixlivraison') }}"><span class="glyphicon glyphicon-shopping-cart"></span> Payer </a><span class="glyphicon glyphicon-play"></span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+<script>
+function verifCode(){
+var codepromo = document.getElementById("input_promo").value;
+{% set codepromo_twig %}codepromo{% endset %}
+
+var url = "{{ path('panier', { 'code': 'twig' }) }}";
+url = url.replace("twig", codepromo);
+window.location.replace(url);
+
+
+}
+
+</script>
+
+    {% endif %}
+
+{% endblock %}
