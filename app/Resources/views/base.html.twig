@@ -17,8 +17,8 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 
     <!-- Custom Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" type="text/css">
 
     <!-- Plugin CSS -->
@@ -225,7 +225,7 @@ display:none;
       {% for listepanier in listePanier %}
 
     	<div class="resume_cart_article">
-    		<span> {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;">
+    		<span> {{ listepanier.quantity }} {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;">
 
           {% if listepanier.id %}
             <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
@@ -235,7 +235,7 @@ display:none;
 
 
           {% endif %}
-        </a>{{ listepanier.id }}</span>
+        </a></span>
     	</div>
 {% set numero_ligne = numero_ligne + 1 %}
       {% endfor %}
