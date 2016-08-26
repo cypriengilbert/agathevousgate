@@ -33,13 +33,13 @@
                                   {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
                              <div class="col-sm-12 col-md-12" style="border-bottom:1px solid grey">
 
-                            <div class="col-md-3" style="">
-                                <img src="hhh" style="width:90%; height:200px; margin-top:5px;">
+                            <div class="col-md-3 hidesmall" style="">
+                                <img src="{{ asset('/upload/image_collection/' ~ listepanier.collection.ImageNameCarre )}}" style="width:90%;display: block; margin: auto;padding-top:50px">
                             </div>
                             <div class="col-md-8" style="">
                                 <div style="height:200px; width:100%; position:relative">
                                     <h2>{{ listepanier.product.name }} - {{ listepanier.product.price }}€ </h2>
-                                    <p>Collection Londres</p>
+                                    <p>Collection {{ listepanier.collection.title }}</p>
                                     <p>
                                         {% if listepanier.Color1 %}
                                         <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
@@ -107,25 +107,26 @@
                                         </a>
                                           {% endif %}
                                     </p>
-                                    <p style="position:absolute; right:10px; bottom:10px">
-                                        {{ listepanier.product.price * listepanier.quantity }} €
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-md-1" style="">
-                                <div style="height:200px; width:100%; position:relative">
+                                    <p style="position:relative; left:10px; top:-15px">
+
                                     {% if listepanier.id %}
-                                    <p style="position:absolute; left:10px; top:15px">
                                         <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}">
                                             <i class="fa fa-trash-o" aria-hidden="true" ></i>
                                         </a>
                                     {% else  %}
+
                                         <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}">
                                             <i class="fa fa-trash-o" aria-hidden="true" ></i>
                                         </a>
                                     {% endif %}
                                     </p>
+                                    <p style="position:absolute; right:10px; bottom:10px">
+                                        {{ listepanier.product.price * listepanier.quantity }} €
+                                    </p>
                                 </div>
+                            </div>
+                            <div class="col-md-1 hidesmall" style="">
+                                
                             </div>
                                                 </div>
 

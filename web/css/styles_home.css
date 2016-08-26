@@ -215,6 +215,12 @@ cursor:pointer
 .div_account_top_mobile{
 display: none;
 }
+.hidesmall{
+  display:;
+}
+.menu_account_div{
+  margin-top: 20px;
+}
 }
 .account_div{
 margin-top: 100px
@@ -250,6 +256,9 @@ display:none;
 margin-top: 20px;
 z-index: 1;
 }
+.menu_account_div{
+  margin-top: 0px;
+}
     }
 
     @media (max-width: 990px) {
@@ -258,6 +267,12 @@ z-index: 1;
       text-align:center;
       z-index: 2
 
+}
+.hidesmall{
+  display:none;
+}
+.menu_account_div{
+  margin-top: 0px;
 }
 
 
@@ -268,6 +283,12 @@ z-index: 1;
 {
   display:none;
 
+}
+.menu_account_div{
+  margin-top: 0px;
+}
+.hidesmall{
+  display:none;
 }
 #logo_mdp, #logo_adresse, #logo_info, #logo_encours, #logo_done{
 font-size:20px;

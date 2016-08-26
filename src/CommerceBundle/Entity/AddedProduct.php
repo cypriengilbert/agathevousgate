@@ -106,6 +106,12 @@ class AddedProduct
     private $commande;
 
     /**
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $collection;
+
+    /**
     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
     * @ORM\JoinColumn(nullable=false)
     */
@@ -485,5 +491,29 @@ class AddedProduct
     public function getSize()
     {
         return $this->size;
+    }
+
+    /**
+     * Set collection
+     *
+     * @param \CommerceBundle\Entity\Collection $collection
+     *
+     * @return AddedProduct
+     */
+    public function setCollection(\CommerceBundle\Entity\Collection $collection = null)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Get collection
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 }

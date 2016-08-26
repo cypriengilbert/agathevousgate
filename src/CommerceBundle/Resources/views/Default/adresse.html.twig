@@ -7,6 +7,9 @@
     </div>
     <div class="panel-body">
         {{ user.adress.adress}}<br>
+        {% if user.adress.adressMore %}
+        {{ user.adress.adressMore }}<br>
+        {% endif %}
         {{ user.adress.zipcode}} {{ user.adress.city}}<br>
 
     </div>

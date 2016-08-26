@@ -365,9 +365,9 @@ $EntiteCode = null;
 
 
     /**
-     * @Route("/personnalisation", name="personnalisation")
+     * @Route("/personnalisation/{idCollection}", name="personnalisation")
      */
-    public function personnalisationAction(Request $request)
+    public function personnalisationAction(Request $request, $idCollection)
     {
 
       $page = 'personnalisation';
@@ -384,6 +384,11 @@ $EntiteCode = null;
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $repository->findBy(array(
             'active' => 1
+        ));
+
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collection_selected = $repository->findOneBy(array(
+            'id' => $idCollection
         ));
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -414,6 +419,7 @@ $EntiteCode = null;
 
             $user = $this->container->get('security.context')->getToken()->getUser();
             $added_product->setClient($user);
+            $added_product->setCollection($collection_selected);
 
         }
 
@@ -552,8 +558,13 @@ $EntiteCode = null;
         $product_selected = $repository->findOneBy(array(
             'id' => $id
         ));
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collection_selected = $repository->findOneBy(array(
+            'id' => $id_collection
+        ));
 
         $added_product = new AddedProduct();
+
 
         $idColor1   = $product_selected->getColor1()->getId();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
@@ -652,7 +663,7 @@ $EntiteCode = null;
 
 
 
-
+        $added_product->setCollection($collection_selected);
         $added_product->setProduct($product);
         $added_product->setCommande(null);
         $added_product->setQuantity(1);
@@ -803,6 +814,8 @@ $EntiteCode = null;
     {
         $session = $this->get('session');
 
+
+
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -816,6 +829,21 @@ $EntiteCode = null;
                 'client' => $user,
                 'isPanier' => true
             ));
+
+
+            $userAdress = $user->getAdress();
+
+            $formAdress = $this->get('form.factory')->create('UserBundle\Form\UserAdressType', $userAdress);
+
+            if ($formAdress->handleRequest($request)->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($userAdress);
+
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Adresse bien enregistrée.');
+
+
+            }
         }
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
@@ -848,7 +876,9 @@ $EntiteCode = null;
                         'ateliers' => $ateliers,
                         'form' => $form->createView(),
                         'collection' => $collectionActive,
-                        'nbarticlepanier' => $nbarticle
+                        'nbarticlepanier' => $nbarticle,
+                        'formAdress' => $formAdress->createView(),
+
                     ));
 
                 }
@@ -913,7 +943,9 @@ $EntiteCode = null;
                     return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array(
                         'form' => $form->createView(),
                         'collection' => $collectionActive,
-                        'nbarticlepanier' => $nbarticle
+                        'nbarticlepanier' => $nbarticle,
+                        'formAdress' => $formAdress->createView(),
+
                     ));
 
                 }
@@ -1021,17 +1053,17 @@ $EntiteCode = null;
             $newcommande->setDate($datetime);
             $session = $this->get('session');
             $codePromo = $session->get('codePromo');
+            $remise=0;
             if($codePromo){
               if ($total_commande >= $codePromo->getMinimumCommande()){
                 if($codePromo->getGenre() == 'pourcentage'){
                   $remise = round($total_commande * $codePromo->getMontant() / 100,2);
-                    }
-                    elseif($codePromo->getGenre() == 'remise'){
+                  }
+                elseif($codePromo->getGenre() == 'remise'){
                       $remise = $codePromo->getMontant();
-
-                    }
-                    $total_commande = $total_commande - $remise;
-                    }
+                }
+                $total_commande = $total_commande - $remise;
+              }
 
             }
             $total_commande_100 = $total_commande * 100;
@@ -1046,7 +1078,8 @@ $EntiteCode = null;
             return $this->render('CommerceBundle:Default:paiement.html.twig', array(
                 'collection' => $collectionActive,
                 'nbarticlepanier' => $nbarticle,
-                'prixtotal' => $total_commande_100
+                'prixtotal' => $total_commande_100,
+                'listePanier' => $listePanier
             ));
 
 
