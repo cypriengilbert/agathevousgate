@@ -81,17 +81,17 @@
 
 {% set now = 'now'|date("Y") %}
 {% for commande in listeCommande %}
-  {% if now - commande.client.naissance <= 20 %}
+  {% if now - commande.client.naissance|date("Y") <= 20 %}
     {% set total_020 = total_020 + commande.price %}
-  {% elseif now - commande.client.naissance > 20 and now - commande.client.naissance <= 30 %}
+  {% elseif now - commande.client.naissance|date("Y") > 20 and now - commande.client.naissance|date("Y") <= 30 %}
   {% set total_2030 = total_2030 + commande.price %}
-  {% elseif now - commande.client.naissance > 30 and now - commande.client.naissance <= 40 %}
+  {% elseif now - commande.client.naissance|date("Y") > 30 and now - commande.client.naissance|date("Y") <= 40 %}
   {% set total_3040 = total_3040 + commande.price %}
-  {% elseif now - commande.client.naissance > 40 and now - commande.client.naissance <= 50 %}
+  {% elseif now - commande.client.naissance|date("Y") > 40 and now - commande.client.naissance|date("Y") <= 50 %}
   {% set total_4050 = total_4050 + commande.price %}
-  {% elseif now - commande.client.naissance > 50 and now - commande.client.naissance <= 60 %}
+  {% elseif now - commande.client.naissance|date("Y") > 50 and now - commande.client.naissance|date("Y") <= 60 %}
   {% set total_5060 = total_5060 + commande.price %}
-  {% elseif now - commande.client.naissance > 60 %}
+  {% elseif now - commande.client.naissance|date("Y") > 60 %}
   {% set total_60 = total_60 + commande.price %}
 
 {% endif %}
