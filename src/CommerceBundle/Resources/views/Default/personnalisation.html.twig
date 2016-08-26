@@ -382,8 +382,7 @@
     /*Script changement background url pour panelheading*/
 
     function get_data(i) {
-      alert(i);
-      document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url('img_tree.png')";
+      document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url("+i+")";
         if (document.getElementById("checkbox-coffret").checked) {
             document.getElementById("add_added_product_product").value = "{{ product_coffret.id }}";
             document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
