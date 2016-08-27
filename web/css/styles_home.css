@@ -177,6 +177,7 @@ border-radius: 1000px;
 margin-top: 30px;
 text-align: center;
 }
+
 .btn_blue:hover{
 	background-color: #FFF!important;
 	border-color: rgb(36, 34, 88) !important;
@@ -186,6 +187,8 @@ text-align: center;
 border-radius: 1000px;
 margin-top: 30px;
 }
+
+
 .btn_send{
 	background-color: #A94141!important;
 	border-color: #A94141 !important;

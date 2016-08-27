@@ -1245,6 +1245,46 @@ $EntiteCode = null;
 
 
     /**
+     * @Route("/product/{id}/", name="product")
+     */
+    public function productAction(Request $request, $id)
+    {
+
+
+
+        $session = $this->get('session');
+        if ($session->get('panier_session')) {
+
+        } else {
+            $session->set('panier_session', array());
+        }
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $product = $repository->findOneBy(array('id' => $id));
+
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticlepanier = count($repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user
+            )));
+        } else {
+            $nbarticlepanier = 0;
+        }
+
+
+
+        return $this->render('CommerceBundle:Default:product.html.twig', array(
+            'nbarticlepanier' => $nbarticlepanier,
+            'product' => $product,
+
+
+        ));
+    }
+
+
+    /**
      * @Route("pro/addRectangle/{id}_{product}", name="addRectangle")
      */
     public function addedRectangleAction($id, $product, Request $request)

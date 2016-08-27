@@ -228,7 +228,7 @@ class Color
      */
     public function getImageColorNoeud1Name()
     {
-        return $this->imageColorName;
+        return $this->imagecolorNoeud1Name;
     }
 
 
@@ -277,7 +277,7 @@ class Color
      */
     public function getImageColorNoeud2Name()
     {
-        return $this->imageColorName;
+        return $this->imagecolorNoeud2Name;
     }
 
     /**
@@ -323,7 +323,7 @@ class Color
      */
     public function getImageColorNoeud3Name()
     {
-        return $this->imageColorName;
+        return $this->imagecolorNoeud3Name;
     }
 
 

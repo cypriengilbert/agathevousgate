@@ -120,7 +120,7 @@ input[type="radio"].radio_colors:checked+ label {
 }
 
 .panel-heading-plugin {
-    background-color: #242258 !important;
+    background-color: #242258;
 }
 
 .panel-heading-plugin h4 {
