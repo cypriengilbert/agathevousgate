@@ -1,160 +1,129 @@
 {% extends 'base.html.twig' %}
-
-
 {% block body %}
-
 <body>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Votre paiement</h2>
+   <section>
+   <div class="container">
+   <div class="row">
+   <div class="col-lg-12 text-center">
+      <h2 class="section-heading">Votre paiement</h2>
+      <div class="row">
+         <div class="col-lg-4 text-center">
+            <div class="panel panel-info">
+               <div class="panel-heading" style="position:relative;">
+                  <h3 class="panel-title">Récapitulatif </h3>
+               </div>
+               <div class="panel-body">
+                  {% set totalsum = null %}{% set numero_ligne = 0 %}
+                  {% set remise = 0 %}
+                  {% for listepanier in listePanier %}
+                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {{ listepanier.product.price * listepanier.quantity }}€ </h2>
+                  <p>Collection {{ listepanier.collection.title }}</p>
+                  <p>
+                     {% if listepanier.Color1 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color2 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color3 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color4 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color5 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color6 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color7 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color8 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color9 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color10 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                  </p>
+               {% endfor %}
+               </div>
 
-
-
-                      <div class="col-lg-4 text-center">
-                      <div class="panel panel-info">
-                      <div class="panel-heading" style="position:relative;"><h3 class="panel-title">Récapitulatif </h3>
-                      </div>
-                      <div class="panel-body">
-
-                      {% set totalsum = null %}{% set numero_ligne = 0 %}
-                        {% set remise = 0 %}
-                          {% for listepanier in listePanier %}
-                        {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-
-
-
-
-
-                          <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {{ listepanier.product.price * listepanier.quantity }}€ </h2>
-                          <p>Collection {{ listepanier.collection.title }}</p>
-                          <p>
-                              {% if listepanier.Color1 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color2 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color3 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color4 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color5 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color6 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color7 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color8 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color9 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
-                              {% endif %}
-                              {% if listepanier.Color10 %}
-                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
-                              {% endif %}
-                          </p>
-                          <p>
-
-                          </p>
-
-                      </div>
-
-
-
-{% endfor %}
-</div>
-
-<div class="col-lg-4 text-center">
-
-<div class="panel panel-info">
-
-    <div class="panel-heading" style="position:relative;"><h3 class="panel-title">Adresse de livraison </h3>
-    </div>
-    <div class="panel-body">
-        {{ app.user.adress.adress}}<br>
-        {% if app.user.adress.adressMore %}
-        {{ app.user.adress.adressMore }}<br>
-        {% endif %}
-        {{ app.user.adress.zipcode}} {{ app.user.adress.city}}<br>
-
-    </div>
-
-  </div>
-
-
-
-
-                    </div>
-<div class="col-lg-4 text-center">
-<div class="panel panel-info">
-
-    <div class="panel-heading" style="position:relative;"><h3 class="panel-title">Paiement </h3>
-    </div>
-    <div class="panel-body">
-    <div class="row">
-    <div class="col-xs-6 " style="">
-        <p></p>
-        <p>Sous-total</p>
-        <p>Livraison</p>
-        <p>Remise</p>
-        <p>Total</p>
-    </div>
-    <div class="col-xs-6" >
-        <p></p>
-        <p> {{ totalsum }} €</p>
-        <p>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</p>
-        {% set codePromo = app.session.get('codePromo') %}
-            {% if codePromo %}
-             {% if codePromo.genre == 'pourcentage' %}
-                {% set remise = totalsum * codePromo.montant / 100 %}
-                {% elseif codePromo.genre  == 'remise' %}
-                {% set remise = codePromo.montant %}
-                {% endif %}
-                <p><strong>  {{ remise|round(2, 'floor') }} €</strong></p>
-                {% set totalsum = totalsum - remise|round(2, 'floor') %}
-             {% else %}
-             <p>0€</p>
-
-            {% endif %}
-        <p><strong>  {{ totalsum -livraison }} €</strong></p>
-    </div>
-    </div>
-    <div style="margin-bottom:20px">
-    <i class="fa fa-cc-mastercard fa-4" aria-hidden="true" style="font-size:50px"></i>
-    <i class="fa fa-cc-visa fa-4" aria-hidden="true" style="font-size:50px"></i>
-    <i class="fa fa-cc-amex fa-4" aria-hidden="true" style="font-size:50px"></i>
-
-
-    </div>
-                    <form action="{{ path('charge')}}" method="POST">
-                      <script
-                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="pk_test_syF86OI1zS3NV2MTSFh5Ca8l"
-                        data-amount="{{ prixtotal }}"
-                        data-name="Agathe Vous Gâte"
-                        data-description=""
-                        data-image="{{ asset('/img/logo-principal-menu.png') }}"
-                        data-locale="auto"
-                        data-zip-code="true"
-                        data-currency="eur">
-                      </script>
-                    </form>
-                    </div>
-                    </div>
-</div>
-                </div>
             </div>
         </div>
-
+            <div class="col-lg-4 text-center">
+               <div class="panel panel-info">
+                  <div class="panel-heading" style="position:relative;">
+                     <h3 class="panel-title">Adresse de livraison </h3>
+                  </div>
+                  <div class="panel-body">
+                     {{ app.user.adress.adress}}<br>
+                     {% if app.user.adress.adressMore %}
+                     {{ app.user.adress.adressMore }}<br>
+                     {% endif %}
+                     {{ app.user.adress.zipcode}} {{ app.user.adress.city}}<br>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 text-center">
+               <div class="panel panel-info">
+                  <div class="panel-heading" style="position:relative;">
+                     <h3 class="panel-title">Paiement </h3>
+                  </div>
+                  <div class="panel-body">
+                     <div class="row">
+                        <div class="col-xs-6 " style="">
+                           <p></p>
+                           <p>Sous-total</p>
+                           <p>Livraison</p>
+                           <p>Remise</p>
+                           <p>Total</p>
+                        </div>
+                        <div class="col-xs-6" >
+                           <p></p>
+                           <p> {{ totalsum }} €</p>
+                           <p>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</p>
+                           {% set codePromo = app.session.get('codePromo') %}
+                           {% if codePromo %}
+                           {% if codePromo.genre == 'pourcentage' %}
+                           {% set remise = totalsum * codePromo.montant / 100 %}
+                           {% elseif codePromo.genre  == 'remise' %}
+                           {% set remise = codePromo.montant %}
+                           {% endif %}
+                           <p><strong>  {{ remise|round(2, 'floor') }} €</strong></p>
+                           {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                           {% else %}
+                           <p>0€</p>
+                           {% endif %}
+                           <p><strong>  {{ totalsum -livraison }} €</strong></p>
+                        </div>
+                     </div>
+                     <div style="margin-bottom:20px">
+                        <i class="fa fa-cc-mastercard fa-4" aria-hidden="true" style="font-size:50px"></i>
+                        <i class="fa fa-cc-visa fa-4" aria-hidden="true" style="font-size:50px"></i>
+                        <i class="fa fa-cc-amex fa-4" aria-hidden="true" style="font-size:50px"></i>
+                     </div>
+                     <form action="{{ path('charge')}}" method="POST">
+                        <script
+                           src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                           data-key="pk_test_syF86OI1zS3NV2MTSFh5Ca8l"
+                           data-amount="{{ prixtotal }}"
+                           data-name="Agathe Vous Gâte"
+                           data-description=""
+                           data-image="{{ asset('/img/logo-principal-menu.png') }}"
+                           data-locale="auto"
+                           data-zip-code="true"
+                           data-currency="eur"></script>
+                     </form>
+                  </div>
+               </div>
+            </div>
+      </div>
+   </div>
 </body>
-
-
 {% endblock %}

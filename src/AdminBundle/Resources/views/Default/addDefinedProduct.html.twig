@@ -8,8 +8,97 @@
 
 {% block body %}
 
+<style>
+#collection_enfants checkbox, #collection_enfants label{
+margin-top:5px
 
+}
 
+.enfants [type="checkbox"]:not(:checked),
+.enfants [type="checkbox"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+.enfants [type="checkbox"]:not(:checked) + label,
+.enfants [type="checkbox"]:checked + label {
+		position: relative;
+    left:-px;
+		padding-left: 75px;
+		cursor: pointer;
+    padding-bottom:10px;
+
+	}
+.enfants [type="checkbox"]:not(:checked) + label:before,
+.enfants [type="checkbox"]:checked + label:before,
+.enfants [type="checkbox"]:not(:checked) + label:after,
+.enfants [type="checkbox"]:checked + label:after {
+		content: '';
+		position: absolute;
+	}
+.enfants [type="checkbox"]:not(:checked) + label:before,
+.enfants [type="checkbox"]:checked + label:before {
+		left:0; top: -3px;
+		width: 65px; height: 30px;
+		background: #DDDDDD;
+		border-radius: 15px;
+		-webkit-transition: background-color .2s;
+		-moz-transition: background-color .2s;
+		-ms-transition: background-color .2s;
+		transition: background-color .2s;
+	}
+.enfants [type="checkbox"]:not(:checked) + label:after,
+.enfants [type="checkbox"]:checked + label:after {
+		width: 20px; height: 20px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+		border-radius: 50%;
+		background: #7F8C9A;
+		top: 2px; left: 5px;
+	}
+
+	/* on checked */
+.enfants [type="checkbox"]:checked + label:before {
+		background:#34495E;
+	}
+.enfants [type="checkbox"]:checked + label:after {
+		background: #39D2B4;
+		top: 2px; left: 40px;
+	}
+
+.enfants [type="checkbox"]:checked + label .ui,
+.enfants [type="checkbox"]:not(:checked) + label .ui:before,
+.enfants [type="checkbox"]:checked + label .ui:after {
+		position: absolute;
+		left: 6px;
+		width: 65px;
+		border-radius: 15px;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 22px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+	}
+.enfants [type="checkbox"]:not(:checked) + label .ui:before {
+		content: "no";
+		left: 32px
+	}
+.enfants [type="checkbox"]:checked + label .ui:after {
+		content: "yes";
+		color: #39D2B4;
+	}
+.enfants [type="checkbox"]:focus + label:before {
+		border: 1px dashed #777;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-top: -1px;
+	}
+</style>
 
 
 
@@ -137,7 +226,9 @@
 
 </div>
 
-
+<div class="form-group enfants" id='enfant' style="display:none">
+    {{ form_row(form.enfants) }}
+</div>
 
 
 
@@ -169,6 +260,13 @@ var liste = {
 var onchange = 0;
 onchange = document.getElementById("defined_product_product").value;
 
+if (onchange == 3){
+document.getElementById('enfant').style.display="block";
+}
+else{
+document.getElementById('enfant').style.display="none";
+
+}
 
 
 

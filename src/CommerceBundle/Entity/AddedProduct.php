@@ -516,4 +516,5 @@ class AddedProduct
     {
         return $this->collection;
     }
+
 }
