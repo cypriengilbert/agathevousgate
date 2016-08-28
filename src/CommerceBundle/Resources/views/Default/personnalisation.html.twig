@@ -72,9 +72,9 @@
             <div class="col-sm-6 no_padding">
                 <!-- Aperçu noeud-->
                 <div class="noeud_position">
-                    <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/57bae578ae563.png')}});"></div>
-                    <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/57bae578afe0f.png')}});"></div>
-                    <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/57bae578b16f5.png')}});"></div>
+                    <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/57bae578ae563.png')}});"></div>
+                    <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/57bae578afe0f.png')}});"></div>
+                    <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/57bae578b16f5.png')}});"></div>
                 </div>
                 <!-- Aperçu noeud- FIN-->
             </div>
@@ -84,7 +84,7 @@
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
                             <div id="panel-heading-plugin-1" class="panel-heading panel-heading-plugin" style="background:url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
-                                <div class="row">
+                                <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
                 Face 1</h4>
@@ -104,7 +104,7 @@
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}')" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant' )" class="radio_colors" value="{{ colors.id }}" />
                                                 <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                             </div>
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -119,7 +119,7 @@
 
                         <div class="panel panel-default">
                             <div id="panel-heading-plugin-2" class="panel-heading panel-heading-plugin">
-                                <div class="row">
+                                <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
                 Face 2</h4>
@@ -130,13 +130,29 @@
                                 </div>
                             </div>
                             <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">bite 2</div>
+                                <div class="panel-body">
+                                  <ul class="img-thumbnails pull-left">
+                                      {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      <div class="row">
+                                          {% endif %}
+                                          <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
+                                              <style>
+                                                  input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+                                              </style>
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere' )" class="radio_colors" value="{{ colors.id }}" />
+                                              <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+                                          </div>
+                                          <div class="col-sm-3 text-center color_token no_padding thumbnail_size"></div>
+                                          {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                      </div>
+                                      {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+                                  </ul></div>
                             </div>
                         </div>
 
                         <div class="panel panel-default">
                             <div id="panel-heading-plugin-3" class="panel-heading panel-heading-plugin">
-                                <div class="row">
+                                <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
                 Noeud</h4>
@@ -147,7 +163,23 @@
                                 </div>
                             </div>
                             <div id="collapse3" class="panel-collapse collapse">
-                                <div class="panel-body">bite 3</div>
+                                <div class="panel-body">
+                                  <ul class="img-thumbnails pull-left">
+                                      {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      <div class="row">
+                                          {% endif %}
+                                          <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
+                                              <style>
+                                                  input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+                                              </style>
+                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' )" class="radio_colors" value="{{ colors.id }}" />
+                                              <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+                                          </div>
+                                          <div class="col-sm-3 text-center color_token no_padding thumbnail_size"></div>
+                                          {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                      </div>
+                                      {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+                                  </ul></div>
                             </div>
                         </div>
 
@@ -159,103 +191,6 @@
         </div>
     </div>
     <!-------------------------------------------------------------------COFFRET DEBUT -------->
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-xs-12 choix_collection no_padding">
-                <!-- Choix de la collection-->
-                <h4>Coffret 2 couleurs supplémentaires</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 no_padding">
-                <!-- Aperçu noeud-->
-                <div class="noeud_position">
-                    <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/57bae578ae563.png')}});"></div>
-                    <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/57bae578afe0f.png')}});"></div>
-                    <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/57bae578b16f5.png')}});"></div>
-                </div>
-                <!-- Aperçu noeud- FIN-->
-            </div>
-            <div class="col-sm-6 no_padding">
-                <!-- Choix des couleurs -->
-                <div class="container accordeon_noeud no_padding">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row text-center">
-                                    <div class="col-sm-11">
-                                        <h4 class="panel-title">
-                <a>Face 1</a></h4>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <ul class="img-thumbnails pull-left">
-                                        {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
-                                        <div class="row">
-                                            {% endif %}
-                                            <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
-                                                <style>
-                                                    input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
-                                                </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('abc')" class="radio_colors" value="{{ colors.id }}" />
-                                                <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
-                                            </div>
-                                            <div class="col-sm-3 text-center color_token no_padding thumbnail_size"></div>
-                                            {% set X1 = X1+1 %} {% if X1 == 6 %}
-                                        </div>
-                                        {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row text-center">
-                                    <div class="col-sm-11">
-                                        <h4 class="panel-title">
-                <a>Face 2</a></h4>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="collapse2" class="panel-collapse collapse">
-                                <div class="panel-body">bite 2</div>
-                            </div>
-                        </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="row text-center">
-                                    <div class="col-sm-11">
-                                        <h4 class="panel-title">
-                <a>Noeud</a></h4>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="collapse3" class="panel-collapse collapse">
-                                <div class="panel-body">bite 3</div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <!-- Choix des couleurs FIN-->
-            </div>
-        </div>
-    </div>
 
     <!-- champs cachés -->
 
@@ -381,8 +316,23 @@
 <script>
     /*Script changement background url pour panelheading*/
 
-    function get_data(i) {
-      document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url("+i+")";
+    function get_data(i,panelheading, n1, n2, n3,noeud_place) {
+      document.getElementById(panelheading).style.backgroundImage = "url("+i+")";
+      if (noeud_place == 'noeuddevant'){
+      document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
+        }
+      else if (noeud_place == 'noeudderriere') {
+      document.getElementById(noeud_place).style.backgroundImage = "url("+n2+")";
+
+      }
+      else if (noeud_place == 'noeudpetit') {
+      document.getElementById(noeud_place).style.backgroundImage = "url("+n3+")";
+
+      }
+
+      /*document.getElementById('noeuddevant').style.backgroundImage = "url("+n1+")";
+      document.getElementById('noeudderriere').style.backgroundImage = "url("+n2+")";
+      document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";*/
         if (document.getElementById("checkbox-coffret").checked) {
             document.getElementById("add_added_product_product").value = "{{ product_coffret.id }}";
             document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
@@ -402,7 +352,6 @@
         document.getElementById("add_added_product_accessoire").value = document.querySelector('input[name="radio_accessoire"]:checked').value;
         document.getElementById("add_added_product_quantity").value = 1;
         document.getElementById("add_added_product_size").value = document.querySelector('input[name="radio_taille"]:checked').value;
-        alert("lol");
     }
 
 

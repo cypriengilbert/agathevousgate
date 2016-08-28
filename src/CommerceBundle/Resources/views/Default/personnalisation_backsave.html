@@ -15,13 +15,13 @@
 
 <!-- Partie 1.2: Aperçu et choix couleur Début-->
 	<div class="row">
-		
+
 		<!-- Partie 1.2.1: Aperçu Début-->
 		<div class="col-sm-7 text-center preview">
 				<h3>Aperçu</h3>
 		</div>
 		<!-- Partie 1.2.1: Aperçu fin-->
-		
+
 		<!-- Partie 1.2.2: choix couleurs Début-->
 		<div class="col-sm-5 text-center">
 			<style>
@@ -139,7 +139,7 @@
 
 
 		</div>
-			
+
 		</div>
 		<!-- Partie 1.2.2: choix couleurs fin-->
 	</div>
@@ -317,7 +317,7 @@
 																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
 																								}
 																							</style>
-																					 <input type="radio" id="{{ colors.imageColorName }}_2" name="color2"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
+																					 <input type="radio" id="{{ colors.imageColorName }}_2" name="color2"  onclick="get_data({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})" class="radio_colors" value="{{ colors.id }}"/>
 																					 <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label> </a>
 																			{% endfor %}
 																		{% endif %}
