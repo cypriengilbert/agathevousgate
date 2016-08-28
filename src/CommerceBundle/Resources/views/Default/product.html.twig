@@ -1,368 +1,437 @@
 {% extends 'base.html.twig' %} {% block body %}
-
 <style>
-.taille label{
-background-color: #eae9e9!important;
-border-color: rgb(36, 34, 88) !important;
-color:rgb(36, 34, 88) !important;
-	-webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 30px;
-text-align: center;
-}
-
-
-.blue_recap{
-background-color: rgb(36, 34, 88)!important;
-border-top:3px solid white;
-
-}
-
-
-
-.taille label:hover{
-background-color: rgb(36, 34, 88)!important;
-border-color: rgb(36, 34, 88) !important;
-color:#FFF !important;
-	-webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 30px;
-}
-
-
-.blue_recap input[type="radio"] {
-background-color:rgb(36, 34, 88);
-width:100%;
-position:relative;
-height:10x;
-}
-
-.taille input[type="radio"]:checked + label {
-background-color: rgb(36, 34, 88)!important;
-border-color: rgb(36, 34, 88) !important;
-color:#FFF !important;
--webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 30px;}
-
-.taille input[type="checkbox"]:checked + label {
-background-color: rgb(36, 34, 88)!important;
-border-color: rgb(36, 34, 88) !important;
-color:#FFF !important;
--webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 30px;}
+   .taille label{
+   background-color: #eae9e9!important;
+   border-color: rgb(36, 34, 88) !important;
+   color:rgb(36, 34, 88) !important;
+   -webkit-border-radius: 1000px;
+   -moz-border-radius: 1000px;
+   border-radius: 1000px;
+   margin-top: 10px;
+   margin-bottom:10px;
+   text-align: center;
+   }
+   .taille_red label{
+   background-color: #eae9e9!important;
+   border-color: #A94141 !important;
+   color:#A94141 !important;
+   -webkit-border-radius: 1000px;
+   -moz-border-radius: 1000px;
+   border-radius: 1000px;
+   margin-top: 10px;
+   margin-bottom:10px;
+   text-align: center;
+   }
+   .taille_red label:hover{
+   background-color: #A94141!important;
+   border-color: #A94141 !important;
+   color:#FFF !important;
+   }
+   .blue_recap{
+   background-color: rgb(36, 34, 88)!important;
+   border-top:3px solid white;
+   }
+   .taille label:hover{
+   background-color: rgb(36, 34, 88)!important;
+   border-color: rgb(36, 34, 88) !important;
+   color:#FFF !important;
+   }
+   .blue_recap input[type="radio"] {
+   background-color:rgb(36, 34, 88);
+   width:100%;
+   position:relative;
+   height:10x;
+   }
+   .taille input[type="radio"]:checked + label {
+   background-color: rgb(36, 34, 88)!important;
+   border-color: rgb(36, 34, 88) !important;
+   color:#FFF !important;
+   }
+   .taille_red input[type="checkbox"]:checked + label {
+   background-color: #A94141!important;
+   border-color: #A94141 !important;
+   color:#FFF !important;
+   }
 </style>
 
 <script>
-function open_div(i){
-if (i == 'coffret'){
-  if(document.getElementById('collapse1').className == 'panel-collapse collapse in'){
-  document.getElementById('collapse1').className='panel-collapse collapse';
-  document.getElementById('panel-heading-coffret').style.backgroundColor = "#eae9e9";
-  document.getElementById('panel-heading-coffret').style.color = "rgb(36, 34, 88)";
-  document.getElementById('input_coffret').checked = false;
+var total = {{ product.product.price }};
 
-}
-else {
-document.getElementById('collapse1').className='panel-collapse collapse in';
-document.getElementById('panel-heading-coffret').style.backgroundColor = "#A94141";
-document.getElementById('panel-heading-coffret').style.color = "#FFF";
-document.getElementById('input_coffret').checked = true;
+</script>
+<body id="page-top" >
+
+{% set coffret_id = null %}
+{% set pochette_id = null %}
+{% set boutons_id = null %}
+{% set pochette_price = 0 %}
+{% set coffret_price = 0 %}
+{% set boutons_price = 0 %}
 
 
-}
-}
-else if(i == 'pochette'){
-if(document.getElementById('collapse2').className == 'panel-collapse collapse in'){
-document.getElementById('collapse2').className='panel-collapse collapse';
-document.getElementById('panel-heading-pochette').style.backgroundColor = "#eae9e9";
-document.getElementById('panel-heading-pochette').style.color = "rgb(36, 34, 88)";
-document.getElementById('input_pochette').checked = false;
-}
-else {
-document.getElementById('collapse2').className='panel-collapse collapse in';
-document.getElementById('panel-heading-pochette').style.backgroundColor = "#A94141";
-document.getElementById('panel-heading-pochette').style.color = "#FFF";
-document.getElementById('input_pochette').checked = true;
-}
-}
-else if(i == "boutons"){
-if(document.getElementById('collapse3').className == 'panel-collapse collapse in'){
-document.getElementById('collapse3').className='panel-collapse collapse';
-document.getElementById('panel-heading-boutons').style.backgroundColor = "#eae9e9";
-document.getElementById('panel-heading-boutons').style.color = "rgb(36, 34, 88)";
-document.getElementById('input_boutons').checked = false;
-}
-else {
-document.getElementById('collapse3').className='panel-collapse collapse in';
-document.getElementById('panel-heading-boutons').style.backgroundColor = "#A94141";
-document.getElementById('panel-heading-boutons').style.color = "#FFF";
-document.getElementById('input_boutons').checked = true;
-}
+   <center>
+      <h2>{{ product.collection.title }} #{{ product.id }} </h2>
+   </center>
+   <div class="container">
+   <div class="row">
+      <div class="col-sm-12 col-xs-12" style="background-color:#E0EAF1; margin-bottom:20px; min-height:50px; padding:20px;">
+         <center>{{ product.collection.description }}</center>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-12 col-xs-12 choix_collection no_padding">
+         <!-- Choix de la collection-->
+         <h4>{{ product.collection.title }} #{{ product.id }}</h4>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6 no_padding">
+         <!-- Aperçu noeud-->
+         <div class="noeud_position">
+            <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ product.color1.imagecolorNoeud1Name)}});"></div>
+            <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ product.color1.imagecolorNoeud2Name)}});"></div>
+            <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ product.color1.imagecolorNoeud3Name)}});"></div>
+         </div>
+         <!-- Aperçu noeud- FIN-->
+      </div>
+      <div class="col-sm-6 no_padding" style="background-color:#eae9e9; min-height:400px">
+         <!-- Choix des couleurs -->
+         <div class="no_padding" >
+            <div class="panel-group"  >
+               <div class="col-sm-12">
+                  <h3>  Taille</h3>
+               </div>
+               <div class="col-sm-6 taille">
+                  <center>
+                     <input style="display:none;" type="radio" name="taille" value="Petit"  id="Petit">
+                     <label for="Petit" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Petit</label>
+                  </center>
+               </div>
+               <div class="col-sm-6 taille">
+                  <center>
+                     <input style="display:none;" type="radio" name="taille" value="Grand" id="Grand">
+                     <label for="Grand" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Grand</label>
+                  </center>
+               </div>
+               <div class="panel-group"  style="margin-top:10px">
+                  <div class="col-sm-12">
+                     <h3>  Type de Noeud</h3>
+                  </div>
+                  <div class="col-sm-4 taille">
+                     <center>
+                        <input style="display:none;" type="radio" name="type" value="3"  id="Tour">
+                        <label for="Tour" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Tour de Cou</label>
+                     </center>
+                  </div>
+                  <div class="col-sm-4 taille">
+                     <center>
+                        <input style="display:none;" type="radio" name="type" value="1" id="Barette">
+                        <label for="Barette" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Barette</label>
+                     </center>
+                  </div>
+                  <div class="col-sm-4 taille">
+                     <center>
+                        <input style="display:none;" type="radio" name="type" value="2" id="Broche">
+                        <label for="Broche" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Broche</label>
+                     </center>
+                  </div>
+               </div>
+               <div class="panel-group"  style="margin-top:10px; margin-bottom:10px">
+                  <div class="col-sm-12">
+                     <h3 style="color:#A94141">  Accessoires du noeud</h3>
+                  </div>
+                  <div class="col-sm-4 taille_red">
+                     <center>
+                        <input style="display:none;" type="checkbox" name="accessoire" value="Coffret" id="Coffret">
+                        <label onclick="open_div('coffret')" id="coffret_checkbox" for="Coffret" style="width:100%" class="btn_radio_blue btn-lg btn">Coffret</label>
+                     </center>
+                  </div>
+                  <div class="col-sm-4 taille_red">
+                     <center>
+                        <input style="display:none;" type="checkbox" name="accessoire" value="boutons"  id="boutons">
+                        <label for="boutons" onclick="open_div('boutons')" id="boutons_checkbox" style="width:100%" class="btn_radio_blue btn-lg btn">Boutons</label>
+                     </center>
+                  </div>
+                  <div class="col-sm-4 taille_red">
+                     <center>
+                        <input style="display:none;" type="checkbox" name="accessoire" value="Pochette" id="Pochette">
+                        <label for="Pochette" onclick="open_div('pochette')" id="pochette_checkbox" style="width:100%" class="btn_radio_blue btn-lg btn">Pochette</label>
+                     </center>
+                  </div>
+               </div>
+            </div>
+            <!-- Choix des couleurs FIN-->
+         </div>
+      </div>
+   </div>
+   <!-------------------------------------------------------------------COFFRET DEBUT -------->
+   <div class="row">
+   <div class="col-sm-6 no_padding">
+      <div class="panel-group" id="accordion">
+         <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+            <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
+               <div class="row">
+                  <div class="col-sm-11">
+                     <h3 class="panel-title">
+                        Coffret 2 collections supplémentaire
+                     </h3>
+                  </div>
+                  <div class="col-sm-1">
+                     <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                  </div>
+               </div>
+            </div>
+						{% for enfants in product.enfants %}
+					 {% if enfants.product.name == 'Coffret' %}
+						{% set coffret_id = enfants.id %}
+						{% set coffret_price = enfants.product.price %}
+
+						<div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
+							 <div class="panel-body">
+							 <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+							 </div>
+						</div>
+						{% endif %}
+						{% endfor %}
+            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+               <div id="panel-heading-boutons" class="panel-heading">
+                  <div class="row">
+                     <div class="col-sm-11">
+                        <h3 class="panel-title">
+                           Boutons de manchettes
+                        </h3>
+                     </div>
+                     <div class="col-sm-1">
+                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
+                     </div>
+                  </div>
+               </div>
+							 {% for enfants in product.enfants %}
+						 	{% if enfants.product.name == 'Boutons' %}
+							{% set boutons_id = enfants.id %}
+							{% set boutons_price = enfants.product.price %}
+
+               <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
+                  <div class="panel-body">
+									<img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                  </div>
+               </div>
+							 {% endif %}
+							 {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-sm-6 no_padding">
+      <!-- Choix des couleurs -->
+      <div class="container accordeon_noeud no_padding">
+         <div class="panel-group" id="accordion">
+            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+               <div id="panel-heading-pochette" class="panel-heading">
+                  <div class="row">
+                     <div class="col-sm-11">
+                        <h3 class="panel-title">
+                           Pochette
+                        </h3>
+                     </div>
+                     <div class="col-sm-1">
+                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
+                     </div>
+                  </div>
+               </div>
+								{% for enfants in product.enfants %}
+								{% if enfants.product.name == 'Pochette' %}
+								{% set pochette_id = enfants.id %}
+								{% set pochette_price = enfants.product.price %}
+
+
+               <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
+                  <div class="panel-body">
+                     <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                  </div>
+               </div>
+							{% endif %}
+							{% endfor %}
+               <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+                  <div class="panel-heading blue_recap" style="border-top: 0px">
+                     <div class="row ">
+                        <div class="col-sm-11" >
+                           <h3 class="panel-title" style="color:white!important;">
+                              Noeud
+                           </h3>
+                        </div>
+                        <div class="col-sm-1" >
+                           <input type="radio" disabled>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-heading blue_recap">
+                     <div class="row ">
+                        <div class="col-sm-11" >
+                           <h3 class="panel-title" style="color:white!important;">
+                              Coffret
+                           </h3>
+                        </div>
+                        <div class="col-sm-1" >
+                           <input onclick="open_div('coffret')" id="input_coffret" type="radio">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-heading blue_recap">
+                     <div class="row ">
+                        <div class="col-sm-11" >
+                           <h3 class="panel-title" style="color:white!important;">
+                              Pochette
+                           </h3>
+                        </div>
+                        <div class="col-sm-1" >
+                           <input onclick="open_div('pochette')" id="input_pochette" type="radio">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-heading blue_recap">
+                     <div class="row ">
+                        <div class="col-sm-11" >
+                           <h3 class="panel-title" style="color:white!important;">
+                              Boutons de manchette
+                           </h3>
+                        </div>
+                        <div class="col-sm-1" >
+                           <input onclick="open_div('boutons')"  id="input_boutons" type="radio">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="panel-heading blue_recap">
+                     <div class="row ">
+                        <div class="col-sm-11" >
+                           <h3 class="panel-title" style="color:white!important;">
+                              Total
+                           </h3>
+                        </div>
+                        <div class="col-sm-1" style="position:absolute; right:30px;" >
+												<h3 class="panel-title" style="color:white!important;" id="total" >
+
+                           <script>document.write(total)</script>€
+													</h3>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- Choix des couleurs FIN-->
+      </div>
+
+   </div>
+	 <div class="row">
+	 	<div class="col-sm-12 no_padding">
+	 			<button onclick="addtoCart()" type="submit" style="position:absolute; right: 12px;" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</button>
+	 	</div>
+	 </div>
+</div>
+</body>
+<script>
+function addtoCart(){
+
+
+var pochette = 0;
+var coffret = 0;
+var boutons = 0;
+
+if(document.getElementById('input_pochette').checked == true){
+pochette = {{ pochette_id }}
 }
 
+if(document.getElementById('input_coffret').checked == true){
+coffret = {{ coffret_id }}
+
 }
+if(document.getElementById('input_boutons').checked == true){
+boutons = {{ boutons_id }}
+
+}
+
+
+var size = document.querySelector('input[name="taille"]:checked').value;
+var accessoire = document.querySelector('input[name="type"]:checked').value;
+
+
+var route = "{{ path('adddefinedtocart',{'id_noeud': product.id,'id_coffret' : 'COFFRET', 'id_boutons': 'BOUTONS','id_pochette': 'POCHETTE', 'id_collection': product.collection.id ,'size' : 'SIZE', 'id_accessoire': 'ACCESSOIRE'} ) }}";
+route = route.replace("SIZE", size);
+route = route.replace("ACCESSOIRE", accessoire);
+route = route.replace("COFFRET", coffret);
+route = route.replace("BOUTONS", boutons);
+route = route.replace("POCHETTE", pochette);
+
+window.location = route;
+}
+
+
+
 </script>
 
-<body id="page-top" >
-  <center>  <h2>{{ product.collection.title }} #{{ product.id }} </h2></center>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-xs-12" style="background-color:#E0EAF1; margin-bottom:20px; min-height:50px; padding:20px;">
-            <center>{{ product.collection.description }}</center>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12 col-xs-12 choix_collection no_padding">
-                <!-- Choix de la collection-->
-                <h4>{{ product.collection.title }} #{{ product.id }}</h4>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 no_padding">
-                <!-- Aperçu noeud-->
-                <div class="noeud_position">
-                    <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ product.color1.imagecolorNoeud1Name)}});"></div>
-                    <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ product.color1.imagecolorNoeud2Name)}});"></div>
-                    <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ product.color1.imagecolorNoeud3Name)}});"></div>
-                </div>
-                <!-- Aperçu noeud- FIN-->
-            </div>
-            <div class="col-sm-6 no_padding" style="background-color:#eae9e9; min-height:400px">
-                <!-- Choix des couleurs -->
-                <div class="no_padding" >
-                    <div class="panel-group"  style="margin-top:10px">
-                  <div>  Taille</div>
-                  <div class="col-sm-6 taille">
-                  <center>
-                    <input style="display:none;" type="radio" name="taille" value="petit"  id="petit">
-                    <label for="petit" style="width:100%" class="btn_radio_blue btn-lg btn">Petit</label>
-                    </center>
-                    </div>
-
-                    <div class="col-sm-6 taille">
-                    <center>
-
-                    <input style="display:none;" type="radio" name="taille" value="grand" id="grand">
-                    <label for="grand" style="width:100%" class="btn_radio_blue btn-lg btn">Grand</label>
-                    </center>
-
-                    </div>
-
-                    <div class="panel-group"  style="margin-top:10px">
-                    <div>  Type de Noeud </div>
-                    <div class="col-sm-4 taille">
-                    <center>
-                      <input style="display:none;" type="radio" name="type" value="Tour"  id="Tour">
-                      <label for="Tour" style="width:100%" class="btn_radio_blue btn-lg btn">Tour de Cou</label>
-                      </center>
-                      </div>
-
-                      <div class="col-sm-4 taille">
-                      <center>
-
-                      <input style="display:none;" type="radio" name="type" value="Barette" id="Barette">
-                      <label for="Barette" style="width:100%" class="btn_radio_blue btn-lg btn">Barette</label>
-                      </center>
-
-                      </div>
-                      <div class="col-sm-4 taille">
-                      <center>
-
-                      <input style="display:none;" type="radio" name="type" value="Broche" id="Broche">
-                      <label for="Broche" style="width:100%" class="btn_radio_blue btn-lg btn">Broche</label>
-                      </center>
-
-                      </div>
-                    </div>
-                    <div class="panel-group"  style="margin-top:10px; margin-bottom:10px">
-                    <div>  Type de Noeud </div>
-
-                    <div class="col-sm-4 taille">
-                    <center>
-
-                    <input style="display:none;" type="checkbox" name="accessoire" value="Coffret" id="Coffret">
-                    <label onclick="open_div('coffret')" for="Coffret" style="width:100%" class="btn_radio_blue btn-lg btn">Coffret</label>
-                    </center>
-
-                    </div>
-                    <div class="col-sm-4 taille">
-                    <center>
-                      <input style="display:none;" type="checkbox" name="accessoire" value="boutons"  id="boutons">
-                      <label for="boutons" onclick="open_div('boutons')" style="width:100%" class="btn_radio_blue btn-lg btn">Boutons</label>
-                      </center>
-                      </div>
-
-                      <div class="col-sm-4 taille">
-                      <center>
-
-                      <input style="display:none;" type="checkbox" name="accessoire" value="Pochette" id="Pochette">
-                      <label for="Pochette" onclick="open_div('pochette')" style="width:100%" class="btn_radio_blue btn-lg btn">Pochette</label>
-                      </center>
-
-                      </div>
-
-                    </div>
-                </div>
-                <!-- Choix des couleurs FIN-->
-            </div>
-        </div>
-    </div>
-    <!-------------------------------------------------------------------COFFRET DEBUT -------->
-    <div class="container" style="margin-top:5%">
-        <div class="row">
-            <div class="col-sm-6 no_padding">
-            <div class="panel-group" id="accordion">
-                <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                    <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
-                        <div class="row">
-                            <div class="col-sm-11">
-                                <h3 class="panel-title">
-                                    Coffret 2 collections supplémentaire</h3>
-                            </div>
-                            <div class="col-sm-1">
-                                <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
-                        <div class="panel-body">
-                            <img style="width:100%;height:350px" src="{{ asset('/img/coffret.png' )}}">
-                        </div>
-                    </div>
-                    <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                        <div id="panel-heading-boutons" class="panel-heading">
-                            <div class="row">
-                                <div class="col-sm-11">
-                                <h3 class="panel-title">
-                                    Boutons de manchettes</h3>
-                                </div>
-                                <div class="col-sm-1">
-                                    <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
-                        <div class="panel-body">
-                            <img style="width:100%;height:350px" src="{{ asset('/img/boutons.png' )}}">
-                        </div>
-                        </div>
-                    </div>
-                </div>
-
-                </div>
-            </div>
-            <div class="col-sm-6 no_padding">
-                <!-- Choix des couleurs -->
-                <div class="container accordeon_noeud no_padding">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                            <div id="panel-heading-pochette" class="panel-heading">
-                                <div class="row">
-                                    <div class="col-sm-11">
-                                    <h3 class="panel-title">
-                                        Pochette</h3>
-                                    </div>
-                                    <div class="col-sm-1">
-                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
-                            <div class="panel-body">
-                                <img style="width:100%;height:350px" src="{{ asset('/img/pochette.png' )}}">
-                            </div>
-                            </div>
-                            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                            <div class="panel-heading blue_recap">
-
-                                    <div class="row ">
-                                        <div class="col-sm-11" >
-                                        <h3 class="panel-title" style="color:white!important;">
-                                            Noeud</h3>
-                                        </div>
-                                          <div class="col-sm-1" >
-                                          <input type="radio" disabled>
-                                          </div>
-                                      </div>
-                                    </div>
-                                    <div class="panel-heading blue_recap">
-
-                                            <div class="row ">
-                                                <div class="col-sm-11" >
-                                                <h3 class="panel-title" style="color:white!important;">
-                                                  Coffret  </h3>
-                                                </div>
-                                                  <div class="col-sm-1" >
-                                                  <input id="input_coffret" type="radio">
-                                                  </div>
-                                              </div>
-                                            </div>
-                                            <div class="panel-heading blue_recap">
-
-                                                    <div class="row ">
-                                                        <div class="col-sm-11" >
-                                                        <h3 class="panel-title" style="color:white!important;">
-                                                            Pochette</h3>
-                                                        </div>
-                                                          <div class="col-sm-1" >
-                                                          <input  id="input_pochette" type="radio">
-                                                          </div>
-                                                      </div>
-                                                    </div>
-                                                    <div class="panel-heading blue_recap">
-
-                                                            <div class="row ">
-                                                                <div class="col-sm-11" >
-                                                                <h3 class="panel-title" style="color:white!important;">
-                                                                    Boutons de manchette</h3>
-                                                                </div>
-                                                                  <div class="col-sm-1" >
-                                                                  <input  id="input_boutons" type="radio">
-                                                                  </div>
-                                                              </div>
-                                                            </div>
-
-                                                            <div class="panel-heading blue_recap">
-
-                                                                    <div class="row ">
-                                                                        <div class="col-sm-11" >
-                                                                        <h3 class="panel-title" style="color:white!important;">
-                                                                          Total</h3>
-                                                                        </div>
-                                                                          <div class="col-sm-1" >
-                                                                          90€
-                                                                          </div>
-                                                                      </div>
-                                                                    </div>
+<script>
+   function open_div(i){
 
 
-</div>
+   if (i == 'coffret'){
+     if(document.getElementById('collapse1').className == 'panel-collapse collapse in'){
+     document.getElementById('collapse1').className='panel-collapse collapse';
+     document.getElementById('panel-heading-coffret').style.backgroundColor = "#eae9e9";
+     document.getElementById('panel-heading-coffret').style.color = "rgb(36, 34, 88)";
+     document.getElementById('input_coffret').checked = false;
 
 
+   }
+   else {
+   document.getElementById('collapse1').className='panel-collapse collapse in';
+   document.getElementById('panel-heading-coffret').style.backgroundColor = "#A94141";
+   document.getElementById('panel-heading-coffret').style.color = "#FFF";
+   document.getElementById('input_coffret').checked = true;
 
 
-                    </div>
-                </div>
-                <!-- Choix des couleurs FIN-->
-            </div>
-        </div>
-    </div>
+   }
+   }
+   else if(i == 'pochette'){
+   if(document.getElementById('collapse2').className == 'panel-collapse collapse in'){
+   document.getElementById('collapse2').className='panel-collapse collapse';
+   document.getElementById('panel-heading-pochette').style.backgroundColor = "#eae9e9";
+   document.getElementById('panel-heading-pochette').style.color = "rgb(36, 34, 88)";
+   document.getElementById('input_pochette').checked = false;
+   }
+   else {
+   document.getElementById('collapse2').className='panel-collapse collapse in';
+   document.getElementById('panel-heading-pochette').style.backgroundColor = "rgb(36, 34, 88)";
+   document.getElementById('panel-heading-pochette').style.color = "#FFF";
+   document.getElementById('input_pochette').checked = true;
+   }
+   }
+   else if(i == "boutons"){
+   if(document.getElementById('collapse3').className == 'panel-collapse collapse in'){
+   document.getElementById('collapse3').className='panel-collapse collapse';
+   document.getElementById('panel-heading-boutons').style.backgroundColor = "#eae9e9";
+   document.getElementById('panel-heading-boutons').style.color = "rgb(36, 34, 88)";
+   document.getElementById('input_boutons').checked = false;
+   }
+   else {
+   document.getElementById('collapse3').className='panel-collapse collapse in';
+   document.getElementById('panel-heading-boutons').style.backgroundColor = "#A94141";
+   document.getElementById('panel-heading-boutons').style.color = "#FFF";
+   document.getElementById('input_boutons').checked = true;
+   }
+   }
 
+	 total = {{ product.product.price }};
+	 if( document.getElementById('input_coffret').checked == true){
+	 total = total + {{ coffret_price }};
+	 }
+	 if( document.getElementById('input_boutons').checked == true){
+	 total = total + {{ boutons_price }};
+	 }
+	 if( document.getElementById('input_pochette').checked == true){
+	 total = total + {{ pochette_price }};
+	 }
+	 document.getElementById("total").innerHTML = total.toFixed(2)+'€';
 
-
-
-
-
-
-
-
-
-</body>
+   }
+</script>
 {% endblock %}

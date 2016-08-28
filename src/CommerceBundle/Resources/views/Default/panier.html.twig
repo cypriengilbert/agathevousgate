@@ -34,12 +34,15 @@
                              <div class="col-sm-12 col-md-12" style="border-bottom:1px solid grey">
 
                             <div class="col-md-3 hidesmall" style="">
+                                {% if listepanier.collection %}
                                 <img src="{{ asset('/upload/image_collection/' ~ listepanier.collection.ImageNameCarre )}}" style="width:90%;display: block; margin: auto;padding-top:50px">
+                                {% endif %}
+
                             </div>
                             <div class="col-md-8" style="">
                                 <div style="height:200px; width:100%; position:relative">
-                                    <h2>{{ listepanier.product.name }} - {{ listepanier.product.price }}€ </h2>
-                                    <p>Collection {{ listepanier.collection.title }}</p>
+                                    <h2>{{ listepanier.size }} {{ listepanier.product.name }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
+                                    <p>Collection {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}</p>
                                     <p>
                                         {% if listepanier.Color1 %}
                                         <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
@@ -126,7 +129,7 @@
                                 </div>
                             </div>
                             <div class="col-md-1 hidesmall" style="">
-                                
+
                             </div>
                                                 </div>
 

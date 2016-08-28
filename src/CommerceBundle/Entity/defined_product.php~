@@ -99,6 +99,19 @@ class defined_product
     public $collection;
 
 
+    /**
+    * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\defined_product", inversedBy="parents")
+    * @ORM\JoinTable(name="product_complement",
+    * joinColumns={@ORM\JoinColumn(name="parent_id", referencedColumnName="id")},
+    * inverseJoinColumns={@ORM\JoinColumn(name="enfant_id", referencedColumnName="id")}
+    * )
+    */
+      protected $enfants;
+
+      /**
+      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\defined_product", mappedBy="enfants")
+*/
+      protected $parents;
 
         /**
          * @var bool
@@ -475,4 +488,158 @@ class defined_product
     }
 
 
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return defined_product
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set collection
+     *
+     * @param \CommerceBundle\Entity\Collection $collection
+     *
+     * @return defined_product
+     */
+    public function setCollection(\CommerceBundle\Entity\Collection $collection = null)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Get collection
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
+
+    /**
+     * Set complement
+     *
+     * @param \CommerceBundle\Entity\defined_product $complement
+     *
+     * @return defined_product
+     */
+    public function setComplement(\CommerceBundle\Entity\defined_product $complement = null)
+    {
+        $this->complement = $complement;
+
+        return $this;
+    }
+
+    /**
+     * Get complement
+     *
+     * @return \CommerceBundle\Entity\defined_product
+     */
+    public function getComplement()
+    {
+        return $this->complement;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enfants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->switchFrom = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add enfant
+     *
+     * @param \CommerceBundle\Entity\defined_product $enfant
+     *
+     * @return defined_product
+     */
+    public function addEnfant(\CommerceBundle\Entity\defined_product $enfant)
+    {
+        $this->enfants[] = $enfant;
+
+        return $this;
+    }
+
+    /**
+     * Remove enfant
+     *
+     * @param \CommerceBundle\Entity\defined_product $enfant
+     */
+    public function removeEnfant(\CommerceBundle\Entity\defined_product $enfant)
+    {
+        $this->enfants->removeElement($enfant);
+    }
+
+    /**
+     * Get enfants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnfants()
+    {
+        return $this->enfants;
+    }
+
+    /**
+     * Add parent
+     *
+     * @param \CommerceBundle\Entity\defined_product $parent
+     *
+     * @return defined_product
+     */
+    public function addParent(\CommerceBundle\Entity\defined_product $parent)
+    {
+        $this->parents[] = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Remove parent
+     *
+     * @param \CommerceBundle\Entity\defined_product $parent
+     */
+    public function removeParent(\CommerceBundle\Entity\defined_product $parent)
+    {
+        $this->parents->removeElement($parent);
+    }
+
+    /**
+     * Get parents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParents()
+    {
+        return $this->parents;
+    }
+
+    public function __toString() {
+        return $this->product->getName().' '. $this->color1->getName();
+    }
 }

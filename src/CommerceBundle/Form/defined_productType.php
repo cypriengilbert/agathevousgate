@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Entity\Color;
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -97,6 +99,17 @@ class defined_productType extends AbstractType
         'choice_label' => 'title',
 
         ))
+        ->add('enfants', EntityType::class, array(
+                            'class' => 'CommerceBundle:defined_product',
+                            'multiple' => true,
+                                'expanded' => true,
+                                 'required' => true,
+                                 'query_builder' => function (EntityRepository $er) {
+                                         return $er->createQueryBuilder('u')
+                                             ->orderBy('u.id', 'ASC')
+                                              ->where('u.product = 10 or u.product = 11 or u.product = 4');
+                                     },
+                             ))
         ;
     }
 

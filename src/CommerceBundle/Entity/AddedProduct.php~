@@ -106,7 +106,7 @@ class AddedProduct
     private $commande;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection", inversedBy="addedproducts")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
     * @ORM\JoinColumn(nullable=true)
     */
     private $collection;
@@ -492,4 +492,29 @@ class AddedProduct
     {
         return $this->size;
     }
+
+    /**
+     * Set collection
+     *
+     * @param \CommerceBundle\Entity\Collection $collection
+     *
+     * @return AddedProduct
+     */
+    public function setCollection(\CommerceBundle\Entity\Collection $collection = null)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Get collection
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
+
 }
