@@ -762,7 +762,43 @@ $EntiteCode = null;
                     $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
 
+                    if ($commandeEnCours->getAtelierLivraison())
+{
+  $atelier = $commandeEnCours->getAtelierLivraison();
+  $message = \Swift_Message::newInstance()
+     ->setSubject('Nouvelle commande')
+     ->setFrom('cyprien@cypriengilbert.com')
+     ->setTo($atelier->getEmail())
+     ->setBody(
+        $this->renderView(
+           'emails/new_commande_franchise.html.twig',
+           array('franchise' => $atelier->getFranchise(), 'listePanier' => $listePanier)
+       ),
+       'text/html'
+   )
+;
+$this->get('mailer')->send($message);
 
+
+}
+else{
+
+  $message = \Swift_Message::newInstance()
+     ->setSubject('Nouvelle commande')
+     ->setFrom('cyprien@cypriengilbert.com')
+     ->setTo('cypriengilbert@gmail.com')
+     ->setBody(
+        $this->renderView(
+  // app/Resources/views/Emails/registration.html.twig
+           'emails/new_commande.html.twig',
+           array('listePanier' => $listePanier)
+       ),
+       'text/html'
+   )
+  ;
+  $this->get('mailer')->send($message);
+
+}
                     $message = \Swift_Message::newInstance()
                        ->setSubject('Confirmation de Commande')
                        ->setFrom('cyprien@cypriengilbert.com')
@@ -793,6 +829,11 @@ $EntiteCode = null;
                 return $response;
             }
         }
+
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
+
+        return $response;
     }
 
 
@@ -885,11 +926,12 @@ $EntiteCode = null;
 
                         }
                         $total_commande = $total_commande - $remise;
+                        $newcommande->setRemise($remise);
+
                         }
 
                 }
                 $total_commande_100 = $total_commande * 100;
-                $newcommande->setRemise($remise);
                 $newcommande->setPrice($total_commande);
 
                 $em = $this->getDoctrine()->getManager();
@@ -1031,11 +1073,12 @@ $EntiteCode = null;
 
                     }
                     $total_commande = $total_commande - $remise;
+                    $newcommande->setRemise($remise);
+
                     }
 
             }
             $total_commande_100 = $total_commande * 100;
-            $newcommande->setRemise($remise);
             $newcommande->setPrice($total_commande);
 
             $em = $this->getDoctrine()->getManager();
