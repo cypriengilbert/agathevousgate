@@ -1,697 +1,432 @@
-{% extends 'base.html.twig' %}
-
-
-{% block body %}
+{% extends 'base.html.twig' %} {% block body %}
 
 
 <body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
-<!-- Partie 1: Customisation du noeud DEBUT-->
-
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12 text-center">
-			<h1>Je personnalise mon noeud</h1>
-		</div>
-	</div>
-</div>
-<section  id="customisation_noeud_pap">
-<div class="container plugin_main">
-<!-- Partie 1.1: Generation des differentes collections Début-->
-	<div class="row">
-
-	</div>
-<!-- Partie 1.1: Generation des differentes collections Fin-->
-
-<!-- Partie 1.2: Aperçu et choix couleur Début-->
-	<div class="row">
-
-		<!-- Partie 1.2.1: Aperçu Début-->
-		<div class="col-sm-7 text-center preview">
-				<h3>Aperçu</h3>
-		</div>
-		<!-- Partie 1.2.1: Aperçu fin-->
-
-		<!-- Partie 1.2.2: choix couleurs Début-->
-		<div class="col-sm-5 text-center">
-			<style>
-			input[type="radio"].radio_colors {
-				display:none;
-			}
-			input[type="radio"].radio_colors + label {
-				display:inline-block;
-				border-radius:50%;
-				width:40px;
-				height:40px;
-				cursor:pointer}
-			input[type="radio"].radio_colors:checked + label {
-				border:3px solid black;
-				padding:2px}
-			</style>
-
-			<h3>Choix des couleurs</h3>
-			<div class="container-fluid couleurs">
-			<!-- Debug test -->
-			<div class="tab-content">
-			<div role="tabpanel" class="tab-pane active" id="tab-princ">
-			Couleurs du noeud principal
-				<div class="panel-body">
-					<ul class="img-thumbnails pull-left">
-						{% set X1 = 1 %}
-						{% set selected_collection = 13 %}
-						{% for collection in collection %}
-							{% if collection.id == selected_collection %}
-								{% for colors in collection.colors %}
-									{% if X1 == 1 %}
-										<div class="row">
-									{% endif %}
-									<div class="col-sm-2 text-center color_token">
-									<style>
-										input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});}
-									</style>
-									<input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-									<label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
-									</div>
-									{% set X1 = X1+1 %}
-									{% if X1 == 6 %}
-										</div>
-									{% set X1 = 1 %}
-									{% endif %}
-								{% endfor %}
-							{% endif %}
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane active" id="tab-sec">
-			Couleurs du noeud secondaire
-				<div class="panel-body">
-					<ul class="img-thumbnails pull-left">
-						{% set X2 = 1 %}
-						{% set selected_collection = 13 %}
-						{% for collection in collection %}
-							{% if collection.id == selected_collection %}
-								{% for colors in collection.colors %}
-									{% if X2 == 1 %}
-										<div class="row">
-									{% endif %}
-									<div class="col-sm-2 text-center color_token">
-									<style>
-										input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});}
-									</style>
-									<input type="radio" id="{{ colors.imageColorName }}_2" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-									<label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
-									</div>
-									{% set X2 = X2+1 %}
-									{% if X2 == 6 %}
-										</div>
-										{% set X2 = 1 %}
-									{% endif %}
-								{% endfor %}
-							{% endif %}
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-			<div role="tabpanel" class="tab-pane active" id="tab-milieu">
-			Couleurs du noeud du milieu
-				<div class="panel-body">
-					<ul class="img-thumbnails pull-left">
-						{% set X3 = 1 %}
-						{% set selected_collection = 13 %}
-						{% for collection in collection %}
-							{% if collection.id == selected_collection %}
-								{% for colors in collection.colors %}
-								{% if X3 == 1 %}
-										<div class="row">
-									{% endif %}
-									<div class="col-sm-2 text-center color_token">
-									<style>
-										input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});}
-									</style>
-									<input type="radio" id="{{ colors.imageColorName }}_3" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-									<label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
-									</div>
-									{% set X3 = X3+1 %}
-								{% if X3 == 6 %}
-									</div>
-									{% set X3 = 1 %}
-								{% endif %}
-								{% endfor %}
-							{% endif %}
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-		</div><!-- FIN TABS -->
-		<!-- Debug Test fin-->
-
-
-		</div>
-
-		</div>
-		<!-- Partie 1.2.2: choix couleurs fin-->
-	</div>
-<!-- Partie 1.2: Aperçu et choix couleur fin-->
-	<!-- Partie 1.3: Choix noeud Début-->
-	<div class="container">
-	<div class="row">
-		<div class="col-sm-2 col-xs-2 text-center"></div>
-		<div class="col-sm-8 col-xs-8 text-center">
-	<ul class="nav nav-pills nav-tab-noeud" role="tablist">
-		<li role="presentation" class="active" style="border-right: 1px solid #A8AAAD;">
-			<a href="#tab-princ" aria-controls="Principal" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-princ.png') }}" style="width: 33%; height: auto;"></a>
-		</li>
-		<li role="presentation" style="border-right: 1px solid #A8AAAD;">
-			<a href="#tab-sec" aria-controls="Secondaire" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-sec.png') }}" style="width: 33%; height: auto;"></a>
-		</li>
-		<li role="presentation">
-			<a href="#tab-milieu" aria-controls="messages" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-milieu.png') }}" style="width: 33%; height: auto;"></a>
-		</li>
-	</ul>
-		</div>
-	<div class="col-sm-2 col-xs-2 text-center"></div>
-	</div>
-</div>
-	<!-- Partie 1.3: Choix noeud fin-->
-</div>
-</section>
-<!--Partie 1: Customisation du noeud FIN-->
-<!--Partie 2: Choix accesoire Debut-->
-<section <section  id="accesory">
-<div class="container">
-	<div class="row">
-		<div class="col-lg-12 text-center">
-			<h1>Je choisis un accessoire</h1>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-12 text-center">
-			<strong>Prix : {{ product_noeud.price }}€</strong>
-			<div class="checkbox checkbox-success">
-				{% for accessoire in accessoire %}
-				<input type="radio" name="radio_accessoire" id="{{ accessoire.name }}"  onclick="get_data()" value="{{ accessoire.id }}"/>
-				<label for="{{ accessoire.name }}">
-					{{ accessoire.name }}
-				</label>
-					{% endfor %}
-			</div>
-		</div>
-	</div>
-
-</div>
-</section>
-<section  id="size">
-<div class="container">
-	<div class="row">
-		<div class="col-sm-12 text-center">
-			<h1>Je choisis la taille</h1>
-		</div>
-	</div>
-</div>
-<div class="container">
-	<div class="row">
-		<div class="col-sm-6 text-center">
-			<div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
-				<input type="radio" name="radio_taille" id="radio-standard" value="Standard">
-				<label for="radio-standard"><h3>Taille standard</h3><br/>
-				<img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-standard.png') }}">
-				</label>
-			</div>
-		</div>
-		<div class="col-sm-6 text-center">
-			<div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
-				<input type="radio" name="radio_taille" id="radio-mini" value="Mini">
-				<label for="radio-mini"> <h3>Taille mini</h3><br/>
-				<img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-mini.png') }}">
-				</label>
-			</div>
-		</div>
-		</div>
-</div>
-
-
-
-</section>
-<!--Partie 2: Choix accesoire Fin-->
-
-
-
-
-<!---------------------------------------------------------------------Début du cimetierre ------------------------------------------------------- -->
-<!-- Début du cimetierre -->
-	 <h2 class="section-heading title-acc first-title text-center">Début du cimetierre</h2>
-
-	 <hr>
-
-	 <section  id="noeudPap" style="padding-top: 20px; padding-bottom: 0;">
-			 <div class="container-fluid">
-					 <!--
-					 CONTROLLER PLUGIN NOEUD PAPILLON
-					 -->
-					 <div class="row">
-							 <div class="col-md-4" >
-									 <div class="tab-noeud tab-london shadow">
-											 <!-- Nav tabs -->
-											 <ul class="nav nav-pills nav-tab-noeud" role="tablist">
-													 <li role="presentation" class="active" style="border-right: 1px solid #A8AAAD;">
-															 <a href="#tab-princ" aria-controls="Principal" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-princ.png') }}" class="icone-tab"></a>
-													 </li>
-													 <li role="presentation" style="border-right: 1px solid #A8AAAD;">
-															 <a href="#tab-sec" aria-controls="Secondaire" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-sec.png') }}" class="icone-tab"></a>
-													 </li>
-													 <li role="presentation">
-															 <a href="#tab-milieu" aria-controls="messages" role="tab" data-toggle="tab"><img src="{{ asset('img/icones/icone-tab-milieu.png') }}" class="icone-tab"></a>
-													 </li>
-											 </ul>
-
-											 <!-- Tab panes -->
-
-											 <div class="tab-content">
-													 <div role="tabpanel" class="tab-pane active" id="tab-princ">
-															 <br/>Couleurs du noeud principal<br/>
-															 <div class="panel-body">
-															 <style>
-															  input[type="radio"].radio_colors {
-															  display:none;
-															 	 }
-															 	 input[type="radio"].radio_colors + label {
-															 			 display:inline-block;
-															 			 border-radius:50%;
-															 				width:40px;
-															 			 height:40px;
-															 			 cursor:pointer}
-
-															 			 input[type="radio"].radio_colors:checked + label {
-															 				 border:3px solid black;
-															 					 padding:2px}
-
-
-															 	 </style>
-																	 <ul class="img-thumbnails pull-left">
-
-
-																			{% set selected_collection = 13 %}
-																			 {% for collection in collection %}
-																				{% if collection.id == selected_collection %}
-																					{% for colors in collection.colors %}
-
-																									<style>
-
-																										input[type="radio"] + .{{ colors.name }}_1 {
-																										background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
-																										}
-																									</style>
-																							 <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-																							 <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label> </a>
-																					{% endfor %}
-																				{% endif %}
-																		{% endfor %}
-																	 </ul>
-															 </div>
-													 </div>
-													 <div role="tabpanel" class="tab-pane" id="tab-sec">
-															 <br/>Couleurs du noeud secondaire<br/>
-															 <div class="panel-body">
-															 <ul class="img-thumbnails pull-left">
-
-
-																	 {% for collection in collection %}
-																		{% if collection.id == selected_collection %}
-																			{% for colors in collection.colors %}
-
-																							<style>
-
-																								input[type="radio"] + .{{ colors.name }}_2 {
-																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
-																								}
-																							</style>
-																					 <input type="radio" id="{{ colors.imageColorName }}_2" name="color2"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-																					 <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label> </a>
-																			{% endfor %}
-																		{% endif %}
-																{% endfor %}
-															 </ul>
-															 </div>
-													 </div>
-													 <div role="tabpanel" class="tab-pane" id="tab-milieu">
-															 <br/>Couleurs du milieu<br/>
-															 <div class="panel-body">
-															 <ul class="img-thumbnails pull-left">
-
-
-																	 {% for collection in collection %}
-																		{% if collection.id == selected_collection %}
-																			{% for colors in collection.colors %}
-
-																							<style>
-
-																								input[type="radio"] + .{{ colors.name }}_3 {
-																								background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }});
-																								}
-																							</style>
-																					 <input type="radio" id="{{ colors.imageColorName }}_3" name="color3"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-																					 <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label> </a>
-																			{% endfor %}
-																		{% endif %}
-																{% endfor %}
-															 </ul>
-															 </div>
-													 </div>
-											 </div><!-- FIN TABS -->
-									 </div>
-							 </div>
-
-							 <div class="col-md-7">
-									 <div id="rendu-noeud">
-											 <div style="position: absolute;" >
-													 <?php
-													 foreach($products as $value){
-															 echo "<section class='section-noeud' ng-show='noeudPap.isSelectedS(".$value->couleur_id.")'>";
-															 echo '<img ng-src="img/tissu/'.$value->couleur_img_sec.'" class="img-responsive" alt="Couleur secondaire">';
-															 echo '</section>';
-													 }
-													 ?>
-											 </div>
-											 <div style="position: absolute;">
-													 <?php
-													 foreach($products as $value){
-															 echo "<section class='section-noeud' ng-show='noeudPap.isSelected(".$value->couleur_id.")'>";
-															 echo '<img ng-src="img/tissu/'.$value->couleur_img_princ.'" class="img-responsive" alt="Couleur principale">';
-															 echo '</section>';
-													 }
-													 ?>
-											 </div>
-											 <div style="position: absolute;">
-													 <?php
-													 foreach($products as $value){
-															 echo "<section class='section-noeud' ng-show='noeudPap.isSelectedM(".$value->couleur_id.")'>";
-															 echo '<img ng-src="img/tissu/'.$value->couleur_img_milieu.'" class="img-responsive" alt="Couleur du milieu">';
-															 echo '</section>';
-													 }
-													 ?>
-											 </div>
-											 <div>
-													 <section class='section-noeud'>
-															 <img ng-src="img/tissu/background-noeud.png">
-													 </section>
-											 </div>
-									 </div>
-							 </div>
-
-					 </div> <!-- /class="row" -->
-					 <!--
-					 FIN DU CONTROLLER PLUGIN NOEUD PAPILLON
-					 -->
-			 </div>
-	 </section>
-
-	 <!-- Choix de l'accessoire + ajout au panier -->
-	 <section id="plugin-noeud" class="plugin-options" >
-			 <div class="container">
-					 <div class="row">
-							 <div class="col-lg-12 text-center">
-
-													 <h2 class="section-heading title-acc">Je choisis un accessoire</h2>
-													 <hr>
-													 <strong>Prix : {{ product_noeud.price }}€</strong>
-													 <div class="checkbox checkbox-success">
-
-														{% for accessoire in accessoire %}
-
-
-
-																	 <input type="radio" name="radio_accessoire" id="{{ accessoire.name }}"  onclick="get_data()" value="{{ accessoire.id }}"/>
-																	 <label for="{{ accessoire.name }}">
-																	{{ accessoire.name }}
-																	 </label>
-																{% endfor %}
-																</div>
-
-													 <br/><br/>
-
-
-											 <h2 class="section-heading title-acc">Je choisis la taille</h2>
-											 <hr>
-													 <div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
-															 <input type="radio" name="radio_taille" id="radio-standard" value="Standard">
-															 <label for="radio-standard">
-																	 Taille standard<br/>
-																	 <img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-standard.png') }}">
-															 </label>
-													 </div>
-													 <div class="checkbox checkbox-success checkbox-taille"  onclick="get_data()">
-															 <input type="radio" name="radio_taille" id="radio-mini" value="Mini">
-															 <label for="radio-mini">
-																	 Taille mini<br/>
-																	 <img class="img-taille-acc" src="{{ asset('/img/icones/icon-taille-mini.png') }}">
-															 </label>
-													 </div>
-
-											 <h2 class="section-heading title-acc">Le coffret cadeau</h2>
-											 <hr>
-											 <strong>Prix : {{ product_coffret.price }} €</strong><br/><br>
-
-													 <div class="checkbox checkbox-success"  onclick="get_data()">
-															 <input type="hidden" name="coffret" value="0">
-															 <input type="checkbox" name="coffret" id="checkbox-coffret" value="1">
-															 <label for="checkbox-coffret">
-																	 Je souhaite un coffret cadeau <br/><br>
-															 </label>
-													 </div>
-													 <!-- CHOIX DES COULEURS DU COFFRET-->
-															 <div class="col-lg-7 col-md-8 col-sm-12" id="couleurs-coffret" style="display: none">
-																	 <div class="tab-noeud tab-london shadow">
-																			 <!-- Nav tabs -->
-																			 <ul class="nav nav-tabs" role="tablist">
-																					 <li role="presentation" class="active">
-																							 <a href="#tab-4" aria-controls="tab-4" role="tab" data-toggle="tab">Couleur 4</a>
-																					 </li>
-																					 <li role="presentation" >
-																							 <a href="#tab-5" aria-controls="tab-5" role="tab" data-toggle="tab">Couleur 5</a>
-																					 </li>
-																			 </ul>
-
-																			 <!-- Tab panes -->
-																			 <div class="tab-content">
-																					 <div role="tabpanel" class="tab-pane active" id="tab-4">
-																							 <div class="panel-body">
-																							 <ul class="img-thumbnails pull-left">
-
-
-
-																									 {% for collection in collection %}
-																										{% if collection.id == selected_collection %}
-																											{% for colors in collection.colors %}
-
-																															<style>
-
-																																input[type="radio"] + .{{ colors.name }}_4 {
-																																background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}) left top no-repeat !important;
-																																}
-																															</style>
-																													 <input type="radio" id="{{ colors.imageColorName }}_4" name="color4"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-																													 <label class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label> </a>
-																											{% endfor %}
-																										{% endif %}
-																								{% endfor %}
-																							 </ul>
-																							 </div>
-																					 </div>
-																					 <div role="tabpanel" class="tab-pane" id="tab-5">
-																							 <div class="panel-body">
-																							 <ul class="img-thumbnails pull-left">
-
-
-
-																									 {% for collection in collection %}
-																										{% if collection.id == selected_collection %}
-																											{% for colors in collection.colors %}
-
-																															<style>
-
-																																input[type="radio"] + .{{ colors.name }}_5 {
-																																background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }}) left top no-repeat !important;
-																																}
-																															</style>
-																													 <input type="radio" id="{{ colors.imageColorName }}_5" name="color5"  onclick="get_data()" class="radio_colors" value="{{ colors.id }}"/>
-																													 <label class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label>
-																											{% endfor %}
-																										{% endif %}
-																								{% endfor %}
-																							 </ul>
-																							 </div>
-																					 </div>
-																			 </div><!-- FIN TABS -->
-																	 </div>
-															 </div><!-- FIN CHOIX DES COULEURS DU COFFRET-->
-
-
-											 <!-- champs cachés -->
-
-											 {{ form_start(form) }}
-
-											<div style="display:none">
-
-											 <div class="form-group" >
-											     {{ form_label(form.product, "Produit", {'label_attr': {'class': '', 'id': 'dropdown_product' }}) }}
-											     {{ form_errors(form.product) }}
-											     {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product'}}) }}
-
-											 </div>
-
-											 <div class="form-group" >
-											     {{ form_label(form.accessoire, "Accessoire", {'label_attr': {'class': 'radio'}}) }}
-											     {{ form_errors(form.accessoire) }}
-											     {{ form_widget(form.accessoire, {'attr': {'class': ''}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" >
-											     {{ form_label(form.quantity, "Quantité", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.quantity) }}
-											     {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color1" style="display:block">
-											     {{ form_label(form.color1, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color1) }}
-											     {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color2" style="display:block">
-											     {{ form_label(form.color2, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color2) }}
-											     {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color3" style="display:block">
-											     {{ form_label(form.color3, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color3) }}
-											     {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color4" style="display:block">
-											     {{ form_label(form.color4, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color4) }}
-											     {{ form_widget(form.color4, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color5" style="display:block">
-											     {{ form_label(form.color5, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color5) }}
-											     {{ form_widget(form.color5, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color6" style="display:none">
-											     {{ form_label(form.color6, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color6) }}
-											     {{ form_widget(form.color6, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-
-											 <div class="form-group" id="color7" style="display:none">
-											     {{ form_label(form.color7, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color7) }}
-											     {{ form_widget(form.color7, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-											 <div class="form-group" id="color8" style="display:none">
-											     {{ form_label(form.color8, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color8) }}
-											     {{ form_widget(form.color8, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-
-											 <div class="form-group" id="color9" style="display:none">
-											     {{ form_label(form.color9, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color9) }}
-											     {{ form_widget(form.color9, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-
-
-
-											 <div class="form-group" id="color10" style="display:none">
-											     {{ form_label(form.color10, "color", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.color10) }}
-											     {{ form_widget(form.color10, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
-											 <div class="form-group">
-											     {{ form_label(form.size, "Taille", {'label_attr': {'class': ''}}) }}
-											     {{ form_errors(form.size) }}
-											     {{ form_widget(form.size, {'attr': {'class': 'form-control'}}) }}
-
-											 </div>
+    <!-- Partie 1: Customisation du noeud DEBUT-->
+
+    <div class="container text-center">
+        <h1>CREER SON NOEUD</h1></br>
+        <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
+            <li><a href="#step1" rel="step1" title="Go to step 1"><h3>Produit & taille</h3></a></li>
+            <li><a href="#step2" rel="step2" title="Go to step 2"><h3>Customisation</h3></a></li>
+        </ul>
+    </div>
+    <div class="container prix text-center" style="border-bottom: 2px solid;margin-bottom: 30px;">
+        <h3>Total: <!--Cyprien: Ici twig prix --></h3>
+    </div>
+    <!--<div id="sequence" class="seq">
+
+    <div class="seq-screen">
+      <ul class="seq-canvas">
+<!--------------------------------------------------------------------------------------------------------------------------------
+        <li class="seq-step1 seq-in" id="step1">
+          <div class="seq-content">
+            <h2 data-seq class="seq-title">Step 1</h2>
+          </div>
+        </li>
+<!--------------------------------------------------------------------------------------------------------------------------------
+        <li class="seq-step2" id="step2">
+          <div class="seq-content container">
+            <div data-seq class="seq-title">
+
+
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-12 col-xs-12">
+                    <!-- Choix de la collection--
+                    <p>la vie de ma mére</p>
+                  </div>
+                </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                    <!-- Aperçu noeud--
+                    Aperçu noeud
+                  </div>
+                  <div class="col-sm-6">
+                    <!-- Choix des couleurs --
+                    choix des couleurs
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </li>
+<!--------------------------------------------------------------------------------------------------------------------------------
+     </ul>
+    </div>
+
+    <ul rel="sequence" class="seq-pagination" role="navigation" aria-label="Pagination">
+      <li><a href="#step1" rel="step1" title="Go to step 1">Step 1</a></li>
+      <li><a href="#step2" rel="step2" title="Go to step 2">Step 2</a></li>
+    </ul>
+  </div>-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 choix_collection no_padding">
+                <!-- Choix de la collection-->
+                <h4>Collection LONDON</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 no_padding">
+                <!-- Aperçu noeud-->
+                <div class="noeud_position">
+                    <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/57bae578ae563.png')}});"></div>
+                    <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/57bae578afe0f.png')}});"></div>
+                    <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/57bae578b16f5.png')}});"></div>
+                </div>
+                <!-- Aperçu noeud- FIN-->
+            </div>
+            <div class="col-sm-6 no_padding">
+                <!-- Choix des couleurs -->
+                <div class="container accordeon_noeud no_padding">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div id="panel-heading-plugin-1" class="panel-heading panel-heading-plugin" style="background:url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                Face 1</h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ul class="img-thumbnails pull-left">
+                                        {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        <div id="MyInputs" class="row">
+                                            {% endif %}
+                                            <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
+                                                <style>
+                                                    input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+                                                </style>
+                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}')" class="radio_colors" value="{{ colors.id }}" />
+                                                <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            </div>
+                                            <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
+                                            {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                        </div>
+                                        {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div id="panel-heading-plugin-2" class="panel-heading panel-heading-plugin">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                Face 2</h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">bite 2</div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div id="panel-heading-plugin-3" class="panel-heading panel-heading-plugin">
+                                <div class="row">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                Noeud</h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">bite 3</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Choix des couleurs FIN-->
+            </div>
+        </div>
+    </div>
+    <!-------------------------------------------------------------------COFFRET DEBUT -------->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12 choix_collection no_padding">
+                <!-- Choix de la collection-->
+                <h4>Coffret 2 couleurs supplémentaires</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 no_padding">
+                <!-- Aperçu noeud-->
+                <div class="noeud_position">
+                    <div class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/57bae578ae563.png')}});"></div>
+                    <div class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/57bae578afe0f.png')}});"></div>
+                    <div class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/57bae578b16f5.png')}});"></div>
+                </div>
+                <!-- Aperçu noeud- FIN-->
+            </div>
+            <div class="col-sm-6 no_padding">
+                <!-- Choix des couleurs -->
+                <div class="container accordeon_noeud no_padding">
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row text-center">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                <a>Face 1</a></h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <ul class="img-thumbnails pull-left">
+                                        {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        <div class="row">
+                                            {% endif %}
+                                            <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
+                                                <style>
+                                                    input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+                                                </style>
+                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('abc')" class="radio_colors" value="{{ colors.id }}" />
+                                                <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            </div>
+                                            <div class="col-sm-3 text-center color_token no_padding thumbnail_size"></div>
+                                            {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                        </div>
+                                        {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row text-center">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                <a>Face 2</a></h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse2" class="panel-collapse collapse">
+                                <div class="panel-body">bite 2</div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row text-center">
+                                    <div class="col-sm-11">
+                                        <h4 class="panel-title">
+                <a>Noeud</a></h4>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapse3" class="panel-collapse collapse">
+                                <div class="panel-body">bite 3</div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- Choix des couleurs FIN-->
+            </div>
+        </div>
+    </div>
+
+    <!-- champs cachés -->
+
+    {{ form_start(form) }}
+
+   <div style="display:none">
+
+    <div class="form-group" >
+        {{ form_label(form.product, "Produit", {'label_attr': {'class': '', 'id': 'dropdown_product' }}) }}
+        {{ form_errors(form.product) }}
+        {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product'}}) }}
+
+    </div>
+
+    <div class="form-group" >
+        {{ form_label(form.accessoire, "Accessoire", {'label_attr': {'class': 'radio'}}) }}
+        {{ form_errors(form.accessoire) }}
+        {{ form_widget(form.accessoire, {'attr': {'class': ''}}) }}
+
+
+    </div>
+
+
+    <div class="form-group" >
+        {{ form_label(form.quantity, "Quantité", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.quantity) }}
+        {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color1" style="display:block">
+        {{ form_label(form.color1, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color1) }}
+        {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color2" style="display:block">
+        {{ form_label(form.color2, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color2) }}
+        {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color3" style="display:block">
+        {{ form_label(form.color3, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color3) }}
+        {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color4" style="display:block">
+        {{ form_label(form.color4, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color4) }}
+        {{ form_widget(form.color4, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color5" style="display:block">
+        {{ form_label(form.color5, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color5) }}
+        {{ form_widget(form.color5, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color6" style="display:none">
+        {{ form_label(form.color6, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color6) }}
+        {{ form_widget(form.color6, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+
+    <div class="form-group" id="color7" style="display:none">
+        {{ form_label(form.color7, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color7) }}
+        {{ form_widget(form.color7, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group" id="color8" style="display:none">
+        {{ form_label(form.color8, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color8) }}
+        {{ form_widget(form.color8, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+
+    <div class="form-group" id="color9" style="display:none">
+        {{ form_label(form.color9, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color9) }}
+        {{ form_widget(form.color9, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+
+    <div class="form-group" id="color10" style="display:none">
+        {{ form_label(form.color10, "color", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.color10) }}
+        {{ form_widget(form.color10, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+    <div class="form-group">
+        {{ form_label(form.size, "Taille", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.size) }}
+        {{ form_widget(form.size, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
 </div>
 
-											 {{ form_end(form) }}
-
-
-
-
-
-
-
-
-
-
-							 </div>
-
-					 </div>
-			 </div>
-	 </section>
-
-
-
+    {{ form_end(form) }}
 
 <script>
+    /*Script changement background url pour panelheading*/
 
-function get_data(){
-				if (document.getElementById("checkbox-coffret").checked){
-				document.getElementById("add_added_product_product").value = "{{ product_coffret.id }}";
-				document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
-				document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
-				document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
-				document.getElementById("add_added_product_color4").value = document.querySelector('input[name="color4"]:checked').value;
-				document.getElementById("add_added_product_color5").value = document.querySelector('input[name="color5"]:checked').value;
-
-
-				}
-				else {
-				document.getElementById("add_added_product_product").value = "{{ product_noeud.id }}";
-				document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
-				document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
-				document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
-
-				}
-				document.getElementById("add_added_product_accessoire").value = document.querySelector('input[name="radio_accessoire"]:checked').value;
-				document.getElementById("add_added_product_quantity").value = 1;
-				document.getElementById("add_added_product_size").value = document.querySelector('input[name="radio_taille"]:checked').value;
-				}
+    function get_data(i) {
+      document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url("+i+")";
+        if (document.getElementById("checkbox-coffret").checked) {
+            document.getElementById("add_added_product_product").value = "{{ product_coffret.id }}";
+            document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
+            document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
+            document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
+            document.getElementById("add_added_product_color4").value = document.querySelector('input[name="color4"]:checked').value;
+            document.getElementById("add_added_product_color5").value = document.querySelector('input[name="color5"]:checked').value;
 
 
+        } else {
+            document.getElementById("add_added_product_product").value = "{{ product_noeud.id }}";
+            document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
+            document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
+            document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
 
+        }
+        document.getElementById("add_added_product_accessoire").value = document.querySelector('input[name="radio_accessoire"]:checked').value;
+        document.getElementById("add_added_product_quantity").value = 1;
+        document.getElementById("add_added_product_size").value = document.querySelector('input[name="radio_taille"]:checked').value;
+        alert("lol");
+    }
+
+
+
+
+    /*function change_background_all() {
+        var bg = document.getElementById("57bae5c2cf2cb.png_1").style.backgroundImage;
+        bg = bg.replace('url(', '').replace(')', '').replace(/\"/gi, "");
+        $('#panel-heading-plugin-1').css("background-image",
+            "url(/agathevousgate/web/upload/color/thumbnail/57bae59b893de.png)");
+        var img = document.getElementById('panel-heading-plugin-1'),
+            style = img.currentStyle || window.getComputedStyle(img, false),
+            bi = style.backgroundImage.slice(21, -1);
+        alert(bi);
+        /*$('#panel-heading-plugin-1').css("background-image",
+            "url(bi)");*
+        document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url('img_tree.png')";
+    }*/
 </script>
+    <script src="{{ asset('scripts/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ asset('scripts/hammer.min.js') }}"></script>
+    <script src="{{ asset('scripts/sequence.min.js') }}"></script>
+    <script src="{{ asset('scripts/sequence-theme.starter-basic.js') }}"></script>
+
 
 </body>
 {% endblock %}

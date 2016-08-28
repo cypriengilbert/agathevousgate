@@ -59,9 +59,16 @@ class User extends BaseUser
      private $genre;
 
      /**
-      * @var integer
+      * @var string
       *
-      * @ORM\Column(name="naissance", type="integer", nullable=true)
+      * @ORM\Column(name="parrain_email", type="string", length=255, nullable=true)
+      */
+     private $parrain_email;
+
+     /**
+      * @var datetime
+      *
+      * @ORM\Column(name="naissance", type="datetime", nullable=true)
       */
      private $naissance;
 
@@ -222,5 +229,29 @@ class User extends BaseUser
     public function getIsPro()
     {
         return $this->isPro;
+    }
+
+    /**
+     * Set parrainEmail
+     *
+     * @param string $parrainEmail
+     *
+     * @return User
+     */
+    public function setParrainEmail($parrainEmail)
+    {
+        $this->parrain_email = $parrainEmail;
+
+        return $this;
+    }
+
+    /**
+     * Get parrainEmail
+     *
+     * @return string
+     */
+    public function getParrainEmail()
+    {
+        return $this->parrain_email;
     }
 }
