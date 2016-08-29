@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- If you delete this meta tag, Half Life 3 will never be released. -->
+<meta name="viewport" content="width=device-width" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ZURBemails</title>
+
+<link rel="stylesheet" type="text/css" href="stylesheets/email.css" />
+
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<!-- HEADER -->
+<table class="head-wrap" bgcolor="#999999">
+	<tr>
+		<td></td>
+		<td class="header container" >
+
+				<div class="content">
+				<table bgcolor="#999999">
+					<tr>
+						<td><img src="http://placehold.it/200x50/" /></td>
+						<td align="right"><h6 class="collapse">Basic</h6></td>
+					</tr>
+				</table>
+				</div>
+
+		</td>
+		<td></td>
+	</tr>
+</table><!-- /HEADER -->
+
+
+<!-- BODY -->
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" bgcolor="#FFFFFF">
+
+			<div class="content">
+			<table>
+				<tr>
+					<td>
+						<h3>Bonjour {{ franchise.prenom }} {{ franchise.nom }}</h3>
+						<p class="lead">Une nouvelle commande a été confirmée</p>
+						<p>Voici le contenu de la commande : </p>
+						<table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center"> Action</th>
+                            <th class="text-center">Produit</th>
+                            <th class="text-center">Quantité</th>
+                            <th class="text-right">Prix</th>
+                            <th class="text-right">Total</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+
+
+
+
+{% set totalsum = null %}{% set numero_ligne = 0 %}
+
+														{% for listepanier in listePanier %}
+{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+
+
+                            <tr>
+                                <td class="col-sm-1 col-md-1 text-center">
+{% if listepanier.id %}
+                                    <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+                                    {% else  %}
+
+<a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
+
+
+{% endif %}
+
+
+
+                                </td>
+
+                                    <td class="col-sm-8 col-md-6 text-center">
+
+                                    {% if listepanier.Color1 %}
+                                    {{ listepanier.Color1.name }} /
+                                      {% endif %}
+                                      {% if listepanier.color2 %}
+                                      {{ listepanier.Color2.name }} /
+                                        {% endif %}
+                                        {% if listepanier.Color3 %}
+                                        {{ listepanier.Color3.name }} /
+                                          {% endif %}
+                                          {% if listepanier.Color4 %}
+                                          {{ listepanier.Color4.name }} /
+                                            {% endif %}
+                                            {% if listepanier.Color5 %}
+                                            {{ listepanier.Color5.name }} /
+                                              {% endif %}
+                                              {% if listepanier.Color6 %}
+                                              {{ listepanier.Color6.name }} /
+                                                {% endif %}
+                                                {% if listepanier.Color7 %}
+                                                {{ listepanier.Color7.name }} /
+                                                  {% endif %}
+                                                  {% if listepanier.Color8 %}
+                                                  {{ listepanier.Color8.name }} /
+                                                    {% endif %}
+                                                    {% if listepanier.Color9 %}
+                                                    {{ listepanier.Color9.name }} /
+                                                      {% endif %}
+                                                      {% if listepanier.Color10 %}
+                                                      {{ listepanier.Color10.name }} /
+                                                        {% endif %}
+<br>
+
+
+                                      {{ listepanier.product.name }}<br />
+
+                                    </td>
+
+                                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                                    {% if listepanier.id %}
+
+                                      <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div><a href="{{ path('minusproduct',{'id':listepanier.id} ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% else %}
+                                      <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}"><div style="position:relative; top:20px; left:35px"><i class="fa fa-plus fa-1" aria-hidden="true"></i> </div></a><div> <input type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled></div>  <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}"><div><i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true"></i></div></a>
+                                      {% endif %}
+                                    </td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price }} €</strong></td>
+                                    <td class="col-sm-1 col-md-1 text-right"><strong>{{ listepanier.product.price * listepanier.quantity }} €</strong></td>
+
+
+                            </tr>
+
+{% set numero_ligne = numero_ligne + 1 %}
+													{% endfor %}
+
+
+
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Sous-total</h5></td>
+                            <td class="text-right"><h5><strong>  {{ totalsum }} €</strong></h5></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h5>Frais de livraison</h5></td>
+                            <td class="text-right"><h5><strong>{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</strong></h5></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+                            <td><h3>Total</h3></td>
+                            <td class="text-right"><h3><strong>{{ totalsum + livraison }} €</strong></h3></td>
+                        </tr>
+                        <tr>
+                            <td>   </td>
+                            <td>   </td>
+                            <td>   </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+						<p> </p>
+						<!-- Callout Panel -->
+						<p class="callout">
+							Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! &raquo;</a>
+						</p><!-- /Callout Panel -->
+
+						<!-- social & contact -->
+						<table class="social" width="100%">
+							<tr>
+								<td>
+
+									<!-- column 1 -->
+									<table align="left" class="column">
+										<tr>
+											<td>
+
+												<h5 class="">Connect with Us:</h5>
+												<p class=""><a href="#" class="soc-btn fb">Facebook</a> <a href="#" class="soc-btn tw">Twitter</a> <a href="#" class="soc-btn gp">Google+</a></p>
+
+
+											</td>
+										</tr>
+									</table><!-- /column 1 -->
+
+									<!-- column 2 -->
+									<table align="left" class="column">
+										<tr>
+											<td>
+
+												<h5 class="">Contact Info:</h5>
+												<p>Phone: <strong>408.341.0600</strong><br/>
+                Email: <strong><a href="emailto:hseldon@trantor.com">hseldon@trantor.com</a></strong></p>
+
+											</td>
+										</tr>
+									</table><!-- /column 2 -->
+
+									<span class="clear"></span>
+
+								</td>
+							</tr>
+						</table><!-- /social & contact -->
+
+					</td>
+				</tr>
+			</table>
+			</div><!-- /content -->
+
+		</td>
+		<td></td>
+	</tr>
+</table><!-- /BODY -->
+
+<!-- FOOTER -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+
+				<!-- content -->
+				<div class="content">
+				<table>
+				<tr>
+					<td align="center">
+						<p>
+							<a href="#">Terms</a> |
+							<a href="#">Privacy</a> |
+							<a href="#"><unsubscribe>Unsubscribe</unsubscribe></a>
+						</p>
+					</td>
+				</tr>
+			</table>
+				</div><!-- /content -->
+
+		</td>
+		<td></td>
+	</tr>
+</table><!-- /FOOTER -->
+
+</body>
+</html>

@@ -491,7 +491,7 @@ $EntiteCode = null;
         $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
         $listeProduitActive = $repository->findBy(array(
             'isactive' => true,
-            'collection' => $id
+            'collection' => $id,
         ));
         $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive   = $repository->findBy(array(
@@ -540,9 +540,9 @@ $EntiteCode = null;
 
 
     /**
-     * @Route("/addDefinedToCart/{id}/{id_collection}/{size}", name="adddefinedtocart")
+     * @Route("/addDefinedToCart/{id_noeud}/{id_coffret}/{id_boutons}/{id_pochette}/{id_collection}/{size}/{id_accessoire}", name="adddefinedtocart")
      */
-    public function addDefinedToCartAction($id, $id_collection, $size, Request $request)
+    public function addDefinedToCartAction($id_noeud,$id_coffret, $id_boutons, $id_pochette, $id_collection, $size, $id_accessoire, Request $request)
     {
 
         $session = $this->get('session');
@@ -556,22 +556,120 @@ $EntiteCode = null;
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
         $product_selected = $repository->findOneBy(array(
-            'id' => $id
+            'id' => $id_noeud
+        ));
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $boutons_selected = $repository->findOneBy(array(
+            'id' => $id_boutons
+        ));
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $pochette_selected = $repository->findOneBy(array(
+            'id' => $id_pochette
+        ));
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $coffret_selected = $repository->findOneBy(array(
+            'id' => $id_coffret
         ));
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection_selected = $repository->findOneBy(array(
             'id' => $id_collection
         ));
 
-        $added_product = new AddedProduct();
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+        $accessoire_selected = $repository->findOneBy(array(
+            'id' => $id_accessoire
+        ));
+
+//added Coffret
+        if($coffret_selected){
+        $new_coffret = new AddedProduct();
+        $idColor1   = $coffret_selected->getColor1()->getId();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color1     = $repository->findOneBy(array(
+            'id' => $idColor1
+        ));
+        $new_coffret->setColor1($color1);
 
 
+        $idColor2   = $coffret_selected->getColor2()->getId();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color2     = $repository->findOneBy(array(
+            'id' => $idColor2
+        ));
+        $new_coffret->setColor2($color2);
+
+        $idCoffret  = $coffret_selected->getProduct()->getId();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+        $product    = $repository->findOneBy(array(
+            'id' => $idCoffret));
+
+            $new_coffret->setProduct($product);
+            $new_coffret->setCommande(null);
+            $new_coffret->setQuantity(1);
+            $new_coffret->setSize($size);
+            $new_coffret->setCollection($collection_selected);
+
+
+          }
+
+
+// added boutons
+if($boutons_selected){
+$new_boutons = new AddedProduct();
+$idColor1   = $boutons_selected->getColor1()->getId();
+$repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+$color1     = $repository->findOneBy(array(
+    'id' => $idColor1
+));
+$new_boutons->setColor1($color1);
+
+$idBoutons  = $boutons_selected->getProduct()->getId();
+$repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+$product    = $repository->findOneBy(array(
+    'id' => $idBoutons));
+
+    $new_boutons->setProduct($product);
+    $new_boutons->setCommande(null);
+    $new_boutons->setQuantity(1);
+    $new_boutons->setCollection($collection_selected);
+
+
+  }
+
+  // added pochette
+  if($pochette_selected){
+  $new_pochette = new AddedProduct();
+  $idColor1   = $pochette_selected->getColor1()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+  $color1     = $repository->findOneBy(array(
+      'id' => $idColor1
+  ));
+  $new_pochette->setColor1($color1);
+
+  $idPochette  = $pochette_selected->getProduct()->getId();
+  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+  $product    = $repository->findOneBy(array(
+      'id' => $idPochette));
+
+      $new_pochette->setProduct($product);
+      $new_pochette->setCommande(null);
+      $new_pochette->setQuantity(1);
+      $new_pochette->setCollection($collection_selected);
+
+
+
+    }
+
+
+
+        //added Noeud
+        $new_noeud = new AddedProduct();
         $idColor1   = $product_selected->getColor1()->getId();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $color1     = $repository->findOneBy(array(
             'id' => $idColor1
         ));
-        $added_product->setColor1($color1);
+        $new_noeud->setColor1($color1);
 
 
         $idColor2   = $product_selected->getColor2()->getId();
@@ -579,7 +677,7 @@ $EntiteCode = null;
         $color2     = $repository->findOneBy(array(
             'id' => $idColor2
         ));
-        $added_product->setColor2($color2);
+        $new_noeud->setColor2($color2);
 
 
         $idColor3   = $product_selected->getColor3()->getId();
@@ -587,7 +685,7 @@ $EntiteCode = null;
         $color3     = $repository->findOneBy(array(
             'id' => $idColor3
         ));
-        $added_product->setColor3($color3);
+        $new_noeud->setColor3($color3);
 
         if ($product_selected->getColor4()) {
             $idColor4   = $product_selected->getColor4()->getId();
@@ -595,7 +693,7 @@ $EntiteCode = null;
             $color4     = $repository->findOneBy(array(
                 'id' => $idColor4
             ));
-            $added_product->setColor4($color4);
+            $new_noeud->setColor4($color4);
 
         }
 
@@ -606,7 +704,7 @@ $EntiteCode = null;
             $color5     = $repository->findOneBy(array(
                 'id' => $idColor5
             ));
-            $added_product->setColor5($color5);
+            $new_noeud->setColor5($color5);
 
         }
         if ($product_selected->getColor6()) {
@@ -615,7 +713,7 @@ $EntiteCode = null;
             $color6     = $repository->findOneBy(array(
                 'id' => $idColor6
             ));
-            $added_product->setColor6($color6);
+            $new_noeud->setColor6($color6);
 
         }
         if ($product_selected->getColor7()) {
@@ -634,7 +732,7 @@ $EntiteCode = null;
             $color8     = $repository->findOneBy(array(
                 'id' => $idColor8
             ));
-            $added_product->setColor8($color8);
+            $new_noeud->setColor8($color8);
 
         }
         if ($product_selected->getColor9()) {
@@ -643,7 +741,7 @@ $EntiteCode = null;
             $color9     = $repository->findOneBy(array(
                 'id' => $idColor9
             ));
-            $added_product->setColor9($color9);
+            $new_noeud->setColor9($color9);
 
         }
         if ($product_selected->getColor10()) {
@@ -652,7 +750,7 @@ $EntiteCode = null;
             $color10    = $repository->findOneBy(array(
                 'id' => $idColor10
             ));
-            $added_product->setColor10($color10);
+            $new_noeud->setColor10($color10);
 
         }
         $idProduct  = $product_selected->getProduct()->getId();
@@ -663,34 +761,65 @@ $EntiteCode = null;
 
 
 
-        $added_product->setCollection($collection_selected);
-        $added_product->setProduct($product);
-        $added_product->setCommande(null);
-        $added_product->setQuantity(1);
-        $added_product->setSize($size);
+        $new_noeud->setCollection($collection_selected);
+        $new_noeud->setProduct($product);
+        $new_noeud->setCommande(null);
+        $new_noeud->setQuantity(1);
+        $new_noeud->setSize($size);
+        $new_noeud->setAccessoire($accessoire_selected);
+
+
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user = $this->container->get('security.context')->getToken()->getUser();
-            $added_product->setClient($user);
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($added_product);
-
-
-        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-
             $em = $this->getDoctrine()->getManager();
-            $em->persist($added_product);
+            $new_noeud->setClient($user);
+
+            if($pochette_selected){
+            $new_pochette->setClient($user);
+            $em->persist($new_pochette);
+            }
+            if($coffret_selected){
+            $new_coffret->setClient($user);
+            $em->persist($new_coffret);
+            }
+            if($boutons_selected){
+            $new_boutons->setClient($user);
+            $em->persist($new_boutons);}
+
+
+            $em->persist($new_noeud);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
-
 
         } else {
 
             $listeAddedProduct = $session->get('panier_session');
-            array_push($listeAddedProduct, $added_product);
+            array_push($listeAddedProduct, $new_noeud);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
             $nbarticlepanier = $session->get('nb_article');
+if($boutons_selected){
+            $listeAddedProduct = $session->get('panier_session');
+            array_push($listeAddedProduct, $new_boutons);
+            $session->set('panier_session', $listeAddedProduct);
+            $session->set('nb_article', count($listeAddedProduct));
+            $nbarticlepanier = $session->get('nb_article');
+}
+  if($coffret_selected){
+            $listeAddedProduct = $session->get('panier_session');
+            array_push($listeAddedProduct, $new_coffret);
+            $session->set('panier_session', $listeAddedProduct);
+            $session->set('nb_article', count($listeAddedProduct));
+            $nbarticlepanier = $session->get('nb_article');
+}
+
+if($pochette_selected){
+            $listeAddedProduct = $session->get('panier_session');
+            array_push($listeAddedProduct, $new_pochette);
+            $session->set('panier_session', $listeAddedProduct);
+            $session->set('nb_article', count($listeAddedProduct));
+            $nbarticlepanier = $session->get('nb_article');
+}
         }
 
         $url      = $this->generateUrl('listeproduit', array(
@@ -773,7 +902,43 @@ $EntiteCode = null;
                     $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
 
+                    if ($commandeEnCours->getAtelierLivraison())
+{
+  $atelier = $commandeEnCours->getAtelierLivraison();
+  $message = \Swift_Message::newInstance()
+     ->setSubject('Nouvelle commande')
+     ->setFrom('cyprien@cypriengilbert.com')
+     ->setTo($atelier->getEmail())
+     ->setBody(
+        $this->renderView(
+           'emails/new_commande_franchise.html.twig',
+           array('franchise' => $atelier->getFranchise(), 'listePanier' => $listePanier)
+       ),
+       'text/html'
+   )
+;
+$this->get('mailer')->send($message);
 
+
+}
+else{
+
+  $message = \Swift_Message::newInstance()
+     ->setSubject('Nouvelle commande')
+     ->setFrom('cyprien@cypriengilbert.com')
+     ->setTo('cypriengilbert@gmail.com')
+     ->setBody(
+        $this->renderView(
+  // app/Resources/views/Emails/registration.html.twig
+           'emails/new_commande.html.twig',
+           array('listePanier' => $listePanier)
+       ),
+       'text/html'
+   )
+  ;
+  $this->get('mailer')->send($message);
+
+}
                     $message = \Swift_Message::newInstance()
                        ->setSubject('Confirmation de Commande')
                        ->setFrom('cyprien@cypriengilbert.com')
@@ -804,6 +969,11 @@ $EntiteCode = null;
                 return $response;
             }
         }
+
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
+
+        return $response;
     }
 
 
@@ -915,11 +1085,12 @@ $EntiteCode = null;
 
                         }
                         $total_commande = $total_commande - $remise;
+                        $newcommande->setRemise($remise);
+
                         }
 
                 }
                 $total_commande_100 = $total_commande * 100;
-                $newcommande->setRemise($remise);
                 $newcommande->setPrice($total_commande);
 
                 $em = $this->getDoctrine()->getManager();
@@ -1061,13 +1232,15 @@ $EntiteCode = null;
                   }
                 elseif($codePromo->getGenre() == 'remise'){
                       $remise = $codePromo->getMontant();
-                }
-                $total_commande = $total_commande - $remise;
-              }
+                    }
+                    $total_commande = $total_commande - $remise;
+                    $newcommande->setRemise($remise);
+
+                    }
+
 
             }
             $total_commande_100 = $total_commande * 100;
-            $newcommande->setRemise($remise);
             $newcommande->setPrice($total_commande);
 
             $em = $this->getDoctrine()->getManager();
@@ -1239,6 +1412,46 @@ $EntiteCode = null;
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
             'page' => $page
+
+        ));
+    }
+
+
+    /**
+     * @Route("/product/{id}/", name="product")
+     */
+    public function productAction(Request $request, $id)
+    {
+
+
+
+        $session = $this->get('session');
+        if ($session->get('panier_session')) {
+
+        } else {
+            $session->set('panier_session', array());
+        }
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+        $product = $repository->findOneBy(array('id' => $id));
+
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticlepanier = count($repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user
+            )));
+        } else {
+            $nbarticlepanier = 0;
+        }
+
+
+
+        return $this->render('CommerceBundle:Default:product.html.twig', array(
+            'nbarticlepanier' => $nbarticlepanier,
+            'product' => $product,
+
 
         ));
     }
