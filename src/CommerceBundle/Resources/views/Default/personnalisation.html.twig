@@ -7,8 +7,8 @@
     <div class="container text-center">
         <h1>CREER SON NOEUD</h1></br>
         <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
-            <li><a href="#step1" rel="step1" title="Go to step 1"><h3>Produit & taille</h3></a></li>
-            <li><a href="#step2" rel="step2" title="Go to step 2"><h3>Customisation</h3></a></li>
+            <li><button class="btn btn-primary btn-lg active btn_TT" role="button">Type & taille de noeud</a></li>
+            <li><button class="btn btn-primary btn-lg active btn_perso" role="button">Customization</a></li>
         </ul>
     </div>
     <div class="container prix text-center" style="border-bottom: 2px solid;margin-bottom: 30px;">
@@ -17,7 +17,9 @@
 
 
   <!-- Page Produit & Taille -->
+<div class="main_page">
 <section class="type-and-size">
+<div class"container main_type_taille_noeud">
     <div class="container choix_type_taille_noeud">
         <div class="row">
             <div class="col-sm-12 col-xs-12 choix_supplement no_padding">
@@ -34,7 +36,7 @@
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/logo_test.jpg') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
 
@@ -46,7 +48,7 @@
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/logo_test.jpg') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
             </div>
@@ -57,7 +59,7 @@
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/logo_test.jpg') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
             </div>
@@ -79,7 +81,7 @@
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/logo_test.jpg') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
             </div>
@@ -90,7 +92,7 @@
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/logo_test.jpg') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
             </div>
@@ -100,60 +102,14 @@
     <div class="container">
         <div class="row text-center no_padding">
             <div class="col-sm-8"></div>
-            <div class="col-sm-4 no_padding"><a href="/agathevousgate/web/app_dev.php/personnalisation" class="btn btn-primary btn-lg active btn_send" role="button">Personnalisation !</a></div>
+            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send btn_perso" role="button">Personnalisation !</a></div>
         </div>
     </div>
+</div>
 </section>
+<section class="personnalisation_noeud">
 
-  <!-- Page produit & taille FIN -->
-    <!--<div id="sequence" class="seq">
-
-    <div class="seq-screen">
-      <ul class="seq-canvas">
-
-        <li class="seq-step1 seq-in" id="step1">
-          <div class="seq-content">
-            <h2 data-seq class="seq-title">Step 1</h2>
-          </div>
-        </li>
-
-        <li class="seq-step2" id="step2">
-          <div class="seq-content container">
-            <div data-seq class="seq-title">
-
-
-              <div class="container">
-                <div class="row">
-                  <div class="col-sm-12 col-xs-12">
-                    <!-- Choix de la collection--
-                    <p>la vie de ma mére</p>
-                  </div>
-                </div>
-              <div class="row">
-                  <div class="col-sm-6">
-                    <!-- Aperçu noeud--
-                    Aperçu noeud
-                  </div>
-                  <div class="col-sm-6">
-                    <!-- Choix des couleurs --
-                    choix des couleurs
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </li>
-<!--------------------------------------------------------------------------------------------------------------------------------
-     </ul>
-    </div>
-
-    <ul rel="sequence" class="seq-pagination" role="navigation" aria-label="Pagination">
-      <li><a href="#step1" rel="step1" title="Go to step 1">Step 1</a></li>
-      <li><a href="#step2" rel="step2" title="Go to step 2">Step 2</a></li>
-    </ul>
-  </div>-->
-    <div class="container">
+    <div class="container main_personnalisation">
         <div class="row">
             <div class="col-sm-12 col-xs-12 choix_collection no_padding">
                 <!-- Choix de la collection-->
@@ -189,7 +145,7 @@
                             <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <ul class="img-thumbnails pull-left">
-                                        {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                         <div id="MyInputs" class="row">
                                             {% endif %}
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -200,7 +156,7 @@
                                                 <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                             </div>
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
-                                            {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                            {% set X1 = X1+1 %} {% if X1 == 7 %}
                                         </div>
                                         {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                     </ul>
@@ -224,7 +180,7 @@
                             <div id="collapse2" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -235,7 +191,7 @@
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
-                                          {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                          {% set X1 = X1+1 %} {% if X1 == 7 %}
                                       </div>
                                       {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                   </ul></div>
@@ -257,7 +213,7 @@
                             <div id="collapse3" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -268,7 +224,7 @@
                                               <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
-                                          {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                          {% set X1 = X1+1 %} {% if X1 == 7 %}
                                       </div>
                                       {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                   </ul></div>
@@ -281,7 +237,7 @@
                 <!-- Choix des couleurs FIN-->
             </div>
         </div>
-    </div>
+
     <!--------------------------------------------------------------------------------------------------------------------------COFFRET DEBUT -------->
     <!--------------------------------------------------------------------------------------------------------------------------COFFRET DEBUT -------->
     <!--------------------------------------------------------------------------------------------------------------------------COFFRET DEBUT -------->
@@ -321,7 +277,7 @@
                             <div id="collapse21" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <ul class="img-thumbnails pull-left">
-                                        {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                         <div id="MyInputs" class="row">
                                             {% endif %}
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -332,7 +288,7 @@
                                                 <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                             </div>
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
-                                            {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                            {% set X1 = X1+1 %} {% if X1 == 7 %}
                                         </div>
                                         {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                     </ul>
@@ -356,7 +312,7 @@
                             <div id="collapse22" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 5 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
@@ -367,7 +323,7 @@
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-3 text-center color_token no_padding thumbnail_size"></div>
-                                          {% set X1 = X1+1 %} {% if X1 == 6 %}
+                                          {% set X1 = X1+1 %} {% if X1 == 7 %}
                                       </div>
                                       {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                   </ul></div>
@@ -379,8 +335,14 @@
             </div>
         </div>
     </div>
-    <!-- champs cachés -->
 
+<section id="class c/c cyp">
+
+</section>
+    <!-- champs cachés -->
+</div>
+
+</div>
     {{ form_start(form) }}
 
    <div style="display:none">
@@ -499,7 +461,7 @@
 </div>
 
     {{ form_end(form) }}
-
+</section>
 <script>
     /*Script changement background url pour panelheading*/
 
@@ -541,6 +503,8 @@
         document.getElementById("add_added_product_size").value = document.querySelector('input[name="radio_taille"]:checked').value;
     }
 $(document).ready(function(){
+  $(".personnalisation_noeud").fadeOut();
+
     $(".selector_type").on("click", function() {
         $(this).siblings('div').removeClass('active_1');
         $(this).addClass('active_1')
@@ -550,27 +514,46 @@ $(document).ready(function(){
         $(this).addClass('active_1')
     })
 
+
+
+var flag=true;
+$(".btn_perso").click(function(){
+if(flag){
+$(".type-and-size").animate({left: '90vw',
+            opacity: '0.5' }, 1000, function() {
+                $(this).fadeOut(10);
+                $(".personnalisation_noeud").fadeIn(3000);
+             });$(".personnalisation_noeud").animate({left: '0vw',
+                         opacity: '1' }, 1000, function() {
+                             $(this).fadeIn(10);
+                             $(".personnalisation_noeud").fadeIn(3000);
+                          });flag=false;};
+
+
+           });
+/*$(".type-and-size").hide();*/
+$(".btn_TT").click(function(){
+  if(!flag){
+    $(".personnalisation_noeud").animate({left: '-50vw',
+                opacity: '0.5' }, 1000, function() {
+                    $(this).fadeOut(1000);
+
+                 });
+                 $(".type-and-size").animate({left: '0vw',
+                             opacity: '1' }, 1000, function() {
+                                 $(this).fadeOut(10);
+                                 $(".type-and-size").fadeIn(3000);
+                              });
+
+
+                 flag=true;
+
+};});
+
+
 });
 
-
-    /*function change_background_all() {
-        var bg = document.getElementById("57bae5c2cf2cb.png_1").style.backgroundImage;
-        bg = bg.replace('url(', '').replace(')', '').replace(/\"/gi, "");
-        $('#panel-heading-plugin-1').css("background-image",
-            "url(/agathevousgate/web/upload/color/thumbnail/57bae59b893de.png)");
-        var img = document.getElementById('panel-heading-plugin-1'),
-            style = img.currentStyle || window.getComputedStyle(img, false),
-            bi = style.backgroundImage.slice(21, -1);
-        alert(bi);
-        /*$('#panel-heading-plugin-1').css("background-image",
-            "url(bi)");*
-        document.getElementById('panel-heading-plugin-1').style.backgroundImage = "url('img_tree.png')";
-    }*/
 </script>
-    <script src="{{ asset('scripts/imagesloaded.pkgd.min.js') }}"></script>
-    <script src="{{ asset('scripts/hammer.min.js') }}"></script>
-    <script src="{{ asset('scripts/sequence.min.js') }}"></script>
-    <script src="{{ asset('scripts/sequence-theme.starter-basic.js') }}"></script>
 
 
 </body>

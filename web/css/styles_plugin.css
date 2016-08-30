@@ -167,3 +167,71 @@ input[type="radio"].radio_colors:checked+ label {
 border-radius: 0px;
 
 }
+/*CSS pour Jqsuery swap*/
+.type-and-size{position:relative;}
+.personnalisation_noeud{position:relative;}
+/*.main_page {
+    position: absolute;
+    height: 100vh;
+    width: 100%
+}
+
+.main_type_taille_noeud,.main_personnalisation {
+    position: relative;
+    height: 100vh;
+}*/
+
+/* Un gros bordel de cyp qui était sur la page product */
+.taille label{
+background-color: #eae9e9!important;
+border-color: rgb(36, 34, 88) !important;
+color:rgb(36, 34, 88) !important;
+-webkit-border-radius: 1000px;
+-moz-border-radius: 1000px;
+border-radius: 1000px;
+margin-top: 10px;
+margin-bottom:10px;
+text-align: center;
+}
+.taille_red label{
+background-color: #eae9e9!important;
+border-color: #A94141 !important;
+color:#A94141 !important;
+-webkit-border-radius: 1000px;
+-moz-border-radius: 1000px;
+border-radius: 1000px;
+margin-top: 10px;
+margin-bottom:10px;
+text-align: center;
+}
+.taille_red label:hover{
+background-color: #A94141!important;
+border-color: #A94141 !important;
+color:#FFF !important;
+}
+.blue_recap{
+background-color: rgb(36, 34, 88)!important;
+border-top:3px solid white;
+}
+.taille label:hover{
+background-color: rgb(36, 34, 88)!important;
+border-color: rgb(36, 34, 88) !important;
+color:#FFF !important;
+}
+.blue_recap input[type="radio"] {
+background-color:rgb(36, 34, 88);
+width:100%;
+position:relative;
+height:10x;
+}
+.taille input[type="radio"]:checked + label {
+background-color: rgb(36, 34, 88)!important;
+border-color: rgb(36, 34, 88) !important;
+color:#FFF !important;
+}
+.taille_red input[type="checkbox"]:checked + label {
+background-color: #A94141!important;
+border-color: #A94141 !important;
+color:#FFF !important;
+}
+/*Fin bordel cyp*/
