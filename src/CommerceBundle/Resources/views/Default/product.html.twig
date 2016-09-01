@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %} {% block body %}
 <style>
-/*   .taille label{
+   /*   .taille label{
    background-color: #eae9e9!important;
    border-color: rgb(36, 34, 88) !important;
    color:rgb(36, 34, 88) !important;
@@ -53,25 +53,21 @@
    color:#FFF !important;
    }*/
 </style>
-
 <script>
-var total = {{ product.product.price }};
+   var total = {{ product.product.price }};
 
 </script>
-<body id="page-top" >
-
+<body {% if coffret == 'true' %}onload="open_div('coffret'); document.getElementById('Coffret').checked = true;" {% endif %} id="page-top" >
 {% set coffret_id = null %}
 {% set pochette_id = null %}
 {% set boutons_id = null %}
 {% set pochette_price = 0 %}
 {% set coffret_price = 0 %}
 {% set boutons_price = 0 %}
-
-
-   <center>
-      <h2>{{ product.collection.title }} #{{ product.id }} </h2>
-   </center>
-   <div class="container">
+<center>
+   <h2>{{ product.collection.title }} #{{ product.id }} </h2>
+</center>
+<div class="container">
    <div class="row">
       <div class="col-sm-12 col-xs-12" style="background-color:#E0EAF1; margin-bottom:20px; min-height:50px; padding:20px;">
          <center>{{ product.collection.description }}</center>
@@ -114,7 +110,7 @@ var total = {{ product.product.price }};
                </div>
                <div class="panel-group"  style="margin-top:10px">
                   <div class="col-sm-12">
-                     <h3>  Type de Noeud</h3>
+                     <h3>  Type de Noeud <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h3>
                   </div>
                   <div class="col-sm-4 taille">
                      <center>
@@ -165,211 +161,300 @@ var total = {{ product.product.price }};
    </div>
    <!-------------------------------------------------------------------COFFRET DEBUT -------->
    <div class="row">
-   <div class="col-sm-6 no_padding">
-      <div class="panel-group" id="accordion">
+      <div class="col-sm-12 no_padding">
+         <div class="panel-group" id="accordion">
+            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+               <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
+                  <div class="row">
+                     <div class="col-sm-11">
+                        <h3 class="panel-title">
+                           Coffret 2 collections supplémentaire
+                        </h3>
+                     </div>
+                     <div class="col-sm-1">
+                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                     </div>
+                  </div>
+               </div>
+               {% for enfants in product.enfants %}
+               {% if enfants.product.name == 'Coffret2' %}
+               {% set coffret_id = enfants.id %}
+               {% set coffret_price = enfants.product.price %}
+               <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
+                  <div class="panel-body">
+                     <div class="row">
+                        <div class="col-sm-6 no_padding">
+                           <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                        </div>
+                        <div class="col-sm-6 no_padding">
+                           <div class="row">
+                              <div class="col-sm-12 center">
+                                 <center>
+                                    <h2>{{ product.collection.title }} #{{ product.id }}</h2>
+                                 </center>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-sm-12" style="padding:50px;">
+                                 <center>
+                                    <h4>{{ product.collection.description }} </h4>
+                                 </center>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% endif %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6 no_padding">
          <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-            <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
+            <div id="panel-heading-boutons" class="panel-heading">
                <div class="row">
                   <div class="col-sm-11">
                      <h3 class="panel-title">
-                        Coffret 2 collections supplémentaire
+                        Boutons de manchettes
                      </h3>
                   </div>
                   <div class="col-sm-1">
-                     <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                     <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
                   </div>
                </div>
             </div>
-						{% for enfants in product.enfants %}
-					 {% if enfants.product.name == 'Coffret' %}
-						{% set coffret_id = enfants.id %}
-						{% set coffret_price = enfants.product.price %}
-
-						<div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
-							 <div class="panel-body">
-							 <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
-							 </div>
-						</div>
-						{% endif %}
-						{% endfor %}
-            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-               <div id="panel-heading-boutons" class="panel-heading">
-                  <div class="row">
-                     <div class="col-sm-11">
-                        <h3 class="panel-title">
-                           Boutons de manchettes
-                        </h3>
-                     </div>
-                     <div class="col-sm-1">
-                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
-                     </div>
-                  </div>
+            {% for enfants in product.enfants %}
+            {% if enfants.product.name == 'Boutons' %}
+            {% set boutons_id = enfants.id %}
+            {% set boutons_price = enfants.product.price %}
+            <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
+               <div class="panel-body">
+                  <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                </div>
-							 {% for enfants in product.enfants %}
-						 	{% if enfants.product.name == 'Boutons' %}
-							{% set boutons_id = enfants.id %}
-							{% set boutons_price = enfants.product.price %}
-
-               <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
-                  <div class="panel-body">
-									<img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
-                  </div>
-               </div>
-							 {% endif %}
-							 {% endfor %}
             </div>
+            {% endif %}
+            {% endfor %}
          </div>
       </div>
-   </div>
-   <div class="col-sm-6 no_padding">
-      <!-- Choix des couleurs -->
-      <div class="container accordeon_noeud no_padding">
-         <div class="panel-group" id="accordion">
-            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-               <div id="panel-heading-pochette" class="panel-heading">
-                  <div class="row">
-                     <div class="col-sm-11">
-                        <h3 class="panel-title">
-                           Pochette
-                        </h3>
-                     </div>
-                     <div class="col-sm-1">
-                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
-                     </div>
-                  </div>
-               </div>
-								{% for enfants in product.enfants %}
-								{% if enfants.product.name == 'Pochette' %}
-								{% set pochette_id = enfants.id %}
-								{% set pochette_price = enfants.product.price %}
-
-
-               <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
-                  <div class="panel-body">
-                     <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
-                  </div>
-               </div>
-							{% endif %}
-							{% endfor %}
+      <div class="col-sm-6 no_padding">
+         <div class="container accordeon_noeud no_padding">
+            <div class="panel-group" id="accordion">
                <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                  <div class="panel-heading blue_recap" style="border-top: 0px">
-                     <div class="row ">
-                        <div class="col-sm-11" >
-                           <h3 class="panel-title" style="color:white!important;">
-                              Noeud
-                           </h3>
-                        </div>
-                        <div class="col-sm-1" >
-                           <input type="radio" disabled>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="panel-heading blue_recap">
-                     <div class="row ">
-                        <div class="col-sm-11" >
-                           <h3 class="panel-title" style="color:white!important;">
-                              Coffret
-                           </h3>
-                        </div>
-                        <div class="col-sm-1" >
-                           <input onclick="open_div('coffret')" id="input_coffret" type="radio">
-                        </div>
-                     </div>
-                  </div>
-                  <div class="panel-heading blue_recap">
-                     <div class="row ">
-                        <div class="col-sm-11" >
-                           <h3 class="panel-title" style="color:white!important;">
+                  <div id="panel-heading-pochette" class="panel-heading">
+                     <div class="row">
+                        <div class="col-sm-11">
+                           <h3 class="panel-title">
                               Pochette
                            </h3>
                         </div>
-                        <div class="col-sm-1" >
-                           <input onclick="open_div('pochette')" id="input_pochette" type="radio">
+                        <div class="col-sm-1">
+                           <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
                         </div>
                      </div>
                   </div>
-                  <div class="panel-heading blue_recap">
-                     <div class="row ">
-                        <div class="col-sm-11" >
-                           <h3 class="panel-title" style="color:white!important;">
-                              Boutons de manchette
-                           </h3>
-                        </div>
-                        <div class="col-sm-1" >
-                           <input onclick="open_div('boutons')"  id="input_boutons" type="radio">
-                        </div>
+                  {% for enfants in product.enfants %}
+                  {% if enfants.product.name == 'Pochette' %}
+                  {% set pochette_id = enfants.id %}
+                  {% set pochette_price = enfants.product.price %}
+                  <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
+                     <div class="panel-body">
+                        <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                      </div>
                   </div>
-                  <div class="panel-heading blue_recap">
-                     <div class="row ">
-                        <div class="col-sm-11" >
-                           <h3 class="panel-title" style="color:white!important;">
-                              Total
-                           </h3>
-                        </div>
-                        <div class="col-sm-1" style="position:absolute; right:30px;" >
-												<h3 class="panel-title" style="color:white!important;" id="total" >
-
-                           <script>document.write(total)</script>€
-													</h3>
-                        </div>
-                     </div>
+                  {% endif %}
+                  {% endfor %}
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6 no_padding">
+         <div class="row text-center">
+            <div class="col-sm-4 col-xs-4"></div>
+            <div class="col-sm-4 col-xs-4"><img src="{{ asset('images/logo_header_scroll.svg')}}" alt="logo noeud" style="width: 100%; height: auto; min-width: 4em; max-width:13em;margin-top:50px"></div>
+            <div class="col-sm-4 col-xs-4"></div>
+         </div>
+         <div class="row text-center">
+            <div class="col-sm-3 col-xs-1"></div>
+            <div class="col-sm-6 col-xs-10">
+               <h2 style='margin-top:50px;color:rgb(36, 34, 88)!important'>CRÉER VOTRE PROPRE NOEUD</h2>
+            </div>
+            <div class="col-sm-3 col-xs-1"></div>
+         </div>
+         <div class="row text-center creer_bottom">
+            <div class="col-sm-4 col-xs-1"></div>
+            <div class="col-sm-4 col-xs-10"><a href="{{ path('personnalisation', {'idCollection': product.collection.id })}}" class="btn btn-primary btn-lg active btn_blue" role="button">Ok, LET'S GO !</a></div>
+            <div class="col-sm-4 col-xs-1"></div>
+         </div>
+      </div>
+      <div class="col-sm-6 no_padding">
+         <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+            <div class="panel-heading blue_recap" style="border-top: 0px">
+               <div class="row ">
+                  <div class="col-sm-9" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        Noeud
+                     </h3>
+                  </div>
+                  <div class="col-sm-2" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% endif %}{% endfor %}€
+                     </h3>
+                  </div>
+                  <div class="col-sm-1" >
+                     <input type="radio" disabled>
+                  </div>
+               </div>
+            </div>
+            <div class="panel-heading blue_recap">
+               <div class="row ">
+                  <div class="col-sm-9" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        Coffret 2 couleurs supplémentaires
+                     </h3>
+                  </div>
+                  <div class="col-sm-2" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% endif %}{% endfor %}€
+                     </h3>
+                  </div>
+                  <div class="col-sm-1" >
+                     <input onclick="open_div('coffret'); active_checkbox('coffret')" id="input_coffret" type="radio">
+                  </div>
+               </div>
+            </div>
+            <div class="panel-heading blue_recap">
+               <div class="row ">
+                  <div class="col-sm-9" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        Pochette
+                     </h3>
+                  </div>
+                  <div class="col-sm-2" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% endif %}{% endfor %}€
+                     </h3>
+                  </div>
+                  <div class="col-sm-1" >
+                     <input onclick="open_div('pochette'); active_checkbox('pochette')" id="input_pochette" type="radio">
+                  </div>
+               </div>
+            </div>
+            <div class="panel-heading blue_recap">
+               <div class="row ">
+                  <div class="col-sm-9" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        Boutons de manchette
+                     </h3>
+                  </div>
+                  <div class="col-sm-2" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% endif %}{% endfor %}€
+                     </h3>
+                  </div>
+                  <div class="col-sm-1" >
+                     <input onclick="open_div('boutons'); active_checkbox('boutons')"  id="input_boutons" type="radio" >
+                  </div>
+               </div>
+            </div>
+            <div class="panel-heading blue_recap">
+               <div class="row ">
+                  <div class="col-sm-11" >
+                     <h3 class="panel-title" style="color:white!important;">
+                        Total
+                     </h3>
+                  </div>
+                  <div class="col-sm-1" style="position:absolute; right:30px;" >
+                     <h3 class="panel-title" style="color:white!important;" id="total" >
+                        <script>document.write(total)</script>€
+                     </h3>
                   </div>
                </div>
             </div>
          </div>
-         <!-- Choix des couleurs FIN-->
       </div>
-
    </div>
-	 <div class="row">
-	 	<div class="col-sm-12 no_padding">
-	 			<button onclick="addtoCart()" type="submit" style="position:absolute; right: 12px;" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</button>
-	 	</div>
-	 </div>
-</div>
+   <div class="row">
+      <div class="col-sm-12 no_padding">
+         <button onclick="addtoCart()" type="submit" style="position:absolute; right: 12px;" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</button>
+      </div>
+   </div>
 </body>
+
 <script>
-function addtoCart(){
+   function addtoCart(){
 
 
-var pochette = 0;
-var coffret = 0;
-var boutons = 0;
+   var pochette = 0;
+   var coffret = 0;
+   var boutons = 0;
 
-if(document.getElementById('input_pochette').checked == true){
-pochette = {{ pochette_id }};
-}
+   if(document.getElementById('input_pochette').checked == true){
+   pochette = {{ pochette_id }};
+   }
 
-if(document.getElementById('input_coffret').checked == true){
-coffret = {{ coffret_id }};
+   if(document.getElementById('input_coffret').checked == true){
+   coffret = {{ coffret_id }};
 
-}
-if(document.getElementById('input_boutons').checked == true){
-boutons = {{ boutons_id }};
+   }
+   if(document.getElementById('input_boutons').checked == true){
+   boutons = {{ boutons_id }};
 
-}
-
-
-var size = document.querySelector('input[name="taille"]:checked').value;
-var accessoire = document.querySelector('input[name="type"]:checked').value;
+   }
 
 
-var route = "{{ path('adddefinedtocart',{'id_noeud': product.id,'id_coffret' : 'COFFRET', 'id_boutons': 'BOUTONS','id_pochette': 'POCHETTE', 'id_collection': product.collection.id ,'size' : 'SIZE', 'id_accessoire': 'ACCESSOIRE'} ) }}";
-route = route.replace("SIZE", size);
-route = route.replace("ACCESSOIRE", accessoire);
-route = route.replace("COFFRET", coffret);
-route = route.replace("BOUTONS", boutons);
-route = route.replace("POCHETTE", pochette);
+   var size = document.querySelector('input[name="taille"]:checked').value;
+   var accessoire = document.querySelector('input[name="type"]:checked').value;
 
-window.location = route;
-}
+
+   var route = "{{ path('adddefinedtocart',{'id_noeud': product.id,'id_coffret' : 'COFFRET', 'id_boutons': 'BOUTONS','id_pochette': 'POCHETTE', 'id_collection': product.collection.id ,'size' : 'SIZE', 'id_accessoire': 'ACCESSOIRE'} ) }}";
+   route = route.replace("SIZE", size);
+   route = route.replace("ACCESSOIRE", accessoire);
+   route = route.replace("COFFRET", coffret);
+   route = route.replace("BOUTONS", boutons);
+   route = route.replace("POCHETTE", pochette);
+
+   window.location = route;
+   }
 
 
 
 </script>
-
 <script>
+function active_checkbox(i){
+if (i == 'coffret'){
+    if(document.getElementById('Coffret').checked == false){
+      document.getElementById('Coffret').checked = true;
+    }
+    else{
+    document.getElementById('Coffret').checked = false;
+    }
+}
+
+if (i == 'pochette'){
+    if(document.getElementById('Pochette').checked == false){
+      document.getElementById('Pochette').checked = true;
+    }
+    else{
+    document.getElementById('Pochette').checked = false;
+    }
+}
+
+if (i == 'boutons'){
+    if(document.getElementById('boutons').checked == false){
+      document.getElementById('boutons').checked = true;
+    }
+    else{
+    document.getElementById('boutons').checked = false;
+    }
+}
+
+
+}
    function open_div(i){
 
 
@@ -381,12 +466,16 @@ window.location = route;
      document.getElementById('input_coffret').checked = false;
 
 
+
+
+
    }
    else {
    document.getElementById('collapse1').className='panel-collapse collapse in';
    document.getElementById('panel-heading-coffret').style.backgroundColor = "#A94141";
    document.getElementById('panel-heading-coffret').style.color = "#FFF";
    document.getElementById('input_coffret').checked = true;
+
 
 
    }
@@ -403,6 +492,7 @@ window.location = route;
    document.getElementById('panel-heading-pochette').style.backgroundColor = "rgb(36, 34, 88)";
    document.getElementById('panel-heading-pochette').style.color = "#FFF";
    document.getElementById('input_pochette').checked = true;
+
    }
    }
    else if(i == "boutons"){
@@ -411,27 +501,37 @@ window.location = route;
    document.getElementById('panel-heading-boutons').style.backgroundColor = "#eae9e9";
    document.getElementById('panel-heading-boutons').style.color = "rgb(36, 34, 88)";
    document.getElementById('input_boutons').checked = false;
+
    }
    else {
    document.getElementById('collapse3').className='panel-collapse collapse in';
    document.getElementById('panel-heading-boutons').style.backgroundColor = "#A94141";
    document.getElementById('panel-heading-boutons').style.color = "#FFF";
    document.getElementById('input_boutons').checked = true;
+
+
    }
    }
 
-	 total = {{ product.product.price }};
-	 if( document.getElementById('input_coffret').checked == true){
-	 total = total + {{ coffret_price }};
-	 }
-	 if( document.getElementById('input_boutons').checked == true){
-	 total = total + {{ boutons_price }};
-	 }
-	 if( document.getElementById('input_pochette').checked == true){
-	 total = total + {{ pochette_price }};
-	 }
-	 document.getElementById("total").innerHTML = total.toFixed(2)+'€';
+   total = {{ product.product.price }};
+   if( document.getElementById('input_coffret').checked == true){
+   total = total + {{ coffret_price }};
+   }
+   if( document.getElementById('input_boutons').checked == true){
+   total = total + {{ boutons_price }};
+   }
+   if( document.getElementById('input_pochette').checked == true){
+   total = total + {{ pochette_price }};
+   }
+   document.getElementById("total").innerHTML = total.toFixed(2)+'€';
 
    }
+
+
+</script>
+<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
 {% endblock %}

@@ -1418,9 +1418,9 @@ else{
 
 
     /**
-     * @Route("/product/{id}/", name="product")
+     * @Route("/product/{id}_{coffret}", name="product")
      */
-    public function productAction(Request $request, $id)
+    public function productAction(Request $request, $id, $coffret)
     {
 
 
@@ -1434,6 +1434,8 @@ else{
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
         $product = $repository->findOneBy(array('id' => $id));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:product');
+        $allproduct = $repository->findAll();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
@@ -1451,6 +1453,8 @@ else{
         return $this->render('CommerceBundle:Default:product.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'product' => $product,
+            'coffret' => $coffret,
+            'allproduct' => $allproduct,
 
 
         ));
