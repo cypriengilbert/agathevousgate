@@ -1,0 +1,60 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Codes Promo</h4></div>
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+  <table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+           <tr>
+           <th width=5%>ID</th>
+          <th width=20%>Code</th>
+           <th width=10%>Début</th>
+           <th width=10% >Fin</th>
+           <th width=15%>Type</th>
+<th width=10%>Montant</th>
+<th width=10%>Minimum</th>
+<th width=10%>Action</th>
+           </tr>
+       </thead>
+
+       <tbody>
+{% for code in codes %}
+                <tr>
+                  <td>{{ code.id }}</td>
+                  <td>{{ code.code }}</td>
+                  <td>  {{ code.dateDebut|date("d-m-Y") }}</td>
+                  <td>
+{{ code.dateFin|date("d-m-Y") }}
+                  </td>
+                  <td>{{ code.genre }} </td>
+  <td>{{ code.montant }} </td>
+  <td>{{ code.minimumCommande }} </td>
+
+<td><a href="{{ path('deleteCode', {'id' : code.id })}}"> supprimer </a></td>
+                </tr>
+      {% endfor %}
+
+
+       </tbody>
+  </table>
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

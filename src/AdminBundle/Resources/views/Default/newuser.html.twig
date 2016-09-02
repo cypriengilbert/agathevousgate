@@ -1,0 +1,30 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Nouvel utilisateur</h4></div>
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+  {{ form_start(form) }}
+{{ form_widget(form) }}
+ {{ form_rest(form) }} 
+{{ form_end(form) }}
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

@@ -223,13 +223,22 @@ $EntiteCode = null;
 
             $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
+            $repository      = $em->getRepository('CommerceBundle:AddedProduct');
+            $enfanttodelete = $repository->findBy(array(
+                'parent' => $id
+            ));
+            foreach ($enfanttodelete as $value){
+              $em->remove($value);
+            }
 
             $repository      = $em->getRepository('CommerceBundle:AddedProduct');
             $articletodelete = $repository->findOneBy(array(
                 'id' => $id
             ));
             $em->remove($articletodelete);
+
             $em->flush();
+
         } else {
             $nbarticlepanier   = 0;
             $listeAddedProduct = null;
@@ -767,6 +776,9 @@ $product    = $repository->findOneBy(array(
         $new_noeud->setQuantity(1);
         $new_noeud->setSize($size);
         $new_noeud->setAccessoire($accessoire_selected);
+        $new_pochette->setParent($new_noeud);
+        $new_coffret->setParent($new_noeud);
+        $new_boutons->setParent($new_noeud);
 
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -1224,6 +1236,12 @@ else{
             $newcommande->setDate($datetime);
             $session = $this->get('session');
             $codePromo = $session->get('codePromo');
+            if ($total_commande < 50){
+if($newcommande->getAtelierLivraison() == NULL){
+  $total_commande = $total_commande + 5;
+
+}
+}
             $remise=0;
             if($codePromo){
               if ($total_commande >= $codePromo->getMinimumCommande()){
@@ -1252,7 +1270,8 @@ else{
                 'collection' => $collectionActive,
                 'nbarticlepanier' => $nbarticle,
                 'prixtotal' => $total_commande_100,
-                'listePanier' => $listePanier
+                'listePanier' => $listePanier,
+                  'commande' => $newcommande,
             ));
 
 

@@ -19,7 +19,8 @@
   <thead>
            <tr>
                <th width=5%>ID</th>
-               <th width=20%>Acheteur</th>
+                <th width=5%>ID Client </th>
+               <th width=15%>Nom Client</th>
                <th width=25% >Adresse de livraison</th>
                <th width=10%>Date de commande</th>
                <th width=20%>Produit</th>
@@ -34,6 +35,7 @@
             {% if (commande.AtelierLivraison.franchise == app.user or is_granted('ROLE_SUPER_ADMIN')) %}
                 <tr>
                   <td>{{ commande.id }}</td>
+                  <td>{{ commande.client.id }}</td>
                   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
                   <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
@@ -86,13 +88,14 @@
 
 <a onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
     window.location.href = '{{ path("validate",{"id": commande.id}) }}'
-}"><i class="material-icons">mode_edit</i> </a></td>
+}"><i class="fa fa-check-square-o fa-2" aria-hidden="true"></i> </a> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
               </tr>
 
               {% endif %}
               {% elseif is_granted('ROLE_SUPER_ADMIN') %}
               <tr>
                 <td>{{ commande.id }}</td>
+                <td>{{ commande.client.id }}</td>
                 <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
                 <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
                 <td>{{ commande.date|date("d-m-Y") }}</td>
@@ -142,7 +145,7 @@
 
 <a onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
   window.location.href = '{{ path("validate",{"id": commande.id}) }}'
-}"><i class="material-icons">mode_edit</i> </a></td>
+}"><i class="fa fa-check-square-o fa-2" aria-hidden="true"></i> </a> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
               </tr>
               {% endif %}
             {% endfor %}

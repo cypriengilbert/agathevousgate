@@ -32,11 +32,20 @@ class AddedProduct
      */
     private $quantity;
 
+
+    /**
+       * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\AddedProduct")
+       * @ORM\JoinColumn(nullable=true)
+       */
+      private $parent;
+
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
     * @ORM\JoinColumn(nullable=true)
     */
     public $color1;
+
+
 
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
@@ -517,4 +526,28 @@ class AddedProduct
         return $this->collection;
     }
 
+
+    /**
+     * Set parent
+     *
+     * @param \CommerceBundle\Entity\AddedProduct $parent
+     *
+     * @return AddedProduct
+     */
+    public function setParent(\CommerceBundle\Entity\AddedProduct $parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \CommerceBundle\Entity\AddedProduct
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
 }

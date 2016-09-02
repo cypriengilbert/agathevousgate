@@ -7,6 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 /*use Symfony\Component\Form\Extension\Core\Type\CollectionType;*/
 use CommerceBundle\Form\ColorType;
+use CommerceBundle\Entity\Color;
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -26,16 +29,16 @@ class CollectionType extends AbstractType
 
 
           ->add('colors', EntityType::class, array(
-                                   // query choices from this entity
                                    'class' => 'CommerceBundle:Color',
-
-                                   // use the User.username property as the visible option string
                                    'choice_label' => 'name',
-
                                   'multiple' => true,
                                   'expanded' => true,
-
                                    'required' => true,
+                                   'query_builder' => function (EntityRepository $er) {
+                                           return $er->createQueryBuilder('u')
+                                               ->orderBy('u.id', 'ASC')
+                                                ->where('u.isActive = true');
+                                       }
                                ))
             ->add('description')
             ->add('imageCollection', 'vich_image', array(

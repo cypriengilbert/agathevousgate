@@ -8,7 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Entity\Color;
 use Doctrine\ORM\EntityRepository;
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 

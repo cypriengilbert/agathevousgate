@@ -11,6 +11,9 @@ use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
+use UserBundle\Entity\User;
+use UserBundle\Form\RegistrationType;
+
 
 
 
@@ -76,10 +79,41 @@ class DefaultController extends Controller
     public function commandeEnCoursAction()
     {
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-      $listeCommande  = $repository->findBy(['isValid' => false], ['date' => 'ASC']);
+      $listeCommande  = $repository->findBy(['isValid' => false, 'isPanier' => false], ['date' => 'ASC']);
 
   return $this->render('AdminBundle:Default:commandeencours.html.twig', array(
 'listeCommande' => $listeCommande
+
+
+));
+}
+
+/**
+ * @Route("/commande/{id}", name="commande")
+ */
+public function commandeAction($id, Request $request)
+{
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+  $Commande  = $repository->findOneBy(['id' => $id]);
+
+
+  $form = $this->get('form.factory')->create('CommerceBundle\Form\CommandeModifyType', $Commande);
+          if ($form->handleRequest($request)->isValid()) {
+              $em = $this->getDoctrine()->getManager();
+              $em->persist($Commande);
+              $em->flush();
+              $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+              return $this->redirect($this->generateUrl('commande', array(
+               'id' => $id,
+              'validate' => 'Reception modifiée',
+              'form' => $form->createView(),
+
+              )));
+          }
+
+return $this->render('AdminBundle:Default:commande.html.twig', array(
+'commande' => $Commande,
+'form' => $form->createView(),
 
 
 ));
@@ -233,6 +267,50 @@ public function addCodePromoAction(Request $request)
                 ));
 }
 
+
+/**
+ * @Route("/s/listeCodePromo", name="listeCodePromo")
+ */
+
+public function listeCodePromoAction(Request $request)
+{
+
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+  $listeCode  = $repository->findAll();
+
+return $this->render('AdminBundle:Default:listeCode.html.twig', array(
+'codes' => $listeCode
+
+
+));
+
+}
+
+
+/**
+ * @Route("/s/deleteCode/{id}", name="deleteCode")
+ */
+
+public function deleteCodeAction(Request $request, $id)
+{
+
+  $em = $this->getDoctrine()->getManager();
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+  $Code  = $repository->findOneBy(array('id' => $id));
+  $em->remove($Code);
+  $em->flush();
+
+  return $this->redirect($this->generateUrl('listeCodePromo', array(
+   'validate' => 'Code Promo supprimé',
+
+
+  )));
+
+
+}
+
 /**
  * @Route("/s/add/{client}/{id}", name="addProduct")
  */
@@ -340,6 +418,61 @@ public function newcollectionAction(Request $request)
 }
 
 /**
+ * @Route("/s/color/deactivate/{id}", name="deactivateColor")
+ */
+
+public function deactivateColorAction(Request $request, $id)
+{
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color  = $repository->findOneBy(['id' => $id]);
+        $color->setIsActive(false);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($color);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Couleur bien desactivé.');
+
+        return $this->redirect($this->generateUrl('listecolor', array(
+         'validate' => 'Couleur bien désactivée',
+        )));
+}
+
+/**
+ * @Route("/s/color/activate/{id}", name="activateColor")
+ */
+
+public function activateColorAction(Request $request, $id)
+{
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color  = $repository->findOneBy(['id' => $id]);
+        $color->setIsActive(true);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($color);
+        $em->flush();
+        $request->getSession()->getFlashBag()->add('notice', 'Couleur bien activé.');
+
+        return $this->redirect($this->generateUrl('listecolor', array(
+         'validate' => 'Couleur bien activée',
+        )));
+}
+
+
+/**
+ * @Route("/s/listecolor", name="listecolor")
+ */
+
+public function listeColorAction()
+{
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color  = $repository->findAll();
+
+        return $this->render('AdminBundle:Default:listecolor.html.twig', array(
+            'colors' => $color,
+        ));
+}
+
+/**
  * @Route("/s/newcolor", name="newColor")
  */
 
@@ -351,6 +484,7 @@ public function newcolorAction(Request $request)
 
 
         $newColor = new Color();
+        $newColor->setIsActive(true);
 
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\ColorType', $newColor);
@@ -677,6 +811,30 @@ public function changeDefinedProductAction(Request $request, $id)
 
                     )));
 
+}
+/**
+ * @Route("/s/newUser", name="newuser")
+ */
+public function newUserAction(Request $request)
+{
+
+$user = new User();
+$form = $this->createForm(new RegistrationType(), $user);
+$form->submit($request);
+if($form->isValid()) {
+    $userManager = $this->get('fos_user.user_manager');
+    $exists = $userManager->findUserBy(array('email' => $user->getEmail()));
+    if ($exists instanceof User) {
+        throw new HttpException(409, 'Email already taken');
+    }
+    $userManager->updateUser($user);
+ }
+
+ return $this->render('AdminBundle:Default:newuser.html.twig', array(
+ 'form' => $form->createView(),
+
+
+ ));
 }
 
 }
