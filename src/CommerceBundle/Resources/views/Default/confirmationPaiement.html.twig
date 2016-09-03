@@ -3,9 +3,20 @@
 
 {% block body %}
 
+
 <body>
-Paiement et commande confirmés
+<section>
+    <div class="container">
+      <div class="alert alert-success" role="success" style="margin-top:20px;">
+        Merci! <br>
+        Votre commande est en cours de préparation et sera bientôt prête!<br>
+        Vous en serez informé par mail.<br>
+        <a href="{{ path('compte') }}">Accéder à mon compte</a>
+      </div>
+    </div>
+  </section>
 </body>
+
 
 
 
