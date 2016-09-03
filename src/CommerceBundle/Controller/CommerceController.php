@@ -791,9 +791,13 @@ $product    = $repository->findOneBy(array(
         $new_noeud->setQuantity(1);
         $new_noeud->setSize($size);
         $new_noeud->setAccessoire($accessoire_selected);
-        $new_pochette->setParent($new_noeud);
-        $new_coffret->setParent($new_noeud);
-        $new_boutons->setParent($new_noeud);
+        if(isset($new_pochette)){
+          $new_pochette->setParent($new_noeud);
+}
+if(isset($new_coffret)){
+        $new_coffret->setParent($new_noeud);}
+    if(isset($new_boutons)){
+        $new_boutons->setParent($new_noeud);}
 
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
