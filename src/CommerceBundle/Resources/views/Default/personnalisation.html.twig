@@ -477,7 +477,7 @@
     <div class="container">
         <div class="row text-center no_padding">
             <div class="col-sm-8"></div>
-            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send btn_perso btn_TT" role="button">Taille et accessoire</a></div>
+            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send btn_TT" role="button">Taille et accessoire</a></div>
         </div>
     </div>
 
@@ -534,14 +534,18 @@
         </div>
     </div>
     <div class="container choix_type_taille_noeud">
-        <div class="row">
-            <div class="col-sm-12 col-xs-12 choix_collection no_padding">
-                <!-- Choix de la collection-->
-                <h4>Taille</h4>
-            </div>
+    <div class="row">
+        <div class="col-sm-12 col-xs-12 choix_collection no_padding">
+            <!-- Choix de la collection-->
+            <h4>Taille</h4>
         </div>
-        <div class="row text-center taille_noeud ">
-            <div class="col-sm-6 no_padding selector_taille">
+    </div>
+    <div class="row text-center taille_noeud ">
+        <div class="col-sm-6 no_padding selector_taille checkbox checkbox-success checkbox-taille" style="margin: 0px;" onclick="get_data()">
+
+
+            <input type="radio" name="radio_taille" id="radio-standard" value="Standard">
+            <label for="radio-standard">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>Normal</h1></div>
@@ -551,20 +555,27 @@
                     <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
                     <div class="col-sm-1"></div>
                 </div>
-            </div>
-            <div class="col-sm-6 no_padding selector_taille">
-                <div class="row text-center no_padding">
-                    <div class="col-sm-12 no_padding">
-                        <h1>Mini</h1></div>
-                </div>
-                <div class="row text-center no_padding">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
-                    <div class="col-sm-1"></div>
-                </div>
-            </div>
-
+                </label>
         </div>
+
+
+        <div class="col-sm-6 no_padding selector_taille checkbox checkbox-success checkbox-taille"  style="margin: 0px;" onclick="get_data()">
+          <input type="radio" name="radio_taille" id="radio-mini" value="Mini">
+          <label for="radio-mini">
+            <div class="row text-center no_padding">
+                <div class="col-sm-12 no_padding">
+                    <h1>Mini</h1></div>
+            </div>
+            <div class="row text-center no_padding">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-10 no_padding"><img src="{{ asset('images/noeud_size.png') }}" alt="tour de cou" style="width: 100%; height: auto;"></div>
+                <div class="col-sm-1"></div>
+            </div>
+          </label>
+          </div>
+    </div>
+
+</div>
     </div>
     <div class="container">
         <div class="row text-center no_padding">
@@ -573,7 +584,7 @@
         </div>
     </div>
 </div>
-
+<div class="container">
 {{ form_start(form) }}
 
 <div style="display:none">
@@ -692,6 +703,7 @@
 </div>
 
 {{ form_end(form) }}
+</div>
 </section>
 <script>
     /*Script changement background url pour panelheading*/
@@ -803,6 +815,70 @@ $("#panel-heading-plugin-8" ).click(function() {
 });
 
 });
+/*La fonction de cyp */
+/*
+function open_div(i){
+
+
+if (i == 'coffret'){
+  if(document.getElementById('collapse1').className == 'panel-collapse collapse in'){
+  document.getElementById('collapse1').className='panel-collapse collapse';
+  document.getElementById('panel-heading-coffret').style.backgroundColor = "#eae9e9";
+  document.getElementById('panel-heading-coffret').style.color = "rgb(36, 34, 88)";
+  document.getElementById('input_coffret').checked = false;
+
+
+
+
+
+}
+else {
+document.getElementById('collapse1').className='panel-collapse collapse in';
+document.getElementById('panel-heading-coffret').style.backgroundColor = "#A94141";
+document.getElementById('panel-heading-coffret').style.color = "#FFF";
+document.getElementById('input_coffret').checked = true;
+
+
+
+}
+}
+else if(i == 'pochette'){
+if(document.getElementById('collapse2').className == 'panel-collapse collapse in'){
+document.getElementById('collapse2').className='panel-collapse collapse';
+document.getElementById('panel-heading-pochette').style.backgroundColor = "#eae9e9";
+document.getElementById('panel-heading-pochette').style.color = "rgb(36, 34, 88)";
+document.getElementById('input_pochette').checked = false;
+}
+else {
+document.getElementById('collapse2').className='panel-collapse collapse in';
+document.getElementById('panel-heading-pochette').style.backgroundColor = "rgb(36, 34, 88)";
+document.getElementById('panel-heading-pochette').style.color = "#FFF";
+document.getElementById('input_pochette').checked = true;
+
+}
+}
+else if(i == "boutons"){
+if(document.getElementById('collapse3').className == 'panel-collapse collapse in'){
+document.getElementById('collapse3').className='panel-collapse collapse';
+document.getElementById('panel-heading-boutons').style.backgroundColor = "#eae9e9";
+document.getElementById('panel-heading-boutons').style.color = "rgb(36, 34, 88)";
+document.getElementById('input_boutons').checked = false;
+
+}
+else {
+document.getElementById('collapse3').className='panel-collapse collapse in';
+document.getElementById('panel-heading-boutons').style.backgroundColor = "#A94141";
+document.getElementById('panel-heading-boutons').style.color = "#FFF";
+document.getElementById('input_boutons').checked = true;
+
+
+}
+}
+
+
+
+}*/
+
 
 </script>
 
