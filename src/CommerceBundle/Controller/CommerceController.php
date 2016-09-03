@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
+use CommerceBundle\Entity\Photo;
+
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,6 +29,17 @@ class CommerceController extends Controller
         } else {
             $session->set('panier_session', array());
         }
+
+        $newPhoto = new Photo();
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\PhotoType', $newPhoto);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newPhoto);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Photo bien enregistrée.');
+
+                      return $this->redirect($this->generateUrl('accueil'));
+                }
 
 
 
@@ -109,7 +122,9 @@ class CommerceController extends Controller
             'collection' => $collectionActive,
             'listePanier' => $listePanier,
             'page' => $page,
-            'first3collection' => $first3collection
+            'first3collection' => $first3collection,
+            'form' => $form->createView(),
+
 
 
         ));
@@ -776,9 +791,13 @@ $product    = $repository->findOneBy(array(
         $new_noeud->setQuantity(1);
         $new_noeud->setSize($size);
         $new_noeud->setAccessoire($accessoire_selected);
-        $new_pochette->setParent($new_noeud);
-        $new_coffret->setParent($new_noeud);
-        $new_boutons->setParent($new_noeud);
+        if(isset($new_pochette)){
+          $new_pochette->setParent($new_noeud);
+}
+if(isset($new_coffret)){
+        $new_coffret->setParent($new_noeud);}
+    if(isset($new_boutons)){
+        $new_boutons->setParent($new_noeud);}
 
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -966,6 +985,13 @@ else{
        ;
        $this->get('mailer')->send($message);
 
+//generate facture pdf
+       $this->get('knp_snappy.pdf')->generateFromHtml(
+           $this->renderView(
+               'CommerceBundle:Default:test.html.twig', array(  'iduser' => $user->getId(),'listePanier' => $listePanier, 'commande' => $commande)
+           ),
+           'facturation/facture'.$commande->getId().'.pdf'
+       );
 
 
                 $url      = $this->generateUrl('paiementconfirmation');

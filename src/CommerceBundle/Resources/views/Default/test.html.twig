@@ -1,182 +1,310 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-
-    <title>Editable Invoice</title>
-
-    <link rel='stylesheet' type='text/css' href='{{ asset('css/factu/style.css') }}' />
-    <link rel='stylesheet' type='text/css' href='{{ asset('css/factu/print.css') }}' media="print" />
-
-<style>
-    /*
-	 CSS-Tricks Example
-	 by Chris Coyier
-	 http://css-tricks.com
-*/
-
-    * { margin: 0; padding: 0; }
-    body { font: 14px/1.4 Georgia, serif; }
-    #page-wrap { width: 800px; margin: 0 auto; }
-
-    textarea { border: 0; font: 14px Georgia, Serif; overflow: hidden; resize: none; }
-    table { border-collapse: collapse; }
-    table td, table th { border: 1px solid black; padding: 5px; }
-
-    #header { height: 15px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 15px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 20px; padding: 8px 0px; }
-
-    #address { width: 250px; height: 150px; float: left; }
-    #customer { overflow: hidden; }
-
-    #logo { text-align: right; float: right; position: relative; margin-top: 25px; border: 1px solid #fff; max-width: 540px; max-height: 100px; overflow: hidden; }
-    #logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }
-    #logoctr { display: none; }
-    #logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
-    #logohelp { text-align: left; display: none; font-style: italic; padding: 10px 5px;}
-    #logohelp input { margin-bottom: 5px; }
-    .edit #logohelp { display: block; }
-    .edit #save-logo, .edit #cancel-logo { display: inline; }
-    .edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
-    #customer-title { font-size: 20px; font-weight: bold; float: left; }
-
-    #meta { margin-top: 1px; width: 300px; float: right; }
-    #meta td { text-align: right;  }
-    #meta td.meta-head { text-align: left; background: #eee; }
-    #meta td textarea { width: 100%; height: 20px; text-align: right; }
-
-    #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
-    #items th { background: #eee; }
-    #items textarea { width: 80px; height: 50px; }
-    #items tr.item-row td { border: 0; vertical-align: top; }
-    #items td.description { width: 300px; }
-    #items td.item-name { width: 175px; }
-    #items td.description textarea, #items td.item-name textarea { width: 100%; }
-    #items td.total-line { border-right: 0; text-align: right; }
-    #items td.total-value { border-left: 0; padding: 10px; }
-    #items td.total-value textarea { height: 20px; background: none; }
-    #items td.balance { background: #eee; }
-    #items td.blank { border: 0; }
-
-    #terms { text-align: center; margin: 20px 0 0 0; }
-    #terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
-    #terms textarea { width: 100%; text-align: center;}
-
-    textarea:hover, textarea:focus, #items td.total-value textarea:hover, #items td.total-value textarea:focus, .delete:hover { background-color:#EEFF88; }
-
-    .delete-wpr { position: relative; }
-    .delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: bold; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; }
-</style>
-</head>
-
-<body>
-
-<div id="page-wrap">
-
-    <textarea id="header">Facture</textarea>
-
-    <div id="identity">
-
-            <textarea id="address">
-                                {% set client = null %}
-
-                {% for listepanier in listePanier %}
-                {% if not client %}
-                {%  set client = listepanier.client.nom  %}
-
-                {{ listepanier.client.nom }} {{ listepanier.client.prenom }}
-                {{ listepanier.client.adress.adress }}
-                {{ listepanier.client.adress.zipcode }} {{ listepanier.client.adress.city }}
-                {% endif %}
-                {% endfor %}
-</textarea>
-
-        <div id="logo">
-
-
-            <img id="image" src="/agathevousgate/web/img/logo-principal-menu.png" alt="logo" />
-        </div>
-
-    </div>
-
-    <div style="clear:both"></div>
-
-    <div id="customer">
-
-            <textarea id="customer-title">Agathe Vous Gâte</textarea>
-
-        <table id="meta">
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>Facture {{ commande.date|date("dmY")}}{{ commande.id }}</title>
+   </head>
+   <body style=" position: relative;
+      width: 21cm;
+      height: 29.7cm;
+      margin: 0 auto;
+      color: #555555;
+      background: #FFFFFF;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      ">
+      <div class="clearfix" style="  padding: 10px 0;
+         margin-bottom: 20px;
+         border-bottom: 1px solid #AAAAAA;">
+         <span id="logo" style="float: left;
+         margin-top: 8px;margin-left:330px">
+          <img style="  height: 70px;" src="http://localhost:8888/Agathe/agathevousgate/web/img/logocomplet-petit.png">
+         </span>
+         
+      </div>
+      <div id="details" class="clearfix" style="  margin-bottom: 50px;
+         ">
+         <div id="client" style=" padding-left: 6px;
+            border-left: 6px solid #0087C3;
+            float: left;">
+            {% set client = null %}
+            {% for listepanier in listePanier %}
+            {% if not client %}
+            {%  set client = listepanier.client.nom  %}
+            <div class="to" style="  color: #777777;">Facture à </div>
+            <h2 class="name">{{ listepanier.client.nom }} {{ listepanier.client.prenom }}</h2>
+            <div class="address">{{ listepanier.client.adress.adress }}, {{ listepanier.client.adress.zipcode }} {{ listepanier.client.adress.city }}</div>
+            <div class="email"><a href="mailto:john@example.com">{{ listepanier.client.email }}</a></div>
+            {% endif %}
+            {% endfor %}
+         </div>
+         <div id="invoice" style="  float: right;
+            text-align: right;">
+            <h1 style="color: #0087C3;
+               font-size: 2.4em;
+               line-height: 1em;
+               font-weight: normal;
+               margin: 0  0 10px 0;">INVOICE {{ commande.date|date("dmY")}}{{ commande.id }}</h1>
+            <h5 class="date" style=" font-size: 1.1em;
+               color: #777777; margin-top:20px;">Date de facturation : {{ commande.date|date("d/m/Y")}}</h5>
+         </div>
+      </div>
+      <table border="0" cellspacing="0" cellpadding="0" style="
+         border-collapse: collapse;
+         border-spacing: 0;
+         margin-bottom: 20px;margin-right:20px">
+         <thead>
             <tr>
-                <td class="meta-head">Facture #</td>
-                <td><textarea>{{ commande.date|date("dmY")}}{{ commande.id }}</textarea></td>
+               <th style="width:10px!important;padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;
+                  font-weight: normal;" class="no">Produit</th>
+               <th width=50% style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;
+                  font-weight: normal;" class="desc">Description</th>
+               <th width=10% style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF; white-space: nowrap;
+                  font-weight: normal;" class="unit">Prix Unitaire</th>
+               <th width=10% style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;white-space: nowrap;
+                  font-weight: normal;" class="qty">Quantité</th>
+               <th width=10% style="  padding: 20px;
+                  background: #EEEEEE;
+
+                  border-bottom: 1px solid #FFFFFF;white-space: nowrap;
+                  font-weight: normal;" class="total">Prix</th>
             </tr>
+         </thead>
+         {% set totalsum = null %}
+         <tbody>
+            {% for listepanier in listePanier %}
+            {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
             <tr>
+               <td style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;   text-align: right;  color: #FFFFFF;
+                  font-size: 1.6em;
+                  background: #57B223;
+                  " class="no">{{ listepanier.product.name }}</td>
+               <td style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;   text-align: right; text-align: left;
+                  " class="desc">Accessoire : {{ listepanier.accessoire.name }}<br>
+                    Taille : {{ listepanier.size }}<br>
+                    Couleur(s) :
+                    {% if listepanier.Color1 %}
+                    {{ listepanier.Color1.name }} /
+                      {% endif %}
+                      {% if listepanier.color2 %}
+                      {{ listepanier.Color2.name }} /
+                        {% endif %}
+                        {% if listepanier.Color3 %}
+                        {{ listepanier.Color3.name }} /
+                          {% endif %}
+                          {% if listepanier.Color4 %}
+                          {{ listepanier.Color4.name }} /
+                            {% endif %}
+                            {% if listepanier.Color5 %}
+                            {{ listepanier.Color5.name }} /
+                              {% endif %}
+                              {% if listepanier.Color6 %}
+                              {{ listepanier.Color6.name }} /
+                                {% endif %}
+                                {% if listepanier.Color7 %}
+                                {{ listepanier.Color7.name }} /
+                                  {% endif %}
+                                  {% if listepanier.Color8 %}
+                                  {{ listepanier.Color8.name }} /
+                                    {% endif %}
+                                    {% if listepanier.Color9 %}
+                                    {{ listepanier.Color9.name }} /
+                                      {% endif %}
+                                      {% if listepanier.Color10 %}
+                                      {{ listepanier.Color10.name }} /
+                                        {% endif %}
 
-                <td class="meta-head">Date</td>
-                <td><textarea id="date"> {{ commande.date|date("d/m/Y")}}</textarea></td>
+                    <br>
+
+
+  </td>
+               <td style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;   text-align: right;  background: #DDDDDD;  font-size: 1.2em;
+                  " class="unit">{{ listepanier.product.price }}€</td>
+               <td style="  padding: 20px;
+                  background: #EEEEEE;
+                  text-align: center;
+                  border-bottom: 1px solid #FFFFFF;   text-align: right;  font-size: 1.2em;
+                  " class="qty">{{ listepanier.quantity }}</td>
+               <td style="  padding: 20px;
+                  border-bottom: 1px solid #FFFFFF;    background: #57B223;  font-size: 1.2em;
+                  color: #FFFFFF;
+                  " class="total">{{ listepanier.product.price * listepanier.quantity }} €</td>
+            </tr>
+            {% endfor %}
+         </tbody>
+         <tfoot>
+
+<tr>
+            <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" colspan="2" > </td>
+            <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" colspan="2" >Livraison</td>
+            <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA; " class="total-value"><div id="total">{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</div></td>
+            </tr>{% set totalsum = totalsum + livraison %}
+            <tr>
+              <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" colspan="2" > </td>
+            <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" colspan="2" >Remise</td>
+             <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" >
+    {% set codePromo = app.session.get('codePromo') %}
+                                    {% if codePromo %}
+                                     {% if codePromo.genre == 'pourcentage' %}
+                                        {% set remise = totalsum * codePromo.montant / 100 %}
+                                        {% elseif codePromo.genre  == 'remise' %}
+                                        {% set remise = codePromo.montant %}
+                                        {% endif %}
+                                        <p><strong>  {{ remise|round(2, 'floor') }} €</strong></p>
+                                        {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                                     {% else %}
+                                     <p>0 €</p>
+
+                                    {% endif %}
+
+             </td>
+
+            </tr>
+             <tr>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;  color: #57B223;
+                 font-size: 1.4em;
+                 border-top: 1px solid #57B223;" colspan="2"></td>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;   color: #57B223;
+                 font-size: 1.4em;
+                 border-top: 1px solid #57B223;" colspan="2">Total</td>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;   color: #57B223;
+                 font-size: 1.4em;
+                 border-top: 1px solid #57B223;" >{{ totalsum }} €</td>
             </tr>
 
-        </table>
 
-    </div>
+            <tr>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;"  colspan="2"></td>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" colspan="2">Dont TVA 20%</td>
+               <td style="padding: 10px 20px;background: #FFFFFF;border-bottom: none;font-size: 1.2em;white-space: nowrap;border-top: 1px solid #AAAAAA;" >{{ totalsum * 0.2 }} €</td>
+            </tr>
+         </tfoot>
+      </table>
 
-    <table id="items">
+      <div id="notices">
+         <div>NOTICE:</div>
+         <div class="notice">Mention legale ici</div>
+      </div>
+   </body>
+   <style>
+      @font-face {
+      font-family: SourceSansPro;
+      src: url(SourceSansPro-Regular.ttf);
+      }
+      .clearfix:after {
+      content: "";
+      display: table;
+      clear: both;
+      }
+      header {
+      }
+      #logo {
 
-        <tr>
-            <th>Produit</th>
-            <th>Description</th>
-            <th>Prix Unitaire</th>
-            <th>Quantité</th>
-            <th>Prix</th>
-        </tr>
+      }
+      #logo img {
 
-        {% set totalsum = null %}
-        {% for listepanier in listePanier %}
-        {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+      }
+      #company {
+      }
+      #details {
+      }
+      #client {
+      }
+      #client .to {
+      }
+      h2.name {
+      }
+      #invoice {
+      }
+      #invoice h1 {
+      }
+      #invoice .date {
+      }
+      table {
+      }
+      table th,
+      table td {
+      }
+      table th {
+      }
+      table td {
+      }
+      table td h3{
+      color: #57B223;
+      font-size: 1.2em;
+      font-weight: normal;
+      margin: 0 0 0.2em 0;
+      }
+      table .no {
+      }
+      table .desc {
+      }
+      table .unit {
+      }
+      table .qty {
+      }
+      table .total {
+      }
+      table td.unit,
+      table td.qty,
+      table td.total {
+      }
+      table tbody tr:last-child td {
+      border: none;
+      }
+      table tfoot td {
 
-        <tr class="item-row">
-            <td class="item-name"><textarea> {{ listepanier.product.name }}</textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-            <td class="description"><textarea>	{% for couleur in listepanier.color %}
+      }
+      table tfoot tr:first-child td {
+      border-top: none;
+      }
+      table tfoot tr:last-child td {
 
-                        {{ couleur.name }} <br>
-
-                    {% endfor %}</textarea></td>
-            <td><textarea class="cost">{{ listepanier.product.price }}€</textarea></td>
-            <td><textarea class="qty">{{ listepanier.quantity }}</textarea></td>
-            <td><span class="price">{{ listepanier.product.price * listepanier.quantity }} €</span></td>
-        </tr>
-
-        {% endfor %}
-
-
-
-        <tr>
-            <td colspan="2" class="blank"> </td>
-            <td colspan="2" class="total-line">Sous total</td>
-            <td class="total-value"><div id="subtotal">{{ totalsum }} €</div></td>
-        </tr>
-        <tr>
-
-            <td colspan="2" class="blank"> </td>
-            <td colspan="2" class="total-line">Livraison</td>
-            <td class="total-value"><div id="total">{% if totalsum <50 %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</div></td>
-        </tr>
-
-        <tr>
-            <td colspan="2" class="blank"> </td>
-            <td colspan="2" class="total-line balance">Total</td>
-            <td class="total-value balance"><div class="due">{{ totalsum + livraison }} €</div></td>
-        </tr>
-
-    </table>
-
-    <div id="terms">
-        <h5>Terms</h5>
-        <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea>
-    </div>
-
-</div>
-
-</body>
-
+      }
+      table tfoot tr td:first-child {
+      border: none;
+      }
+      #thanks{
+      font-size: 2em;
+      margin-bottom: 50px;
+      }
+      #notices{
+      padding-left: 6px;
+      border-left: 6px solid #0087C3;
+      }
+      #notices .notice {
+      font-size: 1.2em;
+      }
+      footer {
+      color: #777777;
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      bottom: 0;
+      border-top: 1px solid #AAAAAA;
+      padding: 8px 0;
+      text-align: center;
+      }
+   </style>
 </html>
