@@ -145,8 +145,8 @@ input[type="radio"].radio_colors:checked+ label {
     font-family: 'Roboto' !important;
     font-weight: bold;
     font-size: 1.5em;
-    width: 3em;
-    background-color: rgba(0, 0, 0, 0.25);
+    /*width: 3em;*/
+    background-color: rgba(0, 0, 0, 0.01);
     !important;
 }
 
@@ -238,3 +238,46 @@ border-color: #A94141 !important;
 color:#FFF !important;
 }
 /*Fin bordel cyp*/
+/*Les boutons à la con pour changer de "page"*/
+.numberCircle {
+    border-radius: 50%;
+    behavior: url(PIE.htc);
+    width: 2.5vw;
+    height: 2.5vw;
+    padding: 8px;
+    background: #3B3B3B;
+    color: #fff;
+    text-align: center;
+    font: 1.18em Arial, sans-serif;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.btn-alc {
+    background-color: rgba(255, 0, 0, 0.01);
+    color: #3B3B3B;
+    margin-right: 10px;
+    font-family: 'Roboto' !important;
+    font-weight: bold;
+}
+
+.numberCircle_active {
+    border-radius: 50%;
+    behavior: url(PIE.htc);
+    width: 2.5vw;
+    height: 2.5vw;
+    padding: 8px;
+    background: #A94141;
+    color: #fff;
+    text-align: center;
+    font: 1.18em Arial, sans-serif;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.btn-alc_active {
+    background-color: rgba(255, 0, 0, 0.01);
+    color: #A94141 !important;
+    font-family: 'Roboto' !important;
+    font-weight: bold;
+}
