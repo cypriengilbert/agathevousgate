@@ -62,18 +62,19 @@
                 </ol>-->
 
                 <!-- Wrapper for slides -->
+
                 <div class="carousel-inner" role="listbox">
-                    <div class="item active">
-                        <a href="londres.php">
-                            <img src="{{ asset('img/slider-1.jpg') }}" alt="slider">
+                {% for collection in first3collection %}
+                    <div class="item {% if loop.index is divisibleby(2) %}active{% endif %}">
+                        <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
+                            <img src="{{ asset('upload/image_collection/' ~ collection.imageName) }}" alt="slider">
                         </a>
-                        <!--<div class="carousel-caption">
-                            Londres
-                        </div>-->
+
                     </div>
-                    <!--<div class="item">
-                        <img src="{{ asset('web/img/slider-1.jpg') }}" alt="slider">
-                    </div>-->
+
+
+                {% endfor %}
+
                 </div>
 
                 <!-- Controls -->
@@ -99,7 +100,7 @@
       </div>
       <div class="row text-center creer_bottom">
         <div class="col-sm-12">
-            <p>Le concept de noeuds papillon Agathe Vous Gâte est innovant et</br> personnalisé. Créez vos propres noeuds pap' made in France et</br> Accrocher-les partouts</p>
+            <b><p>Le concept de noeuds papillon Agathe Vous Gâte est innovant et</br> personnalisé. Créez vos propres noeuds pap' made in France et</br> Accrochez-les partout</p></b>
         </div>
       </div>
 
@@ -121,7 +122,7 @@
       </div>
       <div class="row text-center creer_bottom">
         <div class="col-sm-4 col-xs-1"></div>
-        <div class="col-sm-4 col-xs-10"><a href="/agathevousgate/web/app_dev.php/personnalisation" class="btn btn-primary btn-lg active btn_agathe" role="button">Ok, LET'S GO !</a></div>
+        <div class="col-sm-4 col-xs-10"><a href="/agathevousgate/web/app_dev.php/personnalisation" class="btn btn-primary btn-lg active btn_agathe" role="button">OK, LET'S GO !</a></div>
         <div class="col-sm-4 col-xs-1"></div>
       </div>
 </div>
@@ -132,23 +133,68 @@
 <div class="container text-center">
       <div class="row">
         <div class="col-sm-12 col-xs-12"><h1 style="font-size: 1.5em;">RETROUVEZ TOUTE NOTRE COLLECTION</h1></div>
-      </div>      {% for collection in first3collection %}
+      </div>
+      {% for collection in first3collection %}
       {% if loop.index is divisibleby(2) %}
       <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
 
       <div class="row">
-        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
-        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
+        <div class="col-sm-6 nos_collections" style="background-color:#FFF;color:#252259; font-size:2em; height:430px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+
+        <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:50px;">
+        <div>
+          {{ collection.title }}
+        </div>
+        <div>
+            COLLECTION SUMMER 2016
+        </div>
+
+        </div>
+        <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
       </div>
       </a>
+
+{% elseif loop.index is divisibleby(3) %}
+<a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
+
+<div class="row">
+
+  <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+
+  <div class="col-sm-6 nos_collections" style="background-color:#A94141; color:#FFF; font-size:2em; height:430px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+
+  <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%;  max-height: 40% ; height: auto; margin-top:50px;margin-bottom:50px;">
+  <div>
+    {{ collection.title }}
+  </div>
+  <div>
+      COLLECTION SUMMER 2016
+  </div>
+
+  </div>
+
+</div>
+</a>
 
 {% else %}
 <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
 
 <div class="row">
-<div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
 
   <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
+
+  <div class="col-sm-6 nos_collections" style="background-color:#eae9e9; color:#252259;font-size:2em; height:430px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+
+  <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%; height: auto; margin-top:50px;margin-bottom:50px;">
+  <div>
+    {{ collection.title }}
+  </div>
+  <div>
+      COLLECTION SUMMER 2016
+  </div>
+
+  </div>
+
 </div>
 </a>
 {% endif %}
@@ -162,7 +208,7 @@
   <div class="container">
       <div class="row text-center">
         <div class="col-sm-3 col-xs-1"></div>
-        <div class="col-sm-6 col-xs-10"><h1>Produits populaires</h1></div>
+        <div class="col-sm-6 col-xs-10"><h1>PRODUITS POPULAIRES</h1></div>
         <div class="col-sm-3 col-xs-1"></div>
       </div>
       <div class="row text-center">
@@ -267,7 +313,7 @@
                 <div class="form-group">
                   <div class="col-sm-12">
                     <div class="col-sm-6 col-xs-6 text-left">
-                    <button type="submit" class="btn btn-primary btn-lg active btn_sendimg">Sléctionnes vos photos</button>
+                    <button type="submit" class="btn btn-primary btn-lg active btn_sendimg">Sélectionnez votre photo</button>
                     </div>
                     <div class="col-sm-6 col-xs-6 text-right">
                     <button type="submit" class="btn btn-primary btn-lg active btn_send">Envoyer</button>
