@@ -485,7 +485,8 @@ $EntiteCode = null;
             'collection' => $collectionActive,
             'product_noeud' => $product_noeud,
             'accessoire' => $accessoire,
-            'page' => $page
+            'page' => $page,
+            'selected_collection' => $collection_selected->getId()
 
 
         ));

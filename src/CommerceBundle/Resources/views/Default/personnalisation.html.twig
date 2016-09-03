@@ -59,7 +59,7 @@
                             <div id="collapse1" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <ul class="img-thumbnails pull-left">
-                                        {% set X1 = 1 %} {% set selected_collection = 13 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        {% set X1 = 1 %}  {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                         <div id="MyInputs" class="row">
                                             {% endif %}
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -94,7 +94,7 @@
                             <div id="collapse2" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 13 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -127,7 +127,7 @@
                             <div id="collapse3" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 13 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -194,7 +194,7 @@
                                       <div id="collapse_coffret1" class="panel-collapse collapse in">
                                           <div class="panel-body">
                                               <ul class="img-thumbnails pull-left">
-                                                  {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                                  {% set X1 = 1 %}  {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                                   <div id="MyInputs" class="row">
                                                       {% endif %}
                                                       <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -229,7 +229,7 @@
                                       <div id="collapse_coffret2" class="panel-collapse collapse">
                                           <div class="panel-body">
                                             <ul class="img-thumbnails pull-left">
-                                                {% set X1 = 1 %} {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                                {% set X1 = 1 %}  {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                                 <div class="row">
                                                     {% endif %}
                                                     <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
@@ -290,17 +290,11 @@
                                 <div class="col-sm-3">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
-<<<<<<< HEAD
-                                        {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
-                                        <div class="row">
 
-                                            <div class="col-sm-12 col-xs-12 text-center color_token no_padding thumbnail_size">
-=======
-                                        {% set X1 = 1 %} {% set selected_collection = 13 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                        {% set X1 = 1 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                         <div id="MyInputs" class="row">
                                             {% endif %}
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size">
->>>>>>> 7da0a9046d014771affa7fa2c949a11f32b64046
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_6 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
@@ -345,7 +339,7 @@
                                 <div class="col-sm-3">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
-                                        {% set selected_collection = 6 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+                                         {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
                                         <div class="row">
 
                                             <div class="col-sm-12 col-xs-12 text-center color_token no_padding thumbnail_size">
@@ -391,7 +385,6 @@
                             <div class="col-sm-1">
                                 <input type="radio" disabled>
                             </div>
-<<<<<<< HEAD
                         </div>
 
                     </div>
@@ -452,11 +445,10 @@
 
                           <script>document.write(total)</script>€
                          </h3>
-=======
                             <div id="collapse22" class="panel-collapse collapse">
                                 <div class="panel-body">
                                   <ul class="img-thumbnails pull-left">
-                                      {% set X1 = 1 %} {% set selected_collection = 13 %} {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
+                                      {% set X1 = 1 %}  {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
                                           <div class="col-sm-3 text-center color_token no_padding thumbnail_size">
@@ -471,7 +463,6 @@
                                       </div>
                                       {% set X1 = 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                   </ul></div>
->>>>>>> 7da0a9046d014771affa7fa2c949a11f32b64046
                             </div>
                         </div>
                     </div>
@@ -481,10 +472,6 @@
     </div>
 </section>
 
-
-<section id="class c/c cyp">
-
-</section>
     <!-- champs cachés -->
 
     <div class="container">
@@ -586,6 +573,7 @@
         </div>
     </div>
 </div>
+
 {{ form_start(form) }}
 
 <div style="display:none">
@@ -727,7 +715,6 @@
       document.getElementById('noeudderriere').style.backgroundImage = "url("+n2+")";
       document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";*/
         if (document.getElementById("checkbox-coffret").checked) {
-            document.getElementById("add_added_product_product").value = "{{ product_coffret.id }}";
             document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
             document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
             document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
@@ -736,7 +723,6 @@
 
 
         } else {
-            document.getElementById("add_added_product_product").value = "{{ product_noeud.id }}";
             document.getElementById("add_added_product_color1").value = document.querySelector('input[name="color1"]:checked').value;
             document.getElementById("add_added_product_color2").value = document.querySelector('input[name="color2"]:checked').value;
             document.getElementById("add_added_product_color3").value = document.querySelector('input[name="color3"]:checked').value;
