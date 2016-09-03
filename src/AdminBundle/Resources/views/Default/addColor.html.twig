@@ -80,6 +80,13 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 
 </div>
 
+<div class="form-group" >
+    {{ form_label(form.isbasic, "Couleur de base ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.isbasic) }}
+    {{ form_widget(form.isbasic, {'attr': {'class': ''}}) }}
+
+</div>
+
 
 
 

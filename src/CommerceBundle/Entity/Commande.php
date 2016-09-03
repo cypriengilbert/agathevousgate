@@ -41,6 +41,13 @@ class Commande
     /**
      * @var string
      *
+     * @ORM\Column(name="commentaire", type="string", length=5000, nullable=true)
+     */
+    private $commentaire;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="transport_method", type="string", length=255, nullable=true)
      */
     private $transportMethod;
@@ -342,5 +349,29 @@ class Commande
     public function getRemise()
     {
         return $this->remise;
+    }
+
+    /**
+     * Set commentaire
+     *
+     * @param string $commentaire
+     *
+     * @return Commande
+     */
+    public function setCommentaire($commentaire)
+    {
+        $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaire
+     *
+     * @return string
+     */
+    public function getCommentaire()
+    {
+        return $this->commentaire;
     }
 }

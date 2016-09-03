@@ -4,7 +4,15 @@
 {% block body %}
 
 <body>
-Paiement refusé
+<section>
+    <div class="container">
+      <div class="alert alert-danger" role="alert" style="margin-top:20px;">
+        Oups, une erreur s'est produite lors de votre paiement.<br>
+        Merci de réessayer ou de nous contacter.<br>
+        <a href="{{ path('panier') }}">Accéder au panier</a>
+      </div>
+    </div>
+  </section>
 </body>
 
 

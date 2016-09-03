@@ -32,11 +32,20 @@ class AddedProduct
      */
     private $quantity;
 
+
+    /**
+       * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\AddedProduct")
+       * @ORM\JoinColumn(nullable=false)
+       */
+      private $parent;
+
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
     * @ORM\JoinColumn(nullable=true)
     */
     public $color1;
+
+
 
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")

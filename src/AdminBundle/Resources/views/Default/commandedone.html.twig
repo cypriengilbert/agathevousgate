@@ -17,7 +17,8 @@
   <thead>
            <tr>
            <th width=5%>ID</th>
-           <th width=20%>Acheteur</th>
+          <th width=5%>ID Client</th>
+           <th width=15%>Client</th>
            <th width=25% >Adresse de livraison</th>
            <th width=10%>Date de commande</th>
            <th width=20%>Produit</th>
@@ -33,6 +34,8 @@
               {% if (commande.AtelierLivraison.franchise == app.user or is_granted('ROLE_SUPER_ADMIN')) %}
                 <tr>
                   <td>{{ commande.id }}</td>
+                  <td>{{ commande.client.id }}</td>
+
                   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
                   <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
@@ -78,12 +81,14 @@
 {{ commande.price }}
                   </td>
 
-                  <td> </td>
+                  <td> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
               </tr>
 {% endif %}
 {% elseif is_granted('ROLE_SUPER_ADMIN') %}
 <tr>
   <td>{{ commande.id }}</td>
+  <td>{{ commande.client.id }}</td>
+
   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
   <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
   <td>{{ commande.date|date("d-m-Y") }}</td>
@@ -129,7 +134,7 @@
 {{ commande.price }}
   </td>
 
-  <td> </td>
+  <td> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
 </tr>
 {% endif %}
 

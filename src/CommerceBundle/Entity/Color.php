@@ -29,6 +29,21 @@ class Color
     private $id;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_basic", type="boolean")
+     */
+    private $isBasic;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -486,5 +501,53 @@ class Color
     public function getNoeud3updatedAt()
     {
         return $this->noeud3updatedAt;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Color
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isBasic
+     *
+     * @param boolean $isBasic
+     *
+     * @return Color
+     */
+    public function setIsBasic($isBasic)
+    {
+        $this->isBasic = $isBasic;
+
+        return $this;
+    }
+
+    /**
+     * Get isBasic
+     *
+     * @return boolean
+     */
+    public function getIsBasic()
+    {
+        return $this->isBasic;
     }
 }
