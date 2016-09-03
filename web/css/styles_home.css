@@ -1,4 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500italic,700,300);
+@media (min-width:1200px) {
+    .container {
+        width: 1024px;
+    }
+}
 body {
     background-color: #FFFFFF;
     /*padding-top: 0px;*/
