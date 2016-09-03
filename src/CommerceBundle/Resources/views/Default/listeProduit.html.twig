@@ -87,10 +87,17 @@
 								</div>
 									<div class="caption">
 
-
+				<div class="col-md-6 col-sm-6">
 										<p>
-												<a style="width:90%" href="{{ path('product', {'id':listeProduit.id })}}" class="btn btn-primary btn-lg active btn_sendimg">Détails</a>
+												<a style="width:90%" href="{{ path('product', {'id':listeProduit.id, 'coffret':'false' })}}" class="btn btn-primary btn-lg active btn_sendimg">Voir le noeud</a>
 										</p>
+				</div>
+				<div class="col-md-6 col-sm-6">
+										<p>
+												<a style="width:90%" href="{{ path('product', {'id':listeProduit.id, 'coffret': 'true' })}}" class="btn btn-primary btn-lg active btn_sendimg">Voir le coffret</a>
+										</p>
+				</div>
+
 						</div>
 				</div>
 				{% if i == 2 %}
