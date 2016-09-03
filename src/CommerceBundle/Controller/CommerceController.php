@@ -985,6 +985,13 @@ else{
        ;
        $this->get('mailer')->send($message);
 
+//generate facture pdf
+       $this->get('knp_snappy.pdf')->generateFromHtml(
+           $this->renderView(
+               'CommerceBundle:Default:test.html.twig', array(  'iduser' => $user->getId(),'listePanier' => $listePanier, 'commande' => $commande)
+           ),
+           'facturation/facture'.$commande->getId().'.pdf'
+       );
 
 
                 $url      = $this->generateUrl('paiementconfirmation');
