@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
+use CommerceBundle\Entity\Photo;
+
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,6 +29,17 @@ class CommerceController extends Controller
         } else {
             $session->set('panier_session', array());
         }
+
+        $newPhoto = new Photo();
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\PhotoType', $newPhoto);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newPhoto);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Photo bien enregistrée.');
+
+                      return $this->redirect($this->generateUrl('accueil'));
+                }
 
 
 
@@ -109,7 +122,9 @@ class CommerceController extends Controller
             'collection' => $collectionActive,
             'listePanier' => $listePanier,
             'page' => $page,
-            'first3collection' => $first3collection
+            'first3collection' => $first3collection,
+            'form' => $form->createView(),
+
 
 
         ));

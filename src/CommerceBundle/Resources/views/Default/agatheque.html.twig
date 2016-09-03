@@ -2,18 +2,28 @@
 
 
 {% block body %}
-<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
-	<!-- Message d'accueil -->
-<a onclick="hide_powered()">test</a>
-<style>
+<body >
 
-</style>
-    <section id="slider-homepage">
+
+    <section id="slider-homepage" style="margin-top:20px;">
+
+		<div class="container">
+				<div class="row">
+						<div class="col-lg-12 text-center">
+								<h2 class="section-heading">Agathèque</h2>
+
+
+
+								<hr class="primary"><br />
+						</div>
+				</div>
+		</div>
         <div class="container">
 				<div class="row text-center">
 
-<iframe src="//widgets-code.websta.me/w/ab02edb3daea?ck=MjAxNi0wOC0xMVQxODoyMTo1MS45MTVa" allowtransparency="true" frameborder="0" scrolling="no" style="border:none;overflow:auto;height:100%;width:100%;"></iframe> <!-- WEBSTA WIDGETS - widgets.websta.me -->	<div class="col-md-3 col-sm-6 hero-feature">
-	</div>
+				<!-- SnapWidget -->
+				<script src="https://snapwidget.com/js/snapwidget.js"></script>
+				<iframe src="https://snapwidget.com/embed/247493" class="snapwidget-widget" allowTransparency="true" frameborder="0" scrolling="no" style="border:none; overflow:hidden; width:100%; "></iframe>	</div>
 
 
 
@@ -28,19 +38,10 @@
         </div>
     </section>
 
-		<script>
-		function hide_powered(){
-		var a = document.getElementsByClassName("powered_by");
-		for (i=0; i<a.length; i++){
-			a[i].style.height='0px';
-			a[i].style.width='0px';
-
-		}
-}
 
 
 
-		</script>
+
 
 
 {% endblock %}
