@@ -80,6 +80,34 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 
 </div>
 
+<div class="form-group">
+    {{ form_label(form.tissuColorFile, "Coffret, tissu", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.tissuColorFile) }}
+    {{ form_widget(form.tissuColorFile, {'attr': {'class': ''}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.tissuMilieuColorFile, "Coffret, noeud central", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.tissuMilieuColorFile) }}
+    {{ form_widget(form.tissuMilieuColorFile, {'attr': {'class': ''}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.couleurPochette, "Pochette", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.couleurPochette) }}
+    {{ form_widget(form.couleurPochette, {'attr': {'class': ''}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.couleurBoutons, "Boutons", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.couleurBoutons) }}
+    {{ form_widget(form.couleurBoutons, {'attr': {'class': ''}}) }}
+
+</div>
+
 <div class="form-group" >
     {{ form_label(form.isbasic, "Couleur de base ?", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.isbasic) }}

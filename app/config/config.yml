@@ -162,3 +162,31 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+        tissuColorFile:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/tissu/grand
+            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/grand
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        tissuMilieuColorFile:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/tissu/milieu
+            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/milieu
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        couleurPochette:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/tissu/milieu
+            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/milieu
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true
+        couleurBoutons:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/color/tissu/milieu
+            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/milieu
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

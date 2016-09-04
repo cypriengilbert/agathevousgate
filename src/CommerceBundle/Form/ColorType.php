@@ -47,7 +47,31 @@ class ColorType extends AbstractType
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
-      
+            ->add('tissuColorFile', 'vich_image', array(
+              'required'      => true,
+              'label' => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('tissuMilieuColorFile', 'vich_image', array(
+              'required'      => true,
+              'label' => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('couleurPochette', 'vich_image', array(
+              'required'      => true,
+              'label' => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+            ->add('couleurBoutons', 'vich_image', array(
+              'required'      => true,
+              'label' => false,
+              'allow_delete'  => false, // not mandatory, default is true
+              'download_link' => true, // not mandatory, default is true
+            ))
+
 
 
         ;

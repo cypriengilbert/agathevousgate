@@ -53,7 +53,7 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="colorFile", fileNameProperty="imageColorName", maxSize = "5M",)
+     * @Vich\UploadableField(mapping="colorFile", fileNameProperty="imageColorName", maxSize = "5M")
      *
      * @var File
      */
@@ -72,6 +72,72 @@ class Color
      * @var \DateTime
      */
     private $updatedAt;
+
+
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="tissuColorFile", fileNameProperty="tissuColorName", maxSize = "5M")
+     *
+     * @var File
+     */
+    private $tissuColorFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $tissuColorName;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="tissuMilieuColorFile", fileNameProperty="tissuMilieuColorName", maxSize = "5M")
+     *
+     * @var File
+     */
+    private $tissuMilieuColorFile;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $tissuMilieuColorName;
+
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="couleurPochette", fileNameProperty="couleurPochetteName", maxSize = "5M")
+     *
+     * @var File
+     */
+    private $couleurPochette;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @var string
+     */
+    private $couleurPochetteName;
+
+
+        /**
+         *
+         * @Vich\UploadableField(mapping="couleurBoutons", fileNameProperty="couleurBoutonsName", maxSize = "5M")
+         *
+         * @var File
+         */
+        private $couleurBoutons;
+
+        /**
+         * @ORM\Column(type="string", length=255)
+         *
+         * @var string
+         */
+        private $couleurBoutonsName;
+
+
 
 
     /**
@@ -194,7 +260,170 @@ class Color
     }
 
 
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return Color
+     */
+    public function setCouleurPochette(File $couleurPochette = null)
+    {
+        $this->couleurPochette = $couleurPochette;
 
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getCouleurPochette()
+    {
+        return $this->couleurPochette;
+    }
+
+    /**
+     * @param string $imageColorName
+     *
+     * @return Color
+     */
+    public function setCouleurPochetteName($couleurPochetteName)
+    {
+        $this->couleurPochetteName = $couleurPochetteName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouleurPochetteName()
+    {
+        return $this->couleurPochetteName;
+    }
+
+
+
+        /**
+         * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+         *
+         * @return Color
+         */
+        public function setCouleurBoutons(File $couleurBoutons = null)
+        {
+            $this->couleurBoutons = $couleurBoutons;
+
+
+            return $this;
+        }
+
+        /**
+         * @return File
+         */
+        public function getCouleurBoutons()
+        {
+            return $this->couleurBoutons;
+        }
+
+        /**
+         * @param string $imageColorName
+         *
+         * @return Color
+         */
+        public function setCouleurBoutonsName($couleurBoutonsName)
+        {
+            $this->couleurBoutonsName = $couleurBoutonsName;
+
+            return $this;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCouleurBoutonsName()
+        {
+            return $this->couleurBoutonsName;
+        }
+
+    /**
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @return Color
+     */
+    public function setTissuColorFile(File $tissuColorFile = null)
+    {
+        $this->tissuColorFile = $tissuColorFile;
+
+        return $this;
+    }
+
+    /**
+     * @return File
+     */
+    public function getTissuColorFile()
+    {
+        return $this->tissuColorFile;
+    }
+
+    /**
+     * @param string $imageColorName
+     *
+     * @return Color
+     */
+    public function setTissuColorName($tissuColorName)
+    {
+        $this->tissuColorName = $tissuColorName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTissuColorName()
+    {
+        return $this->tissuColorName;
+    }
+
+
+        /**
+         * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+         *
+         * @return Color
+         */
+        public function setTissuMilieuColorFile(File $tissuMilieuColorFile = null)
+        {
+            $this->tissuMilieuColorFile = $tissuMilieuColorFile;
+
+            return $this;
+        }
+
+        /**
+         * @return File
+         */
+        public function getTissuMilieuColorFile()
+        {
+            return $this->tissuMilieuColorFile;
+        }
+
+        /**
+         * @param string $imageColorName
+         *
+         * @return Color
+         */
+        public function setTissuMilieuColorName($tissuMilieuColorName)
+        {
+            $this->tissuMilieuColorName = $tissuMilieuColorName;
+
+            return $this;
+        }
+
+        /**
+         * @return string
+         */
+        public function getTissuMilieuColorName()
+        {
+            return $this->tissuMilieuColorName;
+        }
 
 
 

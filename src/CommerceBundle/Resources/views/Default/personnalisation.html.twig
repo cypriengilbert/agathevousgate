@@ -376,9 +376,9 @@
                         <div class="panel-body no_padding" style="padding-top: 0px; background-color: rgb(255, 255, 255);">
                             <!--<div class="container no_padding">-->
                             <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                                <div class="col-sm-9">
+                                <div class="col-sm-9" id="pochette_img">
                                     <!--Aperçu pochette-->
-                                    <img style="width:100%;height:auto" src="{{ asset('/img/pochette.png')}}">
+
                                 </div>
                                 <div class="col-sm-3">
                                     <!--choix de couleur-->
@@ -391,7 +391,7 @@
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_6 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-9', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2' )" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="changePochette('{{ colors.CouleurPochetteName }}')" class="radio_colors" value="{{ colors.id }}" />
                                                 <label class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
                                             </div>
 
@@ -427,9 +427,9 @@
                             <!-- Nope ?<div class="container no_padding">-->
                             <div class="row" style="margin-left: 0px; margin-right: 0px;">
 
-                                <div class="col-sm-9 text-center">
+                                <div class="col-sm-9 text-center" id="boutons_img">
                                     <!--Aperçu bouton-->
-                                    <img style="max-height: 250px;" src="{{ asset('/img/boutons.png')}}">
+
                                 </div>
                                 <div class="col-sm-3">
                                     <!--choix de couleur-->
@@ -441,7 +441,7 @@
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_7 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-8', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2' )" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="changeBoutons('{{ colors.couleurBoutonsName }}')" class="radio_colors" value="{{ colors.id }}" />
                                                 <label class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
                                             </div>
 
@@ -892,6 +892,19 @@ document.getElementById(imageColorName + '_boutons').correspondance = y;
 
 
 }
+function changePochette(url){
+var route = '<img style="width:100%;height:auto" src="{{ asset('/upload/color/tissu/milieu/' ~ 'URL' )}}">'
+route = route.replace("URL", url);
+document.getElementById('pochette_img').innerHTML = route;
+
+
+}
+function changeBoutons(url){
+var route = '<img style="max-height: 250px;" src="{{ asset('/upload/color/tissu/milieu/' ~ 'URL' )}}">'
+route = route.replace("URL", url);
+document.getElementById('boutons_img').innerHTML = route;
+
+}
 
 
 
@@ -901,6 +914,7 @@ document.getElementById(imageColorName + '_boutons').correspondance = y;
       document.getElementById(panelheading).style.backgroundImage = "url("+i+")";
       if (noeud_place == 'noeuddevant'){
       document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
+
         }
       else if (noeud_place == 'noeudderriere') {
       document.getElementById(noeud_place).style.backgroundImage = "url("+n2+")";
@@ -910,6 +924,7 @@ document.getElementById(imageColorName + '_boutons').correspondance = y;
       document.getElementById(noeud_place).style.backgroundImage = "url("+n3+")";
 
       }
+
       else {}
 
       /*document.getElementById('noeuddevant').style.backgroundImage = "url("+n1+")";
@@ -921,6 +936,8 @@ document.getElementById(imageColorName + '_boutons').correspondance = y;
 
 
     }
+
+
 $(document).ready(function(){
   $(".type-and-size").fadeOut();
 
