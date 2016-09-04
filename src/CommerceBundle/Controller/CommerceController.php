@@ -403,7 +403,8 @@ $EntiteCode = null;
         } else {
             $session->set('panier_session', array());
         }
-
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:product');
+        $allproduct = $repository->findAll();
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $repository->findBy(array(
@@ -486,8 +487,8 @@ $EntiteCode = null;
             'product_noeud' => $product_noeud,
             'accessoire' => $accessoire,
             'page' => $page,
-            'selected_collection' => $collection_selected->getId()
-
+            'selected_collection' => $collection_selected->getId(),
+            'allproduct' => $allproduct,
 
         ));
 
