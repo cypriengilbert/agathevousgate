@@ -542,7 +542,7 @@ $session = $this->get('session');
 
       $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
       $typeNoeud = $repository->findOneBy(array(
-          'id' => $type
+          'name' => $type
       ));
 
       $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');

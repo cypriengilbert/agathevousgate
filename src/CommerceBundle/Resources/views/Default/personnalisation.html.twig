@@ -508,11 +508,11 @@
                 <h4>Type de Noeud</h4>
             </div>
         </div>
-        <div class="row text-center type_noeud">
+        <div class="row text-center type_noeud" >
 
-            <div class="col-sm-4 no_padding selector_type active_1 ">
-              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="tdecou" style="visibility: hidden; position: absolute;">
-              <label for="radio-tdecou">
+            <div class="col-sm-4 no_padding selector_type  " style="cursor:pointer; "onclick="get_data()">
+              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="Tour de cou" style="visibility: hidden; position: absolute;">
+              <label for="radio-tdecou" style="cursor:pointer;">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>Tour de cou</h1></div>
@@ -524,9 +524,9 @@
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type ">
+            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; "onclick="get_data()">
               <input type="radio" name="radio_accessoire" id="radio-barette" value="Barette" style="visibility: hidden; position: absolute;">
-              <label for="radio-barette">
+              <label for="radio-barette" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>barette</h1></div>
@@ -538,9 +538,9 @@
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type ">
+            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; "onclick="get_data()">
               <input type="radio" name="radio_accessoire" id="radio-broche" value="Broche" style="visibility: hidden; position: absolute;">
-              <label for="radio-broche">
+              <label for="radio-broche" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>broche</h1></div>
@@ -562,12 +562,12 @@
             <h4>Taille</h4>
         </div>
     </div>
-    <div class="row text-center taille_noeud ">
-        <div class="col-sm-6 no_padding selector_taille  active_1" style="margin: 0px;" onclick="get_data()">
+    <div class="row text-center taille_noeud " style="cursor:pointer;">
+        <div class="col-sm-6 no_padding selector_taille " style="margin: 0px;" style="cursor:pointer; "onclick="get_data()">
 
 
             <input type="radio" name="radio_taille" id="radio-standard" value="Standard" style="visibility: hidden; position: absolute;">
-            <label for="radio-standard">
+            <label for="radio-standard" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>Normal</h1></div>
@@ -581,9 +581,9 @@
         </div>
 
 
-        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" onclick="get_data()">
+        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" "onclick="get_data()">
           <input type="radio" name="radio_taille" id="radio-mini" value="Mini" style="visibility: hidden; position: absolute;">
-          <label for="radio-mini">
+          <label for="radio-mini" style="cursor:pointer; ">
             <div class="row text-center no_padding">
                 <div class="col-sm-12 no_padding">
                     <h1>Mini</h1></div>
@@ -803,7 +803,7 @@ document.getElementById("total").innerHTML = total.toFixed(2)+'€';
 
 function addToCart()
 {
-var type = 1;
+var type = 0;
 var colorNoeud1 = 0;
 var colorNoeud2 = 0;
 var colorNoeud3 = 0;
