@@ -1,5 +1,4 @@
-
-.panel-title> a {
+.panel-title>a {
     font-size: 1.188em;
     color: #757575;
     font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace !important;
@@ -17,17 +16,17 @@
     background-color: #eae9e9;
 }
 
-.panel-default> .panel-heading {
+.panel-default>.panel-heading {
     background-color: #eae9e9;
     border-color: #eae9e9;
-    cursor:  pointer;
+    cursor: pointer;
 }
 
 .panel-group .panel {
     border-radius: 0px !important;
 }
 
-.panel-group .panel-heading+ .panel-collapse> .panel-body {
+.panel-group .panel-heading+.panel-collapse>.panel-body {
     border-top: 1px solid #eae9e9;
 }
 
@@ -111,7 +110,7 @@ input[type="radio"].radio_colors {
     display: none;
 }
 
-input[type="radio"].radio_colors+ label {
+input[type="radio"].radio_colors+label {
     display: inline-block;
     border-radius: 50%;
     width: 100%;
@@ -119,7 +118,7 @@ input[type="radio"].radio_colors+ label {
     cursor: pointer
 }
 
-input[type="radio"].radio_colors:checked+ label {
+input[type="radio"].radio_colors:checked+label {
     /*border:3px solid black;*/
     padding: 2px;
     box-shadow: 0px -5px 5px 0px #656565;
@@ -164,15 +163,31 @@ input[type="radio"].radio_colors:checked+ label {
 .choix_type_taille_noeud {
     padding: 10px 0px;
 }
-.selector_type,.selector_taille{background-color:#FFF;}
-.active_1{background-color: #ddd;}
-.panel-heading{
-border-radius: 0px;
 
+.selector_type, .selector_taille {
+    background-color: #FFF;
 }
+
+.active_1 {
+    background-color: #ddd;
+}
+
+.panel-heading {
+    border-radius: 0px;
+}
+
+
 /*CSS pour Jqsuery swap*/
-.type-and-size{position:relative;}
-.personnalisation_noeud{position:relative;}
+
+.type-and-size {
+    position: relative;
+}
+
+.personnalisation_noeud {
+    position: relative;
+}
+
+
 /*.main_page {
     position: absolute;
     height: 100vh;
@@ -184,61 +199,75 @@ border-radius: 0px;
     height: 100vh;
 }*/
 
+
 /* Un gros bordel de cyp qui était sur la page product */
-.taille label{
-background-color: #eae9e9!important;
-border-color: rgb(36, 34, 88) !important;
-color:rgb(36, 34, 88) !important;
--webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 10px;
-margin-bottom:10px;
-text-align: center;
+
+.taille label {
+    background-color: #eae9e9!important;
+    border-color: rgb(36, 34, 88) !important;
+    color: rgb(36, 34, 88) !important;
+    -webkit-border-radius: 1000px;
+    -moz-border-radius: 1000px;
+    border-radius: 1000px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
 }
-.taille_red label{
-background-color: #eae9e9!important;
-border-color: #A94141 !important;
-color:#A94141 !important;
--webkit-border-radius: 1000px;
--moz-border-radius: 1000px;
-border-radius: 1000px;
-margin-top: 10px;
-margin-bottom:10px;
-text-align: center;
+
+.taille_red label {
+    background-color: #eae9e9!important;
+    border-color: #A94141 !important;
+    color: #A94141 !important;
+    -webkit-border-radius: 1000px;
+    -moz-border-radius: 1000px;
+    border-radius: 1000px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
 }
-.taille_red label:hover{
-background-color: #A94141!important;
-border-color: #A94141 !important;
-color:#FFF !important;
+
+.taille_red label:hover {
+    background-color: #A94141!important;
+    border-color: #A94141 !important;
+    color: #FFF !important;
 }
-.blue_recap{
-background-color: rgb(36, 34, 88)!important;
-border-top:3px solid white;
+
+.blue_recap {
+    background-color: rgb(36, 34, 88)!important;
+    border-top: 3px solid white;
 }
-.taille label:hover{
-background-color: rgb(36, 34, 88)!important;
-border-color: rgb(36, 34, 88) !important;
-color:#FFF !important;
+
+.taille label:hover {
+    background-color: rgb(36, 34, 88)!important;
+    border-color: rgb(36, 34, 88) !important;
+    color: #FFF !important;
 }
+
 .blue_recap input[type="radio"] {
-background-color:rgb(36, 34, 88);
-width:100%;
-position:relative;
-height:10x;
+    background-color: rgb(36, 34, 88);
+    width: 100%;
+    position: relative;
+    height: 10x;
 }
-.taille input[type="radio"]:checked + label {
-background-color: rgb(36, 34, 88)!important;
-border-color: rgb(36, 34, 88) !important;
-color:#FFF !important;
+
+.taille input[type="radio"]:checked+label {
+    background-color: rgb(36, 34, 88)!important;
+    border-color: rgb(36, 34, 88) !important;
+    color: #FFF !important;
 }
-.taille_red input[type="checkbox"]:checked + label {
-background-color: #A94141!important;
-border-color: #A94141 !important;
-color:#FFF !important;
+
+.taille_red input[type="checkbox"]:checked+label {
+    background-color: #A94141!important;
+    border-color: #A94141 !important;
+    color: #FFF !important;
 }
+
+
 /*Fin bordel cyp*/
+
+
 /*Les boutons à la con pour changer de "page"*/
+
 .numberCircle {
     border-radius: 50%;
     behavior: url(PIE.htc);
@@ -251,6 +280,9 @@ color:#FFF !important;
     font: 1.18em Arial, sans-serif;
     display: inline-block;
     margin-right: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 15px;
 }
 
 .btn-alc {
@@ -273,11 +305,70 @@ color:#FFF !important;
     font: 1.18em Arial, sans-serif;
     display: inline-block;
     margin-right: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 15px;
 }
 
 .btn-alc_active {
     background-color: rgba(255, 0, 0, 0.01);
     color: #A94141 !important;
+    margin-right: 10px;
     font-family: 'Roboto' !important;
     font-weight: bold;
+}
+
+/* Popinette amour éternel de cyp*/
+/* Outer */
+.popup {
+    width:100%;
+    height:100%;
+    display:none;
+    position:fixed;
+    top:0px;
+    left:0px;
+    background:rgba(0,0,0,0.75);
+}
+
+/* Inner */
+.popup-inner {
+    max-width:700px;
+    width:90%;
+    padding:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform:translate(-50%, -50%);
+    transform:translate(-50%, -50%);
+    box-shadow:0px 2px 6px rgba(0,0,0,1);
+    border-radius:3px;
+    background:#fff;
+}
+
+/* Close Button */
+.popup-close {
+    width:30px;
+    height:30px;
+    padding-top:4px;
+    display:inline-block;
+    position:absolute;
+    top:0px;
+    right:0px;
+    transition:ease 0.25s all;
+    -webkit-transform:translate(50%, -50%);
+    transform:translate(50%, -50%);
+    border-radius:1000px;
+    background:rgba(0,0,0,0.8);
+    font-family:Arial, Sans-Serif;
+    font-size:20px;
+    text-align:center;
+    line-height:100%;
+    color:#fff;
+}
+
+.popup-close:hover {
+    -webkit-transform:translate(50%, -50%) rotate(180deg);
+    transform:translate(50%, -50%) rotate(180deg);
+    background:rgba(0,0,0,1);
+    text-decoration:none;
 }

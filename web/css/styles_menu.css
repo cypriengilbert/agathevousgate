@@ -99,7 +99,8 @@ margin-top:-5px;    /*test center-better*/
 }
 .general-footer{
     /*bottom: 0;
-    width: 100%;*/}
+    width: 100%;*/
+	padding-top: 30px;}
   * {
     margin: 0;
 }

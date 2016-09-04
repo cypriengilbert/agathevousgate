@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\Photo;
-
+use CommerceBundle\Entity\Product;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -403,7 +403,7 @@ $EntiteCode = null;
         } else {
             $session->set('panier_session', array());
         }
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:product');
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $allproduct = $repository->findAll();
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
@@ -480,7 +480,7 @@ $EntiteCode = null;
         }
 
         return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
-            'form' => $form->createView(),
+
             'product_coffret' => $product_coffret,
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
