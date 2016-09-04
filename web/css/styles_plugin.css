@@ -242,8 +242,8 @@ color:#FFF !important;
 .numberCircle {
     border-radius: 50%;
     behavior: url(PIE.htc);
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 30px;
+    height: 30px;
     padding: 8px;
     background: #3B3B3B;
     color: #fff;
@@ -264,8 +264,8 @@ color:#FFF !important;
 .numberCircle_active {
     border-radius: 50%;
     behavior: url(PIE.htc);
-    width: 2.5vw;
-    height: 2.5vw;
+    width: 30px;
+    height: 30px;
     padding: 8px;
     background: #A94141;
     color: #fff;
