@@ -5,10 +5,10 @@
     <!-- Partie 1: Customisation du noeud DEBUT-->
 
     <div class="container text-center">
-        <h1>CREER SON NOEUD</h1></br>
+        <h1>CRÉER SON NOEUD</h1></br>
         <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
-            <li><button class="btn btn-alc_active btn_perso" role="button"><div class="nbr numberCircle_active">1</div>Customization</a></li>
-            <li><button class="btn btn-alc btn_TT" role="button"><div class="nbr2 numberCircle">2</div>Type & taille de noeud</a></li>
+            <li><button class="btn btn-alc_active btn_perso" role="button"><div class="nbr numberCircle_active">1</div>Customisation</a></li>
+            <li><button class="btn btn-alc btn_TT" role="button"><div class="nbr2 numberCircle">2</div>Taille et accessoires</a></li>
 
         </ul>
     </div>
@@ -52,7 +52,7 @@
                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_collection" href="#collapse_collection">
                               <div class="col-sm-11">
                                   <h4 class="panel-title">
-          Choix de collection</h4>
+          Choix de la collection</h4>
                               </div>
                               <div class="col-sm-1">
                                   <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
@@ -253,7 +253,7 @@
                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="" style="margin-right: 0px;">
                     <div class="col-sm-11">
                         <h4 id="titre_coffret1" class="panel-title" style="width: 33em; color:#25225B; text-shadow:none; background-color:rgba(0,0,0,0);">
-                    Ajouter une à deux couleurs supplémentaire pour réaliser un coffret <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h4>
+                    Ajoutez une à deux couleurs supplémentaire pour réaliser un coffret <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h4>
 
                     </div>
                     <div class="col-sm-1">
@@ -276,7 +276,7 @@
                                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="#collapse_coffret1" style="margin-right: 0px;">
                                               <div class="col-sm-11">
                                                   <h4 class="panel-title" style="width: 13em;">
-                          Couleur 3 - combinisain: 27</h4>
+                          Couleur 3 - combinaisons: 27</h4>
                                               </div>
                                               <div class="col-sm-1 text-right">
                                                   <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
@@ -380,7 +380,7 @@
                                     <!--Aperçu pochette-->
 
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
 
@@ -413,8 +413,11 @@
                     <div id="panel-heading-plugin-8" class="panel-heading panel-heading-plugin" onclick="open_div('boutons')" >
                         <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_bouton" href="" style="margin-right: 0px;">
                             <div class="col-sm-11">
+
+
                                 <h4 class="panel-title" id="titre_boutons" style="text-shadow:none; color:#25225B; background-color:rgba(0,0,0,0);">
                                 Bouton de manchettes <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h4>
+
 
                             </div>
                             <div class="col-sm-1">
@@ -431,7 +434,7 @@
                                     <!--Aperçu bouton-->
 
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
                                          {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
@@ -464,7 +467,7 @@
         <div class="row">
         <div class="col-sm-6 no_padding">
         </div>
-        <div class="col-sm-6 no_padding">
+        <div class="col-sm-6">
            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
               <div class="panel-heading blue_recap" style="border-top: 0px">
                  <div class="row ">
@@ -487,7 +490,7 @@
                   <div class="row ">
                       <div class="col-sm-8">
                           <h3 class="panel-title" style="color:white!important;">
-                       Coffret 1 couleur supplémentaire
+                       Couleur 3
                     </h3>
                       </div>
                       <div class="col-sm-3 text-right">
@@ -503,7 +506,7 @@
                  <div class="row ">
                     <div class="col-sm-8" >
                        <h3 class="panel-title" style="color:white!important;">
-                          Coffret 2 couleurs supplémentaires
+                          Couleur 4
                        </h3>
                     </div>
                     <div class="col-sm-3 text-right" >
@@ -592,7 +595,7 @@
         <div class="row">
             <div class="col-sm-12 col-xs-12 choix_supplement no_padding">
                 <!-- Choix de la collection-->
-                <h4>Type de Noeud</h4>
+                <h4>TYPE DE NOEUD</h4>
             </div>
         </div>
         <div class="row text-center type_noeud" >
@@ -602,7 +605,7 @@
               <label for="radio-tdecou" style="cursor:pointer;">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
-                        <h1>Tour de cou</h1></div>
+                        <h1>TOUR DE COU</h1></div>
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
@@ -616,7 +619,7 @@
               <label for="radio-barette" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
-                        <h1>barette</h1></div>
+                        <h1>BARETTE</h1></div>
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
@@ -630,7 +633,7 @@
               <label for="radio-broche" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
-                        <h1>broche</h1></div>
+                        <h1>BROCHE</h1></div>
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
@@ -646,7 +649,7 @@
     <div class="row">
         <div class="col-sm-12 col-xs-12 choix_collection no_padding">
             <!-- Choix de la collection-->
-            <h4>Taille</h4>
+            <h4>TAILLE/h4>
         </div>
     </div>
     <div class="row text-center taille_noeud " style="cursor:pointer;">
@@ -657,7 +660,7 @@
             <label for="radio-standard" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
-                        <h1>Normal</h1></div>
+                        <h1>NORMAL</h1></div>
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
@@ -668,12 +671,12 @@
         </div>
 
 
-        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" "onclick="get_data()">
+        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" onclick="get_data()">
           <input type="radio" name="radio_taille" id="radio-mini" value="Mini" style="visibility: hidden; position: absolute;">
           <label for="radio-mini" style="cursor:pointer; ">
             <div class="row text-center no_padding">
                 <div class="col-sm-12 no_padding">
-                    <h1>Mini</h1></div>
+                    <h1>MINI</h1></div>
             </div>
             <div class="row text-center no_padding">
                 <div class="col-sm-1"></div>
@@ -791,8 +794,8 @@
                     </h3>
                  </div>
                  <div class="col-sm-3 text-right" style="position:absolute; right:30px;" >
-                    <h3 class="panel-title" style="color:white!important;" id="total" >
-                       {{ noeud_price }} €
+                    <h3 class="panel-title" style="color:white!important;" id="total2" >
+                       Gros_Zizi{{ noeud_price }} €
                     </h3>
                  </div>
                  <div class="col-sm-8" >
@@ -1114,6 +1117,7 @@ if( document.getElementById('input_pochette').checked == true){
 total = total + {{ pochette_price }};
 }
 document.getElementById("total").innerHTML = total.toFixed(2)+'€';
+document.getElementById("total2").innerHTML = total.toFixed(2)+'€';
 
 }
 
