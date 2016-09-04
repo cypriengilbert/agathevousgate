@@ -499,9 +499,9 @@ $EntiteCode = null;
 
 
     /**
-     * @Route("/addPersotoCart/{couleurNoeud1}_{couleurNoeud2}_{couleurNoeud3}_{type}_{taille}/{couleurCoffret1}_{couleurCoffret2}/{couleurPochette}/{couleurBoutons}/{collection}", name="addPersotoCart")
+     * @Route("/addPersotoCart/{quantity}/{couleurNoeud1}_{couleurNoeud2}_{couleurNoeud3}_{type}_{taille}/{couleurCoffret1}_{couleurCoffret2}/{couleurPochette}/{couleurBoutons}/{collection}", name="addPersotoCart")
      */
-    public function addPersotoCartAction(Request $request, $couleurNoeud1, $couleurNoeud2, $couleurNoeud3, $type, $taille, $couleurCoffret1, $couleurCoffret2, $couleurPochette, $couleurBoutons, $collection)
+    public function addPersotoCartAction(Request $request, $quantity, $couleurNoeud1, $couleurNoeud2, $couleurNoeud3, $type, $taille, $couleurCoffret1, $couleurCoffret2, $couleurPochette, $couleurBoutons, $collection)
     {
 
 $session = $this->get('session');
@@ -542,7 +542,7 @@ $session = $this->get('session');
 
       $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
       $typeNoeud = $repository->findOneBy(array(
-          'id' => $type
+          'name' => $type
       ));
 
       $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
@@ -584,7 +584,7 @@ $newNoeud->setColor2($couleurNoeud2_ent);
 $newNoeud->setColor3($couleurNoeud3_ent);
 $newNoeud->setAccessoire($typeNoeud);
 $newNoeud->setSize($taille);
-$newNoeud->setQuantity(1);
+$newNoeud->setQuantity($quantity);
 $newNoeud->setCollection($collection_ent);
 
 
@@ -596,7 +596,7 @@ if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
   $newCoffret2->setColor2($couleurNoeud2_ent);
   $newCoffret2->setColor1($couleurNoeud1_ent);
   $newCoffret2->setParent($newNoeud);
-  $newCoffret2->setQuantity(1);
+  $newCoffret2->setQuantity($quantity);
   $newCoffret2->setCollection($collection_ent);
 
 }
@@ -604,7 +604,7 @@ else if($couleurCoffret1 != 0 and $couleurCoffret2 == 0){
 $newCoffret1 = new AddedProduct();
 $newCoffret1->setProduct($product_coffret1);
 $newCoffret1->setColor1($couleurNoeud1_ent);
-$newCoffret1->setQuantity(1);
+$newCoffret1->setQuantity($quantity);
 $newCoffret1->setParent($newNoeud);
 $newCoffret1->setCollection($collection_ent);
 
@@ -616,7 +616,7 @@ if($couleurPochette != 0){
 $newPochette = new AddedProduct();
 $newPochette->setProduct($product_pochette);
 $newPochette->setColor1($couleurPochette_ent);
-$newPochette->setQuantity(1);
+$newPochette->setQuantity($quantity);
 $newPochette->setParent($newNoeud);
 $newPochette->setCollection($collection_ent);
 
@@ -628,7 +628,7 @@ if($couleurBoutons != 0){
   $newBoutons = new AddedProduct();
 $newBoutons->setProduct($product_boutons);
 $newBoutons->setColor1($couleurBoutons_ent);
-$newBoutons->setQuantity(1);
+$newBoutons->setQuantity($quantity);
 $newBoutons->setParent($newNoeud);
 $newBoutons->setCollection($collection_ent);
 

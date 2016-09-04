@@ -313,6 +313,7 @@ class Color
         return $this;
     }
 
+
     /**
      * @return File
      */
@@ -340,6 +341,9 @@ class Color
     {
         return $this->imagecolorNoeud3Name;
     }
+
+
+
 
 
     /**
@@ -550,4 +554,13 @@ class Color
     {
         return $this->isBasic;
     }
+
+
+
+
+
+
+
+
+
 }
