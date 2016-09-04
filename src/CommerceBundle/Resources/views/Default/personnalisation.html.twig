@@ -380,7 +380,7 @@
                                     <!--Aperçu pochette-->
                                     <img style="width:100%;height:auto" src="{{ asset('/img/pochette.png')}}">
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
 
@@ -434,7 +434,7 @@
                                     <!--Aperçu bouton-->
                                     <img style="max-height: 250px;" src="{{ asset('/img/boutons.png')}}">
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3" style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
                                          {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
@@ -467,7 +467,7 @@
         <div class="row">
         <div class="col-sm-6 no_padding">
         </div>
-        <div class="col-sm-6 no_padding">
+        <div class="col-sm-6">
            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
               <div class="panel-heading blue_recap" style="border-top: 0px">
                  <div class="row ">
@@ -671,7 +671,7 @@
         </div>
 
 
-        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" "onclick="get_data()">
+        <div class="col-sm-6 no_padding selector_taille "  style="margin: 0px;" onclick="get_data()">
           <input type="radio" name="radio_taille" id="radio-mini" value="Mini" style="visibility: hidden; position: absolute;">
           <label for="radio-mini" style="cursor:pointer; ">
             <div class="row text-center no_padding">
