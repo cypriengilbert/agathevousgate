@@ -46,6 +46,27 @@
             <div class="col-sm-6 no_padding">
                 <!-- Choix des couleurs -->
                 <div class="container accordeon_noeud no_padding">
+                  <!-- Choix collections dans le truc -->
+                  <div class="panel panel-default" style="margin-bottom: 0px;">
+                      <div id="panel-heading-plugin-collection" class="panel-heading panel-heading-plugin">
+                          <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_collection" href="#collapse_collection">
+                              <div class="col-sm-11">
+                                  <h4 class="panel-title">
+          Choix de collection</h4>
+                              </div>
+                              <div class="col-sm-1">
+                                  <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
+                              </div>
+                          </div>
+                      </div>
+                      <div id="collapse_collection" class="panel-collapse collapse">
+                          <div class="panel-body">
+                             <a href="{{ path('personnalisation', {'idCollection': 5 }) }}">Collection 5</a></br>
+                             <a href="{{ path('personnalisation', {'idCollection': 6 }) }}">Collection 6</a></br>
+                            </div>
+                      </div>
+                  </div>
+                  <!-- Choix collections dans le truc FIN -->
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
                             <div id="panel-heading-plugin-1" class="panel-heading panel-heading-plugin" style="background:url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
@@ -602,12 +623,133 @@
     <div class="container">
         <div class="row text-center no_padding">
             <div class="col-sm-8"></div>
-            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send" onclick="addToCart()" role="button">Ajouter au panier</a></div>
+            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send" data-popup-open="popup-1" href="#"  role="button">Ajouter au panier</a></div>
         </div>
     </div>
 </div>
 
 </section>
+<div class="popup" data-popup="popup-1">
+    <div class="popup-inner">
+        <h1 class="text-center">De combien en avez-vous besoin ?</h1>
+        <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+           <div class="panel-heading blue_recap" style="border-top: 0px">
+              <div class="row ">
+                 <div class="col-sm-8" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       Noeud
+                    </h3>
+                 </div>
+                 <div class="col-sm-3 text-right" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% set noeud_price = product.price %}{% endif %}{% endfor %}€
+                    </h3>
+                 </div>
+                 <div class="col-sm-1" >
+                    <input type="checkbox" checked disabled>
+                 </div>
+              </div>
+           </div>
+           <div class="panel-heading blue_recap">
+               <div class="row ">
+                   <div class="col-sm-8">
+                       <h3 class="panel-title" style="color:white!important;">
+                    Coffret 1 couleur supplémentaire
+                 </h3>
+                   </div>
+                   <div class="col-sm-3 text-right">
+                       <h3 style="color: rgb(255, 255, 255);" class="panel-title">
+                         + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
+                   </div>
+                   <div class="col-sm-1">
+                       <input onclick="open_div('coffret1')" id="input_coffret1" type="checkbox">
+                   </div>
+               </div>
+           </div>
+           <div class="panel-heading blue_recap">
+              <div class="row ">
+                 <div class="col-sm-8" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       Coffret 2 couleurs supplémentaires
+                    </h3>
+                 </div>
+                 <div class="col-sm-3 text-right" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% set coffret2_price = product.price %}{% endif %}{% endfor %}€
+                    </h3>
+                 </div>
+                 <div class="col-sm-1" >
+                    <input onclick="open_div('coffret2'); " id="input_coffret2" type="checkbox">
+                 </div>
+              </div>
+           </div>
+           <div class="panel-heading blue_recap">
+              <div class="row ">
+                 <div class="col-sm-8" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       Pochette
+                    </h3>
+                 </div>
+                 <div class="col-sm-3 text-right" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% set pochette_price = product.price %}{% endif %}{% endfor %}€
+                    </h3>
+                 </div>
+                 <div class="col-sm-1" >
+                    <input onclick="open_div('pochette');" id="input_pochette" type="checkbox">
+                 </div>
+              </div>
+           </div>
+           <div class="panel-heading blue_recap">
+              <div class="row ">
+                 <div class="col-sm-8" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       Boutons de manchette
+                    </h3>
+                 </div>
+                 <div class="col-sm-3 text-right" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% set boutons_price = product.price %}{% endif %}{% endfor %}€
+                    </h3>
+                 </div>
+                 <div class="col-sm-1" >
+                    <input onclick="open_div('boutons');"  id="input_boutons" type="checkbox" >
+                 </div>
+              </div>
+           </div>
+           <div class="panel-heading blue_recap">
+              <div class="row ">
+                 <div class="col-sm-8" >
+                    <h3 class="panel-title" style="color:white!important;">
+                       Total
+                    </h3>
+                 </div>
+                 <div class="col-sm-3 text-right" style="position:absolute; right:30px;" >
+                    <h3 class="panel-title" style="color:white!important;" id="total" >
+                       {{ noeud_price }} €
+                    </h3>
+                 </div>
+                 <div class="col-sm-8" >
+                 </div>
+              </div>
+           </div>
+        </div>
+
+
+          <div class="row text-center no_padding">
+              <div class="col-sm-12">
+          Quantité: <input type="number" name="quantité">
+          </div>
+            <div class="row text-center no_padding">
+                <div class="col-sm-8"></div>
+                <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send" onclick="addToCart()" role="button">Ajouter au panier</a></div>
+            </div>
+        </div>
+
+        <p><a data-popup-close="popup-1" href="#">Close</a></p>
+        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+    </div>
+</div>
 <script>
 
 
@@ -694,6 +836,22 @@ $(".btn_perso").click(function(){
 
 };});
 
+
+    //----- OPEN
+    $('[data-popup-open]').on('click', function(e)  {
+        var targeted_popup_class = jQuery(this).attr('data-popup-open');
+        $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+
+        e.preventDefault();
+    });
+
+    //----- CLOSE
+    $('[data-popup-close]').on('click', function(e)  {
+        var targeted_popup_class = jQuery(this).attr('data-popup-close');
+        $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+
+        e.preventDefault();
+    });
 
 });
 /*La fonction de cyp */
