@@ -48,7 +48,7 @@
                 <div class="container accordeon_noeud no_padding">
                   <!-- Choix collections dans le truc -->
                   <div class="panel panel-default" style="margin-bottom: 0px;">
-                      <div id="panel-heading-plugin-collection" class="panel-heading panel-heading-plugin">
+                      <div id="panel-heading-plugin-collection" style="background-color: rgb(169, 65, 65);" class="panel-heading panel-heading-plugin">
                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_collection" href="#collapse_collection">
                               <div class="col-sm-11">
                                   <h4 class="panel-title">
@@ -61,8 +61,10 @@
                       </div>
                       <div id="collapse_collection" class="panel-collapse collapse">
                           <div class="panel-body">
-                             <a href="{{ path('personnalisation', {'idCollection': 5 }) }}">Collection 5</a></br>
-                             <a href="{{ path('personnalisation', {'idCollection': 6 }) }}">Collection 6</a></br>
+                            {% for collection in collection %}
+                             <a href="{{ path('personnalisation', {'idCollection': collection.id }) }}"> {{ collection.title }}</a></br>
+                            {% endfor %}
+
                             </div>
                       </div>
                   </div>
@@ -202,11 +204,11 @@
                                       {% if colors.isBasic == false %}{% if X1 == 1 %}
                                       <div class="row">
                                           {% endif %}
-                                          <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size couleurs_no_basic milieu-nobasic" selected=''>
+                                          <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size" selected=''>
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' );doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size couleurs_no_basic milieu-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' );" class="radio_colors" value="{{ colors.id }}" />
                                               <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -223,7 +225,7 @@
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' ); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size couleurs_no_basic milieu-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' );" class="radio_colors" value="{{ colors.id }}" />
                                               <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -255,7 +257,7 @@
 
                     </div>
                     <div class="col-sm-1">
-                        <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
+                        <i class="fa fa-2x fa-chevron-down no_padding" style="color: #25225B; position:absolute; right:3px;"></i>
                     </div>
                 </div>
             </div>
@@ -362,12 +364,11 @@
                         <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_pochette" href="" style="margin-right: 0px;">
                             <div class="col-sm-11">
 
-                                <h4 class="panel-title" id="titre_pochette" style="width: 4.5em;color:#25225B;text-shadow:none; background-color:rgba(0,0,0,0);">
-          Pochette</h4>
+                                <h4 class="panel-title" id="titre_pochette" style="color:#25225B;text-shadow:none; background-color:rgba(0,0,0,0);">Pochette <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h4>
 
         </div>
                             <div class="col-sm-1">
-                                <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
+                                <i class="fa fa-2x fa-chevron-down no_padding" style="color: #25225B; position:absolute; right:3px;"></i>
                             </div>
                         </div>
                     </div>
@@ -412,12 +413,12 @@
                     <div id="panel-heading-plugin-8" class="panel-heading panel-heading-plugin" onclick="open_div('boutons')" >
                         <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_bouton" href="" style="margin-right: 0px;">
                             <div class="col-sm-11">
-                                <h4 class="panel-title" id="titre_boutons" style="width: 11em;text-shadow:none; color:#25225B; background-color:rgba(0,0,0,0);">
-                                Bouton de manchettes</h4>
+                                <h4 class="panel-title" id="titre_boutons" style="text-shadow:none; color:#25225B; background-color:rgba(0,0,0,0);">
+                                Bouton de manchettes <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h4>
 
                             </div>
                             <div class="col-sm-1">
-                                <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
+                                <i class="fa fa-2x fa-chevron-down no_padding" style="color: #25225B; position:absolute; right:3px;"></i>
                             </div>
                         </div>
                     </div>
@@ -801,18 +802,40 @@
         </div>
 
 
-          <div class="row text-center no_padding">
-              <div class="col-sm-12">
-          Quantité: <input type="number" name="quantité">
+
+      <div class="panel-heading blue_recap" style="border:1px solid grey; background-color:white!important;">
+
+          <div class="row">
+            <div class="col-sm-6">Quantité: </div>
+            <div class="col-sm-3">
+                      <input type="number" id="quantitynoeud" style="width:35px; background-color:#eae9e9;border:none" value="1" name="quantité" disabled>
+                        <i onclick="plusquantity()" style="position:relative; cursor:pointer;bottom:0px; right:60px" class="fa fa-plus fa-1" aria-hidden="true"></i>
+                        <i onclick="minusquantity()" style="position:relative; cursor:pointer; top:0px; left:-10px" class="fa fa-minus fa-1" aria-hidden="true">
+                        </i>
+              </div>
+                <script>
+                function plusquantity(){
+                document.getElementById('quantitynoeud').value++;
+                }
+                function minusquantity(){
+                document.getElementById('quantitynoeud').value--;
+                }
+                </script>
+          <div class="col-sm-3">
+            Total
           </div>
+        </div>
+        </div>
+
             <div class="row text-center no_padding">
                 <div class="col-sm-8"></div>
                 <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send" onclick="addToCart()" role="button">Ajouter au panier</a></div>
             </div>
+            <p><a data-popup-close="popup-1" href="#">Close</a></p>
+            <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
         </div>
 
-        <p><a data-popup-close="popup-1" href="#">Close</a></p>
-        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+
     </div>
 </div>
 <script>
@@ -1208,12 +1231,15 @@ alert(text);
 return false;
 }
 
+var quantity = 1;
+var quantity = document.getElementById('quantitynoeud').value;
 
-var route = "{{ path('addPersotoCart', {'couleurNoeud1' : 'COULEURNOEUD12', 'couleurNoeud2': 'COULEURNOEUD22', 'couleurNoeud3' : 'COULEURNOEUD32', 'type': 'TYPE2', 'taille' : 'TAILLE2', 'couleurCoffret1' : 'COULEURCOFFRET12', 'couleurCoffret2' : 'COULEURCOFFRET22', 'couleurPochette' : 'COULEURPOCHETTE2', 'couleurBoutons' : 'COULEURBOUTONS2', 'collection': selected_collection })}}";
+var route = "{{ path('addPersotoCart', {'quantity': 'QUANTITY1', 'couleurNoeud1' : 'COULEURNOEUD12', 'couleurNoeud2': 'COULEURNOEUD22', 'couleurNoeud3' : 'COULEURNOEUD32', 'type': 'TYPE2', 'taille' : 'TAILLE2', 'couleurCoffret1' : 'COULEURCOFFRET12', 'couleurCoffret2' : 'COULEURCOFFRET22', 'couleurPochette' : 'COULEURPOCHETTE2', 'couleurBoutons' : 'COULEURBOUTONS2', 'collection': selected_collection })}}";
 route = route.replace("COULEURNOEUD12", colorNoeud1);
 route = route.replace("COULEURNOEUD22", colorNoeud2);
 route = route.replace("COULEURNOEUD32", colorNoeud3);
 route = route.replace("TYPE2", type);
+route = route.replace("QUANTITY1", quantity);
 route = route.replace("TAILLE2", taille);
 route = route.replace("COULEURCOFFRET12", colorCoffret1);
 route = route.replace("COULEURCOFFRET22", colorCoffret2);
