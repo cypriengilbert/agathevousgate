@@ -74,8 +74,6 @@ class Color
     private $updatedAt;
 
 
-
-
     /**
      *
      * @Vich\UploadableField(mapping="colorNoeud1File", fileNameProperty="imagecolorNoeud1Name", maxSize = "5M",)
