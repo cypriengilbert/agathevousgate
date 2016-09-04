@@ -497,7 +497,222 @@ $EntiteCode = null;
     }
 
 
+    /**
+     * @Route("/addPersotoCart/{couleurNoeud1}_{couleurNoeud2}_{couleurNoeud3}_{type}_{taille}/{couleurCoffret1}_{couleurCoffret2}/{couleurPochette}/{couleurBoutons}/{collection}", name="addPersotoCart")
+     */
+    public function addPersotoCartAction(Request $request, $couleurNoeud1, $couleurNoeud2, $couleurNoeud3, $type, $taille, $couleurCoffret1, $couleurCoffret2, $couleurPochette, $couleurBoutons, $collection)
+    {
 
+$session = $this->get('session');
+    if ($session->get('panier_session')) {
+
+    } else {
+        $session->set('panier_session', array());
+    }
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $product_noeud   = $repository->findOneBy(array(
+          'name' => 'Noeud'
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collection_ent   = $repository->findOneBy(array(
+          'id' => $collection
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $product_coffret1 = $repository->findOneBy(array(
+          'name' => 'Coffret1'
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $product_coffret2 = $repository->findOneBy(array(
+          'name' => 'Coffret2'
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $product_pochette = $repository->findOneBy(array(
+          'name' => 'Pochette'
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+      $product_boutons = $repository->findOneBy(array(
+          'name' => 'Boutons'
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+      $typeNoeud = $repository->findOneBy(array(
+          'id' => $type
+      ));
+
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurNoeud1_ent = $repository->findOneBy(array(
+          'id' => $couleurNoeud1
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurNoeud2_ent = $repository->findOneBy(array(
+          'id' => $couleurNoeud2
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurNoeud3_ent = $repository->findOneBy(array(
+          'id' => $couleurNoeud3
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurCoffret1_ent = $repository->findOneBy(array(
+          'id' => $couleurCoffret1
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurCoffret2_ent = $repository->findOneBy(array(
+          'id' => $couleurCoffret2
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurPochette_ent = $repository->findOneBy(array(
+          'id' => $couleurPochette
+      ));
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+      $couleurBoutons_ent = $repository->findOneBy(array(
+          'id' => $couleurBoutons
+      ));
+
+
+    if ($couleurNoeud1 != 0 or  $couleurNoeud2 != 0 or $couleurNoeud3 != 0 or $type != 0 or $taille != 0)
+{
+$newNoeud = new AddedProduct();
+$newNoeud->setProduct($product_noeud);
+$newNoeud->setColor1($couleurNoeud1_ent);
+$newNoeud->setColor2($couleurNoeud2_ent);
+$newNoeud->setColor3($couleurNoeud3_ent);
+$newNoeud->setAccessoire($typeNoeud);
+$newNoeud->setSize($taille);
+$newNoeud->setQuantity(1);
+$newNoeud->setCollection($collection_ent);
+
+
+
+if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
+{
+  $newCoffret2 = new AddedProduct();
+  $newCoffret2->setProduct($product_coffret2);
+  $newCoffret2->setColor2($couleurNoeud2_ent);
+  $newCoffret2->setColor1($couleurNoeud1_ent);
+  $newCoffret2->setParent($newNoeud);
+  $newCoffret2->setQuantity(1);
+  $newCoffret2->setCollection($collection_ent);
+
+}
+else if($couleurCoffret1 != 0 and $couleurCoffret2 == 0){
+$newCoffret1 = new AddedProduct();
+$newCoffret1->setProduct($product_coffret1);
+$newCoffret1->setColor1($couleurNoeud1_ent);
+$newCoffret1->setQuantity(1);
+$newCoffret1->setParent($newNoeud);
+$newCoffret1->setCollection($collection_ent);
+
+
+}
+
+
+if($couleurPochette != 0){
+$newPochette = new AddedProduct();
+$newPochette->setProduct($product_pochette);
+$newPochette->setColor1($couleurPochette_ent);
+$newPochette->setQuantity(1);
+$newPochette->setParent($newNoeud);
+$newPochette->setCollection($collection_ent);
+
+
+
+}
+
+if($couleurBoutons != 0){
+  $newBoutons = new AddedProduct();
+$newBoutons->setProduct($product_boutons);
+$newBoutons->setColor1($couleurBoutons_ent);
+$newBoutons->setQuantity(1);
+$newBoutons->setParent($newNoeud);
+$newBoutons->setCollection($collection_ent);
+
+
+
+
+}
+
+if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+    $user = $this->container->get('security.context')->getToken()->getUser();
+    $em = $this->getDoctrine()->getManager();
+
+if($newNoeud){$newNoeud->setClient($user);  $em->persist($newNoeud);}
+
+    if(isset($newPochette)){
+    $newPochette->setClient($user);
+    $em->persist($newPochette);
+    }
+    if(isset($newCoffret1)){
+    $newCoffret1->setClient($user);
+    $em->persist($newCoffret1);
+    }
+    if(isset($newCoffret2)){
+    $newCoffret2->setClient($user);
+    $em->persist($newCoffret2);
+    }
+    if(isset($newBoutons)){
+    $newBoutons->setClient($user);
+    $em->persist($newBoutons);
+    }
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+
+} else {
+if($newNoeud){
+    $listeAddedProduct = $session->get('panier_session');
+    array_push($listeAddedProduct, $newNoeud);
+    $session->set('panier_session', $listeAddedProduct);
+    $session->set('nb_article', count($listeAddedProduct));
+    $nbarticlepanier = $session->get('nb_article');}
+if($newBoutons){
+    $listeAddedProduct = $session->get('panier_session');
+    array_push($listeAddedProduct, $newBoutons);
+    $session->set('panier_session', $listeAddedProduct);
+    $session->set('nb_article', count($listeAddedProduct));
+    $nbarticlepanier = $session->get('nb_article');
+}
+if($couleurCoffret1){
+    $listeAddedProduct = $session->get('panier_session');
+    array_push($listeAddedProduct, $couleurCoffret1);
+    $session->set('panier_session', $listeAddedProduct);
+    $session->set('nb_article', count($listeAddedProduct));
+    $nbarticlepanier = $session->get('nb_article');
+}
+if($couleurCoffret2){
+    $listeAddedProduct = $session->get('panier_session');
+    array_push($listeAddedProduct, $couleurCoffret2);
+    $session->set('panier_session', $listeAddedProduct);
+    $session->set('nb_article', count($listeAddedProduct));
+    $nbarticlepanier = $session->get('nb_article');
+}
+
+if($newPochette){
+    $listeAddedProduct = $session->get('panier_session');
+    array_push($listeAddedProduct, $newPochette);
+    $session->set('panier_session', $listeAddedProduct);
+    $session->set('nb_article', count($listeAddedProduct));
+    $nbarticlepanier = $session->get('nb_article');
+}
+}
+
+
+}
+else{
+  return $this->redirect($this->generateUrl('panier', array(
+
+      'validate' => ' echec'
+  )));
+}
+
+return $this->redirect($this->generateUrl('panier', array(
+
+    'validate' => 'Reception modifiée'
+)));
+}
 
     /**
      * @Route("/listeProduit/{id}", name="listeproduit")
