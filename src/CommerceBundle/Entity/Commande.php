@@ -83,7 +83,7 @@ class Commande
       /**
        * @var float
        *
-       * @ORM\Column(name="remise", type="float")
+       * @ORM\Column(name="remise", type="float", nullable=true)
        */
        private $remise;
 
