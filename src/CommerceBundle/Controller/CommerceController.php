@@ -480,7 +480,6 @@ $EntiteCode = null;
         }
 
         return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
-            'form' => $form->createView(),
             'product_coffret' => $product_coffret,
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
