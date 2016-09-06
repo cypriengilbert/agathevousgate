@@ -78,6 +78,9 @@ fos_user:
             type: UserBundle\Form\RegistrationType
         confirmation:
             enabled: false
+    from_email:
+        address:        agathe@agathevousgate.fr
+        sender_name:    Agathe
 
 assetic:
     debug:          '%kernel.debug%'
