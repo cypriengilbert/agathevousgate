@@ -72,6 +72,9 @@
     height: 100%;
 }
 
+
+/*Plugin Customisation noeud*/
+
 .noeud_devant, .noeud_derriere, .noeud_petit {
     background-size: 100% auto !important;
     background-repeat: no-repeat !important;
@@ -92,16 +95,93 @@
 }
 
 .noeud_petit {
-    z-index: 0;
+    z-index: 3;
 }
 
 .noeud_position {
     position: relative;
-    height: 40vh;
+    height: 30em;
+    width: 100%;
+    max-height: 280px;
+    max-width: 550px;
+}
+
+
+/*Plugin Customisation noeud FIN*/
+
+
+/*Plugin Customisation coffret*/
+
+.coffret_big_position {
+    position: relative;
+    height: 20em;
     width: 100%;
     max-height: 400px;
     max-width: 550px;
 }
+
+.coffret_big_1, .coffret_big_2, .coffret_big_3, .coffret_big_4 {
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 550px;
+    position: absolute;
+}
+
+.coffret_big_1 {
+    top: 1em;
+}
+
+.coffret_big_2 {
+    top: 3em;
+}
+
+.coffret_big_3 {
+    top: 6em;
+}
+
+.coffret_big_4 {
+    top: 9em;
+}
+
+.Coffret_petit_position {
+    position: relative;
+    height: 20em;
+    width: 100%;
+    max-height: 400px;
+    max-width: 550px;
+}
+
+.Coffret_petit_1, .Coffret_petit_2, .Coffret_petit_3, .Coffret_petit_4 {
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 550px;
+    position: absolute;
+}
+
+.Coffret_petit_1 {
+    top: 2em;
+}
+
+.Coffret_petit_2 {
+    top: 4em;
+}
+
+.Coffret_petit_3 {
+    top: 6em;
+}
+
+.Coffret_petit_4 {
+    top: 8em;
+}
+
+
+/*Plugin Customisation Coffret FIN*/
 
 
 /* Styles buttons */
@@ -318,57 +398,65 @@ input[type="radio"].radio_colors:checked+label {
     font-weight: bold;
 }
 
+
 /* Popinette amour éternel de cyp*/
+
+
 /* Outer */
+
 .popup {
-    width:100%;
-    height:100%;
-    display:none;
-    position:fixed;
-    top:0px;
-    left:0px;
-    background:rgba(0,0,0,0.75);
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.75);
 }
+
 
 /* Inner */
+
 .popup-inner {
-    max-width:700px;
-    width:90%;
-    padding:40px;
-    position:absolute;
-    top:50%;
-    left:50%;
-    -webkit-transform:translate(-50%, -50%);
-    transform:translate(-50%, -50%);
-    box-shadow:0px 2px 6px rgba(0,0,0,1);
-    border-radius:3px;
-    background:#fff;
+    max-width: 700px;
+    width: 90%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+    border-radius: 3px;
+    background: #fff;
 }
 
+
 /* Close Button */
+
 .popup-close {
-    width:30px;
-    height:30px;
-    padding-top:4px;
-    display:inline-block;
-    position:absolute;
-    top:0px;
-    right:0px;
-    transition:ease 0.25s all;
-    -webkit-transform:translate(50%, -50%);
-    transform:translate(50%, -50%);
-    border-radius:1000px;
-    background:rgba(0,0,0,0.8);
-    font-family:Arial, Sans-Serif;
-    font-size:20px;
-    text-align:center;
-    line-height:100%;
-    color:#fff;
+    width: 30px;
+    height: 30px;
+    padding-top: 4px;
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    transition: ease 0.25s all;
+    -webkit-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+    border-radius: 1000px;
+    background: rgba(0, 0, 0, 0.8);
+    font-family: Arial, Sans-Serif;
+    font-size: 20px;
+    text-align: center;
+    line-height: 100%;
+    color: #fff;
 }
 
 .popup-close:hover {
-    -webkit-transform:translate(50%, -50%) rotate(180deg);
-    transform:translate(50%, -50%) rotate(180deg);
-    background:rgba(0,0,0,1);
-    text-decoration:none;
+    -webkit-transform: translate(50%, -50%) rotate(180deg);
+    transform: translate(50%, -50%) rotate(180deg);
+    background: rgba(0, 0, 0, 1);
+    text-decoration: none;
 }
