@@ -93,7 +93,7 @@
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant' ); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant' ); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3')" class="radio_colors" value="{{ colors.id }}" />
                                                 <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                             </div>
                                             <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -156,7 +156,7 @@
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere' );  color_selected('{{ colors.imageColorName }}', 2); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere' );  color_selected('{{ colors.imageColorName }}', 2); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3')" class="radio_colors" value="{{ colors.id }}" />
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -206,10 +206,12 @@
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size" selected=''>
                                               <style>
+                                                  input[type="radio"] + .{{ colors.name }}_3_nobasic {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit' );" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+                                              <label class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" style="width:0px;"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -875,6 +877,28 @@ x[i].style.display = "block";
 
 }
 }
+
+function setLibertyAttache(y, n3, id_input){
+
+w = $('[class$="_3_nobasic"]');
+y = y + "_3_nobasic";
+var i;
+for (i = 0; i < w.length; i++) {
+    if(w[i].className == y){
+    w[i].style.width = "";
+    document.getElementById(id_input).checked = true;
+
+}
+else{
+w[i].style.width = "0px";
+}
+document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";
+
+
+
+}
+}
+
 
 function color_selected(imageColorName, y){
 var x = document.getElementsByClassName("couleur");

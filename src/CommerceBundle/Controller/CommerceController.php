@@ -663,27 +663,27 @@ if($newNoeud){$newNoeud->setClient($user);  $em->persist($newNoeud);}
     $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
 
 } else {
-if($newNoeud){
+if(isset($newNoeud)){
     $listeAddedProduct = $session->get('panier_session');
     array_push($listeAddedProduct, $newNoeud);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');}
-if($newBoutons){
+if(isset($newBoutons)){
     $listeAddedProduct = $session->get('panier_session');
     array_push($listeAddedProduct, $newBoutons);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
 }
-if($couleurCoffret1){
+if(isset($newCoffret1)){
     $listeAddedProduct = $session->get('panier_session');
     array_push($listeAddedProduct, $couleurCoffret1);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
 }
-if($couleurCoffret2){
+if(isset($newCoffret2)){
     $listeAddedProduct = $session->get('panier_session');
     array_push($listeAddedProduct, $couleurCoffret2);
     $session->set('panier_session', $listeAddedProduct);
@@ -691,7 +691,7 @@ if($couleurCoffret2){
     $nbarticlepanier = $session->get('nb_article');
 }
 
-if($newPochette){
+if(isset($newPochette)){
     $listeAddedProduct = $session->get('panier_session');
     array_push($listeAddedProduct, $newPochette);
     $session->set('panier_session', $listeAddedProduct);
