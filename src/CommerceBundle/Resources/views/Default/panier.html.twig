@@ -65,8 +65,8 @@
 
 
                             </div>
-                            <div class="col-md-8" style="">
-                                <div style="height:100px; width:100%; position:relative">
+                            <div class="col-md-8" class="objectpanier" style="">
+                                <div style="height:200px; width:100%; position:relative">
                                     <h2>{{ listepanier.size }} {{ listepanier.product.name }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
 <div class="row">
 <div class="col-md-4" style="">
@@ -149,7 +149,7 @@
                                 </div>
               </div>              </div>
 </div>
-                            <div class="col-md-1 hidesmall" style="position:relative; top:20px; right:30px;">
+                            <div class="col-md-1 delete_icon" >
                             <p >
 
                             {% if listepanier.id %}
