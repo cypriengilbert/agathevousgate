@@ -93,8 +93,9 @@
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3')" class="radio_colors" value="{{ colors.id }}" />
                                             <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                         {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -148,7 +149,8 @@
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3')" class="radio_colors" value="{{ colors.id }}" />
+
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -209,10 +211,13 @@
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size" selected=''>
                                               <style>
+                                                  input[type="radio"] + .{{ colors.name }}_3_nobasic {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+                                              <label class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" style="width:0px;"></label></a>
+
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -539,7 +544,7 @@
                        </h3>
                     </div>
                     <div class="col-sm-1" >
-                       <input onclick="open_div('coffret2'); " id="input_coffret2" type="checkbox">
+                       <input onclick="open_div('coffret2'); " id="input_coffret2" type="checkbox" disabled>
                     </div>
                  </div>
               </div>
@@ -585,11 +590,11 @@
                        </h3>
                     </div>
                     <div class="col-sm-3 text-right" style="position:absolute; right:30px;" >
-                       <h3 class="panel-title" style="color:white!important;" id="total" >
+                       <h3 class="panel-title" style="color:white!important;position:absolute; right:43px" id="total" >
                           {{ noeud_price }} €
                        </h3>
                     </div>
-                    <div class="col-sm-8" >
+                    <div class="col-sm-1" >
                     </div>
                  </div>
               </div>
@@ -755,7 +760,7 @@
                          + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
                    </div>
                    <div class="col-sm-1">
-                       <input onclick="open_div('coffret1')" id="input_coffret1" type="checkbox">
+                       <input onclick="open_div('coffret1')" id="input_coffret1_popin" type="checkbox" disabled>
                    </div>
                </div>
            </div>
@@ -772,7 +777,7 @@
                     </h3>
                  </div>
                  <div class="col-sm-1" >
-                    <input onclick="open_div('coffret2'); " id="input_coffret2" type="checkbox">
+                    <input onclick="open_div('coffret2'); " id="input_coffret2_popin" type="checkbox" disabled>
                  </div>
               </div>
            </div>
@@ -789,7 +794,7 @@
                     </h3>
                  </div>
                  <div class="col-sm-1" >
-                    <input onclick="open_div('pochette');" id="input_pochette" type="checkbox">
+                    <input onclick="open_div('pochette');" id="input_pochette_popin" type="checkbox" disabled>
                  </div>
               </div>
            </div>
@@ -806,7 +811,7 @@
                     </h3>
                  </div>
                  <div class="col-sm-1" >
-                    <input onclick="open_div('boutons');"  id="input_boutons" type="checkbox" >
+                    <input onclick="open_div('boutons');"  id="input_boutons_popin" type="checkbox" disabled >
                  </div>
               </div>
            </div>
@@ -818,11 +823,11 @@
                     </h3>
                  </div>
                  <div class="col-sm-3 text-right" style="position:absolute; right:30px;" >
-                    <h3 class="panel-title" style="color:white!important;" id="total2" >
+                    <h3 class="panel-title" style="color:white!important;position:absolute; right:77px" id="total2" >
                        {{ noeud_price }} €
                     </h3>
                  </div>
-                 <div class="col-sm-8" >
+                 <div class="col-sm-1" >
                  </div>
               </div>
            </div>
@@ -836,9 +841,10 @@
             <div class="col-sm-6">Quantité: </div>
             <div class="col-sm-3">
                       <input type="number" id="quantitynoeud" style="width:35px; background-color:#eae9e9;border:none" value="1" name="quantité" disabled>
-                        <i onclick="plusquantity()" style="position:relative; cursor:pointer;bottom:0px; right:60px" class="fa fa-plus fa-1" aria-hidden="true"></i>
-                        <i onclick="minusquantity()" style="position:relative; cursor:pointer; top:0px; left:-10px" class="fa fa-minus fa-1" aria-hidden="true">
-                        </i>
+                      <i onclick="minusquantity()" style="position:relative; cursor:pointer; bottom:0px; right:60px" class="fa fa-minus fa-1" aria-hidden="true">
+                      </i>
+
+                        <i onclick="plusquantity()" style="position:relative; cursor:pointer;top:0px; left:-10px" class="fa fa-plus fa-1" aria-hidden="true"></i>
               </div>
                 <script>
                 function plusquantity(){
@@ -900,6 +906,28 @@ x[i].style.display = "block";
 }
 }
 
+function setLibertyAttache(y, n3, id_input){
+
+w = $('[class$="_3_nobasic"]');
+y = y + "_3_nobasic";
+var i;
+for (i = 0; i < w.length; i++) {
+    if(w[i].className == y){
+    w[i].style.width = "";
+    document.getElementById(id_input).checked = true;
+
+}
+else{
+w[i].style.width = "0px";
+}
+document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";
+
+
+
+}
+}
+
+
 function color_selected(imageColorName, y){
 var x = document.getElementsByClassName("couleur");
 var i;
@@ -911,10 +939,20 @@ for (i = 0; i < x.length; i++) {
 }
 }
 
-document.getElementById(imageColorName + '_boutons').style.display = 'block';
+if (document.getElementById(imageColorName + '_boutons').style.display == 'block'){
+
+}
+else{document.getElementById(imageColorName + '_boutons').style.display = 'block';
+document.getElementById(imageColorName + '_boutons').correspondance = y;
+
+
+}
+if(document.getElementById(imageColorName + '_pochette').style.display == 'block'){
+}else{
 document.getElementById(imageColorName + '_pochette').style.display = 'block';
 document.getElementById(imageColorName + '_pochette').correspondance = y;
-document.getElementById(imageColorName + '_boutons').correspondance = y;
+}
+
 
 
 
@@ -1064,7 +1102,11 @@ if (i == 'coffret1'){
   document.getElementById('panel-heading-plugin-6').style.backgroundColor = "#eae9e9";
   document.getElementById('titre_coffret1').style.color = "#25225B";
   document.getElementById('input_coffret1').checked = false;
+  document.getElementById('input_coffret1_popin').checked = false;
+
   document.getElementById('input_coffret2').checked = false;
+  document.getElementById('input_coffret2_popin').checked = false;
+
   var name = 'color4';
   $('input[name=' + name + ']').prop('checked',false);
   document.getElementById('panel-heading-plugin-4').style.backgroundImage = 'none';
@@ -1079,6 +1121,8 @@ document.getElementById('collapse_coffret').className='panel-collapse collapse i
 document.getElementById('panel-heading-plugin-6').style.backgroundColor = "#A94141";
 document.getElementById('titre_coffret1').style.color = "#FFF";
 document.getElementById('input_coffret1').checked = true;
+document.getElementById('input_coffret1_popin').checked = true;
+
 document.getElementById('input_coffret2').disabled = false;
 
 }
@@ -1096,6 +1140,7 @@ $('input[name=' + name + ']').prop('checked',false);
 else {
 
 document.getElementById('collapse_coffret2').className='panel-collapse collapse in';
+document.getElementById('input_coffret2_popin').checked = true;
 
 document.getElementById('input_coffret2').checked = true;
 
@@ -1108,6 +1153,8 @@ document.getElementById('collapse_pochette').className='panel-collapse collapse'
 document.getElementById('panel-heading-plugin-7').style.backgroundColor = "#eae9e9";
 document.getElementById('titre_pochette').style.color = "#25225B";
 document.getElementById('input_pochette').checked = false;
+document.getElementById('input_pochette_popin').checked = false;
+
 var name = 'color6';
 $('input[name=' + name + ']').prop('checked',false);
 }
@@ -1116,6 +1163,8 @@ document.getElementById('collapse_pochette').className='panel-collapse collapse 
 document.getElementById('panel-heading-plugin-7').style.backgroundColor = "rgb(36, 34, 88)";
 document.getElementById('titre_pochette').style.color = "#FFF";
 document.getElementById('input_pochette').checked = true;
+document.getElementById('input_pochette_popin').checked = true;
+
 
 }
 }
@@ -1127,6 +1176,8 @@ document.getElementById('collapse_bouton').className='panel-collapse collapse';
 document.getElementById('panel-heading-plugin-8').style.backgroundColor = "#eae9e9";
 document.getElementById('titre_boutons').style.color = "#25225B";
 document.getElementById('input_boutons').checked = false;
+document.getElementById('input_boutons_popin').checked = false;
+
 var name = 'color7';
 $('input[name=' + name + ']').prop('checked',false);
 
@@ -1136,6 +1187,8 @@ document.getElementById('collapse_bouton').className='panel-collapse collapse in
 document.getElementById('panel-heading-plugin-8').style.backgroundColor = "#A94141";
 document.getElementById('titre_boutons').style.color = "#FFF";
 document.getElementById('input_boutons').checked = true;
+document.getElementById('input_boutons_popin').checked = true;
+
 
 
 }
