@@ -593,8 +593,8 @@ if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
 {
   $newCoffret2 = new AddedProduct();
   $newCoffret2->setProduct($product_coffret2);
-  $newCoffret2->setColor2($couleurNoeud2_ent);
-  $newCoffret2->setColor1($couleurNoeud1_ent);
+  $newCoffret2->setColor2($couleurCoffret2_ent);
+  $newCoffret2->setColor1($couleurCoffret1_ent);
   $newCoffret2->setParent($newNoeud);
   $newCoffret2->setQuantity($quantity);
   $newCoffret2->setCollection($collection_ent);
@@ -603,7 +603,7 @@ if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
 else if($couleurCoffret1 != 0 and $couleurCoffret2 == 0){
 $newCoffret1 = new AddedProduct();
 $newCoffret1->setProduct($product_coffret1);
-$newCoffret1->setColor1($couleurNoeud1_ent);
+$newCoffret1->setColor1($couleurCoffret1_ent);
 $newCoffret1->setQuantity($quantity);
 $newCoffret1->setParent($newNoeud);
 $newCoffret1->setCollection($collection_ent);
