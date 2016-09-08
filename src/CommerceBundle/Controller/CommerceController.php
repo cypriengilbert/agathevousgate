@@ -368,17 +368,25 @@ $EntiteCode = null;
             $session = $this->getRequest()->getSession();
 
             $listeAddedProduct = $session->get('panier_session');
+
+            foreach ($listeAddedProduct as $value) {
+              if($value->getParent()){
+            if($value->getParent()->getProduct() === "Noeud"){
+              unset($value);
+
+
+}}}
             unset($listeAddedProduct[$id]);
             $listeAddedProduct = array_values($listeAddedProduct);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
             $nbarticlepanier = $session->get('nb_article');
 
+}
 
 
 
 
-        }
 
         $url      = $this->generateUrl('panier');
         $response = new RedirectResponse($url);
@@ -678,14 +686,14 @@ if(isset($newBoutons)){
 }
 if(isset($newCoffret1)){
     $listeAddedProduct = $session->get('panier_session');
-    array_push($listeAddedProduct, $couleurCoffret1);
+    array_push($listeAddedProduct, $newCoffret1);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
 }
 if(isset($newCoffret2)){
     $listeAddedProduct = $session->get('panier_session');
-    array_push($listeAddedProduct, $couleurCoffret2);
+    array_push($listeAddedProduct, $newCoffret2);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
