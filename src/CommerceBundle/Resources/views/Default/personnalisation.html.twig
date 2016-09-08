@@ -71,7 +71,7 @@
                   <!-- Choix collections dans le truc FIN -->
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
-                            <div id="panel-heading-plugin-1" class="panel-heading panel-heading-plugin" style="background:url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
+                            <div id="panel-heading-plugin-1" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
                                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
@@ -126,7 +126,7 @@
 
 
                         <div class="panel panel-default">
-                            <div id="panel-heading-plugin-2" class="panel-heading panel-heading-plugin">
+                            <div id="panel-heading-plugin-2" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
                                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
@@ -191,7 +191,7 @@
                         </div>
 
                         <div class="panel panel-default">
-                            <div id="panel-heading-plugin-3" class="panel-heading panel-heading-plugin">
+                            <div id="panel-heading-plugin-3" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
                                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                                     <div class="col-sm-11">
                                         <h4 class="panel-title">
@@ -301,10 +301,10 @@
                           <div class="container accordeon_noeud no_padding">
                               <div class="panel-group" id="accordion_coffret">
                                   <div class="panel panel-default">
-                                      <div id="panel-heading-plugin-4" class="panel-heading panel-heading-plugin" style="">
+                                      <div id="panel-heading-plugin-4" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
                                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="#collapse_coffret1" style="margin-right: 0px;">
                                               <div class="col-sm-11">
-                                                  <h4 class="panel-title" style="width: 13em;">
+                                                  <h4 class="panel-title">
                           Couleur 3 - combinaisons: 27</h4>
                                               </div>
                                               <div class="col-sm-1 text-right">
@@ -336,10 +336,10 @@
 
 
                                   <div class="panel panel-default">
-                                      <div id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2')">
+                                      <div id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2')" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
                                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href=""  >
                                               <div class="col-sm-11">
-                                                  <h4 class="panel-title" style="width: 14em;">
+                                                  <h4 class="panel-title">
                           Couleur 4 - Combinaisons: 128</h4>
                                               </div>
                                               <div class="col-sm-1">
@@ -678,7 +678,7 @@
     <div class="row">
         <div class="col-sm-12 col-xs-12 choix_collection no_padding">
             <!-- Choix de la collection-->
-            <h4>TAILLE/h4>
+            <h4>TAILLE</h4>
         </div>
     </div>
     <div class="row text-center taille_noeud " style="cursor:pointer;">
@@ -720,7 +720,10 @@
     </div>
     <div class="container">
         <div class="row text-center no_padding">
-            <div class="col-sm-8"></div>
+            <div class="col-sm-4 text-left">
+              <div id="go_back_to_the_chopper" class="btn btn-primary btn-lg btn_sendimg btn_perso" style="font-weight:normal !important">Retour à personnalisation du noeud</div>
+            </div>
+            <div class="col-sm-4"></div>
             <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send" data-popup-open="popup-1" href="#"  role="button">Ajouter au panier</a></div>
         </div>
     </div>
@@ -976,7 +979,7 @@ document.getElementById('boutons_img').innerHTML = route;
     /*Script changement background url pour panelheading*/
 
     function get_data(i,panelheading, n1, n2, n3,noeud_place, c1, c2) {
-      document.getElementById(panelheading).style.backgroundImage = "url("+i+")";
+      document.getElementById(panelheading).style.backgroundImage = "linear-gradient( rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) ),url("+i+")";
       if (noeud_place == 'noeuddevant'){
       document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
       document.getElementById('coffret_big_1').style.backgroundImage = "url("+c1+")";

@@ -116,3 +116,6 @@ html, body {
 .footer, .push {
     height: 100px; /* .push must be the same height as .footer */
 }
+@media only screen and (max-width : 768px) {
+.hidden_small{display:none;}
+    }

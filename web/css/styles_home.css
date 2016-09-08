@@ -145,6 +145,8 @@ a {
     -moz-border-radius: 1000px;
     border-radius: 1000px;
     margin-top: 30px;
+    font-weight: bold;
+    padding: 10px 3em;
 }
 .btn_agathe:hover {
     background-color: #A94141!important;

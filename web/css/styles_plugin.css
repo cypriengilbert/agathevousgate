@@ -63,7 +63,7 @@
     text-shadow: 1px 1px black;
     font-family: 'Roboto' !important;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.25em;
     margin-left: 10px;
 }
 
@@ -220,10 +220,10 @@ input[type="radio"].radio_colors:checked+label {
 
 .panel-heading-plugin h4 {
     color: #FFF;
-    text-shadow: 1px 1px black;
+    /*text-shadow: 1px 1px black;*/
     font-family: 'Roboto' !important;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.25em;
     /*width: 3em;*/
     background-color: rgba(0, 0, 0, 0.01);
     !important;
