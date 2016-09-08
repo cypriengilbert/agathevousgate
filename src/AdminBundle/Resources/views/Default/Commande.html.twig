@@ -48,10 +48,10 @@ livraison : {{ commande.transportmethod }}
       </tr>
       </thead>
 
-<tbody>
+<tbody>{% set color1 = 0 %}
+
 {% for product in commande.addedproducts %}
 <tr>
-
 
 
 <td>{{ product.quantity }}</td>
@@ -59,29 +59,42 @@ livraison : {{ commande.transportmethod }}
 <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}</td>
 <td>
 {% if product.Color1 %}
-  <img src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+{% set color1 = color1 +1 %}
+  <div id="color1_{{ color1 }}"><img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"><div>
+  <div class="mdl-tooltip" for="color1_{{ color1 }}">
+  {{ product.Color1.name }}
+  </div>
 
   {% endif %}
 </td>
 <td>
 {% if product.Color2 %}
-<img src="{{ asset('/upload/color/thumbnail/' ~ product.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+<div id="color2_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+<div class="mdl-tooltip" for="color2_{{ color1 }}">
+{{ product.Color2.name }}
+</div>
 {% endif %}
 </td>
 <td>
 {% if product.Color3 %}
-<img src="{{ asset('/upload/color/thumbnail/' ~ product.Color3.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
-{% endif %}
+<div id="color3_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color3.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+<div class="mdl-tooltip" for="color3_{{ color1 }}">
+{{ product.Color3.name }}
+</div>{% endif %}
 </td>
 <td>
 {% if product.Color4 %}
-<img src="{{ asset('/upload/color/thumbnail/' ~ product.Color4.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
-{% endif %}
+<div id="color4_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color4.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+<div class="mdl-tooltip" for="color4_{{ color1 }}">
+{{ product.Color4.name }}
+</div>{% endif %}
 </td>
 <td>
 {% if product.Color5 %}
-<img src="{{ asset('/upload/color/thumbnail/' ~ product.Color5.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
-{% endif %}
+<div id="color5_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color5.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+<div class="mdl-tooltip" for="color5_{{ color1 }}">
+{{ product.Color5.name }}
+</div>{% endif %}
 </td>
 <td>
 

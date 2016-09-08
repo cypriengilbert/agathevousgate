@@ -31,17 +31,46 @@
                                   {% set remise = 0 %}
                                     {% for listepanier in listePanier %}
                                   {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                             <div class="col-sm-12 col-md-12" style="border-bottom:1px solid grey">
+                             <div class="col-sm-12 col-md-12" >
 
-                            <div class="col-md-3 hidesmall" style="">
-                                {% if listepanier.collection %}
-                                <img src="{{ asset('/upload/image_collection/' ~ listepanier.collection.ImageNameCarre )}}" style="width:90%;display: block; margin: auto;padding-top:50px">
-                                {% endif %}
+                            <div class="col-md-3 hidesmall" style="max-height:150px">
+                                <div class="noeud_position" style="max-height:150px" >
+                                {% if listepanier.product.name == 'Noeud' %}
+                                <div id="noeuddevant" class="noeud_devant" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud1/' ~ listepanier.Color1.imagecolorNoeud1Name)}});"></div>
+                                <div id="noeudderriere" class="noeud_derriere" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud2/' ~ listepanier.Color2.imagecolorNoeud2Name)}});"></div>
+                                <div id="noeudpetit" class="noeud_petit" style="margin-top:25px;max-height:100px; background:url({{ asset('/upload/color/noeud3/'~ listepanier.Color3.imagecolorNoeud3Name)}});"></div>
+{% elseif listepanier.product.name == 'Coffret1' %}
+
+        <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName )}});"></div>
+
+
+
+{% elseif listepanier.product.name == 'Coffret2' %}
+
+        <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName)}});"></div>
+        <div id="coffret_big_2" class="coffret_big_2" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color2.tissuColorName)}});"></div>
+
+
+
+
+{% elseif listepanier.product.name == 'Pochette' %}
+<div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px;background:url({{ asset('/upload/color/pochette/'~ listepanier.Color1.couleurPochetteName )}});"></div>
+
+{% elseif listepanier.product.name == 'Boutons' %}
+<div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px; background-size:contain;  background:url({{ asset('/upload/color/boutons/' ~ listepanier.Color1.couleurBoutonsName)}}) no-repeat;"></div>
+
+
+{% endif %}
+    </div>
+
 
                             </div>
-                            <div class="col-md-8" style="">
+                            <div class="col-md-8" class="objectpanier" style="">
                                 <div style="height:200px; width:100%; position:relative">
                                     <h2>{{ listepanier.size }} {{ listepanier.product.name }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
+<div class="row">
+<div class="col-md-4" style="">
+
                                     <p>Collection {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}</p>
                                     <p>
                                         {% if listepanier.Color1 %}
@@ -75,6 +104,8 @@
                                         <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                         {% endif %}
                                     </p>
+</div>
+<div class="col-md-4" style="position:relative; left:10px; top:-15px">
                                     <p>
                                     {% if listepanier.id %}
 
@@ -110,26 +141,29 @@
                                         </a>
                                           {% endif %}
                                     </p>
-                                    <p style="position:relative; left:10px; top:-15px">
+</div>
+<div class="col-md-4" style="">
 
-                                    {% if listepanier.id %}
-                                        <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}">
-                                            <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                                        </a>
-                                    {% else  %}
 
-                                        <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}">
-                                            <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                                        </a>
-                                    {% endif %}
-                                    </p>
-                                    <p style="position:absolute; right:10px; bottom:10px">
-                                        {{ listepanier.product.price * listepanier.quantity }} €
-                                    </p>
+
                                 </div>
-                            </div>
-                            <div class="col-md-1 hidesmall" style="">
+              </div>              </div>
+</div>
+                            <div class="col-md-1 delete_icon" >
+                            <p >
 
+                            {% if listepanier.id %}
+                                <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}">
+                                    <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                </a>
+                            {% else  %}
+
+                                <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}">
+                                    <i class="fa fa-trash-o" aria-hidden="true" ></i> 
+
+                                </a>
+                            {% endif %}
+                            </p>
                             </div>
                                                 </div>
 

@@ -540,7 +540,7 @@
                     </div>
                     <div class="col-sm-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% set coffret2_price = product.price %}{% endif %}{% endfor %}€
+                          + {% for product in allproduct %}{% if product.name == 'Coffret2' %}10{% set coffret2_price = 10 %}{% endif %}{% endfor %}€
                        </h3>
                     </div>
                     <div class="col-sm-1" >
@@ -741,81 +741,70 @@
                        Noeud
                     </h3>
                  </div>
-                 <div class="col-sm-3 text-right" >
+                 <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
                        {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% set noeud_price = product.price %}{% endif %}{% endfor %}€
                     </h3>
                  </div>
-                 <div class="col-sm-1" >
-                    <input type="checkbox" checked disabled>
-                 </div>
+
               </div>
            </div>
-           <div class="panel-heading blue_recap">
+           <div class="panel-heading blue_recap" id="popin_coffret1" style="display:none">
                <div class="row ">
                    <div class="col-sm-8">
                        <h3 class="panel-title" style="color:white!important;">
-                    Coffret 1 couleur supplémentaire
+                    Couleur 3
                  </h3>
                    </div>
-                   <div class="col-sm-3 text-right">
+                   <div class="col-sm-4 text-right">
                        <h3 style="color: rgb(255, 255, 255);" class="panel-title">
                          + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
                    </div>
-                   <div class="col-sm-1">
-                       <input onclick="open_div('coffret1')" id="input_coffret1_popin" type="checkbox" disabled>
-                   </div>
+
                </div>
            </div>
-           <div class="panel-heading blue_recap">
+           <div class="panel-heading blue_recap" id="popin_coffret2" style="display:none">
               <div class="row ">
                  <div class="col-sm-8" >
                     <h3 class="panel-title" style="color:white!important;">
-                       Coffret 2 couleurs supplémentaires
-                    </h3>
+Couleur 4                    </h3>
                  </div>
-                 <div class="col-sm-3 text-right" >
+                 <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                       + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% set coffret2_price = product.price %}{% endif %}{% endfor %}€
+                       + {% for product in allproduct %}{% if product.name == 'Coffret2' %}10{% set coffret2_price = 10 %}{% endif %}{% endfor %}€
                     </h3>
                  </div>
-                 <div class="col-sm-1" >
-                    <input onclick="open_div('coffret2'); " id="input_coffret2_popin" type="checkbox" disabled>
-                 </div>
+
               </div>
            </div>
-           <div class="panel-heading blue_recap">
+           <div class="panel-heading blue_recap" id="popin_pochette" style="display:none">
               <div class="row ">
                  <div class="col-sm-8" >
                     <h3 class="panel-title" style="color:white!important;">
                        Pochette
                     </h3>
                  </div>
-                 <div class="col-sm-3 text-right" >
+                 <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
                        + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% set pochette_price = product.price %}{% endif %}{% endfor %}€
                     </h3>
                  </div>
-                 <div class="col-sm-1" >
-                    <input onclick="open_div('pochette');" id="input_pochette_popin" type="checkbox" disabled>
-                 </div>
+
               </div>
            </div>
-           <div class="panel-heading blue_recap">
+           <div class="panel-heading blue_recap" id="popin_boutons" style="display:none">
               <div class="row ">
                  <div class="col-sm-8" >
                     <h3 class="panel-title" style="color:white!important;">
                        Boutons de manchette
                     </h3>
                  </div>
-                 <div class="col-sm-3 text-right" >
+                 <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
                        + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% set boutons_price = product.price %}{% endif %}{% endfor %}€
                     </h3>
                  </div>
-                 <div class="col-sm-1" >
-                    <input onclick="open_div('boutons');"  id="input_boutons_popin" type="checkbox" disabled >
-                 </div>
+
               </div>
            </div>
            <div class="panel-heading blue_recap">
@@ -825,13 +814,12 @@
                        Total
                     </h3>
                  </div>
-                 <div class="col-sm-3 text-right" style="position:absolute; right:30px;" >
-                    <h3 class="panel-title" style="color:white!important;position:absolute; right:77px" id="total2" >
+                 <div class="col-sm-4 text-right"  >
+                    <h3 class="panel-title" style="color:white!important;" id="total2" >
                        {{ noeud_price }} €
                     </h3>
                  </div>
-                 <div class="col-sm-1" >
-                 </div>
+
               </div>
            </div>
         </div>
@@ -842,7 +830,7 @@
 
           <div class="row">
             <div class="col-sm-6">Quantité: </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                       <input type="number" id="quantitynoeud" style="width:35px; background-color:#eae9e9;border:none" value="1" name="quantité" disabled>
                       <i onclick="minusquantity()" style="position:relative; cursor:pointer; bottom:0px; right:60px" class="fa fa-minus fa-1" aria-hidden="true">
                       </i>
@@ -851,14 +839,57 @@
               </div>
                 <script>
                 function plusquantity(){
+
+                total = {{ noeud_price }};
+                if( document.getElementById('input_coffret1').checked == true){
+                total = total + {{ coffret1_price }};
+                }
+                if( document.getElementById('input_coffret2').checked == true){
+                total = total + {{ coffret2_price }};
+                }
+                if( document.getElementById('input_boutons').checked == true){
+                total = total + {{ boutons_price }};
+                }
+                if( document.getElementById('input_pochette').checked == true){
+                total = total + {{ pochette_price }};
+                }
+                var total_popin = total;
                 document.getElementById('quantitynoeud').value++;
+total_popin = document.getElementById('quantitynoeud').value * total_popin;
+document.getElementById("totalXquantity").innerHTML = "Total : "+total_popin.toFixed(2)+'€';
+
                 }
                 function minusquantity(){
+
+
+if(  document.getElementById('quantitynoeud').value > 1){
+total = {{ noeud_price }};
+if( document.getElementById('input_coffret1').checked == true){
+total = total + {{ coffret1_price }};
+}
+if( document.getElementById('input_coffret2').checked == true){
+total = total + {{ coffret2_price }};
+}
+if( document.getElementById('input_boutons').checked == true){
+total = total + {{ boutons_price }};
+}
+if( document.getElementById('input_pochette').checked == true){
+total = total + {{ pochette_price }};
+}
+var total_popin = total;
                 document.getElementById('quantitynoeud').value--;
+                total_popin = document.getElementById('quantitynoeud').value * total_popin;
+                document.getElementById("totalXquantity").innerHTML = "Total : "+total_popin.toFixed(2)+'€';
+
+}
+
                 }
                 </script>
-          <div class="col-sm-3">
-            Total
+          <div class="col-sm-4 text-right" id="totalXquantity" style="font-size: 17px!important; font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+    font-weight: bold;
+    color: #242258;
+    padding-bottom: 0.5em;">
+Total : {{ noeud_price }} €
           </div>
         </div>
         </div>
@@ -1105,10 +1136,9 @@ if (i == 'coffret1'){
   document.getElementById('panel-heading-plugin-6').style.backgroundColor = "#eae9e9";
   document.getElementById('titre_coffret1').style.color = "#25225B";
   document.getElementById('input_coffret1').checked = false;
-  document.getElementById('input_coffret1_popin').checked = false;
-
+  document.getElementById('popin_coffret1').style.display = 'none';
+  document.getElementById('popin_coffret2').style.display = 'none';
   document.getElementById('input_coffret2').checked = false;
-  document.getElementById('input_coffret2_popin').checked = false;
 
   var name = 'color4';
   $('input[name=' + name + ']').prop('checked',false);
@@ -1124,7 +1154,7 @@ document.getElementById('collapse_coffret').className='panel-collapse collapse i
 document.getElementById('panel-heading-plugin-6').style.backgroundColor = "#A94141";
 document.getElementById('titre_coffret1').style.color = "#FFF";
 document.getElementById('input_coffret1').checked = true;
-document.getElementById('input_coffret1_popin').checked = true;
+document.getElementById('popin_coffret1').style.display = 'block';
 
 document.getElementById('input_coffret2').disabled = false;
 
@@ -1139,11 +1169,13 @@ var name = 'color5';
 document.querySelector('input[name="color5"]:checked').value = '0';
 document.getElementById('panel-heading-plugin-5').style.backgroundImage = 'none';
 $('input[name=' + name + ']').prop('checked',false);
+document.getElementById('popin_coffret2').style.display = 'none';
+
 }
 else {
+document.getElementById('popin_coffret2').style.display = 'block';
 
 document.getElementById('collapse_coffret2').className='panel-collapse collapse in';
-document.getElementById('input_coffret2_popin').checked = true;
 
 document.getElementById('input_coffret2').checked = true;
 
@@ -1157,6 +1189,8 @@ document.getElementById('panel-heading-plugin-7').style.backgroundColor = "#eae9
 document.getElementById('titre_pochette').style.color = "#25225B";
 document.getElementById('input_pochette').checked = false;
 document.getElementById('input_pochette_popin').checked = false;
+document.getElementById('popin_pochette').style.display = 'none';
+
 
 var name = 'color6';
 $('input[name=' + name + ']').prop('checked',false);
@@ -1166,7 +1200,7 @@ document.getElementById('collapse_pochette').className='panel-collapse collapse 
 document.getElementById('panel-heading-plugin-7').style.backgroundColor = "rgb(36, 34, 88)";
 document.getElementById('titre_pochette').style.color = "#FFF";
 document.getElementById('input_pochette').checked = true;
-document.getElementById('input_pochette_popin').checked = true;
+document.getElementById('popin_pochette').style.display = 'block';
 
 
 }
@@ -1179,18 +1213,19 @@ document.getElementById('collapse_bouton').className='panel-collapse collapse';
 document.getElementById('panel-heading-plugin-8').style.backgroundColor = "#eae9e9";
 document.getElementById('titre_boutons').style.color = "#25225B";
 document.getElementById('input_boutons').checked = false;
-document.getElementById('input_boutons_popin').checked = false;
+document.getElementById('popin_boutons').style.display = 'none';
 
 var name = 'color7';
 $('input[name=' + name + ']').prop('checked',false);
 
 }
 else {
+document.getElementById('popin_boutons').style.display = 'block';
+
 document.getElementById('collapse_bouton').className='panel-collapse collapse in';
 document.getElementById('panel-heading-plugin-8').style.backgroundColor = "#A94141";
 document.getElementById('titre_boutons').style.color = "#FFF";
 document.getElementById('input_boutons').checked = true;
-document.getElementById('input_boutons_popin').checked = true;
 
 
 
@@ -1212,6 +1247,9 @@ total = total + {{ pochette_price }};
 }
 document.getElementById("total").innerHTML = total.toFixed(2)+'€';
 document.getElementById("total2").innerHTML = total.toFixed(2)+'€';
+
+document.getElementById("totalXquantity").innerHTML = "Total : "+total.toFixed(2)+'€';
+
 
 }
 

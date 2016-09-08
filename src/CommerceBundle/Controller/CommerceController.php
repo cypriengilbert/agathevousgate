@@ -368,17 +368,25 @@ $EntiteCode = null;
             $session = $this->getRequest()->getSession();
 
             $listeAddedProduct = $session->get('panier_session');
+
+            foreach ($listeAddedProduct as $value) {
+              if($value->getParent()){
+            if($value->getParent()->getProduct() === "Noeud"){
+              unset($value);
+
+
+}}}
             unset($listeAddedProduct[$id]);
             $listeAddedProduct = array_values($listeAddedProduct);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
             $nbarticlepanier = $session->get('nb_article');
 
+}
 
 
 
 
-        }
 
         $url      = $this->generateUrl('panier');
         $response = new RedirectResponse($url);
@@ -593,8 +601,8 @@ if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
 {
   $newCoffret2 = new AddedProduct();
   $newCoffret2->setProduct($product_coffret2);
-  $newCoffret2->setColor2($couleurNoeud2_ent);
-  $newCoffret2->setColor1($couleurNoeud1_ent);
+  $newCoffret2->setColor2($couleurCoffret2_ent);
+  $newCoffret2->setColor1($couleurCoffret1_ent);
   $newCoffret2->setParent($newNoeud);
   $newCoffret2->setQuantity($quantity);
   $newCoffret2->setCollection($collection_ent);
@@ -603,7 +611,7 @@ if ($couleurCoffret1 != 0 and $couleurCoffret2 != 0)
 else if($couleurCoffret1 != 0 and $couleurCoffret2 == 0){
 $newCoffret1 = new AddedProduct();
 $newCoffret1->setProduct($product_coffret1);
-$newCoffret1->setColor1($couleurNoeud1_ent);
+$newCoffret1->setColor1($couleurCoffret1_ent);
 $newCoffret1->setQuantity($quantity);
 $newCoffret1->setParent($newNoeud);
 $newCoffret1->setCollection($collection_ent);
@@ -678,14 +686,14 @@ if(isset($newBoutons)){
 }
 if(isset($newCoffret1)){
     $listeAddedProduct = $session->get('panier_session');
-    array_push($listeAddedProduct, $couleurCoffret1);
+    array_push($listeAddedProduct, $newCoffret1);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
 }
 if(isset($newCoffret2)){
     $listeAddedProduct = $session->get('panier_session');
-    array_push($listeAddedProduct, $couleurCoffret2);
+    array_push($listeAddedProduct, $newCoffret2);
     $session->set('panier_session', $listeAddedProduct);
     $session->set('nb_article', count($listeAddedProduct));
     $nbarticlepanier = $session->get('nb_article');
