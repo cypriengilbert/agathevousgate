@@ -328,13 +328,16 @@
 
                 <div class="form-group">
                   <div class="col-sm-12">
-                    <div class="col-sm-6 col-xs-6 text-left file">
+<div class="row">
+                    <div class="col-sm-6  file">
                     {{ form_errors(form.photoFile) }}
                     {{ form_widget(form.photoFile, {'attr': {'class': 'btn btn-primary btn-lg active btn_sendimg'}}) }}
                     </div>
-                    <div class="col-sm-6 col-xs-6 text-right">
+                    <div class="col-sm-6">
                     <button type="submit" class="btn btn-primary btn-lg active btn_send">Envoyer</button>
                     </div>
+                    </div>
+
                   </div>
                 </div>
                 {{ form_end(form) }}

@@ -59,6 +59,14 @@ class User extends BaseUser
      private $genre;
 
      /**
+      * @var integer
+      *
+      * @ORM\Column(name="parrainage", type="integer", nullable=false)
+      */
+     private $parrainage;
+
+
+     /**
       * @var string
       *
       * @ORM\Column(name="parrain_email", type="string", length=255, nullable=true)
@@ -253,5 +261,29 @@ class User extends BaseUser
     public function getParrainEmail()
     {
         return $this->parrain_email;
+    }
+
+    /**
+     * Set parrainage
+     *
+     * @param integer $parrainage
+     *
+     * @return User
+     */
+    public function setParrainage($parrainage)
+    {
+        $this->parrainage = $parrainage;
+
+        return $this;
+    }
+
+    /**
+     * Get parrainage
+     *
+     * @return integer
+     */
+    public function getParrainage()
+    {
+        return $this->parrainage;
     }
 }

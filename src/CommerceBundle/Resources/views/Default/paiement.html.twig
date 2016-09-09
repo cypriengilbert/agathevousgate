@@ -100,28 +100,70 @@
                         <div class="col-xs-6 " style="">
                            <p></p>
                            <p>Sous-total</p>
-                           <p>Livraison</p>
-                           <p>Remise</p>
+
+                           <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
+<p>Livraison</p>
                            <p>Total</p>
                         </div>
                         <div class="col-xs-6" >
                            <p></p>
                            <p> {{ totalsum }} €</p>
-                           <p>{% if totalsum <50 and commande.atelierlivraison is null %} {% set livraison = 5 %}{% else %} {% set livraison = 0 %} {% endif %} {{ livraison }} €</p>
-                            {% set totalsum = totalsum + livraison %}
+                           {% set livraison = 0 %}
                            {% set codePromo = app.session.get('codePromo') %}
-                           {% if codePromo %}
-                           {% if codePromo.genre == 'pourcentage' %}
-                           {% set remise = totalsum * codePromo.montant / 100 %}
-                           {% elseif codePromo.genre  == 'remise' %}
-                           {% set remise = codePromo.montant %}
-                           {% endif %}
-                           <p><strong>  {{ remise|round(2, 'floor') }} €</strong></p>
-                           {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                           {% else %}
-                           <p>0€</p>
-                           {% endif %}
-                           <p><strong>  {{ totalsum }} €</strong></p>
+                               {% if codePromo %}
+                                   {% if codePromo.minimumCommande <= totalsum %}
+                                       {% if codePromo.genre == 'pourcentage' %}
+
+                                           {% set remise = totalsum * codePromo.montant / 100 %}
+
+                                       {% elseif codePromo.genre  == 'remise' %}
+                                           {% set remise = codePromo.montant %}
+                                       {% elseif codePromo.genre  == 'fdp' %}
+                                           {% set livraison = 0 %}
+                                       {% endif %}
+                                       <p ><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
+                                       {% set totalsum = totalsum - remise|round(2, 'floor') %}
+
+                                   {% else %}
+                                   <p >0 €</p>
+                                 {% endif %}
+{% elseif nbcommande == 0 and app.user.parrainEmail is not null %}
+{% set remise = totalsum * (parrainage.montant / 100) %}
+<p ><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
+{% set totalsum = totalsum - remise|round(2, 'floor') %}
+                                {% else %}
+
+                                <p class="text-right">0 € </p>
+
+                               {% endif %}
+
+
+
+                               {% if totalsum + remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
+
+                                 {% set livraison = 0 %}
+                               {% else %}
+                                 {% set livraison = coutLivraison.montant %}
+
+                               {% endif %}
+
+                               {% if codePromo %}
+
+                                   {% if codePromo.minimumCommande <= totalsum %}
+
+                                     {% if codePromo.genre == 'fdp' %}
+
+                                       {% set livraison = 0 %}
+
+
+                                     {% endif %}
+
+                                   {% endif %}
+
+
+                               {% endif %}
+                           <p ><strong> + {{ livraison }} €</strong></p>
+                           <p><strong>  {{ totalsum + livraison }} €</strong></p>
                         </div>
                      </div>
 
@@ -139,9 +181,12 @@
                            data-description=""
                            data-image="{{ asset('/img/logo-principal-menu.png') }}"
                            data-locale="auto"
-                           data-zip-code="true"
+                           data-zip-code="false"
                            data-currency="eur"></script>
                      </form>
+                     <div style="margin-bottom:5px; font-size:10px;">
+                        *Paiement sécurisé, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a>
+                     </div>
                   </div>
                </div>
             </div>
