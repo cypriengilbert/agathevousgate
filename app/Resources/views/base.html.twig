@@ -128,7 +128,7 @@
               {% for col in collection %}
 
                     <li class="">
-                        <a class="page-scroll" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
+                        <a class="page-scroll border_menu" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
@@ -148,11 +148,11 @@
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
 
-                    <li class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                    <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
+                        <a class="page-scroll border_menu" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
                     <li class="menu-account {% if page == 'compte' %}active{% endif%}">
-                        <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
