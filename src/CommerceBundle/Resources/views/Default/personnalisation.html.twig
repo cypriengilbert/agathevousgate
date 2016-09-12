@@ -405,11 +405,11 @@
                         <div class="panel-body no_padding" style="padding-top: 0px; background-color: rgb(255, 255, 255);">
                             <!--<div class="container no_padding">-->
                             <div class="row" style="margin-left: 0px; margin-right: 0px;">
-                                <div class="col-sm-9" id="pochette_img">
+                                <div class="col-sm-9 col-xs-8 text-center" id="pochette_img">
                                     <!--Aperçu pochette-->
 
                                 </div>
-                                <div class="col-sm-3" style="padding-top: 10px;">
+                                <div class="col-sm-3 col-xs-4 text-center"  style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
 
@@ -459,11 +459,11 @@
                             <!-- Nope ?<div class="container no_padding">-->
                             <div class="row" style="margin-left: 0px; margin-right: 0px;">
 
-                                <div class="col-sm-9 text-center" id="boutons_img">
+                                <div class="col-sm-9 col-xs-8 text-center" id="boutons_img">
                                     <!--Aperçu bouton-->
 
                                 </div>
-                                <div class="col-sm-3" style="padding-top: 10px;">
+                                <div class="col-sm-3 col-xs-4" style="padding-top: 10px;">
                                     <!--choix de couleur-->
                                     <ul class="img-thumbnails pull-left">
                                          {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
@@ -500,84 +500,84 @@
            <div class="panel panel-default" style="margin-top:20px; background-color:white;">
               <div class="panel-heading blue_recap" style="border-top: 0px">
                  <div class="row ">
-                    <div class="col-sm-8" >
+                    <div class="col-sm-8 col-xs-8" >
                        <h3 class="panel-title" style="color:white!important;">
                           Noeud
                        </h3>
                     </div>
-                    <div class="col-sm-3 text-right" >
+                    <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
                           {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% set noeud_price = product.price %}{% endif %}{% endfor %}€
                        </h3>
                     </div>
-                    <div class="col-sm-1" >
+                    <div class="col-sm-1 col-xs-1" >
                        <input type="checkbox" checked disabled>
                     </div>
                  </div>
               </div>
               <div class="panel-heading blue_recap">
                   <div class="row ">
-                      <div class="col-sm-8">
+                      <div class="col-sm-8 col-xs-8">
                           <h3 class="panel-title" style="color:white!important;">
                        Couleur 3
                     </h3>
                       </div>
-                      <div class="col-sm-3 text-right">
+                      <div class="col-sm-3 col-xs-3 text-right">
                           <h3 style="color: rgb(255, 255, 255);" class="panel-title">
                             + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
                       </div>
-                      <div class="col-sm-1">
+                      <div class="col-sm-1 col-xs-1">
                           <input onclick="open_div('coffret1')" id="input_coffret1" type="checkbox">
                       </div>
                   </div>
               </div>
               <div class="panel-heading blue_recap">
                  <div class="row ">
-                    <div class="col-sm-8" >
+                    <div class="col-sm-8 col-xs-8" >
                        <h3 class="panel-title" style="color:white!important;">
                           Couleur 4
                        </h3>
                     </div>
-                    <div class="col-sm-3 text-right" >
+                    <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
                           + {% for product in allproduct %}{% if product.name == 'Coffret2' %}10{% set coffret2_price = 10 %}{% endif %}{% endfor %}€
                        </h3>
                     </div>
-                    <div class="col-sm-1" >
+                    <div class="col-sm-1 col-xs-1" >
                        <input onclick="open_div('coffret2'); " id="input_coffret2" type="checkbox" disabled>
                     </div>
                  </div>
               </div>
               <div class="panel-heading blue_recap">
                  <div class="row ">
-                    <div class="col-sm-8" >
+                    <div class="col-sm-8 col-xs-8" >
                        <h3 class="panel-title" style="color:white!important;">
                           Pochette
                        </h3>
                     </div>
-                    <div class="col-sm-3 text-right" >
+                    <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
                           + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% set pochette_price = product.price %}{% endif %}{% endfor %}€
                        </h3>
                     </div>
-                    <div class="col-sm-1" >
+                    <div class="col-sm-1 col-xs-1" >
                        <input onclick="open_div('pochette');" id="input_pochette" type="checkbox">
                     </div>
                  </div>
               </div>
               <div class="panel-heading blue_recap">
                  <div class="row ">
-                    <div class="col-sm-8" >
+                    <div class="col-sm-8 col-xs-8" >
                        <h3 class="panel-title" style="color:white!important;">
                           Boutons de manchette
                        </h3>
                     </div>
-                    <div class="col-sm-3 text-right" >
+                    <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
                           + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% set boutons_price = product.price %}{% endif %}{% endfor %}€
                        </h3>
                     </div>
-                    <div class="col-sm-1" >
+                    <div class="col-sm-1 col-xs-1" >
                        <input onclick="open_div('boutons');"  id="input_boutons" type="checkbox" >
                     </div>
                  </div>
@@ -594,8 +594,8 @@
                           {{ noeud_price }} €
                        </h3>
                     </div>
-                    <div class="col-sm-1 col-xs-1" >
-                    </div>
+<div class="col-sm-1 col-xs-1 text-right" ></div>
+
                  </div>
               </div>
            </div>
@@ -992,14 +992,14 @@ document.getElementById(imageColorName + '_pochette').correspondance = y;
 
 }
 function changePochette(url){
-var route = '<img style="width:100%;height:auto" src="{{ asset('/upload/color/tissu/milieu/' ~ 'URL' )}}">'
+var route = '<img style="width:100%;height:auto" src="{{ asset('/upload/color/pochette/' ~ 'URL' )}}">'
 route = route.replace("URL", url);
 document.getElementById('pochette_img').innerHTML = route;
 
 
 }
 function changeBoutons(url){
-var route = '<img style="max-height: 250px;" src="{{ asset('/upload/color/tissu/milieu/' ~ 'URL' )}}">'
+var route = '<img style="max-height: 250px;" src="{{ asset('/upload/color/boutons/' ~ 'URL' )}}">'
 route = route.replace("URL", url);
 document.getElementById('boutons_img').innerHTML = route;
 
