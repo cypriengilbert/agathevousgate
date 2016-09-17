@@ -99,9 +99,11 @@
         padding-bottom: 30px;
     }
     /*Police responsive*/
-
+    html {
+      font-size: 62.5%;
+    }
     h1 {
-        font-size: 2em !important;
+        font-size: 2.4rem !important;
         font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
         font-weight: bold;
         color: #242258;
@@ -109,13 +111,13 @@
     }
 
     h2 {
-        font-size: 1.8333em;
+        font-size: 2.2rem;
         font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
         color: #A94141;
     }
 
     h3 {
-        font-size: 1.5833em;
+        font-size: 1.9rem;
         /*color:#292929;*/
         color: #25225B;
         font-family: 'Roboto' !important;
@@ -123,13 +125,13 @@
     }
 
     p {
-        font-size: 1.333em;
+        font-size: 1.6rem;
         color: #3B3B3B;
         font-family: 'Roboto' !important;
     }
 
     a {
-        font-size: 1em;
+        font-size: 1.6rem;
         color: #242258;
         font-family: 'Roboto' !important;
         font-weight: normal;
@@ -159,7 +161,7 @@
         margin-top: 30px;
         font-weight: bold;
         padding: 15px 50px;
-        font-size: 1.3333em;
+        font-size: 1.8rem;
     }
 
     .btn_agathe:hover {
@@ -429,7 +431,7 @@
     .carousel-indicators li {
         background-color: rgb(36, 34, 88) !important;
         border-color:rgb(36, 34, 88) !important;
-        
+
         width: 15px !important;
         height: 15px !important;
     }

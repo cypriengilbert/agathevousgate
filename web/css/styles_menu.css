@@ -97,9 +97,8 @@
 
 .flwus {
     background-color: rgba(255, 255, 255, 0.7);
-    /*height: 3em;/
-	/*top: 40px;*/
-    height: 50px;
+    /*height: 3em;*/
+    /*height: 50px; cette ligne fait buge chrome */
     padding-top: 12.5px;
 }
 
