@@ -27,7 +27,7 @@
                 {% for collection in first3collection %}
                   {% if ta_go_cest_ma_groupie == 0 %}
                     <li data-target="#carousel-example-generic" data-slide-to="{{ta_go_cest_ma_groupie}}" class="active"></li>
-
+                    {% set ta_go_cest_ma_groupie = ta_go_cest_ma_groupie+1 %}
                   {% else %}
                   <li data-target="#carousel-example-generic" data-slide-to="{{ta_go_cest_ma_groupie}}"></li>
                     {% set ta_go_cest_ma_groupie = ta_go_cest_ma_groupie+1 %}
@@ -357,7 +357,7 @@
 	</style>
 
 
-  
+
 
 
 
