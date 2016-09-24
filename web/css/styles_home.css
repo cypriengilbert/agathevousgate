@@ -182,6 +182,7 @@
         -moz-border-radius: 1000px;
         border-radius: 1000px;
         margin-top: 30px;
+        padding: 10px 50px;
     }
 
     .btn_sendimg:hover {
@@ -203,6 +204,7 @@
         border-radius: 1000px;
         margin-top: 30px;
         text-align: center;
+  padding: 10px 50px;
     }
 
     .btn_blue:hover {
@@ -223,6 +225,7 @@
         -moz-border-radius: 1000px;
         border-radius: 1000px;
         margin-top: 30px;
+  padding: 10px 50px;
     }
 
     .btn_send:hover {
@@ -243,6 +246,7 @@
         -moz-border-radius: 1000px;
         border-radius: 1000px;
         margin-top: 30px;
+  padding: 10px 50px;
     }
 
     .btn_agathe:hover {
@@ -255,66 +259,6 @@
         margin-top: 30px;
     }
 
-    .btn_sendimg {
-        background-color: #3B3B3B!important;
-        border-color: #3B3B3B !important;
-        color: #FFF !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-    }
-
-    .btn_sendimg:hover {
-        background-color: #FFF!important;
-        border-color: #3B3B3B !important;
-        color: #3B3B3B !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-    }
-
-    .btn_blue {
-        background-color: rgb(36, 34, 88)!important;
-        border-color: rgb(36, 34, 88) !important;
-        color: #FFF !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .btn_blue:hover {
-        background-color: #FFF!important;
-        border-color: rgb(36, 34, 88) !important;
-        color: rgb(36, 34, 88) !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-    }
-
-    .btn_send {
-        background-color: #A94141!important;
-        border-color: #A94141 !important;
-        color: #FFF !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-    }
-
-    .btn_send:hover {
-        background-color: #FFF!important;
-        border-color: #A94141 !important;
-        color: #A94141 !important;
-        -webkit-border-radius: 1000px;
-        -moz-border-radius: 1000px;
-        border-radius: 1000px;
-        margin-top: 30px;
-    }
 
     .details_menu_account {
         display: ;
