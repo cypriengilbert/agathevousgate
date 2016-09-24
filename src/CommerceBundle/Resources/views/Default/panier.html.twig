@@ -177,8 +177,12 @@
                             <div class="col-xs-7 " style="">
                                 <p></p>
                                 <p>Sous-total</p>
+{% if is_granted('ROLE_USER') %}
 
                                 <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
+
+{% else %} <p> Remise </p>
+{% endif %}
 <p>Livraison</p>
 
                                 <p>Total</p>
@@ -205,10 +209,12 @@
                                         {% else %}
                                         <p class="text-right">0 €</p>
                                       {% endif %}
-     {% elseif nbcommande == 0 and app.user.parrainEmail is not null %}
+     {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
+    {% if app.user.parrainEmail is not null %}
   {% set remise = totalsum * (parrainage.montant / 100) %}
 <p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
   {% set totalsum = totalsum - remise|round(2, 'floor') %}
+{% endif %}
                                      {% else %}
 
                                      <p class="text-right">0 € </p>
@@ -247,10 +253,11 @@
                         </div>
                         <div class="col-md-12" style="position:relative">
                             <div class="col-md-4" style="">
-                                <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if nbcommande == 0 and app.user.parrainEmail is not null %} disabled {% endif %}>
+                                <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if is_granted('ROLE_USER') %}
+{% if nbcommande == 0 and app.user.parrainEmail is not null %} disabled {% endif %}{% endif %}>
                             </div>
 
-                            <a onclick="verifCode()"> <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px; {% if nbcommande == 0 and app.user.parrainEmail is not null %} opacity:0.5; cursor:auto; {% endif %}">
+                            <a onclick="verifCode()"> <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px; {% if is_granted('ROLE_USER') %}{% if nbcommande == 0 and app.user.parrainEmail is not null %} opacity:0.5; cursor:auto;{% endif %} {% endif %}">
                             <div class="col-md-12">
                              <center>  <p style="color:white; position:absolute; top:5px; "> Valider le coupon </p></center>
                              </div>
