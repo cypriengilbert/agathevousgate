@@ -209,7 +209,7 @@ class CommerceController extends Controller
         } else {
             $id_user = null;
 
-
+$nbcommande = null;
             $listeAddedProduct = $session->get('panier_session');
 
 
@@ -1277,8 +1277,6 @@ class CommerceController extends Controller
     {
         $session = $this->get('session');
 
-
-
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -1292,6 +1290,31 @@ class CommerceController extends Controller
                 'client' => $user,
                 'isPanier' => true
             ));
+
+            $listeAddedProduct = $session->get('panier_session');
+            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listePanier = $repository->findBy(array(
+                'client' => $user,
+                'commande' => null
+            ));
+  if ($listeAddedProduct !== null){
+            foreach ($listeAddedProduct as $value) {
+                $rajoutpanier = $value;
+                $rajoutpanier->setClient($user);
+                $this->getDoctrine()->getManager()->merge($rajoutpanier);
+                $this->getDoctrine()->getManager()->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');            }
+}
+            $this->get('session')->remove('panier_session');
+
+            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticlepanier = count($repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user
+            )));
 
 
             $userAdress = $user->getAdress();
@@ -1308,6 +1331,12 @@ class CommerceController extends Controller
 
             }
         }
+        else {
+            $listePanier = $session->get('panier_session');
+            ;
+            $nbarticlepanier = $session->get('nb_article');
+        }
+
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $repository->findBy(array(

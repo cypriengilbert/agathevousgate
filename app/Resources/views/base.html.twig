@@ -63,7 +63,7 @@
 <div class="container flwus">
       <div class="row text-center">
         <div class="col-sm-2 col-xs-2" style="position:relative">
-          <img src="{{ asset('images/header/logo_header_scroll.png') }}" alt="logo_agathevousgate" style="position:absolute; left:15px;height: auto; max-height:25px">
+          <img src="{{ asset('images/home_menu.png') }}" alt="logo_agathevousgate" style="position:absolute; left:15px;height: auto; max-height:25px">
         </div>
         <div class="col-sm-8 col-xs-2">
         </div>
@@ -108,7 +108,7 @@
     {% endif %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
+        <li id="home_logo_div" class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
 
         <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
@@ -128,7 +128,7 @@
               {% for col in collection %}
 
                     <li class="">
-                        <a class="page-scroll" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
+                        <a class="page-scroll border_menu" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
@@ -148,11 +148,11 @@
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right">
 
-                    <li class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                    <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
+                        <a class="page-scroll border_menu" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
                     <li class="menu-account {% if page == 'compte' %}active{% endif%}">
-                        <a class="dropdown-toggle" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                             <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
@@ -327,15 +327,24 @@ display:none;
        <script src="{{ asset('js/creative.js') }}"></script>
 
       <script type="text/javascript">
+
           $('#checkbox-coffret').change(function() {
               $('#couleurs-coffret').toggle();
           });
-          /*Test script menu active
+/*
           $(function() {
             $('nav a[href^="/' + location.pathname+ '"]').addClass('active');
             alert('nav a[href="' + location.pathname + '"]');
 
         });*/
+        $(window).on('scroll', function() {
+            var y_scroll_pos = window.pageYOffset;
+            var scroll_pos_test = 48;             // set to whatever you want it to be
+
+            if(y_scroll_pos > scroll_pos_test) {
+
+            }
+        });
 
       </script>
 
@@ -344,7 +353,17 @@ display:none;
 document.getElementById('resume_cart').style.display = 'none';
 }
 $(document).ready(function(){
+/*  $(window).on('scroll', function() {
+      var y_scroll_pos = window.pageYOffset;
+      var scroll_pos_test = 48;             // set to whatever you want it to be
 
+      if(y_scroll_pos > scroll_pos_test) {
+        $("#home_logo_div").html("<img src='{{ asset('images/header/logo_header_scroll.png') }}' alt='logo_agathevousgate' style='height: auto; max-height:25px'>");
+      }
+      else if(y_scroll_pos < scroll_pos_test) {
+        $("#home_logo_div").html("<li id='home_logo_div' class='{% if page == 'accueil' %}active{% endif%}'><a href='{{ path('accueil') }}'>Home</a></li>");
+      }
+  });*/
 })
 
       </script>
