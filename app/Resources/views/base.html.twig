@@ -62,17 +62,17 @@
 <div class="wrapper">
 <div class="container flwus">
       <div class="row text-center">
-        <div class="col-sm-2 col-xs-2" style="position:relative">
+        <div class="col-sm-2 col-xs-8" style="position:relative">
           <img src="{{ asset('images/home_menu.png') }}" alt="logo_agathevousgate" style="position:absolute; left:15px;height: auto; max-height:25px">
         </div>
         <div class="col-sm-8 col-xs-2">
         </div>
 
-        <div class="col-sm-2 col-xs-8">
+        <div class="col-sm-2 col-xs-2">
             <div class="row text-center">
-            <div class="col-sm-6 col-xs-4 no_padding"><p>Suivez-nous</p></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:0.6em;"></div>
-            <div class="col-sm-3 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:1.2em;"></div>
+            <div class="col-sm-8 col-xs-4 no_padding text-right hidden_small" ><p>Nous suivre</p></div>
+            <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.25rem;margin: -0.9rem;"></div>
+            <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.3rem;margin: -0.9rem;"></div>
             </div>
         </div>
     </div>
@@ -149,7 +149,7 @@
       <ul class="nav navbar-nav navbar-right menu-right">
 
                     <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll border_menu" href="{{ path('panier') }}"><i class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                        <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i style="color:#242258" class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
                     <li class="menu-account {% if page == 'compte' %}active{% endif%}">
                         <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

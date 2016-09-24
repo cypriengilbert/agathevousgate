@@ -5,7 +5,7 @@
     <!-- Partie 1: Customisation du noeud DEBUT-->
 
     <div class="container text-center">
-        <h1>CRÉER SON NOEUD</h1></br>
+        <h1 class="heading">CRÉER SON NOEUD</h1>
         <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
             <li><button class="btn btn-alc_active btn_perso" role="button"><div class="nbr numberCircle_active">1</div>Customisation</a></li>
             <li><button class="btn btn-alc btn_TT" role="button"><div class="nbr2 numberCircle">2</div>Taille et accessoires</a></li>
@@ -47,7 +47,7 @@
                 <!-- Choix des couleurs -->
                 <div class="container accordeon_noeud no_padding">
                   <!-- Choix collections dans le truc -->
-                  <div class="panel panel-default" style="margin-bottom: 0px;">
+                  <div class="panel panel-default" style="margin-bottom: -0.5px;">
                       <div id="panel-heading-plugin-collection" style="background-color: rgb(169, 65, 65);" class="panel-heading panel-heading-plugin">
                           <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_collection" href="#collapse_collection">
                               <div class="col-sm-11">
@@ -257,7 +257,7 @@
 <section class="Coffret">
     <div class="container no_padding">
         <div class="panel panel-default">
-            <div id="panel-heading-plugin-6" style="" class="panel-heading panel-heading-plugin" onclick="open_div('coffret1')" >
+            <div id="panel-heading-plugin-6" style="margin-bottom: -0.5px;" class="panel-heading panel-heading-plugin" onclick="open_div('coffret1')" >
                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="" style="margin-right: 0px;">
                     <div class="col-sm-11 col-xs-10">
                         <h4 id="titre_coffret1" class="panel-title" style="color:#25225B; text-shadow:none; background-color:rgba(0,0,0,0);">
@@ -274,7 +274,7 @@
                   <div class="container no_padding">
                     <div class="row" style="margin-left: 0px; margin-right: 0px;">
                         <div class="col-sm-6 no_padding"><!--Aperçu coffret-->
-                          <div class="row">
+                          <div class="row" style="margin-left: 0px; margin-right: 0px;">
                             <div class="col-sm-1 col-sx-1"></div>
                             <div class="col-sm-9 col-xs-9"><!--Aperçu gros tissu coffret-->
                               <div class="coffret_big_position">
@@ -629,8 +629,8 @@
         </div>
         <div class="row text-center type_noeud" >
 
-            <div class="col-sm-4 no_padding selector_type  " style="cursor:pointer; "onclick="get_data()">
-              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="Tour de cou" style="visibility: hidden; position: absolute;">
+            <div class="col-sm-4 no_padding selector_type active_1" style="cursor:pointer; "onclick="get_data()">
+              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="Tour de cou" style="visibility: hidden; position: absolute;" checked>
               <label for="radio-tdecou" style="cursor:pointer;">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
@@ -682,10 +682,10 @@
         </div>
     </div>
     <div class="row text-center taille_noeud " style="cursor:pointer;">
-        <div class="col-sm-6 no_padding selector_taille " style="margin: 0px;" style="cursor:pointer; "onclick="get_data()">
+        <div class="col-sm-6 no_padding selector_taille active_1 " style="margin: 0px;" style="cursor:pointer; "onclick="get_data()">
 
 
-            <input type="radio" name="radio_taille" id="radio-standard" value="Standard" style="visibility: hidden; position: absolute;">
+            <input type="radio" name="radio_taille" id="radio-standard" value="Standard" style="visibility: hidden; position: absolute;" checked>
             <label for="radio-standard" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">

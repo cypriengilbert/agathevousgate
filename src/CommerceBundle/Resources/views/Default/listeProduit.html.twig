@@ -49,26 +49,26 @@
          {% for listeProduit in listeProduit %}
          {% if listeProduit.product.name == 'Noeud' %}
          {% if i == 0 %}
-         <div class="col-md-12 col-sm-12 hero-feature" style= padding-top:20px; ">
+         <div class="col-md-12 col-sm-12 hero-feature" style= "padding-top:20px; ">
             <div class='row'>
                <div class="col-md-4 col-sm-4 col-xs-4">
                   {% if collectionMoins %}
-                  <a href="{{ path('listeproduit', {'id' : collectionMoins.id })}}">
-                     <div style="font-size: 1.75em; color:#242258; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;position:absolute; left:5px">
-                        <i class="fa fa-angle-left fa-2" aria-hidden="true"></i>	<span class="title_collec">{{ collectionMoins.title }}</span>
+                  <a href="{{ path('collections') }}">
+                     <div style="font-size: 1.6rem; color:#3b3b3B; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;position:absolute; left:5px; font-weight:light">
+                        <i class="fa fa-angle-left fa-2" aria-hidden="true"></i>	<span class="title_collec">Nos collections</span>
                      </div>
                   </a>
                   {% endif %}
                </div>
                <div class="col-md-4 col-sm-4 col-xs-4">
-                  <div style="font-size: 1.75em; font-weight: bold; color:#242258; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;">	{{ listeProduit.collection.title }}</div>
+                  <div><h1 class="heading">	{{ listeProduit.collection.title }}</h1></div>
                </div>
                <div class="col-md-4 col-sm-4 col-xs-4">
-                  {% if collectionPlus %}
+                  <!--{% if collectionPlus %}
                   <a href="{{ path('listeproduit', {'id' : collectionPlus.id })}}">
                      <div style="font-size: 1.75em;  color:#242258; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;position:absolute; right:5px">	<span class="title_collec">{{ collectionPlus.title }} </span><i class="fa fa-angle-right fa-2" aria-hidden="true"></i></div>
                   </a>
-                  {% endif %}
+                  {% endif %}-->
                </div>
             </div>
             <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; padding-top:20px; ">
