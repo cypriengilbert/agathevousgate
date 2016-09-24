@@ -180,9 +180,11 @@
                            data-name="Agathe Vous Gâte"
                            data-description=""
                            data-image="{{ asset('/img/logo-principal-menu.png') }}"
-                           data-locale="auto"
+                           data-locale="fr"
                            data-zip-code="false"
-                           data-currency="eur"></script>
+                           data-currency="eur"
+data-allow-remember-me="false"
+data-label="Confirmer le paiement"></script>
                      </form>
                      <div style="margin-bottom:5px; font-size:10px;">
                         *Paiement sécurisé, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a>
@@ -193,5 +195,6 @@
       </div>
 </div>
    </div>
+</div>
 </body>
 {% endblock %}
