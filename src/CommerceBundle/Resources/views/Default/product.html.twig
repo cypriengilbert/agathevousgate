@@ -301,12 +301,12 @@
                      </h3>
                   </div>
                   <div class="col-sm-2" >
-                     <h3 class="panel-title" style="color:white!important;">
+                     <h3 class="panel-title text-right" style="color:white!important;">
                         {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% endif %}{% endfor %}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
-                     <input type="radio" disabled>
+                     <input type="checkbox" disabled checked>
                   </div>
                </div>
             </div>
@@ -318,12 +318,12 @@
                      </h3>
                   </div>
                   <div class="col-sm-2" >
-                     <h3 class="panel-title" style="color:white!important;">
+                     <h3 class="panel-title text-right" style="color:white!important;">
                         + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% endif %}{% endfor %}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
-                     <input onclick="open_div('coffret'); active_checkbox('coffret')" id="input_coffret" type="radio">
+                     <input onclick="open_div('coffret'); active_checkbox('coffret')" id="input_coffret" type="checkbox">
                   </div>
                </div>
             </div>
@@ -335,12 +335,12 @@
                      </h3>
                   </div>
                   <div class="col-sm-2" >
-                     <h3 class="panel-title" style="color:white!important;">
+                     <h3 class="panel-title text-right" style="color:white!important;">
                         + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% endif %}{% endfor %}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
-                     <input onclick="open_div('pochette'); active_checkbox('pochette')" id="input_pochette" type="radio">
+                     <input onclick="open_div('pochette'); active_checkbox('pochette')" id="input_pochette" type="checkbox">
                   </div>
                </div>
             </div>
@@ -352,27 +352,29 @@
                      </h3>
                   </div>
                   <div class="col-sm-2" >
-                     <h3 class="panel-title" style="color:white!important;">
+                     <h3 class="panel-title text-right" style="color:white!important;">
                         + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% endif %}{% endfor %}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
-                     <input onclick="open_div('boutons'); active_checkbox('boutons')"  id="input_boutons" type="radio" >
+                     <input onclick="open_div('boutons'); active_checkbox('boutons')"  id="input_boutons" type="checkbox" >
                   </div>
                </div>
             </div>
             <div class="panel-heading blue_recap">
                <div class="row ">
-                  <div class="col-sm-11" >
+                  <div class="col-sm-8" >
                      <h3 class="panel-title" style="color:white!important;">
                         Total
                      </h3>
                   </div>
-                  <div class="col-sm-1" style="position:absolute; right:30px;" >
-                     <h3 class="panel-title" style="color:white!important;" id="total" >
+                  <div class="col-sm-3" style="position:absolute; right:30px;" >
+                     <h3 class="panel-title text-right" style="color:white!important;" id="total" >
                         <script>document.write(total)</script> €
                      </h3>
                   </div>
+  <div class="col-sm-8" >
+</div>
                </div>
             </div>
          </div>
