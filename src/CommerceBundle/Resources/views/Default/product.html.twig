@@ -64,7 +64,7 @@
 {% set pochette_price = 0 %}
 {% set coffret_price = 0 %}
 {% set boutons_price = 0 %}
-<center>
+<center style="margin-top:70px"> 
    <h2>{{ product.collection.title }} #{{ product.id }} </h2>
 </center>
 <div class="container">
@@ -171,8 +171,8 @@
                            Coffret 2 collections supplémentaire
                         </h3>
                      </div>
-                     <div class="col-sm-1">
-                        <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse1"></i>
+                     <div class="col-sm-1 text-right">
+                        <i class="fa fa-2x fa-chevron-down" id="chevron_coffret" aria-hidden="true" onclick="open_div('coffret')" data-toggle="collapse" data-parent="#accordion" ></i>
                      </div>
                   </div>
                </div>
@@ -222,7 +222,7 @@
                      </h3>
                   </div>
                   <div class="col-sm-1">
-                     <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse3"></i>
+                     <i class="fa fa-2x fa-chevron-down" id="chevron_boutons" onclick="open_div('boutons')" style="margin-left:-10px" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" ></i>
                   </div>
                </div>
             </div>
@@ -240,8 +240,7 @@
          </div>
       </div>
       <div class="col-sm-6 no_padding">
-         <div class="container accordeon_noeud no_padding">
-            <div class="panel-group" id="accordion">
+
                <div class="panel panel-default" style="margin-top:20px; background-color:white;">
                   <div id="panel-heading-pochette" class="panel-heading">
                      <div class="row">
@@ -251,7 +250,7 @@
                            </h3>
                         </div>
                         <div class="col-sm-1">
-                           <i class="fa fa-2x fa-chevron-down" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse2"></i>
+                           <i class="fa fa-2x fa-chevron-down" id="chevron_pochette" aria-hidden="true" onclick="open_div('pochette')" style="margin-left:-10px" data-toggle="collapse" data-parent="#accordion" ></i>
                         </div>
                      </div>
                   </div>
@@ -267,8 +266,7 @@
                   {% endif %}
                   {% endfor %}
                </div>
-            </div>
-         </div>
+
       </div>
    </div>
    <div class="row">
@@ -466,6 +464,8 @@ if (i == 'boutons'){
      document.getElementById('panel-heading-coffret').style.backgroundColor = "#eae9e9";
      document.getElementById('panel-heading-coffret').style.color = "rgb(36, 34, 88)";
      document.getElementById('input_coffret').checked = false;
+    document.getElementById('chevron_coffret').style.color = "#A94141";
+    document.getElementById('chevron_coffret').className = "fa fa-2x fa-chevron-down";
 
 
 
@@ -477,7 +477,8 @@ if (i == 'boutons'){
    document.getElementById('panel-heading-coffret').style.backgroundColor = "#A94141";
    document.getElementById('panel-heading-coffret').style.color = "#FFF";
    document.getElementById('input_coffret').checked = true;
-
+  document.getElementById('chevron_coffret').style.color = "white";
+document.getElementById('chevron_coffret').className = "fa fa-2x fa-chevron-up";
 
 
    }
@@ -488,13 +489,16 @@ if (i == 'boutons'){
    document.getElementById('panel-heading-pochette').style.backgroundColor = "#eae9e9";
    document.getElementById('panel-heading-pochette').style.color = "rgb(36, 34, 88)";
    document.getElementById('input_pochette').checked = false;
+   document.getElementById('chevron_pochette').style.color = "#A94141";
+   document.getElementById('chevron_pochette').className = "fa fa-2x fa-chevron-down";
    }
    else {
    document.getElementById('collapse2').className='panel-collapse collapse in';
    document.getElementById('panel-heading-pochette').style.backgroundColor = "rgb(36, 34, 88)";
    document.getElementById('panel-heading-pochette').style.color = "#FFF";
    document.getElementById('input_pochette').checked = true;
-
+   document.getElementById('chevron_pochette').style.color = "white";
+ document.getElementById('chevron_pochette').className = "fa fa-2x fa-chevron-up";
    }
    }
    else if(i == "boutons"){
@@ -503,6 +507,8 @@ if (i == 'boutons'){
    document.getElementById('panel-heading-boutons').style.backgroundColor = "#eae9e9";
    document.getElementById('panel-heading-boutons').style.color = "rgb(36, 34, 88)";
    document.getElementById('input_boutons').checked = false;
+   document.getElementById('chevron_boutons').style.color = "#A94141";
+   document.getElementById('chevron_boutons').className = "fa fa-2x fa-chevron-down";
 
    }
    else {
@@ -510,6 +516,8 @@ if (i == 'boutons'){
    document.getElementById('panel-heading-boutons').style.backgroundColor = "#A94141";
    document.getElementById('panel-heading-boutons').style.color = "#FFF";
    document.getElementById('input_boutons').checked = true;
+   document.getElementById('chevron_boutons').style.color = "white";
+ document.getElementById('chevron_boutons').className = "fa fa-2x fa-chevron-up";
 
 
    }

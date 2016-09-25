@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
+<body >
    <!-- Message d'accueil -->
    <section id="slider-homepage">
-      <div class="container" style="margin-top:40px; margin-bottom:40px">
+      <div class="container" style="margin-bottom:40px">
       <div class="row text-center">
          <style>
             .product{
@@ -12,7 +12,7 @@
             overflow:hidden;
             padding-left:0;
             padding-right:0;
-            height:385px;
+            height:360px;
             }
             .product_img{
             position:relative;
@@ -28,13 +28,16 @@
             }
             .product:hover > .caption{
             position:relative;
-            top:-50px;
+            top:-80px;
             z-index: 1;
             display:block;
+            visibility: visible;
+              opacity: 1;
             }
             .caption{
-            position:relative;
-            display:none;
+            visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 1s linear;
             }
             .title_collec{
             display : "";
@@ -49,16 +52,14 @@
          {% for listeProduit in listeProduit %}
          {% if listeProduit.product.name == 'Noeud' %}
          {% if i == 0 %}
-         <div class="col-md-12 col-sm-12 hero-feature" style= "padding-top:20px; ">
+         <div class="col-md-12 col-sm-12 hero-feature" >
             <div class='row'>
-               <div class="col-md-4 col-sm-4 col-xs-4">
-                  {% if collectionMoins %}
-                  <a href="{{ path('collections') }}">
-                     <div style="font-size: 1.6rem; color:#3b3b3B; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;position:absolute; left:5px; font-weight:light">
-                        <i class="fa fa-angle-left fa-2" aria-hidden="true"></i>	<span class="title_collec">Nos collections</span>
-                     </div>
-                  </a>
-                  {% endif %}
+               <div class="col-md-4 col-sm-4 col-xs-4 text-left">
+<div>	<a href="{{ path('collections') }}">
+
+    <h1 class="heading" style="    font-weight: normal;color:#3B3B3B; font-size: 1.6rem;font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;">  <i class="fa fa-angle-left fa-2" aria-hidden="true"></i> Collections</h1>
+</a></div>
+
                </div>
                <div class="col-md-4 col-sm-4 col-xs-4">
                   <div><h1 class="heading">	{{ listeProduit.collection.title }}</h1></div>
@@ -71,7 +72,7 @@
                   {% endif %}-->
                </div>
             </div>
-            <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; padding-top:20px; ">
+            <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; ">
                <img  style="width:100%;" src="{{ asset('/upload/image_collection/' ~ listeProduit.collection.imageName ) }}" alt="">
             </div>
             <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; padding-top:20px; padding-bottom:20px;background-color:#f4c8c5;  ">
@@ -101,7 +102,7 @@
             </div>
             {% if i == 2 %}
             <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; margin-top:40px;margin-bottom:40px">
-						<div class="container customisation_noeud">
+						<div class="customisation_noeud">
 									<div class="row text-center">
 										<div class="col-sm-4 col-xs-4"></div>
 										<div class="col-sm-4 col-xs-4"><img src="{{ asset('/images/noeud_personnalisation.svg') }}" alt="logo noeud" style="width: 100%; height: auto; min-width: 4em; max-width:13em;"></div>

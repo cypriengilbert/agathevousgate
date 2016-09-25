@@ -113,7 +113,7 @@
       <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
 
       <div class="row">
-        <div class="col-sm-6 nos_collections hidden_small" style="background-color:#FFF;color:#252259; font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+        <div class="col-sm-6 nos_collections hidden_small" style="  text-transform: uppercase; background-color:#FFF;color:#252259; font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
 
         <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:50px;">
         <div>
@@ -135,7 +135,7 @@
 
   <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
 
-  <div class="col-sm-6 nos_collections hidden_small" style="background-color:#A94141; color:#FFF; font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+  <div class="col-sm-6 nos_collections hidden_small" style="   text-transform: uppercase; background-color:#A94141; color:#FFF; font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
 
   <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%;  max-height: 40% ; height: auto; margin-top:50px;margin-bottom:50px;">
   <div>
@@ -157,7 +157,7 @@
 
   <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
 
-  <div class="col-sm-6 nos_collections hidden_small" style="background-color:#eae9e9; color:#252259;font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
+  <div class="col-sm-6 nos_collections hidden_small" style="   text-transform: uppercase;background-color:#eae9e9; color:#252259;font-size:2em; height:376px ;font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;">
 
   <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%; height: auto; margin-top:50px;margin-bottom:50px;">
   <div>
@@ -302,11 +302,11 @@
                 <div class="form-group">
                   <div class="col-sm-12">
 <div class="row">
-                    <div class="col-sm-6  file">
+                    <div class="col-sm-8  file">
                     {{ form_errors(form.photoFile) }}
                     {{ form_widget(form.photoFile, {'attr': {'class': 'btn btn-primary btn-lg active btn_sendimg'}}) }}
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                     <button type="submit" class="btn btn-primary btn-lg active btn_send">Envoyer</button>
                     </div>
                     </div>
