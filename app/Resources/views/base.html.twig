@@ -96,19 +96,44 @@
 <nav class="navbar navbar-default nav_agathe_1" data-spy="affix" data-offset-top="48">
   <div class="container nav_agathe_2">
     <div class="navbar-header nav_agathe_3">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button" class="navbar-toggle navbar_agathe" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img src="/agathevousgate/web/images/header/logo_header_scroll.png" alt="logo_agathevousgate" left:15px;height: auto; max-height:25px"></a>-->
+      <!-- Icones pour menu mobile -->
+      <div class="test_responsiv text-right">
+      <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
+          <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i style="color:#242258" class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+      </li>
+      <li class="menu-account {% if page == 'compte' %}active{% endif%}">
+          <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+          </a>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
+              {% if is_granted('ROLE_USER') %}
+                  <li><a href="{{ path('compte') }}">Mon compte</a></li>
+                  <li><a href="{{ path('fos_user_security_logout') }}">Déconnexion</a></li>
+              {% else %}
+                  <li><a href="{{ path('fos_user_security_login') }}">Se connecter</a></li>
+                  <li><a href="{{ path('fos_user_registration_register') }}">Créer un compte</a></li>
+                  <li><a href="{{ path('fos_user_resetting_request') }}">Mot de passe oublié?</a></li>
+              {% endif %}
+
+          </ul>
+
+      </li>
+    </div>
+      <!-- Icones pour menu mobile -->
+      <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img src="/agath evousgate/web/images/header/logo_header_scroll.png" alt="logo_agathevousgate" left:15px;height: auto; max-height:25px"></a>-->
     </div>
     {% if page is not defined %}
     {% set page = 'vide' %}
     {% endif %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li id="home_logo_div" class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
+        <li id="home_logo_div" class="{% if page == 'accueil' %}active{% endif%} ForFuckSack"><a href="{{ path('accueil') }}">Home</a></li>
 
         <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
@@ -146,7 +171,7 @@
         {% endif %}
 
       </ul>
-      <ul class="nav navbar-nav navbar-right menu-right">
+      <ul class="nav navbar-nav navbar-right menu-right hidden_smal no_hover">
 
                     <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
                         <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i style="color:#242258" class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
@@ -353,18 +378,26 @@ display:none;
 document.getElementById('resume_cart').style.display = 'none';
 }
 $(document).ready(function(){
-/*  $(window).on('scroll', function() {
+$("image_menu_scroll").click(function(){
+        alert("The paragraph was clicked.");
+    });
+
+$(window).on('scroll', function() {
       var y_scroll_pos = window.pageYOffset;
       var scroll_pos_test = 48;             // set to whatever you want it to be
 
       if(y_scroll_pos > scroll_pos_test) {
-        $("#home_logo_div").html("<img src='{{ asset('images/header/logo_header_scroll.png') }}' alt='logo_agathevousgate' style='height: auto; max-height:25px'>");
+        $("#home_logo_div").html("<a style='padding-bottom:0px' href='{{ path('accueil') }}'><img src='{{ asset('images/header/logo_header_scroll.png') }}' alt='logo_agathevousgate' class='image_menu_scroll'></a>");
+
       }
+
       else if(y_scroll_pos < scroll_pos_test) {
-        $("#home_logo_div").html("<li id='home_logo_div' class='{% if page == 'accueil' %}active{% endif%}'><a href='{{ path('accueil') }}'>Home</a></li>");
+        $("#home_logo_div").html("<a href='{{ path('accueil') }}'>Home</a>");
       }
-  });*/
-})
+  });
+
+  });
+
 
       </script>
 
