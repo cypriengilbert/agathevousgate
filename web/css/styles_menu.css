@@ -99,7 +99,10 @@
     background-color: rgba(255, 255, 255, 0.7);
     /*height: 3em;*/
     /*height: 50px; cette ligne fait buge chrome */
-    padding-top: 12.5px;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    height: 5.4rem;
+/* padding-top: 12.5px; */
 }
 
 .fa-2x {
@@ -155,4 +158,9 @@ html, body {
     .hidden_small {
         display: none;
     }
+}
+
+.heading {
+    margin-top: 7rem;
+    margin-bottom: 4.5rem;
 }

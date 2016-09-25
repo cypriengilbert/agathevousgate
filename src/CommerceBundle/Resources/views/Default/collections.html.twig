@@ -4,11 +4,10 @@
 {% block body %}
 
 <body>
-
-
+{% set ref_color = 'gris' %}
 <div class="container text-center">
       <div class="row">
-        <div class="col-sm-12 col-xs-12"><h1 style="font-size: 1.5em;">RETROUVEZ TOUTE NOTRE COLLECTION</h1></div>
+        <div class="col-sm-12 col-xs-12"><h1 class ="heading" style="font-size: 1.5em;">RETROUVEZ TOUTE NOTRE COLLECTION</h1></div>
       </div>
 {% for collection in collections %}
   {% if collection.active == true %}
@@ -18,7 +17,7 @@
       <div class="row">
 
         <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
-        <div class="col-sm-6 nos_collections nos_collections_text" style="background-color:#FFF;color:#252259; font-size:2em; ">
+        <div class="col-sm-6 nos_collections nos_collections_text" style="  text-transform: uppercase;background-color:{% if loop.index % 3 == 1 %}#eae9e9{% elseif loop.index % 3 == 2 %}#FFF {% elseif loop.index % 3 == 0 %}#A94141{% else %}{% endif %};color:{% if loop.index % 3 == 0 %}#FFF{% else %}#252259 {% endif %}; font-size:2em; ">
 
         <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:30px;">
         <div>
@@ -37,7 +36,7 @@
 
       <div class="row">
 
-      <div class="col-sm-6 nos_collections nos_collections_text" style="background-color:#FFF;color:#252259; font-size:2em;">
+      <div class="col-sm-6 nos_collections nos_collections_text" style="  text-transform: uppercase; background-color:{% if loop.index % 3 == 1 %}#eae9e9{% elseif loop.index % 3 == 2 %}#FFF {% elseif loop.index % 3 == 0 %}#A94141{% else %}{% endif %};color:{% if loop.index % 3 == 0 %}#FFF{% else %}#252259 {% endif %}; font-size:2em;">
 
       <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:30px;">
       <div>
@@ -61,7 +60,7 @@
 
             <div class="row">
               <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre ) }}" alt="londre_noeud" style="width: 100%; height: auto;"></div>
-              <div class="col-sm-6 nos_collections nos_collections_text" style="background-color:#FFF;color:#252259; font-size:2em; ">
+              <div class="col-sm-6 nos_collections nos_collections_text" style="   text-transform: uppercase;background-color:{% if loop.index % 3 == 1 %}#eae9e9{% elseif loop.index % 3 == 2 %}#FFF {% elseif loop.index % 3 == 0 %}#A94141{% else %}{% endif %};color:{% if loop.index % 3 == 0 %}#FFF{% else %}#252259 {% endif %}; font-size:2em; ">
 
               <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:30px;">
               <div>
@@ -76,7 +75,7 @@
           {% else %}
           <a href="{{ path('listeproduit',{'id' : collection.id} ) }}">
             <div class="row">
-            <div class="col-sm-6 nos_collections nos_collections_text" style="background-color:#FFF;color:#252259; font-size:2em; ">
+            <div class="col-sm-6 nos_collections nos_collections_text" style="  text-transform: uppercase; background-color:{% if loop.index % 3 == 1 %}#eae9e9{% elseif loop.index % 3 == 2 %}#FFF {% elseif loop.index % 3 == 0 %}#A94141{% else %}{% endif %};color:{% if loop.index % 3 == 0 %}#FFF{% else %}#252259 {% endif %}; font-size:2em; ">
 
             <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:30px;">
             <div>
