@@ -374,4 +374,7 @@ class Commande
     {
         return $this->commentaire;
     }
+
+
+
 }

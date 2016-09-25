@@ -98,7 +98,7 @@
                   background: #EEEEEE;
                   text-align: center;
                   border-bottom: 1px solid #FFFFFF;   text-align: right; text-align: left;
-                  " class="desc">Accessoire : {{ listepanier.accessoire.name }}<br>
+                  " class="desc">{% if listepanier.accessoire %}Accessoire : {{ listepanier.accessoire.name }} {%  endif %}<br>
                     Taille : {{ listepanier.size }}<br>
                     Couleur(s) :
                     {% if listepanier.Color1 %}

@@ -134,6 +134,14 @@ class AddedProduct
    private $accessoire;
 
 
+   /**
+    * @var float
+    *
+    * @ORM\Column(name="price", type="float", nullable=true)
+    */
+   private $price;
+
+
        /**
         * @var string
         *
@@ -549,5 +557,29 @@ class AddedProduct
     public function getParent()
     {
         return $this->parent;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return AddedProduct
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }

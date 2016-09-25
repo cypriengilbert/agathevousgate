@@ -45,11 +45,12 @@ class Profile2Controller extends Controller
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
         $nbarticlepanier  = count($repository->findBy(array('commande' => null, 'client' => $id_user)));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-        $listeCommandeencours = $repository->findBy(array('isValid' => false, 'client' => $id_user));
+        $listeCommandeencours = $repository->findBy(array('isValid' => false, 'isPanier' => false, 'client' => $id_user));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommandedone = $repository->findBy(array('isValid' => true, 'client' => $id_user));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive  = $repository->findBy(array('active' => 1));
+
 
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
@@ -144,6 +145,36 @@ if ($formAdress->handleRequest($request)->isValid()) {
             'formPassword' => $formPassword->createView()
 
         ));
+    }
+
+
+    /**
+    * @Route("/commandeDetails/{id}", name="commandedetails")
+     */
+    public function commandeDetailsAction(Request $request, $id)
+    {
+
+      $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+      $detailcommande  = $repository->findBy(array('commande' => $id, 'client' => $id_user));
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+      $Commandeencours = $repository->findOneBy(array('id' => $id, 'client' => $id_user));
+      $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+      $minLivraison     = $repository->findOneBy(array(
+          'name' => 'Livraison'
+
+      ));
+      $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+      $coutLivraison    = $repository->findOneBy(array(
+          'name' => 'Cout_livraison'
+
+      ));
+      return $this->render('CommerceBundle:Default:commandeDetails.html.twig', array(
+          'listePanier' => $detailcommande,
+          'commande' => $Commandeencours,
+'minLivraison' => $minLivraison,
+'coutLivraison' => $coutLivraison,
+      ));
     }
 
 

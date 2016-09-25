@@ -1,21 +1,25 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 
-{% if listeCommande is empty %}
-<div class="alert alert-info" role="alert">Vous n'avez pas de commande en cours</div>
+{% if listeCommande %}
 
-    {% else %}
 
 {% for liste in listeCommande %}
 
 <div class="panel panel-info">
-    <div class="panel-heading"><h3 class="panel-title">Commande {{ liste.id}}   </h3>
+    <div class="panel-heading"><h3 class="panel-title">Commande #{{ liste.id }} du {{ liste.date|date("d/m/Y")}} - <a href="{{path('commandedetails', {'id': liste.id} )}}">Voir les détails <i class="fa fa-download" aria-hidden="true"></i>
+            </a> </h3>
     </div>
     <div class="panel-body">
 
-        {{ liste.date|date("m/d/Y")}}
+        {{ liste.date|date("d/m/Y")}}
 
     </div>
 </div>
 {% endfor %}
+
+
+{% else %}
+<div class="alert alert-info" role="alert">Vous n'avez pas de commande en cours</div>
+
 {% endif %}

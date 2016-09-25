@@ -36,14 +36,15 @@ livraison : {{ commande.transportmethod }}
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
     <thead>
       <tr>
+        <th width=5% >ID</th>
         <th width=5% >Quantité</th>
-        <th width=20%>Produit</th>
-        <th width=20%>Accessoire</th>
-        <th width=10%> Couleur 1 </th>
-        <th width=10%> Couleur 2 </th>
-        <th width=10%> Couleur 3 </th>
-        <th width=10%> Couleur 4 </th>
-        <th width=10%> Couleur 5 </th>
+        <th width=30%>Produit</th>
+        <th width=25%>Accessoire</th>
+        <th width=7%> Couleur 1 </th>
+        <th width=7%> Couleur 2 </th>
+        <th width=7%> Couleur 3 </th>
+        <th width=7%> Couleur 4 </th>
+        <th width=7%> Couleur 5 </th>
         <th width=5%> Produit père </th>
       </tr>
       </thead>
@@ -53,6 +54,7 @@ livraison : {{ commande.transportmethod }}
 {% for product in commande.addedproducts %}
 <tr>
 
+<td>{{ product.id }}</td>
 
 <td>{{ product.quantity }}</td>
 <td>{{ product.product.name }}</td>
@@ -97,6 +99,7 @@ livraison : {{ commande.transportmethod }}
 </div>{% endif %}
 </td>
 <td>
+{% if product.parent %}{{ product.parent.id }}{% endif %}
 
 </td>
 

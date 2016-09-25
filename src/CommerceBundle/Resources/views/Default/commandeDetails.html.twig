@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<body>
+   <section>
+   <div class="container">
+   <div class="row">
+   <div class="col-lg-12 text-center">
+      <h2 class="section-heading">Commande en cours #{{ commande.id }} </h2>
+      <div class="row">
+         <div class="col-lg-4 text-center">
+            <div class="panel panel-info">
+               <div class="panel-heading" style="position:relative;">
+                  <h3 class="panel-title">Récapitulatif </h3>
+               </div>
+               <div class="panel-body">
+                  {% set totalsum = null %}{% set numero_ligne = 0 %}
+                  {% set remise = 0 %}
+                  {% for listepanier in listePanier %}
+                  {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
+                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {{ listepanier.price * listepanier.quantity }}€ </h2>
+                  <p>Collection {{ listepanier.collection.title }}</p>
+                  <p>
+                     {% if listepanier.Color1 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color2 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color3 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color4 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color5 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color6 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color7 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color8 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color9 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px;margin-bottom:10px; width:30px; border-radius:10px">
+                     {% endif %}
+                     {% if listepanier.Color10 %}
+                     <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; margin-bottom:10px;width:30px; border-radius:10px">
+                     {% endif %}
+                  </p>
+               {% endfor %}
+               </div>
+
+            </div>
+        </div>
+            {% if commande.atelierlivraison is null  %}
+            <div class="col-lg-4 text-center">
+               <div class="panel panel-info">
+                  <div class="panel-heading" style="position:relative;">
+                     <h3 class="panel-title">Adresse de livraison </h3>
+                  </div>
+                  <div class="panel-body">
+                     {{ app.user.adress.adress}}<br>
+                     {% if app.user.adress.adressMore %}
+                     {{ app.user.adress.adressMore }}<br>
+                     {% endif %}
+                     {{ app.user.adress.zipcode}} {{ app.user.adress.city}}<br>
+                  </div>
+               </div>
+            </div>
+          {% else %}
+          <div class="col-lg-4 text-center">
+             <div class="panel panel-info">
+                <div class="panel-heading" style="position:relative;">
+                   <h3 class="panel-title">Point de collecte </h3>
+                </div>
+                <div class="panel-body">
+                   {{ commande.atelierLivraison.name }}<br>
+                   {{ commande.atelierLivraison.adresse1 }}<br>
+          {% if commande.atelierLivraison.adresse2 %}
+                   {{ commande.atelierLivraison.adresse2 }}<br>
+                   {% endif %}
+                   {{ commande.atelierLivraison.zipcode }} {{ commande.atelierLivraison.city }}<br>
+                    Contact : {{ commande.atelierLivraison.email }} ou {{ commande.atelierLivraison.phone }}<br>
+
+                </div>
+             </div>
+          </div>
+          {% endif %}
+            <div class="col-lg-4 text-center">
+               <div class="panel panel-info">
+                  <div class="panel-heading" style="position:relative;">
+                     <h3 class="panel-title">Paiement </h3>
+                  </div>
+                  <div class="panel-body">
+                     <div class="row">
+                        <div class="col-xs-6 " style="">
+                           <p></p>
+                           <p>Sous-total</p>
+
+                           <p> Remise</p>
+                            <p>Livraison</p>
+                           <p>Total</p>
+                        </div>
+                        <div class="col-xs-6" >
+                           <p></p>
+                           <p> {{ totalsum }} €</p>
+                           {% set livraison = 0 %}
+
+                                       <p ><strong> - {{ commande.remise|round(2, 'floor') }} €</strong></p>
+
+
+                               {% if totalsum + remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
+
+                                 {% set livraison = 0 %}
+                               {% else %}
+                                 {% set livraison = coutLivraison.montant %}
+
+                               {% endif %}
+                           <p ><strong> + {{ livraison }} €</strong></p>
+                           <p><strong>  {{ commande.price }} €</strong></p>
+                        </div>
+                     </div>
+</div>
+               </div>
+            </div>
+      </div>
+</div>
+   </div>
+   <div class="row">
+   <div class="col-lg-12 text-right" style="margin-top: 50px">
+    Un problème avec cette commande ?<br>
+    <a style="text-decoration:none" href="mailto:contact@agathevousgate.fr?subject=Commande #{{ commande.id }}"> Contactez-nous !</a>
+   </div>
+      </div>
+</div>
+</section>
+</body>
+{% endblock %}

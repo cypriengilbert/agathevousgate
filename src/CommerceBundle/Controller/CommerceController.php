@@ -1187,6 +1187,7 @@ $nbcommande = null;
                 ));
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
+                    $value->setPrice($value->getProduct()->getPrice());
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($value);
                     $em->flush();
@@ -1276,7 +1277,8 @@ $nbcommande = null;
     public function choixLivraisonAction(Request $request)
     {
         $session = $this->get('session');
-
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+        $ateliers   = $repository->findAll();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -1347,8 +1349,7 @@ $nbcommande = null;
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             if ($commandeEnCours) {
 
-                $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-                $ateliers   = $repository->findAll();
+
                 $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
 
                 if ($form->handleRequest($request)->isValid()) {

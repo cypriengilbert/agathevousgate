@@ -13,6 +13,8 @@ use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use UserBundle\Entity\User;
 use UserBundle\Form\RegistrationType;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 
@@ -23,11 +25,57 @@ use UserBundle\Form\RegistrationType;
 
 class DefaultController extends Controller
 {
+
+
+
+
     /**
      * @Route("/s", name="dashboard")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+            $session = $request->getSession();
+            $dateout = $session->get('dateout');
+
+            if ($session->get('datein') === null ){
+              $datein = new \Datetime('2016-01-01');
+}
+else{
+
+  $datein = $session->get('datein');
+
+}
+
+
+            if ($session->get('dateout') ===  null ){
+              $dateout = new \Datetime('2016-12-31');
+}
+else{
+
+  $dateout = $session->get('dateout');
+
+}
+
+
+
+            $repository = $this->getDoctrine()
+         ->getRepository('CommerceBundle:Commande');
+
+         // createQueryBuilder automatically selects FROM AppBundle:Product
+         // and aliases it to "p"
+         $query = $repository->createQueryBuilder('a')
+             ->where('a.date >= :datein')
+               ->setParameter('datein', $datein)
+             ->andWhere('a.date <= :dateout')
+               ->setParameter('dateout', $dateout)
+              ->andWhere('a.isPanier = false')
+
+             ->orderBy('a.date', 'ASC');
+            $listeCommande = $query->getQuery()->getResult();
+
+
+
+
 
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listeAddedProduct = $repository->findAll();
@@ -35,8 +83,7 @@ class DefaultController extends Controller
             $listeCollection = $repository->findAll();
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
             $listeColor  = $repository->findAll();
-            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-            $listeCommande  = $repository->findBy([], ['date' => 'ASC']);
+
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $listeProduct  = $repository->findAll();
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
@@ -44,12 +91,35 @@ class DefaultController extends Controller
             $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $listeUser  = $repository->findAll();
 
+
+
             $tableau_produit = array();
               $null = null;
               foreach($listeProduct as $valueProduct){
 
-                    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-                    $quantity_product = count($repository->findBy(array('product' => $valueProduct->getId())));
+                $repository = $this->getDoctrine()
+             ->getRepository('CommerceBundle:AddedProduct');
+
+             // createQueryBuilder automatically selects FROM AppBundle:Product
+             // and aliases it to "p"
+             $query = $repository->createQueryBuilder('a')
+                  ->select('count(a.id)')
+                  ->join('a.commande', 'u')
+                 ->where('u.date >= :datein')
+                   ->setParameter('datein', $datein)
+                 ->andWhere('u.date <= :dateout')
+                   ->setParameter('dateout', $dateout)
+                  ->andWhere('u.isPanier = false')
+                  ->andWhere('a.product = :id')
+                  ->setParameter('id', $valueProduct->getId());
+
+                $quantity_product = $query->getQuery()->getSingleScalarResult();
+
+
+
+
+
+
                     $ligne_tableau_produit = array($valueProduct->getName(),$quantity_product);
                     array_push($tableau_produit, $ligne_tableau_produit);
 
@@ -72,6 +142,24 @@ class DefaultController extends Controller
   ));
 
     }
+
+    /**
+     * @Route("/s/setDate/{in}/{out}", name="setDate")
+     */
+    public function setDateAction(Request $request, $in, $out)
+    {
+
+      $session = $request->getSession();
+
+         // store an attribute for reuse during a later user request
+         $session->set('datein', $in);
+ $session->set('dateout', $out);
+
+ $url      = $this->generateUrl('dashboard');
+ $response = new RedirectResponse($url);
+
+ return $response;
+}
 
     /**
      * @Route("/encours", name="encours")

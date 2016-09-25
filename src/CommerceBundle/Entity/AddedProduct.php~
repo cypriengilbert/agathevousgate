@@ -34,13 +34,13 @@ class AddedProduct
 
 
     /**
-       * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\AddedProduct")
-       * @ORM\JoinColumn(nullable=false)
+       * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\AddedProduct",cascade={"persist"})
+       * @ORM\JoinColumn(nullable=true)
        */
       private $parent;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color1;
@@ -48,61 +48,61 @@ class AddedProduct
 
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color2;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color3;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color4;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color5;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color6;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color7;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color8;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color9;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     public $color10;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=false)
     */
     private $product;
@@ -115,23 +115,31 @@ class AddedProduct
     private $commande;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection",cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
     private $collection;
 
     /**
-    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User" ,cascade={"persist"})
     * @ORM\JoinColumn(nullable=false)
     */
    private $client;
 
 
    /**
-   * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Accessoire")
+   * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Accessoire" ,cascade={"persist"})
    * @ORM\JoinColumn(nullable=true)
    */
    private $accessoire;
+
+
+   /**
+    * @var float
+    *
+    * @ORM\Column(name="price", type="float", nullable=true)
+    */
+   private $price;
 
 
        /**
@@ -526,4 +534,52 @@ class AddedProduct
         return $this->collection;
     }
 
+
+    /**
+     * Set parent
+     *
+     * @param \CommerceBundle\Entity\AddedProduct $parent
+     *
+     * @return AddedProduct
+     */
+    public function setParent(\CommerceBundle\Entity\AddedProduct $parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \CommerceBundle\Entity\AddedProduct
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return AddedProduct
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
 }
