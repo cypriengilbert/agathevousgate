@@ -187,19 +187,28 @@ html, body {
 
 .image_menu_scroll {
     height: auto;
-    max-width: 6rem;
+    max-width: 6rem !important;
     position: relative;
-    top: 1rem;
+    top: -0.5rem;
 }
 .image_menu_scroll:hover {
     height: auto;
     max-width: 6rem;
     position: relative;
-    top: 0.5rem;
+    top: -0.5rem;
 }
+.image_menu_scroll:active {
+    height: auto;
+    max-width: 6rem;
+    position: relative;
+    top: 0rem;
+}
+
 .no_hover>li:hover {
   border-bottom: 0px solid #A94141 !important;
   border-top: 0px solid #242258 !important;
+  margin-top: 6.5px !important;
+
 
 }
 

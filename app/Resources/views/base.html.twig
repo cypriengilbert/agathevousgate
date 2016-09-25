@@ -126,14 +126,14 @@
       </li>
     </div>
       <!-- Icones pour menu mobile -->
-      <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img src="/agathevousgate/web/images/header/logo_header_scroll.png" alt="logo_agathevousgate" left:15px;height: auto; max-height:25px"></a>-->
+      <!--<a class="navbar-brand page-scroll" href="{{ path('accueil') }}"><img src="/agath evousgate/web/images/header/logo_header_scroll.png" alt="logo_agathevousgate" left:15px;height: auto; max-height:25px"></a>-->
     </div>
     {% if page is not defined %}
     {% set page = 'vide' %}
     {% endif %}
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li id="home_logo_div" class="{% if page == 'accueil' %}active{% endif%}"><a href="{{ path('accueil') }}">Home</a></li>
+        <li id="home_logo_div" class="{% if page == 'accueil' %}active{% endif%} ForFuckSack"><a href="{{ path('accueil') }}">Home</a></li>
 
         <li class="{% if page == 'collection' %}active{% endif%}"><a href="{{ path('collections') }}">Collections</a></li>
 
@@ -378,18 +378,26 @@ display:none;
 document.getElementById('resume_cart').style.display = 'none';
 }
 $(document).ready(function(){
+$("image_menu_scroll").click(function(){
+        alert("The paragraph was clicked.");
+    });
+
 $(window).on('scroll', function() {
       var y_scroll_pos = window.pageYOffset;
       var scroll_pos_test = 48;             // set to whatever you want it to be
 
       if(y_scroll_pos > scroll_pos_test) {
-        $("#home_logo_div").html("<img src='{{ asset('images/header/logo_header_scroll.png') }}' alt='logo_agathevousgate' class='image_menu_scroll'>");
+        $("#home_logo_div").html("<a style='padding-bottom:0px' href='{{ path('accueil') }}'><img src='{{ asset('images/header/logo_header_scroll.png') }}' alt='logo_agathevousgate' class='image_menu_scroll'></a>");
+
       }
+
       else if(y_scroll_pos < scroll_pos_test) {
         $("#home_logo_div").html("<a href='{{ path('accueil') }}'>Home</a>");
       }
   });
-})
+
+  });
+
 
       </script>
 
