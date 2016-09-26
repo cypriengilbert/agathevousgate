@@ -173,12 +173,12 @@
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right hidden_small no_hover">
 
-                    <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll border_menu" style="border: 2px solid #A94141;" href="{{ path('panier') }}"><i  class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                    <li style="margin-right:10px;" class="menu-panier ">
+                        <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
-                    <li class="menu-account {% if page == 'compte' %}active{% endif%}">
-                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                    <li class="menu-account ">
+                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i {% if page == 'compte' %}style="color:#242258"{% else %} style="font-size: 1.7em !important;"{% endif%} class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                             {% if is_granted('ROLE_USER') %}
