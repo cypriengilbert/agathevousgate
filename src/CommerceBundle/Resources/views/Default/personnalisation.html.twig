@@ -49,7 +49,7 @@
                   <!-- Choix collections dans le truc -->
                   <div class="panel panel-default" style="margin-bottom: 0px;">
                       <div id="panel-heading-plugin-collection" style="background-color: rgb(169, 65, 65); border:none;" class="panel-heading panel-heading-plugin">
-                          <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_collection" href="#collapse_collection">
+                          <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse0">
                               <div class="col-sm-11">
                                   <h4 class="panel-title">
           Choix de la collection</h4>
@@ -59,7 +59,7 @@
                               </div>
                           </div>
                       </div>
-                      <div id="collapse_collection" class="panel-collapse collapse">
+                      <div id="collapse0" class="panel-collapse collapse">
                           <div class="panel-body">
                             {% for collection in collection %}
                              <a href="{{ path('personnalisation', {'idCollection': collection.id }) }}"> {{ collection.title }}</a></br>
@@ -1107,20 +1107,34 @@ $(".btn_perso").click(function(){
 
 };});
 
-/* La fonction des flêches qui était pas sur la maquette */
-$(".panel-heading-plugin").click(function(){
-  /*alert("Je suis panel");*/
+/* La fonction des flêches qui était pas sur la maquette POUR LE NOEUD uniquement*/
+$(".panel-heading-plugin",".main_personnalisation").click(function(){
   if ($('.fa-chevron-down',this).hasClass("fa-chevron-down")){
-      $('.fa-chevron-up','.panel-heading').addClass('fa-chevron-down').removeClass('fa-chevron-up');
-      /*Change CE plus en moins*/
-      $('.fa-chevron-down',this).addClass('fa-chevron-up').removeClass('fa-chevron-down');}
+      $('.fa-chevron-up','.panel-heading','main_personnalisation').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+
+      $('.fa-chevron-down',this).addClass('fa-chevron-up').removeClass('fa-chevron-down');
+    }
       else if ($('.fa-chevron-up',this).hasClass("fa-chevron-up")){
-          $('.fa-chevron-up','.panel-heading').addClass('fa-chevron-down').removeClass('fa-chevron-up');
-          /*Change CE plus en moins*/
+          $('.fa-chevron-up','.panel-heading','main_personnalisation').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+
           }
 
 
 })
+/* La fonction des flêches qui était pas sur la maquette POUR LE COFFRET uniquement*/
+$("#panel-heading-plugin-6").click(function(){
+alert("je suis panel")
+  if ($('.fa-chevron-down','.row',"#panel-heading-plugin-6").hasClass("fa-chevron-down")){
+      $('.fa-chevron-down','.row',"#panel-heading-plugin-6").addClass('fa-chevron-down').removeClass('fa-chevron-up');
+    }
+      else if ($('.fa-chevron-up','.row',"#panel-heading-plugin-6").hasClass("fa-chevron-up")){
+        $('.fa-chevron-down','.row',"#panel-heading-plugin-6").addClass('fa-chevron-down').removeClass('fa-chevron-up');
+
+          }
+
+
+})
+
 
     //----- OPEN
     $('[data-popup-open]').on('click', function(e)  {
