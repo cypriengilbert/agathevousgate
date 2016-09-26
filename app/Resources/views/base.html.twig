@@ -111,7 +111,7 @@
         </li>
         <li class="menu-account ">
             <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <i style="font-size: 1.7em !important;{% if page == 'compte' %}color:#242258"{% else %} {% endif%} class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                <i style="font-size: 1.7em !important; {% if page == 'compte' %}color:#242258;{% else %} {% endif%}" class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                 {% if is_granted('ROLE_USER') %}
