@@ -104,7 +104,7 @@
       <!-- Icones pour menu mobile -->
       <div class="test_responsiv text-right">
       <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
-          <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i style="color:#242258" class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+          <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i  class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
       </li>
       <li class="menu-account {% if page == 'compte' %}active{% endif%}">
           <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -171,10 +171,10 @@
         {% endif %}
 
       </ul>
-      <ul class="nav navbar-nav navbar-right menu-right hidden_smal no_hover">
+      <ul class="nav navbar-nav navbar-right menu-right hidden_small no_hover">
 
                     <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll border_menu" style="border: 2px solid #242258;" href="{{ path('panier') }}"><i style="color:#242258" class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                        <a class="page-scroll border_menu" style="border: 2px solid #A94141;" href="{{ path('panier') }}"><i  class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
                     <li class="menu-account {% if page == 'compte' %}active{% endif%}">
                         <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

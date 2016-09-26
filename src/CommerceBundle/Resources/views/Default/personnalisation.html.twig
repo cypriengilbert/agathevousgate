@@ -78,7 +78,7 @@
                 Couleur 1</h4>
                                     </div>
                                     <div class="col-sm-1">
-                                        <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
+                                        <i class="fa fa-2x fa-chevron-up no_padding" style="color: rgb(255, 255, 255);"></i>
                                     </div>
                                 </div>
                             </div>
@@ -1107,6 +1107,20 @@ $(".btn_perso").click(function(){
 
 };});
 
+/* La fonction des flêches qui était pas sur la maquette */
+$(".panel-heading-plugin").click(function(){
+  /*alert("Je suis panel");*/
+  if ($('.fa-chevron-down',this).hasClass("fa-chevron-down")){
+      $('.fa-chevron-up','.panel-heading').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+      /*Change CE plus en moins*/
+      $('.fa-chevron-down',this).addClass('fa-chevron-up').removeClass('fa-chevron-down');}
+      else if ($('.fa-chevron-up',this).hasClass("fa-chevron-up")){
+          $('.fa-chevron-up','.panel-heading').addClass('fa-chevron-down').removeClass('fa-chevron-up');
+          /*Change CE plus en moins*/
+          }
+
+
+})
 
     //----- OPEN
     $('[data-popup-open]').on('click', function(e)  {
@@ -1402,6 +1416,7 @@ route = route.replace("COULEURBOUTONS2", colorBoutons);
 
 window.location = route;
 }
+
 
 </script>
 <script>
