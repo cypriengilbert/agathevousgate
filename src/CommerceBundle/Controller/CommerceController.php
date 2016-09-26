@@ -311,6 +311,7 @@ $nbcommande = null;
                 'id' => $id
             ));
             $quantity     = $articletoadd->getQuantity();
+
             $articletoadd->setQuantity($quantity + 1);
             $em->persist($articletoadd);
             $em->flush();
@@ -355,11 +356,17 @@ $nbcommande = null;
                 'id' => $id
             ));
             $quantity     = $articletoadd->getQuantity();
+            if ($quantity == 1){
+            $this->deleteProductAction($id);
+            }elseif($quantity > 1){
             $articletoadd->setQuantity($quantity - 1);
             $em->persist($articletoadd);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
+              }
+              else{
 
+              }
 
         } else {
 
@@ -368,11 +375,14 @@ $nbcommande = null;
 
             $listeAddedProduct = $session->get('panier_session');
             $quantity          = $listeAddedProduct[$id]->getQuantity();
+            if ($quantity == 1){
+            $this->deleteProductSessionAction($id);
+            }elseif($quantity > 1){
             $listeAddedProduct[$id]->setQuantity($quantity - 1);
             $listeAddedProduct = array_values($listeAddedProduct);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
-            $nbarticlepanier = $session->get('nb_article');
+            $nbarticlepanier = $session->get('nb_article');}else{}
         }
 
         $url      = $this->generateUrl('panier');
