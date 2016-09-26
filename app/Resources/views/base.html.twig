@@ -62,17 +62,17 @@
 <div class="wrapper">
 <div class="container flwus">
       <div class="row text-center">
-        <div class="col-sm-2 col-xs-8" style="position:relative">
+        <a href="{{path('accueil')}}" ><div class="col-sm-2 col-xs-8" style="position:relative">
           <img src="{{ asset('images/home_menu.png') }}" alt="logo_agathevousgate" style="position:absolute; left:15px;height: auto; max-height:25px">
-        </div>
-        <div class="col-sm-8 col-xs-2">
+        </div></a>
+        <div class="col-sm-6 col-xs-2">
         </div>
 
-        <div class="col-sm-2 col-xs-2">
+        <div class="col-sm-4 col-xs-2">
             <div class="row text-center">
-            <div class="col-sm-8 col-xs-4 no_padding text-right hidden_small" ><p>Nous suivre</p></div>
-            <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.25rem;margin: -0.9rem;"></div>
-            <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.3rem;margin: -0.9rem;"></div>
+            <div class="col-sm-8 col-xs-4 no_padding text-center hidden_small" ><p style="margin-right:100px">Nous suivre</div>
+            <a href="https://www.facebook.com/agathevousgate/" target="_blank"><div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.5rem;margin: -0.9rem; margin-right:100px"></div></a>
+            <a href="https://www.instagram.com/agathevousgate/" target="_blank">  <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.8rem;margin: -0.9rem;"></div></a>
             </div>
         </div>
     </div>
@@ -173,12 +173,12 @@
       </ul>
       <ul class="nav navbar-nav navbar-right menu-right hidden_small no_hover">
 
-                    <li style="margin-right:10px;" class="menu-panier {% if page == 'panier' %}active{% endif%}">
-                        <a class="page-scroll border_menu" style="border: 2px solid #A94141;" href="{{ path('panier') }}"><i  class="fa fa-2x fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                    <li style="margin-right:10px;" class="menu-panier ">
+                        <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
                     </li>
-                    <li class="menu-account {% if page == 'compte' %}active{% endif%}">
-                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <i class="fa fa-2x fa-user"></i>{% if is_granted('ROLE_USER') %} <span class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                    <li class="menu-account ">
+                        <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <i {% if page == 'compte' %}style="color:#242258"{% else %} style="font-size: 1.7em !important;"{% endif%} class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                             {% if is_granted('ROLE_USER') %}
