@@ -38,7 +38,7 @@ class CommerceController extends Controller
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Photo bien enregistrée.');
 
-            return $this->redirect($this->generateUrl('accueil'));
+            return $this->redirect($this->generateUrl('accueil', array('slug' => 'photo')));
         }
 
 

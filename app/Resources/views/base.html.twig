@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>La boutique | Agathe vous gâte</title>
+    <title>Agathe vous gâte | La boutique</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
 
 
@@ -62,15 +62,15 @@
 <div class="wrapper">
 <div class="container flwus">
       <div class="row text-center">
-        <a href="{{path('accueil')}}" ><div class="col-sm-2 col-xs-8" style="position:relative">
-          <img src="{{ asset('images/home_menu.png') }}" alt="logo_agathevousgate" style="position:absolute; left:15px;height: auto; max-height:25px">
+        <a href="{{path('accueil')}}" ><div class="col-sm-2 col-xs-8 text-left" style="position:relative">
+          <img src="{{ asset('images/home_menu.png') }}" alt="logo_agathevousgate" style="position:absolute; left:0px;height: auto; max-height:35px">
         </div></a>
         <div class="col-sm-6 col-xs-2">
         </div>
 
         <div class="col-sm-4 col-xs-2">
             <div class="row text-center">
-            <div class="col-sm-8 col-xs-4 no_padding text-center hidden_small" ><p style="margin-right:100px">Nous suivre</div>
+            <div class="col-sm-8 col-xs-4 no_padding text-center hidden_small" ><p style="margin-right:10px; color:#242258">Nous suivre</div>
             <a href="https://www.facebook.com/agathevousgate/" target="_blank"><div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.5rem;margin: -0.9rem; margin-right:100px"></div></a>
             <a href="https://www.instagram.com/agathevousgate/" target="_blank">  <div class="col-sm-2 col-xs-4 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.8rem;margin: -0.9rem;"></div></a>
             </div>
@@ -107,7 +107,19 @@
       <!-- Icones pour menu mobile -->
       <div class="test_responsiv text-right">
         <li style="margin-right:10px;" class="menu-panier ">
-            <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+            <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i>
+{% if is_granted('ROLE_USER') %}
+  {% if nbarticlepanier is defined %}
+    {% if nbarticlepanier > 0 %}
+        <span class="badge badge-green ">{{ nbarticlepanier }}</span>
+    {% endif %}
+  {% else %}
+    {% if app.session.get('nb_article') > 0 %}
+        <span class="badge badge-green ">{{ app.session.get('nb_article') }} </span>
+    {% endif %}
+
+  {% endif %}
+{% endif %}</a>
         </li>
         <li class="menu-account ">
             <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -175,7 +187,7 @@
       <ul class="nav navbar-nav navbar-right menu-right hidden_small no_hover">
 
                     <li style="margin-right:10px;" class="menu-panier ">
-                        <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i> <span class="badge badge-green ">{% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{{ nbarticlepanier }}{% else %}{{ app.session.get('nb_article') }} {% endif %}{% else %}{{ app.session.get('nb_article') }} {% endif %}</span></a>
+                        <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ; margin-bottom:3px;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i> {% if is_granted('ROLE_USER') %}{% if nbarticlepanier is defined %}{% if nbarticlepanier > 0 %}<span class="badge badge-green ">{{ nbarticlepanier }}</span>{% endif %}{% else %}{% if app.session.get('nb_article') > 0 %}<span class="badge badge-green ">{{ app.session.get('nb_article') }} </span>{% endif %}{% endif %}{% else %}{% if app.session.get('nb_article') > 0 %}<span class="badge badge-green ">{{ app.session.get('nb_article') }}</span> {% endif %}{% endif %}</span></a>
                     </li>
                     <li class="menu-account ">
                         <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == "compte" %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -249,43 +261,7 @@ display:none;
 }
 }
     </style>
-    {% if listePanier is defined %}
-
-    <div class="resume_cart" id="resume_cart">
-      <div class="resume_cart_quit">
-        <a onclick="resume_cart_exit()"><i class="fa fa-times fa-1" aria-hidden="true"></i></a>
-      </div>
-    	<h2 class="resume_cart_h2">
-    		<center>Panier</center>
-    	</h2>
-      {% set numero_ligne = 0 %}
-
-      {% for listepanier in listePanier %}
-
-    	<div class="resume_cart_article">
-    		<span> {{ listepanier.quantity }} {{ listepanier.product.name }} </span> <span style="position:absolute; right:5px;">
-
-          {% if listepanier.id %}
-            <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
-            {% else  %}
-
-          <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}"><i class="fa fa-trash-o" aria-hidden="true" ></i></a>
-
-
-          {% endif %}
-        </a></span>
-    	</div>
-{% set numero_ligne = numero_ligne + 1 %}
-      {% endfor %}
-
-    		<div class="resume_cart_article" style="height:50px">
-    		<span>  </span> <span style="position:absolute; right:5px;"></span>
-    	</div>
-    	<div class="resume_cart_checkout">
-    		<center><a href="{{ path('panier') }}" class="btn btn-primary btn-lg active btn_send" style="padding : 5px 15px">Voir le panier</a></center>
-    	</div>
-    </div>
-    {% endif %}
+    
 
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
@@ -325,7 +301,7 @@ display:none;
     <div class="container-fluid copyright">
         <div class="row text-center">
             <div class="col-sm-4 col-xs-1"></div>
-            <div class="col-sm-4 col-xs-10">Copyright 2016 - Agathe Lefeuvre</div>
+            <div class="col-sm-4 col-xs-10">Copyright 2016 - Agathe vous gâte</div>
             <div class="col-sm-4 col-xs-1"></div>
         </div>
     </div>

@@ -64,7 +64,7 @@
 {% set pochette_price = 0 %}
 {% set coffret_price = 0 %}
 {% set boutons_price = 0 %}
-<center style="margin-top:70px"> 
+<center style="margin-top:70px">
    <h2>{{ product.collection.title }} #{{ product.id }} </h2>
 </center>
 <div class="container">
@@ -98,16 +98,17 @@
                </div>
                <div class="col-sm-6 taille">
                   <center>
-                     <input style="display:none;" type="radio" name="taille" value="Petit"  id="Petit">
-                     <label for="Petit" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Petit</label>
+                     <input style="display:none;" type="radio" name="taille" value="Grand" id="Grand">
+                     <label for="Grand" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn"><b>Standard</b> - 11.5 x 6.5 </label>
                   </center>
                </div>
                <div class="col-sm-6 taille">
                   <center>
-                     <input style="display:none;" type="radio" name="taille" value="Grand" id="Grand">
-                     <label for="Grand" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn">Grand</label>
+                     <input style="display:none;" type="radio" name="taille" value="Petit"  id="Petit">
+                     <label for="Petit" onclick="getData()" style="width:100%" class="btn_radio_blue btn-lg btn"><b>Mini </b>- 9.5 x 5.5 </label>
                   </center>
                </div>
+
                <div class="panel-group"  style="margin-top:10px">
                   <div class="col-sm-12">
                      <h3>  Type de Noeud <i class="fa fa-question-circle fa-2" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Ici on explique"></i></h3>
@@ -143,16 +144,17 @@
                   </div>
                   <div class="col-sm-4 taille_red">
                      <center>
-                        <input style="display:none;" type="checkbox" name="accessoire" value="boutons"  id="boutons">
-                        <label for="boutons" onclick="open_div('boutons')" id="boutons_checkbox" style="width:100%" class="btn_radio_blue btn-lg btn">Boutons</label>
-                     </center>
-                  </div>
-                  <div class="col-sm-4 taille_red">
-                     <center>
                         <input style="display:none;" type="checkbox" name="accessoire" value="Pochette" id="Pochette">
                         <label for="Pochette" onclick="open_div('pochette')" id="pochette_checkbox" style="width:100%" class="btn_radio_blue btn-lg btn">Pochette</label>
                      </center>
                   </div>
+                  <div class="col-sm-4 taille_red">
+                     <center>
+                        <input style="display:none;" type="checkbox" name="accessoire" value="boutons"  id="boutons">
+                        <label for="boutons" onclick="open_div('boutons')" id="boutons_checkbox" style="width:100%" class="btn_radio_blue btn-lg btn">Boutons</label>
+                     </center>
+                  </div>
+
                </div>
             </div>
             <!-- Choix des couleurs FIN-->
@@ -284,9 +286,7 @@
             <div class="col-sm-3 col-xs-1"></div>
          </div>
          <div class="row text-center creer_bottom">
-            <div class="col-sm-4 col-xs-1"></div>
-            <div class="col-sm-4 col-xs-10"><a href="{{ path('personnalisation', {'idCollection': product.collection.id })}}" class="btn btn-primary btn-lg active btn_blue" role="button">Ok, LET'S GO !</a></div>
-            <div class="col-sm-4 col-xs-1"></div>
+            <div class="col-sm-12 col-xs-12 text-center"><a href="{{ path('personnalisation', {'idCollection': product.collection.id })}}" class="btn btn-primary btn-lg active btn_blue" role="button">Ok, LET'S GO !</a></div>
          </div>
       </div>
       <div class="col-sm-6 no_padding">
