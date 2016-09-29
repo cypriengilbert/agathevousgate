@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 
 
 class RegistrationType extends AbstractType
@@ -22,14 +24,15 @@ class RegistrationType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-            ->add('naissance', 'date')
+            ->add('naissance', DateType::class, array(
+    'widget' => 'single_text',
+   'html5' => false,
+    'attr' => ['class' => 'js-datepicker']))
             ->add('genre', ChoiceType::class, array(
             'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
             ->add('adress', new UserAdressType())
-            ->add('parrainEmail' )
-
-        ;
-    }
+            ->add('parrainEmail' );
+}
 
     public function getParent()
         {

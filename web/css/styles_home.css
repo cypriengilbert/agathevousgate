@@ -195,6 +195,27 @@
         margin-top: 30px;
     }
 
+    .btn_collection {
+        background-color: #FFF!important;
+        border-color: #A94141 !important;
+        color: #A94141 !important;
+        -webkit-border-radius: 1000px;
+        -moz-border-radius: 1000px;
+        border-radius: 1000px;
+        margin-top: 30px;
+        padding: 10px 50px;
+    }
+
+    .btn_collection:hover {
+        background-color: #A94141!important;
+        border-color: #FFF !important;
+        color: #FFF !important;
+        -webkit-border-radius: 1000px;
+        -moz-border-radius: 1000px;
+        border-radius: 1000px;
+        margin-top: 30px;
+    }
+
     .btn_blue {
         background-color: rgb(36, 34, 88)!important;
         border-color: rgb(36, 34, 88) !important;

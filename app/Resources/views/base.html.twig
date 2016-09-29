@@ -24,6 +24,7 @@
     <link href='//fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister' rel='stylesheet' type='text/css'>
 
     <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('js/datepicker/css/datepicker.css') }}" type="text/css">
 
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}" type="text/css">
@@ -261,7 +262,7 @@ display:none;
 }
 }
     </style>
-    
+
 
         {% block body %} {% endblock %}
         {% block javascripts %}{% endblock %}
@@ -377,6 +378,9 @@ $(window).on('scroll', function() {
 
 
       </script>
+      <script src="{{ asset('js/datepicker/js/bootstrap-datepicker.js') }}"></script>
+
+
 
 
 </html>
