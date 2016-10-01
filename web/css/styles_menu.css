@@ -161,6 +161,7 @@ html, body {
     height: auto !important;
     height: 100%;
     margin: 0 auto -100px;
+    overflow-x:hidden;
     /* the bottom margin is the negative value of the footer's height */
 }
 
@@ -199,13 +200,13 @@ html, body {
     height: auto;
     max-width: 6rem !important;
     position: relative;
-    top: -0.5rem;
+    top: -0.75rem;
 }
 .image_menu_scroll:hover {
     height: auto;
     max-width: 6rem;
     position: relative;
-    top: -0.5rem;
+    top: -0.70rem;
 }
 .image_menu_scroll:active {
     height: auto;
@@ -219,10 +220,21 @@ html, body {
   border-top: 0px solid #242258 !important;
   margin-top: 6.5px !important;*/
   border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
-  border-top: 5px solid rgba(255, 0, 0, 0.01);!important;
+  border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
   height: 56px;
 
 
 }
+.no_hover>li:active {
+  /*border-bottom: 0px solid #A94141 !important;
+  border-top: 0px solid #242258 !important;
+  margin-top: 6.5px !important;*/
+  border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
+  border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
+  height: 56px;
+
+
+}
+
 
 .no_hover{}
