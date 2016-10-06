@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %} {% block body %}
-
-
+<SCRIPT LANGUAGE="JavaScript">
+history.forward()
+</SCRIPT>
 <body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
     <!-- Partie 1: Customisation du noeud DEBUT-->
 
@@ -610,7 +611,7 @@
     <div class="container">
         <div class="row text-center no_padding">
             <div class="col-sm-8"></div>
-            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send btn_TT" role="button">Taille et accessoire</a></div>
+            <div class="col-sm-4 no_padding"><a class="btn btn-primary btn-lg active btn_send btn_TT" onclick="window.scrollTo(0, 0);" role="button">Taille et accessoire</a></div>
         </div>
     </div>
 
