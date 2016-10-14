@@ -147,10 +147,12 @@
 
 .coffret_big_3 {
     top: 6em;
+    max-height: 125px;
 }
 
 .coffret_big_4 {
     top: 9em;
+    max-height: 125px;
 }
 
 .Coffret_petit_position {

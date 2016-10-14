@@ -992,15 +992,16 @@ document.getElementById(imageColorName + '_pochette').correspondance = y;
 
 }
 function changePochette(url){
-var route = '<img style="width:100%;height:auto" src="{{ asset('/upload/color/pochette/' ~ 'URL' )}}">'
+var route = '<img style="height: auto;max-height: 220px;" src="{{ asset('/upload/color/pochette/' ~ 'URL' )}}">'
 route = route.replace("URL", url);
 document.getElementById('pochette_img').innerHTML = route;
 
 
 }
 function changeBoutons(url){
-var route = '<img style="max-height: 250px;" src="{{ asset('/upload/color/boutons/' ~ 'URL' )}}">'
+var route = '<img style="max-height: 100px;margin-top: 1rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL' )}}"></br><img style="max-height: 100px;margin-top: 1rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL2' )}}">'
 route = route.replace("URL", url);
+route = route.replace("URL2", url);
 document.getElementById('boutons_img').innerHTML = route;
 
 }
