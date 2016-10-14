@@ -438,3 +438,7 @@ input[type="radio"].radio_colors:checked+label {
     background: rgba(0, 0, 0, 1);
     text-decoration: none;
 }
+
+.panel-heading-boutons{
+color:#242258;
+}

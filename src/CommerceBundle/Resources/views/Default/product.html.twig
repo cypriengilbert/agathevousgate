@@ -166,15 +166,15 @@
       <div class="col-sm-12 no_padding">
          <div class="panel-group" id="accordion">
             <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-               <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
+               <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important" onclick="open_div('coffret');active_checkbox('coffret')">
                   <div class="row">
                      <div class="col-sm-11">
-                        <h3 class="panel-title">
+                        <h3 class="panel-title" >
                            Coffret 2 collections supplémentaire
                         </h3>
                      </div>
                      <div class="col-sm-1 text-right">
-                        <i class="fa fa-2x fa-chevron-down" id="chevron_coffret" aria-hidden="true" onclick="open_div('coffret')" data-toggle="collapse" data-parent="#accordion" ></i>
+                        <i class="fa fa-2x fa-chevron-down" id="chevron_coffret" aria-hidden="true"  data-toggle="collapse" data-parent="#accordion" ></i>
                      </div>
                   </div>
                </div>
@@ -214,45 +214,19 @@
       </div>
    </div>
    <div class="row">
-      <div class="col-sm-6 no_padding">
-         <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-            <div id="panel-heading-boutons" class="panel-heading">
-               <div class="row">
-                  <div class="col-sm-11">
-                     <h3 class="panel-title">
-                        Boutons de manchettes
-                     </h3>
-                  </div>
-                  <div class="col-sm-1">
-                     <i class="fa fa-2x fa-chevron-down" id="chevron_boutons" onclick="open_div('boutons')" style="margin-left:-10px" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" ></i>
-                  </div>
-               </div>
-            </div>
-            {% for enfants in product.enfants %}
-            {% if enfants.product.name == 'Boutons' %}
-            {% set boutons_id = enfants.id %}
-            {% set boutons_price = enfants.product.price %}
-            <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
-               <div class="panel-body">
-                  <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
-               </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-         </div>
-      </div>
+
       <div class="col-sm-6 no_padding">
 
                <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                  <div id="panel-heading-pochette" class="panel-heading">
+                  <div id="panel-heading-pochette" class="panel-heading" onclick="open_div('pochette'); active_checkbox('pochette')">
                      <div class="row">
                         <div class="col-sm-11">
-                           <h3 class="panel-title">
+                           <h3 class="panel-title" >
                               Pochette
                            </h3>
                         </div>
                         <div class="col-sm-1">
-                           <i class="fa fa-2x fa-chevron-down" id="chevron_pochette" aria-hidden="true" onclick="open_div('pochette')" style="margin-left:-10px" data-toggle="collapse" data-parent="#accordion" ></i>
+                           <i class="fa fa-2x fa-chevron-down" id="chevron_pochette" aria-hidden="true"  style="margin-left:-10px" data-toggle="collapse" data-parent="#accordion" ></i>
                         </div>
                      </div>
                   </div>
@@ -269,6 +243,33 @@
                   {% endfor %}
                </div>
 
+      </div>
+      <div class="col-sm-6 no_padding">
+         <div class="panel panel-default" style="margin-top:20px; background-color:white;">
+            <div id="panel-heading-boutons" class="panel-heading" onclick="open_div('boutons'); active_checkbox('boutons')" >
+               <div class="row">
+                  <div class="col-sm-11">
+                     <h3 class="panel-title" >
+                        Boutons de manchettes
+                     </h3>
+                  </div>
+                  <div class="col-sm-1">
+                     <i class="fa fa-2x fa-chevron-down" id="chevron_boutons" style="margin-left:-10px" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" ></i>
+                  </div>
+               </div>
+            </div>
+            {% for enfants in product.enfants %}
+            {% if enfants.product.name == 'Boutons' %}
+            {% set boutons_id = enfants.id %}
+            {% set boutons_price = enfants.product.price %}
+            <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
+               <div class="panel-body">
+                  <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+               </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+         </div>
       </div>
    </div>
    <div class="row">
