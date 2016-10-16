@@ -1,10 +1,19 @@
 {% extends 'base.html.twig' %} {% block body %}
 <SCRIPT LANGUAGE="JavaScript">
-history.forward()
-</SCRIPT>
-<body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
-    <!-- Partie 1: Customisation du noeud DEBUT-->
+window.onbeforeunload = function () {
 
+           return "Êtes-vous sûr de vouloir quitter cette page sans avoir enregistré ?";
+
+   };</SCRIPT>
+<body id="page-top">
+    <!-- Partie 1: Customisation du noeud DEBUT-->
+    <section>
+        <div class="container">
+          <div class="alert alert-danger text-center" role="alert" id="errorMessage" style="margin-top:20px;display:none;">
+
+          </div>
+        </div>
+      </section>
     <div class="container text-center">
         <h1 class="heading">CRÉER SON NOEUD</h1>
         <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
@@ -1069,6 +1078,7 @@ $(document).ready(function(){
 
 var flag=true;
 $(".btn_TT").click(function(){
+if (checkInfo()){
 if(flag){
   $('.btn_TT').addClass('btn-alc_active').removeClass('btn-alc');
   $('.nbr2').addClass('numberCircle_active').removeClass('numberCircle');
@@ -1082,10 +1092,11 @@ $(".personnalisation_noeud").animate({left: '-90vw',
                          opacity: '1' }, 1000, function() {
                              $(this).fadeIn(10);
                              $(".type-and-size").fadeIn(3000);
-                          });flag=false;};
+                          });flag=false;
+};
 
 
-           });
+           }});
 /*$(".type-and-size").hide();*/
 $(".btn_perso").click(function(){
   if(!flag){
@@ -1332,7 +1343,121 @@ document.getElementById("totalXquantity").innerHTML = "Total : "+total.toFixed(2
 
 
 }
+function checkInfo(){
+var type = 0;
+var colorNoeud1 = 0;
+var colorNoeud2 = 0;
+var colorNoeud3 = 0;
+var colorCoffret1 = 0;
+var colorCoffret2 = 0;
+var colorPochette = 0;
+var colorBoutons = 0;
+var taille = 'no_size';
+var isValidBoutons = false;
+var isValidCoffret2 = false;
+var isValidCoffret1 = false;
+var isValidPochette = false;
+var isValidAccessoire = true;
+var isValidTaille = false;
 
+var textCoffret2 = '';
+var textCoffret1 = '';
+var textPochette = '';
+var textBouton = '';
+var textAccessoire = '';
+var textTaille = '';
+
+
+if (document.querySelector('input[name="color1"]:checked') == null || document.querySelector('input[name="color2"]:checked') == null || document.querySelector('input[name="color3"]:checked') == null){
+document.getElementById('errorMessage').innerHTML = 'Veuillez choisir les trois couleurs du noeud';
+document.getElementById('errorMessage').style.display = 'block';
+return false;
+
+}
+
+
+else{
+var colorNoeud1 = document.querySelector('input[name="color1"]:checked').value;
+var colorNoeud2 = document.querySelector('input[name="color2"]:checked').value;
+var colorNoeud3 = document.querySelector('input[name="color3"]:checked').value;
+
+if (document.getElementById("input_coffret1").checked) {
+          if (document.querySelector('input[name="color4"]:checked') !== null){
+                var colorCoffret1 = document.querySelector('input[name="color4"]:checked').value;
+                var isValidCoffret1 = true;
+      }
+
+          else{
+          var textCoffret1 = 'Aucune couleur séléctionnée pour la couleur 1 du coffret <br> ';
+
+
+          }}
+          else {
+          var isValidCoffret1 = true;
+          }
+
+if (document.getElementById("input_coffret2").checked) {
+      if (document.querySelector('input[name="color5"]:checked') !== null){
+            var colorCoffret2 = document.querySelector('input[name="color5"]:checked').value;
+            var isValidCoffret2 = true;
+
+}
+else{ var textCoffret2 = 'Aucune couleur séléctionnée pour la couleur 2 du coffret <br> ';
+
+}
+
+}
+else {
+var isValidCoffret2 = true;
+}
+
+
+if (document.getElementById("input_pochette").checked) {
+      if (document.querySelector('input[name="color6"]:checked') !== null){
+
+            var colorPochette = document.querySelector('input[name="color6"]:checked').value;
+            var isValidPochette = true;
+}
+else{var textPochette = 'Aucune couleur séléctionnée pour la pochette <br> ';
+
+}
+
+}
+else {
+var isValidPochette = true;
+}
+
+if (document.getElementById("input_boutons").checked) {
+if (document.querySelector('input[name="color7"]:checked') !== null){
+
+            var colorBoutons = document.querySelector('input[name="color7"]:checked').value;
+            var isValidBoutons = true;
+}
+else{
+var textBouton = 'Aucune couleur séléctionnée pour les boutons <br> ';
+
+}
+}
+else{
+var isValidBoutons = true;
+}
+
+
+}
+
+
+if (isValidBoutons == false || isValidCoffret2 == false || isValidCoffret1 == false || isValidPochette == false ){
+var text =  textTaille+textAccessoire+textBouton+textCoffret1+textCoffret2+textPochette;
+
+document.getElementById('errorMessage').innerHTML = text;
+document.getElementById('errorMessage').style.display = 'block';
+return false;
+}
+else{
+document.getElementById('errorMessage').style.display = 'none';
+return true;
+}
+}
 function addToCart()
 {
 var type = 0;
