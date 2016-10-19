@@ -27,60 +27,82 @@ class defined_productType extends AbstractType
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('color1', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+              'required'    => false,
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
 
 
          	))
             ->add('color2', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+              'required'    => false,
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
 
 
          	))
             ->add('color3', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+              'required'    => false,
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
 
 
          	))
             ->add('color4', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
             ->add('color5', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
             ->add('color6', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
             ->add('color7', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
             ->add('color8', EntityType::class , array(
+              'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
           ->add('color9', EntityType::class , array(
+            'placeholder' => 'Choose a color',
+
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
 
          	))
             ->add('color10', EntityType::class , array(
+              'placeholder' => 'Choose a color',
          		'class' => 'CommerceBundle:Color',
          		'choice_label' => 'name',
             'required'    => false,
@@ -102,6 +124,7 @@ class defined_productType extends AbstractType
                             'class' => 'CommerceBundle:defined_product',
                             'multiple' => true,
                                 'expanded' => true,
+                                'choice_label' => 'id',
                                  'required' => true,
                                  'query_builder' => function (EntityRepository $er) {
                                          return $er->createQueryBuilder('u')

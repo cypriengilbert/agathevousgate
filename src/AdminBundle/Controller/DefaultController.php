@@ -599,6 +599,33 @@ public function newcolorAction(Request $request)
                 ));
 }
 
+/**
+ * @Route("/s/editcolor/{id}", name="editColor")
+ */
+
+public function editcolorAction(Request $request, $id)
+{
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $color  = $repository->findOneBy(['id' => $id]);
+
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\ColorType', $color);
+                if ($form->handleRequest($request)->isValid()) {
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($color);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');
+
+                    return $this->redirect($this->generateUrl('listecolor'));
+                }
+
+                return $this->render('AdminBundle:Default:addColor.html.twig', array(
+                    'form' => $form->createView(),
+
+
+
+                ));
+}
+
 
 /**
  * @Route("/s/add_defined_product", name="addDefinedProduct")
@@ -662,6 +689,53 @@ public function viewDefinedProductAction()
 
 
 ));
+
+}
+
+/**
+ * @Route("/s/image_site", name="imageSite")
+ */
+public function imageAction()
+{
+
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $listeImage = $repository->findAll();
+
+
+        return $this->render('AdminBundle:Default:image.html.twig', array(
+            'images' => $listeImage,
+
+
+));
+
+}
+
+/**
+ * @Route("/s/editImage/{id}", name="editImage")
+ */
+public function editImageAction(Request $request, $id)
+{
+
+  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+  $image  = $repository->findOneBy(['id' => $id]);
+
+  $form = $this->get('form.factory')->create('CommerceBundle\Form\ImageType', $image);
+          if ($form->handleRequest($request)->isValid()) {
+              $em = $this->getDoctrine()->getManager();
+              $em->persist($image);
+              $em->flush();
+              $request->getSession()->getFlashBag()->add('notice', 'Image bien enregistrée.');
+
+              return $this->redirect($this->generateUrl('listecolor'));
+          }
+
+          return $this->render('AdminBundle:Default:editImage.html.twig', array(
+              'form' => $form->createView(),
+
+
+
+          ));
 
 }
 
@@ -835,6 +909,7 @@ public function editDefinedProductAction(Request $request, $id)
                      'validate' => 'Produit bien ajouté',
                       'listeDefinedProduct' => $listeDefinedProduct,
                       'listeCommande' => $listeCommande,
+                      'produit' => $produit
 
 
 
@@ -845,6 +920,7 @@ public function editDefinedProductAction(Request $request, $id)
                     'form' => $form->createView(),
                     'listeProduct' => $listeProduct,
                     'listeCommande' => $listeCommande,
+                    'produit' => $produit
 
 
 

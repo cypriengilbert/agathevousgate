@@ -97,6 +97,8 @@ class CommerceController extends Controller
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande2   = $repository->findAll();
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $listeImage  = $repository->findAll();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct     = $repository->findAll();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
@@ -107,6 +109,9 @@ class CommerceController extends Controller
         $first3collection = $repository->findBy(array(
             'active' => 1
         ), null, 3);
+        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+
+        $first3Image = $repository->findBy(array(), null, 3);
 
 
 
@@ -124,6 +129,8 @@ class CommerceController extends Controller
             'collection' => $collectionActive,
             'listePanier' => $listePanier,
             'page' => $page,
+            'image' => $listeImage,
+            'slider' => $first3Image,
             'first3collection' => $first3collection,
             'form' => $form->createView()
 

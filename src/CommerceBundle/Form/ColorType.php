@@ -21,52 +21,52 @@ class ColorType extends AbstractType
             ->add('name')
             ->add('isbasic', CheckboxType::class)
             ->add('colorFile', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
 
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('colorNoeud1File', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
 
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('colorNoeud2File', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
 
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('colorNoeud3File', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('tissuColorFile', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('tissuMilieuColorFile', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('couleurPochette', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
             ->add('couleurBoutons', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true

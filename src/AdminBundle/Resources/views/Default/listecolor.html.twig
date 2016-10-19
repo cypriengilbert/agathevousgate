@@ -42,7 +42,9 @@
                   <a href="{{ path('deactivateColor', {'id': color.id }) }}">désactiver</a>
                   {% else %}
                   <a href="{{ path('activateColor',{'id': color.id }) }}">activer</a>
-                  {% endif %}</td>
+                  {% endif %}
+                  - <a href="{{ path('editColor',{'id': color.id }) }}">Modifier</a>
+                  </td>
 
                 </tr>
       {% endfor %}

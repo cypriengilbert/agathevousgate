@@ -1,0 +1,82 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+<style>
+#collection_colors input {
+display: block;
+width: 100%;
+height: 34px;
+padding: 20px 12px;
+font-size: 14px;
+line-height: 1.42857143;
+color: #555;
+background-color: #fff;
+background-image: none;
+border: 1px solid #ccc;
+border-radius: 4px;
+-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+
+
+}
+</style>
+
+
+
+<div class="mdl-grid demo-content">
+
+<div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+<div class="mdl-cell mdl-cell--4-col">
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+<center>
+
+<div style="padding-bottom:20px;"><h5>Modifier une image</h5></div>
+{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+
+<div class="form-group">
+    {{ form_label(form.name, "Nom", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'disabled' : 'disabled'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.urlImage, "Nom", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.urlImage) }}
+    {{ form_widget(form.urlImage, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+
+<div>
+        <input type="submit" value="Valider" class="btn btn-primary" />
+</div>
+{{ form_end(form) }}
+</center>
+</div>
+<div class=" mdl-cell mdl-cell--4-col">
+</div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+
+
+{% endblock %}

@@ -102,8 +102,6 @@ margin-top:5px
 
 
 
-
-
 <div class="mdl-grid demo-content">
 <div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
 <div class="mdl-cell mdl-cell--4-col">
@@ -118,7 +116,12 @@ margin-top:5px
 <div class="form-group" >
     {{ form_label(form.product, "Produit", {'label_attr': {'class': '', 'id': 'dropdown_product' }}) }}
     {{ form_errors(form.product) }}
-    {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()'}}) }}
+{% if produit is defined %}
+    {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()', 'disabled' : 'disabled'  }}) }}
+{% else %}
+{{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()'  }}) }}
+
+{% endif %}
 
 </div>
 <div class="form-group">
@@ -137,7 +140,7 @@ margin-top:5px
 
 
 
-<div class="form-group" id="color1" style="display:none">
+<div class="form-group" id="color1" >
     {{ form_label(form.color1, "Interieur", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.color1) }}
     {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
@@ -145,7 +148,15 @@ margin-top:5px
 </div>
 
 
-<div class="form-group" id="color2" style="display:none">
+<div class="form-group" id="color2" {% if produit is defined %}
+{% if (produit.product.id == 3) or (produit.product.id == 4) %}
+style="display:block"
+{% else %}
+style="display:none"
+{% endif %}
+{% else %}
+style="display:none"
+{% endif %}>
     {{ form_label(form.color2, "Exterieure", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.color2) }}
     {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
@@ -153,7 +164,13 @@ margin-top:5px
 </div>
 
 
-<div class="form-group" id="color3" style="display:none">
+<div class="form-group" id="color3" {% if produit is defined %}
+{% if (produit.product.id == 3) %} style="display:block"
+{% else %}style="display:none"
+{% endif %}
+{% else %}
+style="display:none" 
+{% endif %}>
     {{ form_label(form.color3, "Milieu", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.color3) }}
     {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
@@ -225,6 +242,7 @@ margin-top:5px
     {{ form_widget(form.isactive, {'attr': {'class': ''}}) }}
 
 </div>
+
 
 <div class="form-group enfants" id='enfant' style="display:none">
     {{ form_row(form.enfants) }}
