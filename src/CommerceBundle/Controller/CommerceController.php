@@ -136,7 +136,7 @@ class CommerceController extends Controller
             'reco1' => $reco1,
             'sliderbas1' => $sliderbas1,
             'sliderbas2' => $sliderbas2,
-            'sliderbas3' => $sliderbas3, 
+            'sliderbas3' => $sliderbas3,
             'reco2' => $reco2,
             'reco3' => $reco3,
             'image' => $listeImage,
@@ -2028,10 +2028,14 @@ $nbcommande = null;
         }
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $apropos  = $repository->findOneBy(array("name" => 'apropos'));
+
         return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
-            'page' => $page
+            'page' => $page,
+            'apropos' => $apropos,
 
         ));
 
