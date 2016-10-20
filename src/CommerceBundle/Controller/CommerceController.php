@@ -112,8 +112,12 @@ class CommerceController extends Controller
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
 
         $first3Image = $repository->findBy(array(), null, 3);
-
-
+        $reco1  = $repository->findOneBy(array("name" => 'reco1'));
+        $reco2 = $repository->findOneBy(array("name" => 'reco2'));
+        $reco3  = $repository->findOneBy(array("name" => 'reco3'));
+        $sliderbas1  = $repository->findOneBy(array("name" => 'sliderbas1'));
+        $sliderbas2 = $repository->findOneBy(array("name" => 'sliderbas2'));
+        $sliderbas3  = $repository->findOneBy(array("name" => 'sliderbas3'));
 
 
 
@@ -129,6 +133,12 @@ class CommerceController extends Controller
             'collection' => $collectionActive,
             'listePanier' => $listePanier,
             'page' => $page,
+            'reco1' => $reco1,
+            'sliderbas1' => $sliderbas1,
+            'sliderbas2' => $sliderbas2,
+            'sliderbas3' => $sliderbas3, 
+            'reco2' => $reco2,
+            'reco3' => $reco3,
             'image' => $listeImage,
             'slider' => $first3Image,
             'first3collection' => $first3collection,
@@ -503,7 +513,6 @@ $nbcommande = null;
         }
 
         $added_product->setCommande(null);
-
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
 

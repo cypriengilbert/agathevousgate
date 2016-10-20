@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %} {% block body %}
 <SCRIPT LANGUAGE="JavaScript">
-var blnBlocage = true;
+var blnBlocage = false;
 window.onbeforeunload = function () {
             if (blnBlocage == true) {
            return "Êtes-vous sûr de vouloir quitter cette page sans avoir enregistré ?";
@@ -50,9 +50,16 @@ window.onbeforeunload = function () {
             <div class="col-sm-6 no_padding">
                 <!-- Aperçu noeud-->
                 <div class="noeud_position">
-                    <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/noeud_avant_bleumarine.png')}});"></div>
-                    <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud1/noeud_arriere_bleumarine.png')}});"></div>
-                    <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud1/noeud_centre_bleumarine.png')}});"></div>
+                {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors|slice(0,1) %} {% if colors.isActive == true %}
+                {% if colors.isBasic == true %}
+                    <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ colors.imagecolorNoeud1Name )}});"></div>
+                    <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ colors.imagecolorNoeud2Name )}});"></div>
+                    <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ colors.imagecolorNoeud3Name )}});"></div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
                 </div>
                 <!-- Aperçu noeud- FIN-->
             </div>
@@ -106,7 +113,7 @@ window.onbeforeunload = function () {
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic'); " class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic'); " class="radio_colors" value="{{ colors.id }}" />
                                             <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
@@ -160,9 +167,9 @@ window.onbeforeunload = function () {
                                           {% endif %}
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic" selected=''>
                                               <style>
-                                                  input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
+                                                  input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}' );" class="radio_colors" value="{{ colors.id }}" />
 
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
@@ -185,7 +192,7 @@ window.onbeforeunload = function () {
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3'); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}'); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
                                               <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -229,7 +236,7 @@ window.onbeforeunload = function () {
 
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" style="width:0px;"></label></a>
+                                              <label class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" style="display:none;"></label></a>
 
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -953,29 +960,35 @@ x[i].style.display = "block";
 }
 }
 
-function setLibertyAttache(y, n3, id_input){
+function setLibertyAttache(y, n3, id_input, urlthumb){
+blnBlocage = true;
+alert(urlthumb);
+if ($("input:radio[name='color3']").is(":checked")) {}else{
 
 w = $('[class$="_3_nobasic"]');
 y = y + "_3_nobasic";
 var i;
 for (i = 0; i < w.length; i++) {
     if(w[i].className == y){
-    w[i].style.width = "";
+    w[i].style.display = "";
     document.getElementById(id_input).checked = true;
 
 }
 else{
-w[i].style.width = "0px";
+w[i].style.display = "none";
+document.getElementById(id_input).checked = true;
+
 }
 document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";
-
+document.getElementById('panel-heading-plugin-3').style.background = "linear-gradient( rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) ),url("+urlthumb+")";
 
 
 }
-}
+}}
 
 
-function color_selected(imageColorName, y){
+function color_selected(imageColorName, y, couleurPochetteName, couleurBoutonsName, t){
+blnBlocage = true;
 var x = document.getElementsByClassName("couleur");
 var i;
 for (i = 0; i < x.length; i++) {
@@ -990,6 +1003,8 @@ if (document.getElementById(imageColorName + '_boutons').style.display == 'block
 
 }
 else{document.getElementById(imageColorName + '_boutons').style.display = 'block';
+if(t==1){
+changeBoutons(couleurBoutonsName);}
 document.getElementById(imageColorName + '_boutons').correspondance = y;
 
 
@@ -997,6 +1012,8 @@ document.getElementById(imageColorName + '_boutons').correspondance = y;
 if(document.getElementById(imageColorName + '_pochette').style.display == 'block'){
 }else{
 document.getElementById(imageColorName + '_pochette').style.display = 'block';
+if(t==1){
+changePochette(couleurPochetteName);}
 document.getElementById(imageColorName + '_pochette').correspondance = y;
 }
 
@@ -1005,6 +1022,7 @@ document.getElementById(imageColorName + '_pochette').correspondance = y;
 
 }
 function changePochette(url){
+blnBlocage = true;
 var route = '<img style="height: auto;max-height: 220px;" src="{{ asset('/upload/color/pochette/' ~ 'URL' )}}">'
 route = route.replace("URL", url);
 document.getElementById('pochette_img').innerHTML = route;
@@ -1012,6 +1030,7 @@ document.getElementById('pochette_img').innerHTML = route;
 
 }
 function changeBoutons(url){
+blnBlocage = true;
 var route = '<img style="max-height: 100px;margin-top: 1rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL' )}}"></br><img style="max-height: 100px;margin-top: 1rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL2' )}}">'
 route = route.replace("URL", url);
 route = route.replace("URL2", url);
@@ -1024,6 +1043,7 @@ document.getElementById('boutons_img').innerHTML = route;
     /*Script changement background url pour panelheading*/
 
     function get_data(i,panelheading, n1, n2, n3,noeud_place, c1, c2) {
+    blnBlocage = true;
       document.getElementById(panelheading).style.backgroundImage = "linear-gradient( rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) ),url("+i+")";
       if (noeud_place == 'noeuddevant'){
       document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
@@ -1069,10 +1089,12 @@ $(document).ready(function(){
   $(".type-and-size").fadeOut();
 
     $(".selector_type").on("click", function() {
+    blnBlocage = true;
         $(this).siblings('div').removeClass('active_1');
         $(this).addClass('active_1')
     })
     $(".selector_taille").on("click", function() {
+    blnBlocage = true;
         $(this).siblings('div').removeClass('active_1');
         $(this).addClass('active_1')
     })
@@ -1089,6 +1111,7 @@ if(flag){
   $('.nbr').addClass('numberCircle').removeClass('numberCircle_active');
 $(".personnalisation_noeud").animate({left: '-90vw',
             opacity: '0.5' }, 1000, function() {
+            blnBlocage = true;
                 $(this).fadeOut(10);
                 $(".type-and-size").fadeIn(3000);
              });$(".type-and-size").animate({left: '0vw',
@@ -1102,6 +1125,7 @@ $(".personnalisation_noeud").animate({left: '-90vw',
            }});
 /*$(".type-and-size").hide();*/
 $(".btn_perso").click(function(){
+blnBlocage = true;
   if(!flag){
     $('.btn_perso').addClass('btn-alc_active').removeClass('btn-alc');
     $('.nbr').addClass('numberCircle_active').removeClass('numberCircle');
@@ -1151,7 +1175,6 @@ $("#panel-heading-plugin-6").click(function(){
 
 })
 $("#panel-heading-plugin-4").click(function(){
-/*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-4").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-4").addClass('fa-chevron-up').removeClass('fa-chevron-down');
     }
