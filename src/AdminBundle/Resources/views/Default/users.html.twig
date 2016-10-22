@@ -47,8 +47,10 @@
                     {% endif %}
                   </td>
                   <td> {% if user.enabled == 1 %} Actif {% else %} Inactif {% endif %}  </td>
-                  <td> <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}desactiver {% else %} activer {% endif %}</a> <a href="{{ path('settopro', { 'id' : user.id }) }}"> SetPro</a> <a href="{{ path('settofranchise', { 'id' : user.id }) }}"> setFranchise</a>
-<a href="{{ path('settouser', { 'id' : user.id }) }}"> setUser</a></td>
+                  <td> <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}desactiver {% else %} activer {% endif %}</a> <a href="{{ path('settopro', { 'id' : user.id }) }}"> SetPro</a> 
+<a href="{{ path('settouser', { 'id' : user.id }) }}"> setUser</a><a href="{{ path('newAtelier', { 'id' : user.id }) }}"> Atelier</a>
+</td>
+
               </tr>
             {% endfor %}
        </tbody>

@@ -923,70 +923,8 @@ class DefaultController extends Controller
     }
 
 
-    /**
-     * @Route("/s/setToUser/{id}", name="settouser")
-     */
-    public function setToUserAction($id, Request $request)
-    {
 
-        $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $listeUser  = $repository->findAll();
-        $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $User       = $repository->findOneBy(array(
-            'id' => $id
-        ));
-
-        $User->setIsPro(0);
-        $User->setRoles(array(
-            'ROLE_USER'
-        ));
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($User);
-        $em->flush();
-        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
-
-
-
-
-        return $this->render('AdminBundle:Default:users.html.twig', array(
-            'listeUser' => $listeUser
-
-
-        ));
-
-    }
-
-    /**
-     * @Route("/s/setToFranchise/{id}", name="settofranchise")
-     */
-    public function setToFranchiseAction($id, Request $request)
-    {
-
-        $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $listeUser  = $repository->findAll();
-        $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $User       = $repository->findOneBy(array(
-            'id' => $id
-        ));
-        $User->setRoles(array(
-            'ROLE_ADMIN'
-        ));
-        $User->setIsPro(1);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($User);
-        $em->flush();
-        $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
-
-
-
-
-        return $this->render('AdminBundle:Default:users.html.twig', array(
-            'listeUser' => $listeUser
-
-
-        ));
-
-    }
+    
     /**
      * @Route("/s/editDefinedProduct/{id}", name="editDefinedProduct")
      */

@@ -36,9 +36,16 @@ class Atelier
     private $adresse1;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="adresse2", type="string", length=255)
+     * @ORM\Column(name="adresse2", type="string", length=255, nullable=true)
      */
     private $adresse2;
 
@@ -275,5 +282,29 @@ class Atelier
     public function getFranchise()
     {
         return $this->franchise;
+    }
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Atelier
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

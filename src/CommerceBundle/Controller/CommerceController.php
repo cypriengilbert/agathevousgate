@@ -1329,7 +1329,7 @@ throw $this->createNotFoundException('The product does not exist');
     {
         $session = $this->get('session');
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-        $ateliers   = $repository->findAll();
+        $ateliers   = $repository->findBy(array('active' => true));
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
