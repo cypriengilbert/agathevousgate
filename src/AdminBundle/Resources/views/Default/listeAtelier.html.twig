@@ -1,0 +1,71 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Ateliers</h4></div>
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+  <table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+           <tr>
+           <th width=5%>ID</th>
+          <th width=5%>Nom</th>
+           <th width=15%>Franchisé</th>
+           <th width=25% >Adresse</th>
+           <th width=10%>Téléphone</th>
+            <th width=10%>Mail</th>
+            <th width=10%>Statut</th>
+
+           </tr>
+       </thead>
+
+       <tbody>
+{% for atelier in ateliers %}
+                <tr>
+                  <td>{{ atelier.id }}</td>
+                  <td>{{ atelier.name }}</td>
+                  <td>  {{ atelier.franchise.nom }} {{ atelier.franchise.prenom }}</td>
+                  <td>
+                  {{ atelier.adresse1 }}
+                    {% if atelier.adresse2 %}<br>{{atelier.adresse2}}{% endif %}
+                  <br>{{ atelier.zipcode }} {{atelier.city}}
+                  </td>
+                  <td>
+                  {{ atelier.phone}}
+                  </td>
+                  <td>
+                  {{ atelier.email}}
+                  </td>
+                  <td>
+                    {% if atelier.active == true %}
+                    <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
+                    {% else %}
+                  <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
+                    {% endif %}
+                  </td>
+
+                </tr>
+      {% endfor %}
+
+
+       </tbody>
+  </table>
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

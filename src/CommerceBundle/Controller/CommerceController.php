@@ -112,8 +112,12 @@ class CommerceController extends Controller
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
 
         $first3Image = $repository->findBy(array(), null, 3);
-
-
+        $reco1  = $repository->findOneBy(array("name" => 'reco1'));
+        $reco2 = $repository->findOneBy(array("name" => 'reco2'));
+        $reco3  = $repository->findOneBy(array("name" => 'reco3'));
+        $sliderbas1  = $repository->findOneBy(array("name" => 'sliderbas1'));
+        $sliderbas2 = $repository->findOneBy(array("name" => 'sliderbas2'));
+        $sliderbas3  = $repository->findOneBy(array("name" => 'sliderbas3'));
 
 
 
@@ -129,6 +133,12 @@ class CommerceController extends Controller
             'collection' => $collectionActive,
             'listePanier' => $listePanier,
             'page' => $page,
+            'reco1' => $reco1,
+            'sliderbas1' => $sliderbas1,
+            'sliderbas2' => $sliderbas2,
+            'sliderbas3' => $sliderbas3,
+            'reco2' => $reco2,
+            'reco3' => $reco3,
             'image' => $listeImage,
             'slider' => $first3Image,
             'first3collection' => $first3collection,
@@ -448,6 +458,14 @@ $nbcommande = null;
     public function personnalisationAction(Request $request, $idCollection)
     {
 
+
+      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collectionOngoing   = $repository->findOneBy(array(
+          'id' => $idCollection
+      ));
+
+    if ($collectionOngoing->getActive() == true){
+
         $page = 'personnalisation';
 
 
@@ -504,7 +522,6 @@ $nbcommande = null;
 
         $added_product->setCommande(null);
 
-
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
 
 
@@ -546,7 +563,10 @@ $nbcommande = null;
 
         ));
 
-
+}
+else{
+throw $this->createNotFoundException('The collection does not exist');
+}
 
 
     }
@@ -774,6 +794,16 @@ $nbcommande = null;
      */
     public function listeProduitAction($id)
     {
+      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collectionOngoing   = $repository->findOneBy(array(
+          'id' => $id
+      ));
+
+if ($collectionOngoing->getActive() == true){
+
+
+
+
         $page = 'listeproduit';
 
         $session = $this->get('session');
@@ -830,6 +860,10 @@ $nbcommande = null;
 
 
         ));
+}
+else{
+throw $this->createNotFoundException('The product does not exist');
+}
     }
 
 
@@ -1183,6 +1217,7 @@ $nbcommande = null;
         if ($commandeEnCours) {
             $price = $commandeEnCours->getPrice() * 100;
 
+
             //Create the charge on Stripe's servers - this will charge the user's card
             try {
                 $charge = \Stripe\Charge::create(array(
@@ -1196,12 +1231,27 @@ $nbcommande = null;
                 $em->persist($commandeEnCours);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $minLivraison     = $repository->findOneBy(array(
+                    'name' => 'Livraison'
 
+                ));
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $coutLivraison    = $repository->findOneBy(array(
+                    'name' => 'Cout_livraison'
+
+                ));
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $remiseParrainage = $repository->findOneBy(array(
+                    'name' => 'Parrainage'
+
+                ));
                 $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $listePanier = $repository->findBy(array(
                     'client' => $user,
                     'commande' => null
                 ));
+
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
                     $value->setPrice($value->getProduct()->getPrice());
@@ -1230,11 +1280,17 @@ $nbcommande = null;
                     $this->get('mailer')->send($message);
 
                 }
+
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
                     'user' => $user,
-                    'listePanier' => $listePanier
+                    'date' => new \DateTime("now"),
+                    'listePanier' => $listePanier,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage,
+                    'commande' => $commandeEnCours,
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
@@ -1295,7 +1351,8 @@ $nbcommande = null;
     {
         $session = $this->get('session');
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-        $ateliers   = $repository->findAll();
+        $ateliers   = $repository->findBy(array('active' => true));
+
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -1452,6 +1509,7 @@ $nbcommande = null;
                 } else {
                     return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array(
                         'form' => $form->createView(),
+                        'ateliers' => $ateliers,
                         'collection' => $collectionActive,
                         'nbarticlepanier' => $nbarticle,
                         'formAdress' => $formAdress->createView()
@@ -2019,10 +2077,14 @@ $nbcommande = null;
         }
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $apropos  = $repository->findOneBy(array("name" => 'apropos'));
+
         return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
-            'page' => $page
+            'page' => $page,
+            'apropos' => $apropos,
 
         ));
 

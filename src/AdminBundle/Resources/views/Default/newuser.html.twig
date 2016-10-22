@@ -7,23 +7,95 @@
 {% endblock %}
 
 {% block body %}
-
-
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
 
 <div class="mdl-grid demo-content">
 <div><h4>Nouvel utilisateur</h4></div>
   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
-  {{ form_start(form) }}
-{{ form_widget(form) }}
- {{ form_rest(form) }} 
-{{ form_end(form) }}
+
+      {{ form_start(form) }}
+      {{ form_errors(form) }}
+
+      <div class="form-group">
+          {{ form_label(form.genre, "Genre", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.genre) }}
+          {{ form_widget(form.genre, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.nom, "Nom", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.nom) }}
+          {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.prenom, "Prénom", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.prenom) }}
+          {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+
+
+      <div class="form-group">
+          {{ form_label(form.adress.adress, "Adresse", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.adress.adress) }}
+          {{ form_widget(form.adress.adress, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.adress.adressMore, "Adresse suite", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.adress.adressMore) }}
+          {{ form_widget(form.adress.adressMore, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.adress.zipcode, "Code Postal", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.adress.zipcode) }}
+          {{ form_widget(form.adress.zipcode, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.adress.city, "Ville", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.adress.city) }}
+          {{ form_widget(form.adress.city, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+
+      <div class="form-group">
+          {{ form_label(form.email, "Adresse mail", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.email) }}
+          {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.plainPassword.first, "Mot de Passe", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.plainPassword.first) }}
+          {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div class="form-group">
+          {{ form_label(form.plainPassword.second, "Verification mot de passe", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.plainPassword.second) }}
+          {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+      <div>
+              <input type="submit" value="Suivant" class="btn btn-primary" />
+      </div>
+      {{ form_end(form) }}
 
   </div>
 
 
-
-
 {% endblock %}
+
 
 {% block script_chart %}
 

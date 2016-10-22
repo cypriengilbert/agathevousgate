@@ -9,9 +9,15 @@
 {% block body %}
 
 
+<a href="{{ path('add') }}"><button style="position:fixed; bottom:60px;right:60px;" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button></a>
 
 <div class="mdl-grid demo-content">
 <div><h4>Commande en cours</h4></div>
+<div><a href="{{ path('done') }}"><button  style="position:relative; top:20px;left:320%" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+  Commandes terminées
+</button></a></div>
 <center>
 
   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
@@ -102,7 +108,7 @@
                 <td>
                     {% for product in commande.addedproducts %}
                       <b>{{ product.product.name }} {% if product.accessoire %}{{ product.accessoire.name }} {% endif %}: {{ product.quantity }}<br></b>
-                      
+
 
                     {% endfor %}
                 </td>

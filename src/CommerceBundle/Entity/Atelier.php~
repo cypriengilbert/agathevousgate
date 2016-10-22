@@ -36,9 +36,16 @@ class Atelier
     private $adresse1;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="adresse2", type="string", length=255)
+     * @ORM\Column(name="adresse2", type="string", length=255, nullable=true)
      */
     private $adresse2;
 
