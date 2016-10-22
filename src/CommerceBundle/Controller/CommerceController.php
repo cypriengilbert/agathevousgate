@@ -1217,6 +1217,7 @@ throw $this->createNotFoundException('The product does not exist');
         if ($commandeEnCours) {
             $price = $commandeEnCours->getPrice() * 100;
 
+
             //Create the charge on Stripe's servers - this will charge the user's card
             try {
                 $charge = \Stripe\Charge::create(array(
@@ -1230,12 +1231,27 @@ throw $this->createNotFoundException('The product does not exist');
                 $em->persist($commandeEnCours);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $minLivraison     = $repository->findOneBy(array(
+                    'name' => 'Livraison'
 
+                ));
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $coutLivraison    = $repository->findOneBy(array(
+                    'name' => 'Cout_livraison'
+
+                ));
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $remiseParrainage = $repository->findOneBy(array(
+                    'name' => 'Parrainage'
+
+                ));
                 $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $listePanier = $repository->findBy(array(
                     'client' => $user,
                     'commande' => null
                 ));
+
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
                     $value->setPrice($value->getProduct()->getPrice());
@@ -1264,11 +1280,17 @@ throw $this->createNotFoundException('The product does not exist');
                     $this->get('mailer')->send($message);
 
                 }
+
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
                     'user' => $user,
-                    'listePanier' => $listePanier
+                    'date' => new \DateTime("now"),
+                    'listePanier' => $listePanier,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage,
+                    'commande' => $commandeEnCours,
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
@@ -1330,6 +1352,7 @@ throw $this->createNotFoundException('The product does not exist');
         $session = $this->get('session');
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
         $ateliers   = $repository->findBy(array('active' => true));
+
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -1486,6 +1509,7 @@ throw $this->createNotFoundException('The product does not exist');
                 } else {
                     return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array(
                         'form' => $form->createView(),
+                        'ateliers' => $ateliers,
                         'collection' => $collectionActive,
                         'nbarticlepanier' => $nbarticle,
                         'formAdress' => $formAdress->createView()
