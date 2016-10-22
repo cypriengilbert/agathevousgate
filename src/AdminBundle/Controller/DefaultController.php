@@ -1160,7 +1160,8 @@ class DefaultController extends Controller
       $page = 'users';
 
         $user = new User();
-        $form = $this->createForm(new RegistrationType(), $user);
+$user->setParrainage(0);
+        $form = $this->get('form.factory')->create('UserBundle\Form\RegistrationAdminType', $user);
         $form->submit($request);
         if ($form->isValid()) {
             $userManager = $this->get('fos_user.user_manager');
@@ -1170,6 +1171,7 @@ class DefaultController extends Controller
             if ($exists instanceof User) {
                 throw new HttpException(409, 'Email already taken');
             }
+
             $userManager->updateUser($user);
         }
 
