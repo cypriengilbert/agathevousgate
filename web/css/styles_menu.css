@@ -215,6 +215,14 @@ html, body {
     top: 0rem;
 }
 
+.no_hover>li {
+  /*border-bottom: 0px solid #A94141 !important;
+  border-top: 0px solid #242258 !important;
+  margin-top: 6.5px !important;*/
+  border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
+  border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
+  height: 56px;
+}
 .no_hover>li:hover {
   /*border-bottom: 0px solid #A94141 !important;
   border-top: 0px solid #242258 !important;
