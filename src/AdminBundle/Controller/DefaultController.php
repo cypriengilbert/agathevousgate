@@ -30,6 +30,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $page = 'dashboard';
         $session = $request->getSession();
         $dateout = $session->get('dateout');
 
@@ -115,7 +116,8 @@ class DefaultController extends Controller
             'listeCommande' => $listeCommande,
             'listePromoCode' => $listePromoCode,
             'listeUser' => $listeUser,
-            'tableau_produit' => $tableau_produit
+            'tableau_produit' => $tableau_produit,
+            'page' => $page,
 
 
         ));
@@ -127,6 +129,8 @@ class DefaultController extends Controller
      */
     public function setDateAction(Request $request, $in, $out)
     {
+
+      $page = 'dashboard';
 
         $session = $request->getSession();
 
@@ -145,6 +149,9 @@ class DefaultController extends Controller
      */
     public function commandeEnCoursAction()
     {
+
+      $page = 'commande';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
             'isValid' => false,
@@ -154,7 +161,9 @@ class DefaultController extends Controller
         ));
 
         return $this->render('AdminBundle:Default:commandeencours.html.twig', array(
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
 
         ));
@@ -165,6 +174,8 @@ class DefaultController extends Controller
      */
     public function commandeAction($id, Request $request)
     {
+        $page = 'commande';
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $Commande   = $repository->findOneBy(array(
             'id' => $id
@@ -179,6 +190,8 @@ class DefaultController extends Controller
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
             return $this->redirect($this->generateUrl('commande', array(
                 'id' => $id,
+                'page' => $page,
+
                 'validate' => 'Reception modifiée',
                 'form' => $form->createView()
 
@@ -187,7 +200,9 @@ class DefaultController extends Controller
 
         return $this->render('AdminBundle:Default:commande.html.twig', array(
             'commande' => $Commande,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page,
+
 
 
         ));
@@ -198,6 +213,8 @@ class DefaultController extends Controller
      */
     public function commandeDoneAction()
     {
+      $page = 'commande';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
             'isValid' => true
@@ -206,7 +223,9 @@ class DefaultController extends Controller
         ));
 
         return $this->render('AdminBundle:Default:commandedone.html.twig', array(
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
 
         ));
@@ -218,6 +237,8 @@ class DefaultController extends Controller
 
     public function validateCommandeAction(Request $request, $id)
     {
+      $page = 'commande';
+
         $commande = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande')->find($id);
         if (null === $commande) {
             throw new NotFoundHttpException("La commande est inexistante");
@@ -233,6 +254,8 @@ class DefaultController extends Controller
         $newId = $commande->getId();
         return $this->redirect($this->generateUrl('encours', array(
             'id' => $id,
+            'page' => $page,
+
             'validate' => 'Reception clôturée'
         )));
     }
@@ -244,6 +267,8 @@ class DefaultController extends Controller
 
     public function modifyCommandeAction(Request $request, $id)
     {
+
+      $page = 'commande';
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
@@ -267,11 +292,15 @@ class DefaultController extends Controller
             $newId = $commande->getId();
             return $this->redirect($this->generateUrl('encours', array(
                 'id' => $id,
+                'page' => $page,
+
                 'validate' => 'Reception modifiée'
             )));
         }
         return $this->render('AdminBundle:Default:CommandeModify.html.twig', array(
             'form' => $form->createView(),
+            'page' => $page,
+
             'listeCommande' => $listeCommande
         ));
     }
@@ -285,6 +314,7 @@ class DefaultController extends Controller
 
     public function addCommandeAction(Request $request)
     {
+      $page = 'commande';
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
@@ -310,6 +340,8 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('addProduct', array(
                 'validate' => 'Commande ajoutée',
                 'id' => $newId,
+                'page' => $page,
+
                 'client' => $newClient,
                 'listeCommande' => $listeCommande
 
@@ -317,7 +349,9 @@ class DefaultController extends Controller
         }
         return $this->render('AdminBundle:Default:addCommande.html.twig', array(
             'form' => $form->createView(),
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
         ));
     }
@@ -329,6 +363,7 @@ class DefaultController extends Controller
     public function addCodePromoAction(Request $request)
     {
 
+      $page = 'codePromo';
 
         $newCodePromo = new CodePromo();
 
@@ -348,7 +383,9 @@ class DefaultController extends Controller
             )));
         }
         return $this->render('AdminBundle:Default:addCodePromo.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page,
+
 
         ));
     }
@@ -361,12 +398,15 @@ class DefaultController extends Controller
     public function listeCodePromoAction(Request $request)
     {
 
+      $page = 'codePromo';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
         $listeCode  = $repository->findAll();
 
         return $this->render('AdminBundle:Default:listeCode.html.twig', array(
-            'codes' => $listeCode
+            'codes' => $listeCode,
+            'page' => $page,
+
 
 
         ));
@@ -380,6 +420,7 @@ class DefaultController extends Controller
 
     public function deleteCodeAction(Request $request, $id)
     {
+      $page = 'codePromo';
 
         $em = $this->getDoctrine()->getManager();
 
@@ -391,7 +432,9 @@ class DefaultController extends Controller
         $em->flush();
 
         return $this->redirect($this->generateUrl('listeCodePromo', array(
-            'validate' => 'Code Promo supprimé'
+            'validate' => 'Code Promo supprimé',
+            'page' => $page,
+
 
 
         )));
@@ -405,6 +448,9 @@ class DefaultController extends Controller
 
     public function addAddedProductAction(Request $request, $id, $client)
     {
+
+      $page = 'commande';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
             'isValid' => false
@@ -458,7 +504,9 @@ class DefaultController extends Controller
                 'id' => $id,
                 'client' => $client,
                 'listeCommande' => $listeCommande,
-                'listeProduct' => $listeProduct
+                'listeProduct' => $listeProduct,
+                'page' => $page,
+
 
 
 
@@ -467,7 +515,9 @@ class DefaultController extends Controller
         return $this->render('AdminBundle:Default:addAddedProduct.html.twig', array(
             'form' => $form->createView(),
             'listeCommande' => $listeCommande,
-            'listeProduct' => $listeProduct
+            'listeProduct' => $listeProduct,
+            'page' => $page,
+
 
 
 
@@ -482,6 +532,9 @@ class DefaultController extends Controller
 
     public function newcollectionAction(Request $request)
     {
+
+      $page = 'collection';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
             'isValid' => false
@@ -501,7 +554,9 @@ class DefaultController extends Controller
         }
         return $this->render('AdminBundle:Default:addCollection.html.twig', array(
             'form' => $form->createView(),
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
         ));
     }
 
@@ -512,6 +567,9 @@ class DefaultController extends Controller
 
     public function editCollectionAction(Request $request, $id)
     {
+
+      $page = 'collection';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findOneBy(array('id' => $id));
 
@@ -527,6 +585,8 @@ class DefaultController extends Controller
         return $this->render('AdminBundle:Default:editCollection.html.twig', array(
             'form' => $form->createView(),
             'collection' => $collection,
+            'page' => $page,
+
             ));
 
     }
@@ -537,10 +597,15 @@ class DefaultController extends Controller
 
     public function listeCollectionAction(Request $request)
     {
+
+      $page = 'collection';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
         return $this->render('AdminBundle:Default:listeCollection.html.twig', array(
             'collections' => $collection,
+            'page' => $page,
+
             ));
 
     }
@@ -552,6 +617,9 @@ class DefaultController extends Controller
 
     public function deactivateCollectionAction(Request $request, $id)
     {
+
+      $page = 'collection';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findOneby(array('id'=>$id));
         $collection->setActive(false);
@@ -569,6 +637,8 @@ class DefaultController extends Controller
 
     public function activateCollectionAction(Request $request, $id)
     {
+      $page = 'collection';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findOneby(array('id'=>$id));
         $collection->setActive(true);
@@ -586,6 +656,8 @@ class DefaultController extends Controller
 
     public function deactivateColorAction(Request $request, $id)
     {
+      $page = 'color';
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $color      = $repository->findOneBy(array(
             'id' => $id
@@ -608,6 +680,8 @@ class DefaultController extends Controller
 
     public function activateColorAction(Request $request, $id)
     {
+      $page = 'color';
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $color      = $repository->findOneBy(array(
             'id' => $id
@@ -631,11 +705,16 @@ class DefaultController extends Controller
 
     public function listeColorAction()
     {
+
+      $page = 'color';
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $color      = $repository->findAll();
 
         return $this->render('AdminBundle:Default:listecolor.html.twig', array(
-            'colors' => $color
+            'colors' => $color,
+            'page' => $page,
+
         ));
     }
 
@@ -645,6 +724,8 @@ class DefaultController extends Controller
 
     public function newcolorAction(Request $request)
     {
+      $page = 'color';
+
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(
             'isValid' => false
@@ -668,14 +749,18 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('newColor', array(
                 'validate' => 'Collection bien ajouté',
 
-                'listeCommande' => $listeCommande
+                'listeCommande' => $listeCommande,
+                'page' => $page,
+
 
 
             )));
         }
         return $this->render('AdminBundle:Default:addColor.html.twig', array(
             'form' => $form->createView(),
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
 
 
@@ -688,6 +773,9 @@ class DefaultController extends Controller
 
     public function editcolorAction(Request $request, $id)
     {
+
+      $page = 'color';
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $color      = $repository->findOneBy(array(
             'id' => $id
@@ -704,7 +792,9 @@ class DefaultController extends Controller
         }
 
         return $this->render('AdminBundle:Default:addColor.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page,
+
 
 
 
@@ -718,6 +808,8 @@ class DefaultController extends Controller
 
     public function addDefinedProductAction(Request $request)
     {
+
+      $page = 'definedProduct';
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct  = $repository->findAll();
@@ -740,7 +832,9 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('addDefinedProduct', array(
                 'validate' => 'Produit bien ajouté',
                 'listeProduct' => $listeProduct,
-                'listeCommande' => $listeCommande
+                'listeCommande' => $listeCommande,
+                'page' => $page,
+
 
 
 
@@ -750,7 +844,9 @@ class DefaultController extends Controller
         return $this->render('AdminBundle:Default:addDefinedProduct.html.twig', array(
             'form' => $form->createView(),
             'listeProduct' => $listeProduct,
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
 
 
@@ -764,6 +860,8 @@ class DefaultController extends Controller
     public function viewDefinedProductAction()
     {
 
+      $page = 'definedProduct';
+
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(), array(
@@ -776,7 +874,9 @@ class DefaultController extends Controller
 
         return $this->render('AdminBundle:Default:defined_product.html.twig', array(
             'listeCommande' => $listeCommande,
-            'listeDefinedProduct' => $listeDefinedProduct
+            'listeDefinedProduct' => $listeDefinedProduct,
+            'page' => $page,
+
 
 
         ));
@@ -789,13 +889,16 @@ class DefaultController extends Controller
     public function imageAction()
     {
 
+      $page = 'image';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
         $listeImage = $repository->findAll();
 
 
         return $this->render('AdminBundle:Default:image.html.twig', array(
-            'images' => $listeImage
+            'images' => $listeImage,
+            'page' => $page,
+
 
 
         ));
@@ -807,6 +910,7 @@ class DefaultController extends Controller
      */
     public function editImageAction(Request $request, $id)
     {
+      $page = 'image';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
         $image      = $repository->findOneBy(array(
@@ -824,7 +928,9 @@ class DefaultController extends Controller
         }
 
         return $this->render('AdminBundle:Default:editImage.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page,
+
 
 
 
@@ -839,6 +945,7 @@ class DefaultController extends Controller
     public function usersAction()
     {
 
+      $page = 'users';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser  = $repository->findAll();
@@ -846,7 +953,9 @@ class DefaultController extends Controller
 
 
         return $this->render('AdminBundle:Default:users.html.twig', array(
-            'listeUser' => $listeUser
+            'listeUser' => $listeUser,
+            'page' => $page,
+
 
 
         ));
@@ -858,6 +967,7 @@ class DefaultController extends Controller
      */
     public function desactiveUserAction($id, Request $request)
     {
+      $page = 'users';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser  = $repository->findAll();
@@ -866,24 +976,25 @@ class DefaultController extends Controller
             'id' => $id
         ));
 
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+        $atelier = $repository->findOneBy(array('franchise' => $id));
+
         if ($User->isEnabled(true)) {
             $User->setEnabled(false);
+            $atelier->setActive(false);
         } else {
             $User->setEnabled(true);
+            $atelier->setActive(true);
         }
         $em = $this->getDoctrine()->getManager();
+        $em->persist($atelier);
         $em->persist($User);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
 
-
-
-
-        return $this->render('AdminBundle:Default:users.html.twig', array(
-            'listeUser' => $listeUser
-
-
-        ));
+        return $this->redirect($this->generateUrl('users', array(
+            'validate' => 'User bien modifié'
+        )));
 
     }
 
@@ -893,6 +1004,7 @@ class DefaultController extends Controller
      */
     public function setToProAction($id, Request $request)
     {
+      $page = 'users';
 
         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser  = $repository->findAll();
@@ -905,9 +1017,12 @@ class DefaultController extends Controller
         $User->setRoles(array(
             'ROLE_USER'
         ));
-
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+        $atelier = $repository->findOneBy(array('franchise' => $id));
+        $atelier->setActive(false);
         $em = $this->getDoctrine()->getManager();
         $em->persist($User);
+        $em->persist($atelier);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
 
@@ -915,7 +1030,9 @@ class DefaultController extends Controller
 
 
         return $this->render('AdminBundle:Default:users.html.twig', array(
-            'listeUser' => $listeUser
+            'listeUser' => $listeUser,
+            'page' => $page,
+
 
 
         ));
@@ -923,13 +1040,14 @@ class DefaultController extends Controller
     }
 
 
-
-    
     /**
      * @Route("/s/editDefinedProduct/{id}", name="editDefinedProduct")
      */
     public function editDefinedProductAction(Request $request, $id)
     {
+
+      $page = 'definedProduct';
+
         $produit = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product')->find($id);
         if (null === $produit) {
             throw new NotFoundHttpException("La commande est inexistante");
@@ -958,7 +1076,9 @@ class DefaultController extends Controller
                 'validate' => 'Produit bien ajouté',
                 'listeDefinedProduct' => $listeDefinedProduct,
                 'listeCommande' => $listeCommande,
-                'produit' => $produit
+                'produit' => $produit,
+                'page' => $page,
+
 
 
 
@@ -969,7 +1089,9 @@ class DefaultController extends Controller
             'form' => $form->createView(),
             'listeProduct' => $listeProduct,
             'listeCommande' => $listeCommande,
-            'produit' => $produit
+            'produit' => $produit,
+            'page' => $page,
+
 
 
 
@@ -985,6 +1107,7 @@ class DefaultController extends Controller
      */
     public function changeDefinedProductAction(Request $request, $id)
     {
+      $page = 'definedProduct';
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande = $repository->findBy(array(), array(
@@ -1020,7 +1143,9 @@ class DefaultController extends Controller
         return $this->redirect($this->generateUrl('definedProduct', array(
             'validate' => $statut,
             'listeDefinedProduct' => $listeDefinedProduct,
-            'listeCommande' => $listeCommande
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+
 
 
         )));
@@ -1031,6 +1156,8 @@ class DefaultController extends Controller
      */
     public function newUserAction(Request $request)
     {
+
+      $page = 'users';
 
         $user = new User();
         $form = $this->createForm(new RegistrationType(), $user);
@@ -1047,7 +1174,9 @@ class DefaultController extends Controller
         }
 
         return $this->render('AdminBundle:Default:newuser.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'page' => $page,
+
 
 
         ));

@@ -9,6 +9,9 @@
 {% block body %}
 
 
+<a href="{{ path('newuser') }}"><button style="z-index:999;position:fixed; bottom:60px;right:60px;" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button></a>
 
 <div class="mdl-grid demo-content">
 <div><h4>Utilisateurs</h4></div>
@@ -46,8 +49,10 @@
                     Utilisateur
                     {% endif %}
                   </td>
-                  <td> {% if user.enabled == 1 %} Actif {% else %} Inactif {% endif %}  </td>
-                  <td> <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}desactiver {% else %} activer {% endif %}</a> <a href="{{ path('settopro', { 'id' : user.id }) }}"> SetPro</a> 
+                  <td> {% if user.enabled == 1 %}                     <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
+ {% else %}                     <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
+ {% endif %}  </td>
+                  <td> <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}desactiver {% else %} activer {% endif %}</a> <a href="{{ path('settopro', { 'id' : user.id }) }}"> SetPro</a>
 <a href="{{ path('settouser', { 'id' : user.id }) }}"> setUser</a><a href="{{ path('newAtelier', { 'id' : user.id }) }}"> Atelier</a>
 </td>
 

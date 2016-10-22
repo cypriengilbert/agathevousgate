@@ -8,9 +8,13 @@
 
 {% block body %}
 
-
+<a href="{{ path('newcollection') }}"><button style="z-index:999;position:fixed; bottom:60px;right:60px;" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button></a>
 
 <div class="mdl-grid">
+
+
 <div><h4>Liste Collection</h4></div>
   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
   <table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">

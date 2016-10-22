@@ -26,6 +26,7 @@ class AtelierController extends Controller
    */
   public function newAtelierAction(Request $request, $id)
   {
+    $page = 'atelier';
 
       $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
       $franchise = $repository->findOneBy(array('id' => $id));
@@ -56,6 +57,7 @@ class AtelierController extends Controller
       }
       return $this->render('AdminBundle:Default:addAtelier.html.twig', array(
           'form' => $form->createView(),
+          'page' => $page,
       ));
 }
 
@@ -66,6 +68,7 @@ class AtelierController extends Controller
  */
 public function setToUserAction($id, Request $request)
 {
+  $page = 'atelier';
 
     $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
     $User       = $repository->findOneBy(array(
@@ -73,7 +76,6 @@ public function setToUserAction($id, Request $request)
     ));
 
     $User->setIsPro(0);
-
     $User->setRoles(array(
         'ROLE_USER'
     ));
@@ -84,13 +86,29 @@ public function setToUserAction($id, Request $request)
     $em->persist($User);
     $em->flush();
     $request->getSession()->getFlashBag()->add('notice', 'Atelier bien supprimer.');
-
-
-
-
     return $this->redirect($this->generateUrl('users', array(
         'validate' => 'Atelier bien supprimé'
     )));
+
+
+}
+
+
+/**
+ * @Route("/s/listeAtelier", name="listeAtelier")
+ */
+public function listeAtelierAction()
+{
+  $page = 'atelier';
+
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+    $ateliers = $repository->findAll();
+
+    return $this->render('AdminBundle:Default:listeAtelier.html.twig', array(
+      'ateliers' => $ateliers,
+      'page' => $page,
+
+    ));
 
 
 }
