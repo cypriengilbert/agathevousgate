@@ -458,6 +458,14 @@ $nbcommande = null;
     public function personnalisationAction(Request $request, $idCollection)
     {
 
+
+      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collectionOngoing   = $repository->findOneBy(array(
+          'id' => $idCollection
+      ));
+
+    if ($collectionOngoing->getActive() == true){
+
         $page = 'personnalisation';
 
 
@@ -555,7 +563,10 @@ $nbcommande = null;
 
         ));
 
-
+}
+else{
+throw $this->createNotFoundException('The collection does not exist');
+}
 
 
     }
@@ -783,6 +794,16 @@ $nbcommande = null;
      */
     public function listeProduitAction($id)
     {
+      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+      $collectionOngoing   = $repository->findOneBy(array(
+          'id' => $id
+      ));
+
+if ($collectionOngoing->getActive() == true){
+
+
+
+
         $page = 'listeproduit';
 
         $session = $this->get('session');
@@ -839,6 +860,10 @@ $nbcommande = null;
 
 
         ));
+}
+else{
+throw $this->createNotFoundException('The product does not exist');
+}
     }
 
 
