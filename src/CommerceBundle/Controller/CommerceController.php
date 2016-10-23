@@ -226,16 +226,10 @@ class CommerceController extends Controller
         } else {
             $id_user = null;
 
-$nbcommande = null;
+            $nbcommande = null;
             $listeAddedProduct = $session->get('panier_session');
-
-
             $nbarticlepanier = $session->get('nb_article');
-
-
-
-            //  }
-        }
+            }
 
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -319,17 +313,22 @@ $nbcommande = null;
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $em = $this->getDoctrine()->getManager();
-
             $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
-
-
             $repository   = $em->getRepository('CommerceBundle:AddedProduct');
             $articletoadd = $repository->findOneBy(array(
                 'id' => $id
             ));
             $quantity     = $articletoadd->getQuantity();
-
             $articletoadd->setQuantity($quantity + 1);
+            if ($articletoadd->getParent()){
+              $parent = $articletoadd->getParent();
+              $quantityParent = $parent->getQuantity();
+              if ($quantityParent <= $quantity){
+
+              $parent->setQuantity($quantityParent + 1);}
+              $em->persist($parent);
+
+            }
             $em->persist($articletoadd);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
@@ -343,6 +342,13 @@ $nbcommande = null;
             $listeAddedProduct = $session->get('panier_session');
             $quantity          = $listeAddedProduct[$id]->getQuantity();
             $listeAddedProduct[$id]->setQuantity($quantity + 1);
+            if ($listeAddedProduct[$id]->getParent()){
+              $parent = $listeAddedProduct[$id]->getParent();
+              $quantityParent = $parent->getQuantity();
+            if ($quantityParent <= $quantity){
+              $parent->setQuantity($quantityParent + 1);}
+            }
+
             $listeAddedProduct = array_values($listeAddedProduct);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
@@ -364,14 +370,28 @@ $nbcommande = null;
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $em = $this->getDoctrine()->getManager();
-
             $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
-
-
             $repository   = $em->getRepository('CommerceBundle:AddedProduct');
             $articletoadd = $repository->findOneBy(array(
                 'id' => $id
             ));
+
+            $repository     = $em->getRepository('CommerceBundle:AddedProduct');
+            $enfant = $repository->findBy(array(
+                'parent' => $id
+            ));
+            foreach ($enfant as $value) {
+
+              $quantityEnfant = $value->getQuantity();
+              if ($value->getParent()->getQuantity() <= $quantityEnfant ){
+              if ($quantityEnfant == 1){
+                $em->remove($value);
+              }elseif($quantityEnfant > 1){
+              $value->setQuantity($quantityEnfant - 1);
+                }}
+
+            }
+
             $quantity     = $articletoadd->getQuantity();
             if ($quantity == 1){
             $this->deleteProductAction($id);
@@ -391,11 +411,26 @@ $nbcommande = null;
             $session = $this->getRequest()->getSession();
 
             $listeAddedProduct = $session->get('panier_session');
+            foreach ($listeAddedProduct as $i => $value) {
+                if ($listeAddedProduct[$i]->getParent()) {
+                    if ($listeAddedProduct[$i]->getParent() == $listeAddedProduct[$id]) {
+                        $quantityEnfant = $listeAddedProduct[$i]->getQuantity();
+                        if ($listeAddedProduct[$i]->getParent()->getQuantity() <= $quantityEnfant ){
+                        if ($quantityEnfant == 1){
+                          unset($listeAddedProduct[$i]);
+                        }elseif($quantityEnfant > 1){
+                        $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
+                          }}
+                    }
+                }
+            }
+
             $quantity          = $listeAddedProduct[$id]->getQuantity();
             if ($quantity == 1){
             $this->deleteProductSessionAction($id);
             }elseif($quantity > 1){
             $listeAddedProduct[$id]->setQuantity($quantity - 1);
+
             $listeAddedProduct = array_values($listeAddedProduct);
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
@@ -420,14 +455,11 @@ $nbcommande = null;
 
         else {
             $session = $this->getRequest()->getSession();
-
             $listeAddedProduct = $session->get('panier_session');
-
-            foreach ($listeAddedProduct as $value) {
-                if ($value->getParent()) {
-                    if ($value->getParent()->getProduct() === "Noeud") {
-                        unset($value);
-
+            foreach ($listeAddedProduct as $i => $value) {
+                if ($listeAddedProduct[$i]->getParent()) {
+                    if ($listeAddedProduct[$i]->getParent() == $listeAddedProduct[$id]) {
+                        unset($listeAddedProduct[$i]);
 
                     }
                 }
@@ -439,11 +471,6 @@ $nbcommande = null;
             $nbarticlepanier = $session->get('nb_article');
 
         }
-
-
-
-
-
         $url      = $this->generateUrl('panier');
         $response = new RedirectResponse($url);
 
