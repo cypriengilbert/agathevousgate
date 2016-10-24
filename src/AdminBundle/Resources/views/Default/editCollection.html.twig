@@ -1,0 +1,182 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+<style>
+#collection_colors checkbox, #collection_colors label{
+margin-top:5px
+
+}
+
+[type="checkbox"]:not(:checked),
+	[type="checkbox"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+	[type="checkbox"]:not(:checked) + label,
+	[type="checkbox"]:checked + label {
+		position: relative;
+    left:-px;
+		padding-left: 75px;
+		cursor: pointer;
+    padding-bottom:10px;
+
+	}
+	[type="checkbox"]:not(:checked) + label:before,
+	[type="checkbox"]:checked + label:before,
+	[type="checkbox"]:not(:checked) + label:after,
+	[type="checkbox"]:checked + label:after {
+		content: '';
+		position: absolute;
+	}
+	[type="checkbox"]:not(:checked) + label:before,
+	[type="checkbox"]:checked + label:before {
+		left:0; top: -3px;
+		width: 65px; height: 30px;
+		background: #DDDDDD;
+		border-radius: 15px;
+		-webkit-transition: background-color .2s;
+		-moz-transition: background-color .2s;
+		-ms-transition: background-color .2s;
+		transition: background-color .2s;
+	}
+	[type="checkbox"]:not(:checked) + label:after,
+	[type="checkbox"]:checked + label:after {
+		width: 20px; height: 20px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+		border-radius: 50%;
+		background: #7F8C9A;
+		top: 2px; left: 5px;
+	}
+
+	/* on checked */
+	[type="checkbox"]:checked + label:before {
+		background:#34495E;
+	}
+	[type="checkbox"]:checked + label:after {
+		background: #39D2B4;
+		top: 2px; left: 40px;
+	}
+
+	[type="checkbox"]:checked + label .ui,
+	[type="checkbox"]:not(:checked) + label .ui:before,
+	[type="checkbox"]:checked + label .ui:after {
+		position: absolute;
+		left: 6px;
+		width: 65px;
+		border-radius: 15px;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 22px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+	}
+	[type="checkbox"]:not(:checked) + label .ui:before {
+		content: "no";
+		left: 32px
+	}
+	[type="checkbox"]:checked + label .ui:after {
+		content: "yes";
+		color: #39D2B4;
+	}
+	[type="checkbox"]:focus + label:before {
+		border: 1px dashed #777;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-top: -1px;
+	}
+</style>
+
+
+
+<div class="mdl-grid demo-content">
+
+<div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+<div class="mdl-cell mdl-cell--2-col">
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--6-col">
+
+<div style="padding-bottom:20px;"><h5>Collection {{ collection.title }}</h5></div>
+{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+<div class="mdl-cell mdl-cell--12-col">
+<div class="form-group">
+    {{ form_label(form.title, "Nom", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'disabled':'disabled'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.description) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+</div>
+<div class="mdl-cell mdl-cell--4-col">
+<div class="form-group">
+    {{ form_row(form.colors) }}
+</div>
+
+
+<div class="form-group">
+    {{ form_label(form.imageCollection, "Image slider", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.imageCollection) }}
+		<img src="{{ asset('/upload/image_collection/' ~ collection.imageName ) }}" style="width:100%;height:auto">
+
+    {{ form_widget(form.imageCollection, {'attr': {'class': ''}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.imageCollectionCarre, "Image Collection", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.imageCollectionCarre) }}
+		<img src="{{ asset('/upload/image_collection/' ~ collection.imageNameCarre ) }}" style="width:100%;height:auto">
+
+    {{ form_widget(form.imageCollectionCarre, {'attr': {'class': ''}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.imageCollectionIcone, "Image Icone", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.imageCollectionIcone) }}
+		<img src="{{ asset('/upload/image_collection/' ~ collection.imageNameIcone ) }}" style="background-color:grey;width:100%;max-height:100px;height:auto">
+
+    {{ form_widget(form.imageCollectionIcone, {'attr': {'class': ''}}) }}
+
+</div>
+
+</div>
+
+<div>
+        <input type="submit" value="Valider les modifications" class="btn btn-primary" />
+</div>
+{{ form_end(form) }}
+</div>
+<div class=" mdl-cell mdl-cell--2-col">
+</div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+
+
+{% endblock %}

@@ -17,7 +17,9 @@ class AtelierType extends AbstractType
         $builder
             ->add('name')
             ->add('adresse1')
-            ->add('adresse2')
+            ->add('adresse2',null, array(
+    'required' => false
+))
             ->add('zipcode')
             ->add('city')
             ->add('phone')
@@ -25,7 +27,7 @@ class AtelierType extends AbstractType
             ->add('franchise')
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */

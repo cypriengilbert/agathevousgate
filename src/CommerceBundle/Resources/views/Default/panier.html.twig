@@ -67,7 +67,7 @@
                             </div>
                             <div class="col-md-8" class="objectpanier" style="">
                                 <div style="height:200px; width:100%; position:relative">
-                                    <h2>{{ listepanier.size }} {{ listepanier.product.name }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
+                                    <h2>{{ listepanier.product.name }} {{ listepanier.size }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
 <div class="row">
 <div class="col-md-4" style="">
 
@@ -105,45 +105,45 @@
                                         {% endif %}
                                     </p>
 </div>
-<div class="col-md-4" style="position:relative; left:10px; top:-15px">
-                                    <p>
-                                    {% if listepanier.id %}
+<div class="col-md-4" style="position:relative; ">
 
-                                        <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
-                                            <div style="position:relative; top:20px; left:35px">
-                                                <i class="fa fa-plus fa-1" aria-hidden="true"></i>
-                                            </div>
-                                        </a>
-                                        <div>
-                                        <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
-                                        </div>
-                                        <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
-                                            <div>
-                                                <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
-                                                </i>
-                                            </div>
-                                        </a>
-                                    {% else %}
-                                        <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
-                                            <div style="position:relative; top:20px; left:35px">
-                                                <i class="fa fa-plus fa-1" aria-hidden="true">
-                                                </i>
-                                            </div>
-                                        </a>
-                                        <div>
-                                            <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
-                                        </div>
-                                        <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
-                                            <div>
-                                                <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
-                                                </i>
-                                            </div>
-                                        </a>
-                                          {% endif %}
-                                    </p>
 </div>
 <div class="col-md-4" style="">
+<p>
+{% if listepanier.id %}
 
+    <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
+        <div style="position:relative; top:20px; left:35px">
+            <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+        </div>
+    </a>
+    <div>
+    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+    </div>
+    <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
+        <div>
+            <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+            </i>
+        </div>
+    </a>
+{% else %}
+    <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+        <div style="position:relative; top:20px; left:35px">
+            <i class="fa fa-plus fa-1" aria-hidden="true">
+            </i>
+        </div>
+    </a>
+    <div>
+        <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+    </div>
+    <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+        <div>
+            <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+            </i>
+        </div>
+    </a>
+      {% endif %}
+</p>
 
 
                                 </div>
