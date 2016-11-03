@@ -141,11 +141,11 @@ class Image
 
 
         /**
-         * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+         * @param File|\Symfony\Component\HttpFoundation\File\Uploaded $image
          *
          * @return Image
          */
-        public function setUrlImageFile(File $urlImage = null)
+        public function setUrlImage(File $urlImage = null)
         {
             $this->urlImage = $urlImage;
 

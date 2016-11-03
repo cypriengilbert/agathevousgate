@@ -924,7 +924,7 @@ class DefaultController extends Controller
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Image bien enregistrée.');
 
-            return $this->redirect($this->generateUrl('listecolor'));
+            return $this->redirect($this->generateUrl('imageSite'));
         }
 
         return $this->render('AdminBundle:Default:editImage.html.twig', array(
