@@ -101,6 +101,12 @@ class Collection
      private $imageNameIcone;
 
 
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\JoinColumn(nullable=true)
+     */
+     private $firstColor;
+
 
     /**
      * Get id
@@ -348,4 +354,28 @@ class Collection
         {
             return $this->imageNameIcone;
         }
+
+    /**
+     * Set firstColor
+     *
+     * @param \CommerceBundle\Entity\Color $firstColor
+     *
+     * @return Collection
+     */
+    public function setFirstColor(\CommerceBundle\Entity\Color $firstColor)
+    {
+        $this->firstColor = $firstColor;
+
+        return $this;
+    }
+
+    /**
+     * Get firstColor
+     *
+     * @return \CommerceBundle\Entity\Color
+     */
+    public function getFirstColor()
+    {
+        return $this->firstColor;
+    }
 }

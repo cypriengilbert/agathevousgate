@@ -1048,7 +1048,11 @@ class DefaultController extends Controller
 
       $page = 'definedProduct';
 
-        $produit = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product')->find($id);
+      $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+      $produit       = $repository->findOneBy(array(
+          'id' => $id
+      ));
+      $product = $produit->getProduct();
         if (null === $produit) {
             throw new NotFoundHttpException("La commande est inexistante");
         }
@@ -1065,8 +1069,11 @@ class DefaultController extends Controller
         $listeProduct        = $repository->findAll();
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\defined_productType', $produit);
+
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $produit->setProduct($product);
+
             $em->persist($produit);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');

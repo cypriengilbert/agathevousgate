@@ -50,12 +50,12 @@ window.onbeforeunload = function () {
             <div class="col-sm-6 no_padding">
                 <!-- Aperçu noeud-->
                 <div class="noeud_position">
-                {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors|slice(0,1) %} {% if colors.isActive == true %}
-                {% if colors.isBasic == true %}
+                {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+                {% if colors == collection.firstColor %}
                     <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ colors.imagecolorNoeud1Name )}});"></div>
+
                     <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ colors.imagecolorNoeud2Name )}});"></div>
                     <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ colors.imagecolorNoeud3Name )}});"></div>
-                {% endif %}
                 {% endif %}
                 {% endfor %}
                 {% endif %}
@@ -1043,47 +1043,7 @@ document.getElementById('boutons_img').innerHTML = route;
 
     /*Script changement background url pour panelheading*/
 
-    function get_data(i,panelheading, n1, n2, n3,noeud_place, c1, c2) {
-    blnBlocage = true;
-      document.getElementById(panelheading).style.backgroundImage = "linear-gradient( rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) ),url("+i+")";
-      if (noeud_place == 'noeuddevant'){
-      document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
-      document.getElementById('coffret_big_1').style.backgroundImage = "url("+c1+")";
-      document.getElementById('Coffret_petit_1').style.backgroundImage = "url("+c2+")";
 
-        }
-      else if (noeud_place == 'noeudderriere') {
-      document.getElementById(noeud_place).style.backgroundImage = "url("+n2+")";
-      document.getElementById('coffret_big_2').style.backgroundImage = "url("+c1+")";
-      document.getElementById('Coffret_petit_2').style.backgroundImage = "url("+c2+")";
-
-      }
-      else if (noeud_place == 'noeudpetit') {
-      document.getElementById(noeud_place).style.backgroundImage = "url("+n3+")";
-
-      }
-      else if (noeud_place == 'coffret_1') {
-        document.getElementById('coffret_big_3').style.backgroundImage = "url("+c1+")";
-        document.getElementById('Coffret_petit_3').style.backgroundImage = "url("+c2+")";
-
-      }
-      else if (noeud_place == 'coffret_2') {
-        document.getElementById('coffret_big_4').style.backgroundImage = "url("+c1+")";
-        document.getElementById('Coffret_petit_4').style.backgroundImage = "url("+c2+")";
-
-      }
-
-      else {}
-
-      /*document.getElementById('noeuddevant').style.backgroundImage = "url("+n1+")";
-      document.getElementById('noeudderriere').style.backgroundImage = "url("+n2+")";
-      document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";*/
-
-
-
-
-
-    }
 
 
 $(document).ready(function(){
@@ -1647,6 +1607,20 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 </script>
+
+{% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+{% if colors == collection.firstColor %}
+<script>
+document.getElementById('{{ colors.imageColorName }}_1').click();
+document.getElementById('{{ colors.imageColorName }}_2').click();
+document.getElementById('{{ colors.imageColorName }}_3').click();
+</script>
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
 
 </body>
 {% endblock %}

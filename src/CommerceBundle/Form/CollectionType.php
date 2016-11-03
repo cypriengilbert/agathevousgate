@@ -26,7 +26,18 @@ class CollectionType extends AbstractType
         $builder
             ->add('title')
 
-
+            ->add('firstColor', EntityType::class, array(
+                                     'class' => 'CommerceBundle:Color',
+                                     'choice_label' => 'name',
+                                    'multiple' => false,
+                                    'expanded' => false,
+                                     'required' => true,
+                                     'query_builder' => function (EntityRepository $er) {
+                                             return $er->createQueryBuilder('u')
+                                                 ->orderBy('u.id', 'ASC')
+                                                  ->where('u.isActive = true');
+                                         }
+                                 ))
 
           ->add('colors', EntityType::class, array(
                                    'class' => 'CommerceBundle:Color',
