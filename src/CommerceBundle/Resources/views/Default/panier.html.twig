@@ -151,14 +151,23 @@
 </div>
                             <div class="col-md-1 delete_icon" >
                             <p >
+                          <style>
+                          .delete{
+                            background:none;
+                            border:none;
+                            font-size:1em;
+                            
+                          }
+</style>
 
                             {% if listepanier.id %}
-                                <a href="{{ path('deleteproduct',{'id':listepanier.id} ) }}">
+                                <button class="delete"  onclick="this.disabled=true; window.location = '{{ path("deleteproduct",{"id":listepanier.id} ) }}';" >
                                     <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                                </a>
+                                </button>
+
                             {% else  %}
 
-                                <a href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}">
+                                <a class="delete" href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}" onclick="this.href='#'; window.location = 'http://www.yoururl.com';" >
                                     <i class="fa fa-trash-o" aria-hidden="true" ></i>
 
                                 </a>
