@@ -51,7 +51,12 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     {{ form_widget(form.name, {'attr': {'class': 'form-control', 'disabled' : 'disabled'}}) }}
 
 </div>
+<div class="form-group">
+    {{ form_label(form.url, "Lien", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.url) }}
+    {{ form_widget(form.url, {'attr': {'class': 'form-control'}}) }}
 
+</div>
 <div class="form-group">
     {{ form_label(form.urlImage, "Nom", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.urlImage) }}

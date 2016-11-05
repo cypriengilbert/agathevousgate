@@ -18,6 +18,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('url')
             ->add('urlImage', 'vich_image', array(
               'required'      => true,
               'label' => false,

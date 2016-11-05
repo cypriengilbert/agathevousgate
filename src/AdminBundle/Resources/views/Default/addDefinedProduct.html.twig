@@ -137,7 +137,7 @@ margin-top:5px
 
 
 <div class="form-group" id="color1" >
-    {{ form_label(form.color1, "Interieur", {'label_attr': {'class': ''}}) }}
+    {{ form_label(form.color1, "Exterieur", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.color1) }}
     {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
 
@@ -153,7 +153,7 @@ style="display:none"
 {% else %}
 style="display:none"
 {% endif %}>
-    {{ form_label(form.color2, "Exterieure", {'label_attr': {'class': ''}}) }}
+    {{ form_label(form.color2, "Interieur", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.color2) }}
     {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
 

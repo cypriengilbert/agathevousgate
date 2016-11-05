@@ -52,7 +52,7 @@
                 <div class="carousel-inner" role="listbox">
                 {% for slider in slider %}
                     <div class="item {% if loop.index is divisibleby(2) %}active{% endif %}">
-                            <img src="{{ asset('upload/image_site/' ~ slider.imageName) }}" alt="slider">
+                            <a href="{{ slider.url }}"><img src="{{ asset('upload/image_site/' ~ slider.imageName) }}" alt="slider"></a>
                     </div>
 
 
@@ -201,9 +201,9 @@
         <!--<div class="col-sm-3 col-xs-3 produits_populaires_image_left"><img src="{{ asset('images/image_beta.jpg') }}" alt="logo noeud" style="width: 100%; height: auto;"></div>
         <div class="col-sm-3 col-xs-3 produits_populaires_image"><img src="{{ asset('images/image_beta.jpg') }}" alt="logo noeud" style="width: 100%; height: auto;"></div>
         <div class="col-sm-3 col-xs-3 produits_populaires_image_right"><img src="{{ asset('images/image_beta.jpg') }}" alt="logo noeud" style="width: 100%; height: auto;"></div>-->
-        <div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco1.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div>
-        <div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco2.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div>
-        <div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco3.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div>
+        <a href="{{ reco1.url }}"><div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco1.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div></a>
+        <a href="{{ reco2.url }}"><div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco2.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div></a>
+        <a href="{{ reco3.url }}"><div class="col-sm-4 col-xs-4"><img src="{{ asset('upload/image_site/' ~ reco3.imageName) }}" alt="logo noeud" style="width: 100%; height: auto;"></div></a>
       </div>
     </div>
 </div>

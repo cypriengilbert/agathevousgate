@@ -1283,11 +1283,13 @@ else if(i == 'coffret2'){
 if(document.getElementById('collapse_coffret2').className == 'panel-collapse collapse in'){
 document.getElementById('collapse_coffret2').className='panel-collapse collapse';
 document.getElementById('input_coffret2').checked = false;
+document.getElementById('popin_coffret2').style.display = 'none';
 var name = 'color5';
+
 document.querySelector('input[name="color5"]:checked').value = '0';
 document.getElementById('panel-heading-plugin-5').style.backgroundImage = 'none';
 $('input[name=' + name + ']').prop('checked',false);
-document.getElementById('popin_coffret2').style.display = 'none';
+
 
 }
 else {
@@ -1305,9 +1307,9 @@ if(document.getElementById('collapse_pochette').className == 'panel-collapse col
 document.getElementById('collapse_pochette').className='panel-collapse collapse';
 document.getElementById('panel-heading-plugin-7').style.backgroundColor = "#eae9e9";
 document.getElementById('titre_pochette').style.color = "#25225B";
+document.getElementById('popin_pochette').style.display = 'none';
 document.getElementById('input_pochette').checked = false;
 document.getElementById('input_pochette_popin').checked = false;
-document.getElementById('popin_pochette').style.display = 'none';
 
 
 var name = 'color6';
