@@ -42,6 +42,13 @@ class Product
      */
     private $description;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="cartname", type="string", length=255)
+     */
+    private $cartName;
+
 
     /**
      * @var int
@@ -49,6 +56,8 @@ class Product
      * @ORM\Column(name="nb_color", type="integer")
      */
     private $nb_color;
+
+
 
 
     /**
@@ -152,5 +161,29 @@ class Product
     public function getNbColor()
     {
         return $this->nb_color;
+    }
+
+    /**
+     * Set cartName
+     *
+     * @param string $cartName
+     *
+     * @return Product
+     */
+    public function setCartName($cartName)
+    {
+        $this->cartName = $cartName;
+
+        return $this;
+    }
+
+    /**
+     * Get cartName
+     *
+     * @return string
+     */
+    public function getCartName()
+    {
+        return $this->cartName;
     }
 }
