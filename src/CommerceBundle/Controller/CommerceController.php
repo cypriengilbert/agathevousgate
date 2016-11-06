@@ -1348,14 +1348,25 @@ throw $this->createNotFoundException('The product does not exist');
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
-                if($user->getParrain() != null){
+                if($user->getParrainEmail() != null){
                   $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                   $minParrainage = $repository->findOneBy(array(
                       'name' => 'nb_parrainage',
                   ));
-                $parrain = $user->getParrain();
+                $parrainEmail = $user->getParrainEmail();
+                $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+                $parrain  = $repository->findOneBy(array(
+                    'email' => $parrainEmail
+
+                ));
+
+
                 $nbparrainage = $parrain->getParrainage() + 1;
                 $parrain->setParrainage($nbparrainage);
+                $nbparrainage = $parrain->getParrainage();
+
+
+
                 if ($nbparrainage %$minParrainage->getMontant() == 0){
 
                   $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
@@ -1363,16 +1374,40 @@ throw $this->createNotFoundException('The product does not exist');
                       'emails/parrainage_valide_client.html.twig', array(
                         'user' => $parrain,
                       'filleul' => $user,
+                      'nb' => $minParrainage->getMontant()
+
                   )), 'text/html');
                   $this->get('mailer')->send($message);
                   $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
                   // app/Resources/views/Emails/registration.html.twig
-                      'emails/new_commande_agathe.html.twig', array(
+                      'emails/parrainage_valide_agathe.html.twig', array(
                       'user' => $parrain,
+                      'nb' => $minParrainage->getMontant()
                   )), 'text/html');
                   $this->get('mailer')->send($message);
 
-}
+
+                }
+                else{
+                $nbmin = $minParrainage->getMontant();
+                $resultat = $nbmin - $nbparrainage;
+                while ($resultat < 0){
+                $nbmin = $nbmin + $nbmin;
+                $resultat = $nbmin - $nbparrainage;
+
+                }
+
+                $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                'emails/parrainage_nonvalide_client.html.twig', array(
+                'user' => $parrain,
+                'filleul' => $parrain,
+                'nbmin' => $nbmin,
+                'nb' => $nbparrainage,
+
+                )), 'text/html');
+                $this->get('mailer')->send($message);
+                }
                 }
 
                 $url      = $this->generateUrl('paiementconfirmation');
@@ -1699,11 +1734,17 @@ throw $this->createNotFoundException('The product does not exist');
 
             $remise = 0;
             if ($codePromo) {
+
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
+
                     if ($codePromo->getGenre() == 'pourcentage') {
+
                         $remise = round($total_commande * $codePromo->getMontant() / 100, 2);
                     } elseif ($codePromo->getGenre() == 'remise') {
+
+
                         $remise = $codePromo->getMontant();
+
                     }
 
 
@@ -1711,11 +1752,14 @@ throw $this->createNotFoundException('The product does not exist');
                 }
 
 
-            } elseif ($nbcommande == 0 && $user->getParrain() != null) {
+            } elseif ($nbcommande == 0 && $user->getParrainEmail() != null) {
+
                 $remise = round($total_commande * ($remiseParrainage->getMontant()) / 100, 2);
+
             }
 
             if ($total_commande < $minLivraison->getMontant()) {
+
                 if ($newcommande->getAtelierLivraison() == NULL) {
                     $total_commande = $total_commande + $coutLivraison->getMontant();
 
@@ -1749,7 +1793,10 @@ throw $this->createNotFoundException('The product does not exist');
                 'nbcommande' => $nbcommande,
                 'minLivraison' => $minLivraison,
                 'coutLivraison' => $coutLivraison,
-                'parrainage' => $remiseParrainage
+                'parrainage' => $remiseParrainage,
+                'price' => $total_commande,
+                'rem' => $newcommande->getRemise(),
+
             ));
 
 

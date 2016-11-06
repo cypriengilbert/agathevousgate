@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 <body>
+
    <section>
    <div class="container">
    <div class="row">
@@ -98,16 +99,16 @@
                   <div class="panel-body">
                      <div class="row">
                         <div class="col-xs-6 " style="">
-                           <p></p>
-                           <p>Sous-total</p>
+                           <p class="text-left"></p>
+                           <p class="text-left">Sous-total</p>
 
-                           <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
-<p>Livraison</p>
-                           <p>Total</p>
+                           <p class="text-left"> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
+<p class="text-left">Livraison</p>
+                           <p class="text-left">Total</p>
                         </div>
                         <div class="col-xs-6" >
                            <p></p>
-                           <p> {{ totalsum }} €</p>
+                           <p class="text-right"> {{ totalsum }} €</p>
                            {% set livraison = 0 %}
                            {% set codePromo = app.session.get('codePromo') %}
                                {% if codePromo %}
@@ -121,15 +122,15 @@
                                        {% elseif codePromo.genre  == 'fdp' %}
                                            {% set livraison = 0 %}
                                        {% endif %}
-                                       <p ><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
+                                       <p class="text-right" ><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
                                        {% set totalsum = totalsum - remise|round(2, 'floor') %}
 
                                    {% else %}
-                                   <p >0 €</p>
+                                   <p class="text-right" >0 €</p>
                                  {% endif %}
 {% elseif nbcommande == 0 and app.user.parrainEmail is not null %}
 {% set remise = totalsum * (parrainage.montant / 100) %}
-<p ><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
+<p class="text-right" ><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
 {% set totalsum = totalsum - remise|round(2, 'floor') %}
                                 {% else %}
 
@@ -162,8 +163,8 @@
 
 
                                {% endif %}
-                           <p ><strong> + {{ livraison }} €</strong></p>
-                           <p><strong>  {{ totalsum + livraison }} €</strong></p>
+                           <p class="text-right"><strong> + {{ livraison }} €</strong></p>
+                           <p class="text-right"><strong>  {{ totalsum + livraison }} €</strong></p>
                         </div>
                      </div>
 
@@ -196,5 +197,18 @@ data-label="Confirmer le paiement"></script>
 </div>
    </div>
 </div>
+<div id="div_attente" style="display:none; position:absolute; top:0; left:0; height:100%; width:100%; z-index:10; background-color:rgba(0,0,0,0.5)">
+<img src="{{ asset('images/ball-triangle.svg')}}" style="position:absolute; top:40%; left:40%; height:20%; width:20%"/><br><p style="position:absolute; top:30%; left:45%;color:white;">Paiement en cours...</p>
+</div>
+
 </body>
+<script>
+$(".stripe-button-el").click(function() {
+setTimeout("document.getElementById('div_attente').style.display = 'block'", 2000)
+
+});
+
+
+
+</script>
 {% endblock %}
