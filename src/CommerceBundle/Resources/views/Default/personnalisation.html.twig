@@ -360,7 +360,7 @@ window.onbeforeunload = function () {
                                                   <h4 class="panel-title">
                           Couleur 4 - Combinaisons: 128</h4>
                                               </div>
-                                              <div class="col-sm-1 col-xs-2">
+                                              <div class="col-sm-1 col-xs-2 no_padding">
                                                   <i class="fa fa-2x fa-chevron-down no_padding" style="color: rgb(255, 255, 255);"></i>
                                               </div>
                                           </div>
@@ -1167,9 +1167,11 @@ $("#panel-heading-plugin-6").click(function(){
 /*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-6").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-6").addClass('fa-chevron-up').removeClass('fa-chevron-down');
+      $('.fa-chevron-up',"#panel-heading-plugin-6").css( "color", "#FFF" );
     }
       else if ($('.fa-chevron-up',"#panel-heading-plugin-6").hasClass("fa-chevron-up")){
         $('.fa-chevron-up',"#panel-heading-plugin-6").addClass('fa-chevron-down').removeClass('fa-chevron-up');
+        $('.fa-chevron-down',"#panel-heading-plugin-6").css( "color", "rgb(37, 34, 91)" );
 
           }
 
@@ -1191,6 +1193,7 @@ $("#panel-heading-plugin-5").click(function(){
 /*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-5").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-5").addClass('fa-chevron-up').removeClass('fa-chevron-down');
+
     }
       else if ($('.fa-chevron-up',"#panel-heading-plugin-5").hasClass("fa-chevron-up")){
         $('.fa-chevron-up',"#panel-heading-plugin-5").addClass('fa-chevron-down').removeClass('fa-chevron-up');
@@ -1203,10 +1206,12 @@ $("#panel-heading-plugin-7").click(function(){
 /*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-7").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-7").addClass('fa-chevron-up').removeClass('fa-chevron-down');
+      $('.fa-chevron-up',"#panel-heading-plugin-7").css( "color", "#FFF" );
+
     }
       else if ($('.fa-chevron-up',"#panel-heading-plugin-7").hasClass("fa-chevron-up")){
         $('.fa-chevron-up',"#panel-heading-plugin-7").addClass('fa-chevron-down').removeClass('fa-chevron-up');
-
+        $('.fa-chevron-down',"#panel-heading-plugin-7").css( "color", "rgb(37, 34, 91)" );
           }
 
 
@@ -1215,9 +1220,11 @@ $("#panel-heading-plugin-8").click(function(){
 /*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-8").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-8").addClass('fa-chevron-up').removeClass('fa-chevron-down');
+      $('.fa-chevron-up',"#panel-heading-plugin-8").css( "color", "#FFF" );
     }
       else if ($('.fa-chevron-up',"#panel-heading-plugin-8").hasClass("fa-chevron-up")){
         $('.fa-chevron-up',"#panel-heading-plugin-8").addClass('fa-chevron-down').removeClass('fa-chevron-up');
+        $('.fa-chevron-down',"#panel-heading-plugin-8").css( "color", "rgb(37, 34, 91)" );
 
           }
 
