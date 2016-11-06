@@ -109,7 +109,12 @@ margin-top: 3px;
     color: #242258 !important;
     margin-top: 1px !important;
 }
-
+.vtff{
+  color:rgb(169, 65, 65) !important;
+}
+.vtff:hover{
+  color:#242258 !important;
+}
 .flwus {
     background-color: rgba(255, 255, 255, 0.7);
     /*height: 3em;*/
@@ -174,6 +179,9 @@ html, body {
     .hidden_small {
         display: none;
     }
+    .gfy{
+        margin-right: 4rem;
+    }
 }
 
 @media only screen and (min-width: 768px) {
@@ -216,10 +224,6 @@ html, body {
 }
 
 .no_hover>li {
-
-  /*border-bottom: 0px solid #A94141 !important;
-  border-top: 0px solid #242258 !important;
-  margin-top: 6.5px !important;*/
   border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
   border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
   height: 56px;
@@ -229,7 +233,7 @@ html, body {
   border-top: 0px solid #242258 !important;
   margin-top: 6.5px !important;*/
   border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
-  border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
+  border-top: 7px solid rgba(255, 0, 0, 0.01)!important;
   height: 56px;
 }
 .no_hover>li:active {

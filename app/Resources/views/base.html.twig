@@ -73,7 +73,7 @@
 
         <div class="col-sm-3 col-xs-5">
             <div class="row text-center">
-            <div class="col-sm-8 col-xs-4 no_padding text-right" ><p class="hidden_small" style="margin-right:10px; color:#242258">Nous suivre</div>
+            <div class="col-sm-8 col-xs-4 no_padding text-right gfy" ><p class="hidden_small" style="margin-right:10px; color:#242258">Nous suivre</div>
             <a href="https://www.facebook.com/agathevousgate/" target="_blank"><div class="col-sm-2 col-xs-2 no_padding"><img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.5rem;margin: -0.9rem; /*margin-right:100px*/"></div></a>
             <a href="https://www.instagram.com/agathevousgate/" target="_blank">  <div class="col-sm-2 col-xs-2 no_padding"><img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.8rem;margin: -0.9rem;"></div></a>
             </div>
@@ -126,7 +126,7 @@
         </li>
         <li class="menu-account ">
             <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <i style="font-size: 1.3em !important; {% if page == 'compte' %}color:#242258;height:5.6rem;{% else %}color:#A94141;height:5.6rem; {% endif%}" class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                <i style="font-size: 1.3em !important; {% if page == 'compte' %}color:#242258;height:5.6rem;{% else %}color:#A94141;height:5.6rem; {% endif%}" class="fa fa-user vtff"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                 {% if is_granted('ROLE_USER') %}

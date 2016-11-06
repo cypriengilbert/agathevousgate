@@ -235,7 +235,7 @@
                   <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
                      <div class="panel-body text-center">
                         <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
-                        <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+
                      </div>
                   </div>
                   {% endif %}
@@ -263,7 +263,8 @@
             {% set boutons_price = enfants.product.price %}
             <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
                <div class="panel-body text-center">
-                  <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                  <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}"></br>
+                  <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                </div>
             </div>
             {% endif %}
