@@ -233,8 +233,9 @@
                   {% set pochette_id = enfants.id %}
                   {% set pochette_price = enfants.product.price %}
                   <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
-                     <div class="panel-body">
-                        <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                     <div class="panel-body text-center">
+                        <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                        <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                      </div>
                   </div>
                   {% endif %}
@@ -261,8 +262,8 @@
             {% set boutons_id = enfants.id %}
             {% set boutons_price = enfants.product.price %}
             <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
-               <div class="panel-body">
-                  <img style="width:100%;height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+               <div class="panel-body text-center">
+                  <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                </div>
             </div>
             {% endif %}

@@ -102,7 +102,7 @@
 <nav class="navbar navbar-default nav_agathe_1" data-spy="affix" data-offset-top="48">
   <div class="container nav_agathe_2">
     <div class="navbar-header nav_agathe_3">
-      <button type="button" class="navbar-toggle navbar_agathe" data-toggle="collapse" data-target="#myNavbar">
+      <button type="button" class="navbar-toggle navbar_agathe" data-toggle="collapse" data-target="#myNavbar" style="margin-top: 1.75rem;/*centrage menu*/">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -110,7 +110,7 @@
       <!-- Icones pour menu mobile -->
       <div class="test_responsiv text-right">
         <li style="margin-right:10px;" class="menu-panier ">
-            <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ;height:5.6rem; margin-bottom:3px;{% else %}color:#A94141;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.7em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i>
+            <a class="page-scroll border_menu" style=" {% if page == 'panier' %} border: 2px solid #242258 ;height:5.6rem; margin-bottom:3px;{% else %}color:#A94141;{% endif%};" href="{{ path('panier') }}"><i  style="font-size: 1.3em !important;{% if page == 'panier' %}color:#242258;  {% endif%}"  class="fa fa-shopping-cart"></i>
 {% if is_granted('ROLE_USER') %}
   {% if nbarticlepanier is defined %}
     {% if nbarticlepanier > 0 %}
@@ -126,7 +126,7 @@
         </li>
         <li class="menu-account ">
             <a class="dropdown-toggle border_menu" href="#" id="dropdownAccount" {% if page == 'compte' %}style="border-color:#242258"{% endif%} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <i style="font-size: 1.7em !important; {% if page == 'compte' %}color:#242258;height:5.6rem;{% else %}color:#A94141;height:5.6rem; {% endif%}" class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
+                <i style="font-size: 1.3em !important; {% if page == 'compte' %}color:#242258;height:5.6rem;{% else %}color:#A94141;height:5.6rem; {% endif%}" class="fa fa-user"></i>{% if is_granted('ROLE_USER') %} <span {% if page == 'compte' %}style="color:#242258"{% endif%}  class="glyphicon glyphicon-ok green" aria-hidden="true">{% endif %}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                 {% if is_granted('ROLE_USER') %}
