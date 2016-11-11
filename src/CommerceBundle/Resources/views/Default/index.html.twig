@@ -63,7 +63,7 @@
 
                 <!-- Controls -->
 
-                
+
             </div>
         </div>
     </section>
@@ -78,7 +78,7 @@
       </div>
       <div class="row text-center creer_bottom">
         <div class="col-sm-12">
-            <b><p>Le concept de noeuds papillon Agathe Vous Gâte est innovant et</br> personnalisé. Créez vos propres noeuds pap' made in France et</br> Accrochez-les partout</p></b>
+            <b><p>{{ text[0].text| raw }}</p></b>
         </div>
       </div>
 
@@ -211,19 +211,10 @@
       </div>
       <div class="row text-center">
         <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10"><p>Les noeuds-papillon Agathe Vous Gâte sont innovants, tendances et personnalisés</p></div>
+        <div class="col-sm-10 col-xs-10"><p>{{ text[1].text | raw }}</p></div>
         <div class="col-sm-1 col-xs-1"></div>
       </div>
-      <div class="row text-center">
-        <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10"><p>Une invention pratique et facile, fabriquée en France, pour habiller toute la famille !</p></div>
-        <div class="col-sm-1 col-xs-1"></div>
-      </div>
-      <div class="row text-center">
-        <div class="col-sm-1 col-xs-1"></div>
-        <div class="col-sm-10 col-xs-10"><p>Hommes, femmes et enfants composent et accrochent leur noeud comme bon leur semble.</p></div>
-        <div class="col-sm-1 col-xs-1"></div>
-      </div>
+
 
 </div>
 
@@ -283,7 +274,7 @@
       </div>
       <div class="col-sm-6 no_padding text-center" style="/*padding-left:30px;*/">
         <h1>PARTAGEZ VOS CREATIONS !</h1></br>
-        <p>Paras lacinia nisi in egestas egestas. Fusce ullamcorper, nisi sed dignissim pretium, velit justo consectetur magna, vitae finibus dui nunc in tellus. Aenean risus odio, scelerisque ac aliquet eget, iaculis et neque. Morbi consectetur nec nibh at tristique. Pellentesque iaculis, ipsum sit amet tristique convallis, augue</br>Mauris sodales sed turpis non feugiat. In pellentesque elit felis, quis sodales eros accumsan quis. Phasellus condimentum id eros id pretium. Nunc imperdiet ac sapien auctor congue. Nulla non dictum diam.</p></br>
+        <p>{{ text[2].text| raw }}</p></br>
         <h1>OU ENVOYEZ LES NOUS</h1></br>
 
         <!{{ form_start(form, {'attr': { 'class': '' } }) }}

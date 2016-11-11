@@ -118,7 +118,8 @@ class CommerceController extends Controller
         $sliderbas1  = $repository->findOneBy(array("name" => 'sliderbas1'));
         $sliderbas2 = $repository->findOneBy(array("name" => 'sliderbas2'));
         $sliderbas3  = $repository->findOneBy(array("name" => 'sliderbas3'));
-
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text = $repository->findBy(array('page' => 'index'));
 
 
         return $this->render('CommerceBundle:Default:index.html.twig', array(
@@ -142,7 +143,8 @@ class CommerceController extends Controller
             'image' => $listeImage,
             'slider' => $first3Image,
             'first3collection' => $first3collection,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'text' => $text
 
 
 
@@ -2137,11 +2139,18 @@ throw $this->createNotFoundException('The product does not exist');
         } else {
             $nbarticlepanier = null;
         }
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text_question = $repository->findBy(array('page' => 'faq_question'));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text_reponse = $repository->findBy(array('page' => 'faq_reponse'));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
         return $this->render('CommerceBundle:Default:faq.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
+            'text_question' => $text_question,
+            'text_reponse' => $text_reponse,
             'page' => $page
 
         ));
@@ -2176,6 +2185,9 @@ throw $this->createNotFoundException('The product does not exist');
         } else {
             $nbarticlepanier = null;
         }
+
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text = $repository->findOneBy(array('page' => 'qsn'));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
@@ -2185,6 +2197,7 @@ throw $this->createNotFoundException('The product does not exist');
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
             'page' => $page,
+            'text' => $text,
             'apropos' => $apropos,
 
         ));

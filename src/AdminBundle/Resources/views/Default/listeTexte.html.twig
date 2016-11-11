@@ -1,0 +1,56 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Ateliers</h4></div>
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+  <table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+           <tr>
+           <th width=5%>ID</th>
+          <th width=5%>Nom</th>
+           <th width=70%>Texte</th>
+           <th width=15% >Page</th>
+          <th width=5% >Action</th>
+
+           </tr>
+       </thead>
+
+       <tbody>
+{% for text in text %}
+                <tr>
+                  <td>{{ text.id }}</td>
+                  <td>{{ text.name }}</td>
+                  <td>  {{ text.text | raw }}</td>
+                  <td>
+                {{ text.page }}
+                  </td>
+<td>
+  <a href="{{ path('editText', {'id': text.id }) }}">Modifier</a>
+</td>
+                </tr>
+      {% endfor %}
+
+
+       </tbody>
+  </table>
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}
