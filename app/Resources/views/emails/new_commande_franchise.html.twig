@@ -196,7 +196,7 @@
                                                                                                       {% if totalsum - commande.remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
                                                                                                         {% set livraison = 0 %}
                                                                                                       {% else %}
-                                                                                                        {% set livraison = coutLivraison.montant %}
+                                                                                                        {% set livraison = coutLivraison %}
                                                                                                       {% endif %}
                                                                                                       <table width="100%" border="0" cellpadding="0" cellspacing="0" id="m_2691187929940511126bookingFeeFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
                                                                                                          <tbody >

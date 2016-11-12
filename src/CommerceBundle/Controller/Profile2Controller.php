@@ -165,15 +165,12 @@ if ($formAdress->handleRequest($request)->isValid()) {
 
       ));
       $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-      $coutLivraison    = $repository->findOneBy(array(
-          'name' => 'Cout_livraison'
-
-      ));
+      $coutLivraison    = $Commandeencours->getTransportMethod()->getPrice();
       return $this->render('CommerceBundle:Default:commandeDetails.html.twig', array(
           'listePanier' => $detailcommande,
           'commande' => $Commandeencours,
-'minLivraison' => $minLivraison,
-'coutLivraison' => $coutLivraison,
+      'minLivraison' => $minLivraison,
+      'coutLivraison' => $coutLivraison,
       ));
     }
 
