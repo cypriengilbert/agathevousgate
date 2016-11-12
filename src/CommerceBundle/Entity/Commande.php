@@ -3,6 +3,7 @@
 namespace CommerceBundle\Entity;
 use UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use CommerceBundle\Entity\ModeLivraison;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -45,18 +46,19 @@ class Commande
      */
     private $commentaire;
 
+
     /**
-     * @var string
-     *
-     * @ORM\Column(name="transport_method", type="string", length=255, nullable=true)
-     */
-    private $transportMethod;
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\ModeLivraison")
+    * @ORM\JoinColumn(nullable=true)
+    */
+   private $transportMethod;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="is_valid", type="boolean")
      */
+
     private $isValid;
 
     /**

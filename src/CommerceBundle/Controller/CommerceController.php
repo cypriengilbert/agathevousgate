@@ -828,71 +828,71 @@ throw $this->createNotFoundException('The collection does not exist');
           'id' => $id
       ));
 
-if ($collectionOngoing->getActive() == true){
+          if ($collectionOngoing->getActive() == true){
 
 
 
 
-        $page = 'listeproduit';
+                  $page = 'listeproduit';
 
-        $session = $this->get('session');
-        if ($session->get('panier_session')) {
+                  $session = $this->get('session');
+                  if ($session->get('panier_session')) {
 
-        } else {
-            $session->set('panier_session', array());
-        }
+                  } else {
+                      $session->set('panier_session', array());
+                  }
 
-        $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
-        $listeProduitActive = $repository->findBy(array(
-            'isactive' => true,
-            'collection' => $id
-        ));
-        $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collectionActive   = $repository->findBy(array(
-            'active' => 1
-        ));
-        $collectionPlus     = $repository->findOneBy(array(
-            'id' => $id + 1
-        ));
-        $collectionMoins    = $repository->findOneBy(array(
-            'id' => $id - 1
-        ));
+                  $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+                  $listeProduitActive = $repository->findBy(array(
+                      'isactive' => true,
+                      'collection' => $id
+                  ));
+                  $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                  $collectionActive   = $repository->findBy(array(
+                      'active' => 1
+                  ));
+                  $collectionPlus     = $repository->findOneBy(array(
+                      'id' => $id + 1
+                  ));
+                  $collectionMoins    = $repository->findOneBy(array(
+                      'id' => $id - 1
+                  ));
 
-        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
-            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $nbarticlepanier = count($repository->findBy(array(
-                'commande' => null,
-                'client' => $id_user
-            )));
-        } else {
-            $nbarticlepanier = 0;
-        }
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                  if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                      $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+                      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                      $nbarticlepanier = count($repository->findBy(array(
+                          'commande' => null,
+                          'client' => $id_user
+                      )));
+                  } else {
+                      $nbarticlepanier = 0;
+                  }
+                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
 
-        $collection = $repository->findOneBy(array(
-            'id' => $id
-        ));
+                  $collection = $repository->findOneBy(array(
+                      'id' => $id
+                  ));
 
-        $colors = $collection->getColors();
-
-
-
-        return $this->render('CommerceBundle:Default:listeProduit.html.twig', array(
-            'nbarticlepanier' => $nbarticlepanier,
-            'listecolor' => $colors,
-            'listeProduit' => $listeProduitActive,
-            'collection' => $collectionActive,
-            'page' => $page,
-            'collectionPlus' => $collectionPlus,
-            'collectionMoins' => $collectionMoins
+                  $colors = $collection->getColors();
 
 
-        ));
-}
-else{
-throw $this->createNotFoundException('The product does not exist');
-}
+
+                  return $this->render('CommerceBundle:Default:listeProduit.html.twig', array(
+                      'nbarticlepanier' => $nbarticlepanier,
+                      'listecolor' => $colors,
+                      'listeProduit' => $listeProduitActive,
+                      'collection' => $collectionActive,
+                      'page' => $page,
+                      'collectionPlus' => $collectionPlus,
+                      'collectionMoins' => $collectionMoins
+
+
+                  ));
+          }
+          else{
+          throw $this->createNotFoundException('The product does not exist');
+          }
     }
 
 
@@ -1245,9 +1245,6 @@ throw $this->createNotFoundException('The product does not exist');
         ));
         if ($commandeEnCours) {
             $price = $commandeEnCours->getPrice() * 100;
-
-
-            //Create the charge on Stripe's servers - this will charge the user's card
             try {
                 $charge = \Stripe\Charge::create(array(
                     "amount" => $price, // amount in cents, again
@@ -1266,10 +1263,7 @@ throw $this->createNotFoundException('The product does not exist');
 
                 ));
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                $coutLivraison    = $repository->findOneBy(array(
-                    'name' => 'Cout_livraison'
-
-                ));
+                $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 $remiseParrainage = $repository->findOneBy(array(
                     'name' => 'Parrainage'
@@ -1443,11 +1437,12 @@ throw $this->createNotFoundException('The product does not exist');
         $session = $this->get('session');
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
         $ateliers   = $repository->findBy(array('active' => true));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ModeLivraison');
+        $modelivraison  = $repository->findAll();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user       = $this->container->get('security.context')->getToken()->getUser();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-
             $nbarticle       = count($repository->findBy(array(
                 'commande' => null,
                 'client' => $user
@@ -1457,7 +1452,6 @@ throw $this->createNotFoundException('The product does not exist');
                 'client' => $user,
                 'isPanier' => true
             ));
-
             $listeAddedProduct = $session->get('panier_session');
             $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listePanier = $repository->findBy(array(
@@ -1475,17 +1469,13 @@ throw $this->createNotFoundException('The product does not exist');
             $this->get('session')->remove('panier_session');
 
             $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
-
-
             $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $nbarticlepanier = count($repository->findBy(array(
                 'commande' => null,
                 'client' => $id_user
             )));
 
-
             $userAdress = $user->getAdress();
-
             $formAdress = $this->get('form.factory')->create('UserBundle\Form\UserAdressType', $userAdress);
 
             if ($formAdress->handleRequest($request)->isValid()) {
@@ -1503,8 +1493,6 @@ throw $this->createNotFoundException('The product does not exist');
             ;
             $nbarticlepanier = $session->get('nb_article');
         }
-
-
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $repository->findBy(array(
             'active' => 1
@@ -1513,7 +1501,6 @@ throw $this->createNotFoundException('The product does not exist');
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             if ($commandeEnCours) {
-
 
                 $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
 
@@ -1531,6 +1518,7 @@ throw $this->createNotFoundException('The product does not exist');
 
                 } else {
                     return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array(
+                        'modelivraison' => $modelivraison,
                         'ateliers' => $ateliers,
                         'form' => $form->createView(),
                         'collection' => $collectionActive,
@@ -1601,6 +1589,7 @@ throw $this->createNotFoundException('The product does not exist');
                     return $this->render('CommerceBundle:Default:choose_livraison.html.twig', array(
                         'form' => $form->createView(),
                         'ateliers' => $ateliers,
+                        'modelivraison' => $modelivraison,
                         'collection' => $collectionActive,
                         'nbarticlepanier' => $nbarticle,
                         'formAdress' => $formAdress->createView()
@@ -1634,7 +1623,6 @@ throw $this->createNotFoundException('The product does not exist');
     public function choosenAtelierAction(Request $request, $id)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
-
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $commandeEnCours = $repository->findOneBy(array(
             'client' => $user,
@@ -1647,11 +1635,8 @@ throw $this->createNotFoundException('The product does not exist');
         ));
 
         $commandeEnCours->setAtelierLivraison($atelier);
-
-
         $em = $this->getDoctrine()->getManager();
         $em->persist($commandeEnCours);
-
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
         $url      = $this->generateUrl('choixpaiement');
@@ -1703,11 +1688,8 @@ throw $this->createNotFoundException('The product does not exist');
                 'name' => 'Livraison'
 
             ));
-            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-            $coutLivraison    = $repository->findOneBy(array(
-                'name' => 'Cout_livraison'
 
-            ));
+            $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
             $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
             $remiseParrainage = $repository->findOneBy(array(
                 'name' => 'Parrainage'
@@ -1763,13 +1745,13 @@ throw $this->createNotFoundException('The product does not exist');
             if ($total_commande < $minLivraison->getMontant()) {
 
                 if ($newcommande->getAtelierLivraison() == NULL) {
-                    $total_commande = $total_commande + $coutLivraison->getMontant();
+                    $total_commande = $total_commande + $coutLivraison;
 
                 }
                 if ($codePromo) {
                     if ($total_commande >= $codePromo->getMinimumCommande()) {
                         if ($codePromo->getGenre() == 'fdp') {
-                            $total_commande = $total_commande - $coutLivraison->getMontant();
+                            $total_commande = $total_commande - $coutLivraison;
 
                         }
                     }
