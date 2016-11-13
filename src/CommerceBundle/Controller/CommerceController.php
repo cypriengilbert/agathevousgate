@@ -1465,6 +1465,306 @@ throw $this->createNotFoundException('The collection does not exist');
         return $response;
     }
 
+    /**
+     * @Route("/paiement/confirmationPaypal", name="confirmationpaypal")
+     */
+    public function confirmationPaypalAction(Request $request)
+    {
+
+        $user            = $this->container->get('security.context')->getToken()->getUser();
+        $UserEmail       = $user->getEmail();
+        $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $commandeEnCours = $repository->findOneBy(array(
+            'client' => $user,
+            'isPanier' => true
+        ));
+        if ($commandeEnCours) {
+            $price = $commandeEnCours->getPrice() * 100;
+
+                $commandeEnCours->setIsPanier(false);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($commandeEnCours);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $minLivraison     = $repository->findOneBy(array(
+                    'name' => 'Livraison'
+
+                ));
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                if ($commandeEnCours->getTransportMethod() != null) {
+                  $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+
+              }         else{$coutLivraison = 0;}
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $remiseParrainage = $repository->findOneBy(array(
+                    'name' => 'Parrainage'
+
+                ));
+                $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $listePanier = $repository->findBy(array(
+                    'client' => $user,
+                    'commande' => null
+                ));
+                $nombrearticle = count($listePanier);
+
+                foreach ($listePanier as $value) {
+                    $value->setCommande($commandeEnCours);
+
+
+                    if($value->getProduct()->getName() == 'Noeud'){
+                    $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                    $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Pochette'){
+                      $pricebeforeremise = $value->getCollection()->getPricePochette();
+                      $value->setPrice($pricebeforeremise);
+
+                    }
+                    else if($value->getProduct()->getName() == 'Boutons'){
+                      $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret1'){
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret2'){
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else {
+                      $pricebeforeremise = $$value->getProduct()->getPrice();
+                      $value->setPrice($pricebeforeremise);
+
+                    }
+
+                    if ($commandeEnCours->getRemise() == 0){
+                    $value->setPriceRemise($value->getPrice());
+                  }
+                  else{
+                    $prorata = ($pricebeforeremise * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
+                    $remiseparproduit = $commandeEnCours->getRemise() * $prorata;
+                    $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
+                    $value->setPriceRemise(round($finalpriceproduit, 2));
+                  }
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($value);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+                }
+
+                if ($commandeEnCours->getAtelierLivraison()) {
+                    $atelier = $commandeEnCours->getAtelierLivraison();
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('cyprien@cypriengilbert.com')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
+                        'franchise' => $atelier->getFranchise(),
+                        'listePanier' => $listePanier,
+                        'commande' => $commandeEnCours,
+                        'date' => new \DateTime("now"),
+                        'user' => $user,
+                        'minLivraison' => $minLivraison,
+                        'coutLivraison' => $coutLivraison,
+                        'parrainage' => $remiseParrainage,
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
+
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/new_commande.html.twig', array(
+                          'franchise' => $atelier->getFranchise(),
+                          'listePanier' => $listePanier,
+                          'commande' => $commandeEnCours,
+                          'date' => new \DateTime("now"),
+                          'user' => $user,
+                          'minLivraison' => $minLivraison,
+                          'coutLivraison' => $coutLivraison,
+                          'parrainage' => $remiseParrainage,
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
+
+                } else{
+                  $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                  // app/Resources/views/Emails/registration.html.twig
+                      'emails/new_commande.html.twig', array(
+                        'listePanier' => $listePanier,
+                        'franchise' => null,
+                        'commande' => $commandeEnCours,
+                        'date' => new \DateTime("now"),
+                        'user' => $user,
+                        'minLivraison' => $minLivraison,
+                        'coutLivraison' => $coutLivraison,
+                        'parrainage' => $remiseParrainage,
+                  )), 'text/html');
+                  $this->get('mailer')->send($message);
+                }
+
+                $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/confirmation_commande.html.twig', array(
+                    'user' => $user,
+                    'franchise' => null,
+                    'date' => new \DateTime("now"),
+                    'listePanier' => $listePanier,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage,
+                    'commande' => $commandeEnCours,
+                )), 'text/html');
+                $this->get('mailer')->send($message);
+
+                if($user->getParrainEmail() != null){
+                  $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                  $minParrainage = $repository->findOneBy(array(
+                      'name' => 'nb_parrainage',
+                  ));
+                $parrainEmail = $user->getParrainEmail();
+                $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+                $parrain  = $repository->findOneBy(array(
+                    'email' => $parrainEmail
+                ));
+
+
+                $nbparrainage = $parrain->getParrainage() + 1;
+                $parrain->setParrainage($nbparrainage);
+                $nbparrainage = $parrain->getParrainage();
+
+
+
+                if ($nbparrainage %$minParrainage->getMontant() == 0){
+
+                  $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                  // app/Resources/views/Emails/registration.html.twig
+                      'emails/parrainage_valide_client.html.twig', array(
+                        'user' => $parrain,
+                      'filleul' => $user,
+                      'nb' => $minParrainage->getMontant()
+
+                  )), 'text/html');
+                  $this->get('mailer')->send($message);
+                  $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                  // app/Resources/views/Emails/registration.html.twig
+                      'emails/parrainage_valide_agathe.html.twig', array(
+                      'user' => $parrain,
+                      'nb' => $minParrainage->getMontant()
+                  )), 'text/html');
+                  $this->get('mailer')->send($message);
+
+
+                }
+                else{
+                $nbmin = $minParrainage->getMontant();
+                $resultat = $nbmin - $nbparrainage;
+                while ($resultat < 0){
+                $nbmin = $nbmin + $nbmin;
+                $resultat = $nbmin - $nbparrainage;
+
+                }
+
+                $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                'emails/parrainage_nonvalide_client.html.twig', array(
+                'user' => $parrain,
+                'filleul' => $parrain,
+                'nbmin' => $nbmin,
+                'nb' => $nbparrainage,
+
+                )), 'text/html');
+                $this->get('mailer')->send($message);
+                }
+                }
+
+                $url      = 'https://agathevousgate.cypriengilbert.com/paiement/confirmation';
+                $response = new RedirectResponse($url);
+                return $response;
+
+
+        }
+
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
+
+        return $response;
+    }
+
+
+    /**
+     * @Route("/paiement/charge/paypal", name="chargepaypal")
+     */
+    public function chargePaypalAction()
+    {
+
+      $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
+      $username            = 'agathe-facilitator_api1.agathevousgate.fr';
+      $password       = 'NZY9R22ZE2CKQET8';
+      $user            = $this->container->get('security.context')->getToken()->getUser();
+      $UserEmail       = $user->getEmail();
+      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+      $commandeEnCours = $repository->findOneBy(array(
+          'client' => $user,
+          'isPanier' => true
+      ));
+      $price = $commandeEnCours->getPrice();
+      $priceLivraison = $commandeEnCours->getTransportCost();
+
+      $params = array(
+      'USER'=>$username,
+      'PWD'=>$password,
+      'SIGNATURE'=>$token,
+      'METHOD'=>'SetExpressCheckout',
+      'VERSION'=>'124.0',
+      'RETURNURL'=>'https://agathevousgate.cypriengilbert.com/'.$this->generateUrl('confirmationpaypal'),
+      'CANCELURL'=>'https://agathevousgate.fr/'.$this->generateUrl('paiementechec'),
+      'PAYMENTREQUEST_0_AMT'=>$price,
+      'PAYMENTREQUEST_0_ITEMAMT'=>$price - $priceLivraison,
+      'PAYMENTREQUEST_0_SHIPPINGAMT'=>$priceLivraison,
+      'PAYMENTREQUEST_0_CURRENCYCODE'=>'EUR',
+      );
+
+      $params = http_build_query($params);
+      $endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+      CURLOPT_URL => $endpoint,
+      CURLOPT_POST => 1,
+      CURLOPT_POSTFIELDS => $params,
+      CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_SSL_VERIFYPEER => false,
+      CURLOPT_SSL_VERIFYHOST => false,
+      CURLOPT_VERBOSE => 1,
+
+      CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+
+      ));
+
+      $response = curl_exec($curl);
+      $responseArray = array();
+      parse_str($response , $responseArray);
+      if(curl_error($curl)){
+        curl_close($curl);
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
+
+        return $response;
+      } else{
+      if($responseArray['ACK'] == 'Success'){}
+      else{
+
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
+
+        return $response;
+}
+
+      }
+      echo('redirection vers Paypal en cours <br>');
+
+      curl_close($curl);
+
+$url = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$responseArray['TOKEN'];
+$response = new RedirectResponse($url);
+return $response;
+    }
+
 
     /**
      * @Route("/paiement/choixlivraison", name="choixlivraison")
