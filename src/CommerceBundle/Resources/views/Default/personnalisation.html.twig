@@ -321,7 +321,7 @@ window.onbeforeunload = function () {
                           <div class="container accordeon_noeud no_padding">
                               <div class="panel-group" id="accordion_coffret">
                                   <div class="panel panel-default">
-                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="#collapse_coffret1" id="panel-heading-plugin-4" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
+                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="#collapse_coffret1" id="panel-heading-plugin-4" class="panel-heading panel-heading-plugin" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );">
                                           <div class="row"  style="margin-right: 0px;">
                                               <div class="col-sm-11 col-xs-10">
                                                   <h4 class="panel-title">
@@ -356,7 +356,7 @@ window.onbeforeunload = function () {
 
 
                                   <div class="panel panel-default">
-                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2')" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ),url({{ asset('/upload/color/thumbnail/57bae578acaad.png')}});">
+                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2')" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );">
                                           <div class="row"  href=""  >
                                               <div class="col-sm-11 col-xs-10">
                                                   <h4 class="panel-title">
@@ -1663,6 +1663,7 @@ $(function () {
 {% if colors == collection.firstColor %}
 document.getElementById('{{ colors.imageColorName }}_2').click();
 {% if colors.isBasic == false %}
+
 document.getElementById('{{ colors.imageColorName }}_6').click();
 document.getElementById('{{ colors.imageColorName }}_7').click();
 
