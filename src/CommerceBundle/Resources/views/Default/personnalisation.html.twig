@@ -51,6 +51,7 @@ window.onbeforeunload = function () {
                 <!-- Aperçu noeud-->
                 <div class="noeud_position">
                 {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if colors == collection.firstColor %}
+                    <div id="noeudtext" class="noeud_text text-center"><h3 style="margin: 5px 3px;">{{ collection.title }}</h3></div>
                     <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ colors.imagecolorNoeud1Name )}});"></div>
                     <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ colors.imagecolorNoeud2Name )}});"></div>
                     <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ colors.imagecolorNoeud3Name )}});"></div>
@@ -327,11 +328,11 @@ window.onbeforeunload = function () {
                           Couleur 3 - combinaisons: 27</h4>
                                               </div>
                                               <div class="col-sm-1 col-xs-2 text-right">
-                                                  <i class="fa fa-2x fa-chevron-up no_padding" style="color: rgb(255, 255, 255);"></i>
+                                                  <!--<i class="fa fa-2x fa-chevron-up no_padding" style="color: rgb(255, 255, 255);"></i>-->
                                               </div>
                                           </div>
                                       </div>
-                                      <div id="collapse_coffret1" class="panel-collapse collapse in">
+                                      <div id="collapse_coffret1234lasaucisse" class="panel-collapse collapse in">
                                           <div class="panel-body">
                                               <ul class="img-thumbnails pull-left">
                                                   {% set X1 = 1 %}  {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if colors.isActive == true %}{% if colors.isBasic == true %}{% if X1 == 1 %}
@@ -1194,10 +1195,13 @@ $("#panel-heading-plugin-5").click(function(){
 /*alert("je suis panel")*/
   if ($('.fa-chevron-down',"#panel-heading-plugin-5").hasClass("fa-chevron-down")){
       $('.fa-chevron-down',"#panel-heading-plugin-5").addClass('fa-chevron-up').removeClass('fa-chevron-down');
+      /*Ici fonction maline qui va surement marché*/
+
 
     }
       else if ($('.fa-chevron-up',"#panel-heading-plugin-5").hasClass("fa-chevron-up")){
         $('.fa-chevron-up',"#panel-heading-plugin-5").addClass('fa-chevron-down').removeClass('fa-chevron-up');
+        $('.coffret_big_4').css("background-image", "url(ettutapeseuhtapescerefrainquiteplait.jpg)");
 
           }
 

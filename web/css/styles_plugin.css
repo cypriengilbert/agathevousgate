@@ -76,7 +76,7 @@
 
 /*Plugin Customisation noeud*/
 
-.noeud_devant, .noeud_derriere, .noeud_petit {
+.noeud_devant, .noeud_derriere, .noeud_petit{
     background-size: 100% auto !important;
     background-repeat: no-repeat !important;
     height: 100%;
@@ -85,7 +85,26 @@
     max-width: 550px;
     position: absolute;
 }
-
+.noeud_text{
+  position: absolute !important;
+  z-index: 0;
+  background-size: 100% auto !important;
+  background-repeat: no-repeat !important;
+  height: auto;
+  width: 30%;
+  max-height: auto;
+  max-width: 275px;
+  position: absolute;
+  border-size:2px;
+  border-style: dashed;
+  /*shadow*/
+  -moz-box-shadow: 10px 10px 5px #656565;
+-webkit-box-shadow: 10px 10px 5px #656565;
+-o-box-shadow: 10px 10px 5px #656565;
+box-shadow: 10px 10px 5px #656565;
+filter:progid:DXImageTransform.Microsoft.Shadow(color='#6565', Direction=135, Strength=5);
+left:35%;
+}
 .noeud_devant {
     position: absolute !important;
     z-index: 1;
