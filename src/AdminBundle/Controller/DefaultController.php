@@ -42,7 +42,6 @@ class DefaultController extends Controller
 
         }
 
-
         if ($session->get('dateout') === null) {
             $dateout = new \Datetime('2016-12-31');
         } else {
@@ -51,35 +50,25 @@ class DefaultController extends Controller
 
         }
 
-
-
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
 
         // createQueryBuilder automatically selects FROM AppBundle:Product
         // and aliases it to "p"
         $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
         $listeCommande = $query->getQuery()->getResult();
-
-
-
-
-
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
         $listeAddedProduct = $repository->findAll();
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $listeCollection   = $repository->findAll();
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $listeColor        = $repository->findAll();
-
         $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct   = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
         $listePromoCode = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
-
-
-
+         
         $tableau_produit = array();
         $null            = null;
         foreach ($listeProduct as $valueProduct) {
@@ -89,14 +78,7 @@ class DefaultController extends Controller
             // createQueryBuilder automatically selects FROM AppBundle:Product
             // and aliases it to "p"
             $query = $repository->createQueryBuilder('a')->select('count(a.id)')->join('a.commande', 'u')->where('u.date >= :datein')->setParameter('datein', $datein)->andWhere('u.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('u.isPanier = false')->andWhere('a.product = :id')->setParameter('id', $valueProduct->getId());
-
             $quantity_product = $query->getQuery()->getSingleScalarResult();
-
-
-
-
-
-
             $ligne_tableau_produit = array(
                 $valueProduct->getName(),
                 $quantity_product

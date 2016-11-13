@@ -1274,10 +1274,19 @@ throw $this->createNotFoundException('The collection does not exist');
                     'client' => $user,
                     'commande' => null
                 ));
+                $nombrearticle == count($listePanier);
 
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
+                    if ($commandeEncours->getRemise() == 0){
                     $value->setPrice($value->getProduct()->getPrice());
+                  }
+                  else{
+                    $prorata = $value->getProduct()->getPrice() / ($price - $commandeEncours->getTransportCost());
+                    $remiseparproduit = $commandeEncours->getRemise() * $prorata;
+                    $finalpriceproduit = $value->getProduct()->getPrice() - $remiseparproduit;
+                    $value->setPrice($finalpriceproduit);
+                  }
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($value);
                     $em->flush();
@@ -1506,6 +1515,7 @@ throw $this->createNotFoundException('The collection does not exist');
 
                 if ($form->handleRequest($request)->isValid()) {
                     $commandeEnCours->setAtelierLivraison(null);
+                    $commandeEnCours->setTransportCost($commandeEnCours->getTransportMethod()->getPrice());
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commandeEnCours);
 

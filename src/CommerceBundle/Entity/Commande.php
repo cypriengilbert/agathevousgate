@@ -81,6 +81,12 @@ class Commande
       */
       private $price;
 
+      /**
+       * @var float
+       *
+       * @ORM\Column(name="transportCost", type="float")
+       */
+       private $transportCost;
 
       /**
        * @var float
@@ -379,4 +385,28 @@ class Commande
 
 
 
+
+    /**
+     * Set transportCost
+     *
+     * @param float $transportCost
+     *
+     * @return Commande
+     */
+    public function setTransportCost($transportCost)
+    {
+        $this->transportCost = $transportCost;
+
+        return $this;
+    }
+
+    /**
+     * Get transportCost
+     *
+     * @return float
+     */
+    public function getTransportCost()
+    {
+        return $this->transportCost;
+    }
 }
