@@ -30,7 +30,19 @@
                                 {% set totalsum = null %}{% set numero_ligne = 0 %}
                                   {% set remise = 0 %}
                                     {% for listepanier in listePanier %}
+                                    {% if listepanier.product.name == 'Noeud' %}
+                                  {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                                  {% elseif listepanier.product.name == 'Coffret1' %}
+                                  {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                                  {% elseif listepanier.product.name == 'Coffret2' %}
+                                  {% set totalsum = totalsum + listepanier.collection.priceCoffret2 * listepanier.quantity %}
+                                  {% elseif listepanier.product.name == 'Pochette' %}
+                                  {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                                  {% elseif listepanier.product.name == 'Boutons' %}
+                                  {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                                  {% else %}
                                   {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                                  {% endif %}
                              <div class="col-sm-12 col-md-12" >
 
                             <div class="col-md-3 hidesmall" style="max-height:150px">
@@ -67,7 +79,20 @@
                             </div>
                             <div class="col-md-8" class="objectpanier" style="">
                                 <div style="height:200px; width:100%; position:relative">
-                                    <h2>{{ listepanier.product.cartName }} {{ listepanier.size }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} - {{ listepanier.product.price }}€ </h2>
+                                    <h2>{{ listepanier.product.cartName }} {{ listepanier.size }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} -
+                                    {% if listepanier.product.name == 'Noeud' %}
+                                    {{ listepanier.collection.priceNoeud }}
+                                    {% elseif listepanier.product.name == 'Coffret1' %}
+                                    {{ listepanier.collection.priceCoffret1 }}
+                                    {% elseif listepanier.product.name == 'Coffret2' %}
+                                    {{ listepanier.collection.priceCoffret2 }}
+                                    {% elseif listepanier.product.name == 'Pochette' %}
+                                    {{ listepanier.collection.pricePochette }}
+                                    {% elseif listepanier.product.name == 'Boutons' %}
+                                    {{ listepanier.collection.priceBouton }}
+                                    {% else %}
+                                    {{ listepanier.product.price }}
+                                    {% endif %}€ </h2>
 <div class="row">
 <div class="col-md-4" style="">
 
@@ -192,14 +217,12 @@
 
 {% else %} <p> Remise </p>
 {% endif %}
-<p>Livraison</p>
 
                                 <p>Total</p>
                             </div>
                             <div class="col-xs-5" >
                                 <p></p>
                                 <p class="text-right"><strong>  {{ totalsum }} €</strong></p>
-                                {% set livraison = 0 %}
                                 {% set codePromo = app.session.get('codePromo') %}
                                     {% if codePromo %}
                                         {% if codePromo.minimumCommande <= totalsum %}
@@ -210,7 +233,8 @@
                                             {% elseif codePromo.genre  == 'remise' %}
                                                 {% set remise = codePromo.montant %}
                                             {% elseif codePromo.genre  == 'fdp' %}
-                                                {% set livraison = 0 %}
+                                            {% elseif codePromo.genre  == 'fdp-remise' %}
+                                                {% set remise = codePromo.montant %}
                                             {% endif %}
                                             <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
                                             {% set totalsum = totalsum - remise|round(2, 'floor') %}
@@ -232,13 +256,7 @@
 
 
 
-                                    {% if totalsum + remise|round(2, 'floor') > minLivraison.montant %}
 
-                                      {% set livraison = 0 %}
-                                    {% else %}
-                                      {% set livraison = coutLivraison.montant %}
-
-                                    {% endif %}
 
                                     {% if codePromo %}
 
@@ -246,7 +264,8 @@
 
                                           {% if codePromo.genre == 'fdp' %}
 
-                                            {% set livraison = 0 %}
+                                            {% elseif codePromo.genre  == 'fdp-remise' %}
+                                                {% set remise = codePromo.montant %}
 
 
                                           {% endif %}
@@ -255,8 +274,7 @@
 
 
                                     {% endif %}
-                                <p class="text-right"><strong> + {{ livraison }} €</strong></p>
-                                <p class="text-right"> <strong>  {{ totalsum + livraison }} €</strong></p>
+                                <p class="text-right"> <strong>  {{ totalsum }} €</strong></p>
                             </div>
                             </div>
                         </div>

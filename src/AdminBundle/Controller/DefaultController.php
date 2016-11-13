@@ -68,7 +68,7 @@ class DefaultController extends Controller
         $listePromoCode = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
-         
+
         $tableau_produit = array();
         $null            = null;
         foreach ($listeProduct as $valueProduct) {
@@ -214,17 +214,58 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/addsuivi/{id}", name="addsuivi")
+     */
+    public function addSuiviAction(Request $request, $id)
+    {
+      $page = 'commande';
+
+      $commande = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande')->find($id);
+
+      $form = $this->get('form.factory')->create('CommerceBundle\Form\AddSuiviCommandeType', $commande);
+      if ($form->handleRequest($request)->isValid()) {
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($commande);
+          $em->flush();
+          $request->getSession()->getFlashBag()->add('notice', 'Commande bien enregistrée.');
+          return $this->redirect($this->generateUrl('validate', array(
+              'id' => $id,
+          )));
+
+      }
+
+      return $this->render('AdminBundle:Default:addSuivi.html.twig', array(
+        'id' => $id,
+        'page' => $page,
+        'validate' => 'Commande modifiée',
+        'form' => $form->createView()
+      ));
+
+
+
+
+    }
+
+
+
+
+    /**
      * @Route("/validate/{id}", name="validate")
      */
 
     public function validateCommandeAction(Request $request, $id)
     {
-      $page = 'commande';
+        $page = 'commande';
 
         $commande = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande')->find($id);
         if (null === $commande) {
             throw new NotFoundHttpException("La commande est inexistante");
         }
+        $id_user = $commande->getClient()->getId();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $user = $repository->findOneBy(array(
+            'id' => $id_user
+        ));
 
         $datetime = new \Datetime('now');
         $commande->setIsValid(true);
@@ -233,6 +274,19 @@ class DefaultController extends Controller
         $em->persist($commande);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+        $message = \Swift_Message::newInstance()->setSubject('Votre commande a été expédiée ! ')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+        // app/Resources/views/Emails/registration.html.twig
+            'emails/expedition_commande.html.twig', array(
+              'commande' => $commande,
+              'date' => new \DateTime("now"),
+              'user' => $user,
+
+        )), 'text/html');
+        $this->get('mailer')->send($message);
+
+
+
         $newId = $commande->getId();
         return $this->redirect($this->generateUrl('encours', array(
             'id' => $id,

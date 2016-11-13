@@ -119,7 +119,7 @@
                 <td>
 
 <a onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
-  window.location.href = '{{ path("validate",{"id": commande.id}) }}'
+  window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
 }"><i class="fa fa-check-square-o fa-2" aria-hidden="true"></i> </a> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
               </tr>
               {% endif %}

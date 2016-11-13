@@ -1,267 +1,233 @@
 {% extends 'templateadmin.html.twig' %}
-
-
-
 {% block script_calcul %}
-
 {% endblock %}
-
 {% block body %}
-
-
-
 <div class="mdl-grid demo-content">
-
-<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-
-<div><h4>Chiffres d'affaires 2016</h4>
-
-<input name="date_in" id="date_in" type="date" value="{{  app.session.get('datein') }}">
-
-<input name="date_out"  id="date_out" type="date" value="{{  app.session.get('dateout') }}">
-<input type="submit" name="Submit" onclick="selectdate()" class="btn btn-primary" value="Filtrer">
-
-<script>
-function selectdate(){
-datein = document.getElementById('date_in').value;
-dateout = document.getElementById('date_out').value;
-var route = "{{ path('setDate', {'in': 'DATEIN', 'out' : 'DATEOUT'}) }}";
-route = route.replace("DATEIN", datein);
-route = route.replace("DATEOUT", dateout);
-window.location = route;
-
-
-}
-</script>
+<div class="mdl-cell mdl-cell--12-col mdl-grid">
+<h4>Chiffres d'affaires</h4>
 </div>
-</div>
-<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-</div>
-<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-{% set totalMontant = 0 %}
-{% for commande in listeCommande %}
-    {% set totalMontant = totalMontant + commande.price %}
-{% endfor %}
-{{ totalMontant }}
-</div>
-</div>
-  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="height:30%;">
+   <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--6-col">
+      <div>
+         Du <input name="date_in" id="date_in" type="date" value="{{  app.session.get('datein') }}">
+         au <input name="date_out"  id="date_out" type="date" value="{{  app.session.get('dateout') }}">
+         <input type="submit" name="Submit" onclick="selectdate()" class="btn btn-primary" value="Filtrer">
+         <script>
+            function selectdate(){
+            datein = document.getElementById('date_in').value;
+            dateout = document.getElementById('date_out').value;
+            var route = "{{ path('setDate', {'in': 'DATEIN', 'out' : 'DATEOUT'}) }}";
+            route = route.replace("DATEIN", datein);
+            route = route.replace("DATEOUT", dateout);
+            window.location = route;
 
-    <div id="CA_total" style="width:100%; height: 100%"></div>
+
+            }
+         </script>
+      </div>
+   </div>
+   <div class="mdl-cell--2-col"></div>
+   <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+CA Total
+   <div class="mdl-cell--12-col">
+   {% set totalMontant = 0 %}
+   {% for commande in listeCommande %}
+   {% set totalMontant = totalMontant + commande.price %}
+   {% endfor %}
+   <h3>{{ totalMontant }}€</h3>
   </div>
-  <div class="mdl-cell mdl-cell--12-col mdl-grid"><h4>Statistiques répartition 2016</h4></div>
 
-  <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-    <div id="homme_femme"></div>
+   </div>
 
-
-  </div>
-  <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-<div id="age"></div>
+<div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="height:30%;">
+   <div id="CA_total" style="width:100%; height: 100%"></div>
+</div>
+<div class="mdl-cell mdl-cell--12-col mdl-grid">
+   <h4>Statistiques répartition 2016</h4>
 </div>
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-<div id="pro_particulier"></div>
+   <div id="homme_femme"></div>
 </div>
-
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-<div id="meilleure_vente"></div>
+   <div id="age"></div>
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+   <div id="pro_particulier"></div>
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+   <div id="meilleure_vente"></div>
 </div>
 <div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--12-col">
-<div id="venteparproduit">
-<table class="table table-striped table-bordered">
-<thead>
-<tr>
-<th width=50%>Produit</th>
-<th width=50%>Montant</th>
-
-</tr>
-</thead>
-<tbody>
-{% set totalproduit = 0 %}
-{% for listeCollection in listeCollection %}
-<tr>
-<td>
-{{ listeCollection.title }}
-</td>
-<td>
-</td>
-</tr>
-  {% set totalproduit = 0 %}
-{% for listeProduct in listeProduct %}
-{% set totalproduit = 0 %}
-
-  {% for listeCommande in listeCommande %}
-        {% for listeAddedProduct in listeAddedProduct %}
-          {% if listeAddedProduct.product == listeProduct %}
+   <div id="venteparproduit">
+      <table class="table table-striped table-bordered">
+         <thead>
+            <tr>
+              <th width=33%>Collection</th>
+               <th width=33%>Produit</th>
+               <th width=34%>Montant</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% set totalproduit = 0 %}
+            {% for listeCollection in listeCollection %}
+            <tr>
+               <td>
+                  <b>{{ listeCollection.title }}</b>
+               </td>
+               <td></td>
+              <td></td>
+            </tr>
+            {% set totalproduit = 0 %}
+            {% for listeProduct in listeProduct %}
+            {% set totalproduit = 0 %}
+            {% for listeCommande in listeCommande %}
+            {% for listeAddedProduct in listeAddedProduct %}
+            {% if listeAddedProduct.product == listeProduct %}
             {% if listeAddedProduct.commande == listeCommande %}
-              {% if listeAddedProduct.collection == listeCollection %}
-                {% set totalproduit = totalproduit + listeAddedProduct.price %}
-              {% endif %}
+            {% if listeAddedProduct.collection == listeCollection %}
+            {% set totalproduit = totalproduit + listeAddedProduct.priceRemise %}
             {% endif %}
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-      <tr>
-        <td> {{ listeProduct.name }} </td>
-        <td> {{ totalproduit }}€ </td>
-      </tr>
-    {% endfor %}
-{% endfor %}
-</tbody>
-</table>
-</div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            <tr>
+                <td></td>
+               <td> {{ listeProduct.name }} </td>
+               <td> {{ totalproduit }}€ </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
 </div>
 <script src="{{ asset('js/material.min.js') }}"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-
-
-
 {% set totalFemme = 0 %}
 {% for commande in listeCommande %}
-  {% if commande.client.genre == "madame" or commande.client.genre == "mademoiselle"  %}
-    {% set totalFemme = totalFemme + commande.price %}
-  {% endif %}
+{% if commande.client.genre == "madame" or commande.client.genre == "mademoiselle"  %}
+{% set totalFemme = totalFemme + commande.price %}
+{% endif %}
 {% endfor %}
-
-
 {% set totalHomme = 0 %}
 {% for commande in listeCommande %}
-  {% if (commande.client.genre == "monsieur") %}
-    {% set totalHomme = totalHomme + commande.price %}
-  {% endif %}
+{% if (commande.client.genre == "monsieur") %}
+{% set totalHomme = totalHomme + commande.price %}
+{% endif %}
 {% endfor %}
-
-
-
-
 {% set total_2030 = 0 %}
 {% set total_020 = 0 %}
 {% set total_3040 = 0 %}
 {% set total_4050 = 0 %}
 {% set total_5060 = 0 %}
 {% set total_60 = 0 %}
-
-
 {% set totalPro = 0 %}
 {% set totalParticulier = 0 %}
-
 {% for commande in listeCommande %}
 {% if commande.client.isPro == true %}
-  {% set totalPro = totalPro + commande.price %}
-  {% else %}
-  {% set totalParticulier = totalParticulier + commande.price %}
+{% set totalPro = totalPro + commande.price %}
+{% else %}
+{% set totalParticulier = totalParticulier + commande.price %}
 {% endif %}
 {% endfor %}
-
-
 {% set now = 'now'|date("Y") %}
 {% for commande in listeCommande %}
-  {% if now - commande.client.naissance|date("Y") <= 20 %}
-    {% set total_020 = total_020 + commande.price %}
-  {% elseif now - commande.client.naissance|date("Y") > 20 and now - commande.client.naissance|date("Y") <= 30 %}
-  {% set total_2030 = total_2030 + commande.price %}
-  {% elseif now - commande.client.naissance|date("Y") > 30 and now - commande.client.naissance|date("Y") <= 40 %}
-  {% set total_3040 = total_3040 + commande.price %}
-  {% elseif now - commande.client.naissance|date("Y") > 40 and now - commande.client.naissance|date("Y") <= 50 %}
-  {% set total_4050 = total_4050 + commande.price %}
-  {% elseif now - commande.client.naissance|date("Y") > 50 and now - commande.client.naissance|date("Y") <= 60 %}
-  {% set total_5060 = total_5060 + commande.price %}
-  {% elseif now - commande.client.naissance|date("Y") > 60 %}
-  {% set total_60 = total_60 + commande.price %}
-
+{% if now - commande.client.naissance|date("Y") <= 20 %}
+{% set total_020 = total_020 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 20 and now - commande.client.naissance|date("Y") <= 30 %}
+{% set total_2030 = total_2030 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 30 and now - commande.client.naissance|date("Y") <= 40 %}
+{% set total_3040 = total_3040 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 40 and now - commande.client.naissance|date("Y") <= 50 %}
+{% set total_4050 = total_4050 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 50 and now - commande.client.naissance|date("Y") <= 60 %}
+{% set total_5060 = total_5060 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 60 %}
+{% set total_60 = total_60 + commande.price %}
 {% endif %}
 {% endfor %}
-
-
 <script>
-new Morris.Line({
-// ID of the element in which to draw the chart.
-element: 'CA_total',
-// Chart data records -- each entry in this array corresponds to a point on
-// the chart.
-data: [
-  {% set total=0 %}
- {% for ca in listeCommande %}
+   new Morris.Line({
+   // ID of the element in which to draw the chart.
+   element: 'CA_total',
+   // Chart data records -- each entry in this array corresponds to a point on
+   // the chart.
+   data: [
+     {% set total=0 %}
+    {% for ca in listeCommande %}
 
-  {% set total = total + ca.price %}
-  { date: "{{ ca.date|date("Y-m-d") }}", value: "{{ total }}" },
-{% endfor %}
-],
-// The name of the data record attribute that contains x-values.
-xkey: 'date',
-// A list of names of data record attributes that contain y-values.
-ykeys: ['value'],
-labels: ['Montant'],
+     {% set total = total + ca.price %}
+     { date: "{{ ca.date|date("Y-m-d") }}", value: "{{ total }}" },
+   {% endfor %}
+   ],
+   // The name of the data record attribute that contains x-values.
+   xkey: 'date',
+   // A list of names of data record attributes that contain y-values.
+   ykeys: ['value'],
+   labels: ['Montant'],
 
-// Labels for the ykeys -- will be displayed when you hover over the
-// chart.
+   // Labels for the ykeys -- will be displayed when you hover over the
+   // chart.
 
-});
+   });
 </script>
 <script>
-Morris.Donut({
-  element: 'homme_femme',
-  data: [
-    {label: "Homme", value: {{ totalHomme }} },
-    {label: "Femme", value: {{ totalFemme }} }
+   Morris.Donut({
+     element: 'homme_femme',
+     data: [
+       {label: "Homme", value: {{ totalHomme }} },
+       {label: "Femme", value: {{ totalFemme }} }
 
-  ]
-});
+     ]
+   });
 </script>
-
 <script>
-Morris.Donut({
-  element: 'pro_particulier',
-  data: [
-    {label: "Pro", value: {{ totalPro }} },
-    {label: "Particulier", value: {{ totalParticulier }} }
+   Morris.Donut({
+     element: 'pro_particulier',
+     data: [
+       {label: "Pro", value: {{ totalPro }} },
+       {label: "Particulier", value: {{ totalParticulier }} }
 
-  ]
-});
+     ]
+   });
 </script>
-
 <script>
-Morris.Donut({
-  element: 'age',
-  data: [
-    {label: "0-20 ans", value: {{ total_020 }} },
-    {label: "20-30 ans", value: {{ total_2030 }} },
-  {label: "30-40 ans", value: {{ total_3040 }} },
-  {label: "40-50 ans", value: {{ total_4050 }} },
-  {label: "50-60 ans", value: {{ total_5060 }} },
-  {label: "> 60 ans", value: {{ total_60 }} }
+   Morris.Donut({
+     element: 'age',
+     data: [
+       {label: "0-20 ans", value: {{ total_020 }} },
+       {label: "20-30 ans", value: {{ total_2030 }} },
+     {label: "30-40 ans", value: {{ total_3040 }} },
+     {label: "40-50 ans", value: {{ total_4050 }} },
+     {label: "50-60 ans", value: {{ total_5060 }} },
+     {label: "> 60 ans", value: {{ total_60 }} }
 
-  ],
-colors: ['#191970', '#eeba30', '#b10821', '#9361b5', '#849612', '#eb6111']
-});
+     ],
+   colors: ['#191970', '#eeba30', '#b10821', '#9361b5', '#849612', '#eb6111']
+   });
 </script>
-
 <script>
-Morris.Bar({
-  element: 'meilleure_vente',
-  data: [
+   Morris.Bar({
+     element: 'meilleure_vente',
+     data: [
 
-  {% for t in tableau_produit %}
-  {% for x,y in t %}
-  {% if loop.index is divisibleby(2) %}a: {{ y }} },{% else %}{y: "{{ y }}",{% endif %}
-  {% endfor %}
-  {% endfor %}
+     {% for t in tableau_produit %}
+     {% for x,y in t %}
+     {% if loop.index is divisibleby(2) %}a: {{ y }} },{% else %}{y: "{{ y }}",{% endif %}
+     {% endfor %}
+     {% endfor %}
 
 
 
-  ],
-  xkey: 'y',
-  ykeys: ['a'],
-  labels: ['Valeur']
+     ],
+     xkey: 'y',
+     ykeys: ['a'],
+     labels: ['Valeur']
 
-});
+   });
 </script>
-
-
 {% endblock %}
-
 {% block script_chart %}
-
 {% endblock %}

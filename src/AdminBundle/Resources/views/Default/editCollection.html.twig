@@ -15,8 +15,8 @@ margin-top:5px
 
 }
 
-[type="checkbox"]:not(:checked),
-	[type="checkbox"]:checked {
+#collection_colors [type="checkbox"]:not(:checked),
+	#collection_colors [type="checkbox"]:checked {
 		position: absolute;
 		left: -9999px;
 	}
@@ -128,9 +128,61 @@ margin-top:5px
 
 </div>
 <div class="form-group">
-    {{ form_label(form.firstColor, "Couleur de base", {'label_attr': {'class': ''}}) }}
+    {{ form_label(form.isPerso, "Personnalisable ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.isPerso) }}
+    {{ form_widget(form.isPerso, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div class="form-group">
+    {{ form_label(form.priceNoeud, "Prix du Noeud ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.priceNoeud) }}
+    {{ form_widget(form.priceNoeud, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.pricePochette, "Prix de la Pochette ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.pricePochette) }}
+    {{ form_widget(form.pricePochette, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.priceBouton, "Prix des boutons ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.priceBouton) }}
+    {{ form_widget(form.priceBouton, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.priceCoffret1, "Prix du coffret Trio ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.priceCoffret1) }}
+    {{ form_widget(form.priceCoffret1, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.priceCoffret2, "Prix du coffret Prestige ?", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.priceCoffret2) }}
+    {{ form_widget(form.priceCoffret2, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+
+
+<div class="form-group">
+    {{ form_label(form.firstColor, "Couleur de base - Extérieur", {'label_attr': {'class': ''}}) }}
     {{ form_errors(form.firstColor) }}
     {{ form_widget(form.firstColor, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.secondColor, "Couleur de base - Intérieur ", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.secondColor) }}
+    {{ form_widget(form.secondColor, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+<div class="form-group">
+    {{ form_label(form.thirdColor, "Couleur de base - Attache Centrale", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.thirdColor) }}
+    {{ form_widget(form.thirdColor, {'attr': {'class': 'form-control'}}) }}
 
 </div>
 </div>

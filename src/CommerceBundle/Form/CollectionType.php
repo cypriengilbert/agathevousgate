@@ -24,8 +24,15 @@ class CollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+        ->add('title')
 
+            ->add('priceNoeud')
+            ->add('pricePochette')
+            ->add('priceBouton')
+            ->add('priceCoffret1')
+            ->add('priceCoffret2')
+
+            ->add('isPerso', 'checkbox')
             ->add('firstColor', EntityType::class, array(
                                      'class' => 'CommerceBundle:Color',
                                      'choice_label' => 'name',
@@ -38,6 +45,30 @@ class CollectionType extends AbstractType
                                                   ->where('u.isActive = true');
                                          }
                                  ))
+                                 ->add('secondColor', EntityType::class, array(
+                                                          'class' => 'CommerceBundle:Color',
+                                                          'choice_label' => 'name',
+                                                         'multiple' => false,
+                                                         'expanded' => false,
+                                                          'required' => true,
+                                                          'query_builder' => function (EntityRepository $er) {
+                                                                  return $er->createQueryBuilder('u')
+                                                                      ->orderBy('u.id', 'ASC')
+                                                                       ->where('u.isActive = true');
+                                                              }
+                                                      ))
+                                                      ->add('thirdColor', EntityType::class, array(
+                                                                               'class' => 'CommerceBundle:Color',
+                                                                               'choice_label' => 'name',
+                                                                              'multiple' => false,
+                                                                              'expanded' => false,
+                                                                               'required' => true,
+                                                                               'query_builder' => function (EntityRepository $er) {
+                                                                                       return $er->createQueryBuilder('u')
+                                                                                           ->orderBy('u.id', 'ASC')
+                                                                                            ->where('u.isActive = true');
+                                                                                   }
+                                                                           ))
 
           ->add('colors', EntityType::class, array(
                                    'class' => 'CommerceBundle:Color',

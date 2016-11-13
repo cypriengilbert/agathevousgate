@@ -125,7 +125,7 @@
                                                                                                          <tbody>
                                                                                                           <! - for each element --!>
 																																																					{% for listepanier in listePanier %}
-																																																					{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+																																																					{% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
                                                                                                             <tr>
                                                                                                                <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> {{ listepanier.product.name }} </td>
                                                                                                                <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ listepanier.product.price * listepanier.quantity }}€ </td>
@@ -172,16 +172,12 @@
                                                                                                             </tr>
                                                                                                          </tbody>
                                                                                                       </table>
-                                                                                                      {% if totalsum - commande.remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
-                                                                                                        {% set livraison = 0 %}
-                                                                                                      {% else %}
-                                                                                                        {% set livraison = coutLivraison %}
-                                                                                                      {% endif %}
+
                                                                                                       <table width="100%" border="0" cellpadding="0" cellspacing="0" id="m_2691187929940511126bookingFeeFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
                                                                                                          <tbody >
                                                                                                             <tr >
                                                                                                                <td align="left"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">Livraison </td>
-                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{{ livraison }}€</td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{{ commande.transportCost }}€</td>
                                                                                                             </tr>
                                                                                                          </tbody>
                                                                                                       </table>

@@ -16,8 +16,12 @@
                   {% set totalsum = null %}{% set numero_ligne = 0 %}
                   {% set remise = 0 %}
                   {% for listepanier in listePanier %}
-                  {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
-                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {{ listepanier.price * listepanier.quantity }}€ </h2>
+
+                {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
+
+                <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} -
+                {{ listepanier.price * listepanier.quantity }}
+                € </h2>
                   <p>Collection {{ listepanier.collection.title }}</p>
                   <p>
                      {% if listepanier.Color1 %}

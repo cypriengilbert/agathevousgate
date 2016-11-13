@@ -141,6 +141,13 @@ class AddedProduct
     */
    private $price;
 
+   /**
+    * @var float
+    *
+    * @ORM\Column(name="priceRemise", type="float", nullable=true)
+    */
+   private $priceRemise;
+
 
        /**
         * @var string
@@ -581,5 +588,29 @@ class AddedProduct
     public function getPrice()
     {
         return $this->price;
+    }
+
+    /**
+     * Set priceRemise
+     *
+     * @param float $priceRemise
+     *
+     * @return AddedProduct
+     */
+    public function setPriceRemise($priceRemise)
+    {
+        $this->priceRemise = $priceRemise;
+
+        return $this;
+    }
+
+    /**
+     * Get priceRemise
+     *
+     * @return float
+     */
+    public function getPriceRemise()
+    {
+        return $this->priceRemise;
     }
 }

@@ -48,6 +48,13 @@ class Commande
 
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="numerosuivi", type="string", length=5000, nullable=true)
+     */
+    private $numerosuivi;
+
+    /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\ModeLivraison")
     * @ORM\JoinColumn(nullable=true)
     */
@@ -385,4 +392,28 @@ class Commande
 
 
 
+
+    /**
+     * Set transportCost
+     *
+     * @param float $transportCost
+     *
+     * @return Commande
+     */
+    public function setTransportCost($transportCost)
+    {
+        $this->transportCost = $transportCost;
+
+        return $this;
+    }
+
+    /**
+     * Get transportCost
+     *
+     * @return float
+     */
+    public function getTransportCost()
+    {
+        return $this->transportCost;
+    }
 }

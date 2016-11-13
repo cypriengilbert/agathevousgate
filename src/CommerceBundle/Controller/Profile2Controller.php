@@ -153,8 +153,11 @@ if ($formAdress->handleRequest($request)->isValid()) {
      */
     public function commandeDetailsAction(Request $request, $id)
     {
-
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+      $Commandeencours = $repository->findOneBy(array('id' => $id));
       $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+    if ($Commandeencours->getClient()->getId() == $id_user ){
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
       $detailcommande  = $repository->findBy(array('commande' => $id, 'client' => $id_user));
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -165,7 +168,9 @@ if ($formAdress->handleRequest($request)->isValid()) {
 
       ));
       $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-      $coutLivraison    = $Commandeencours->getTransportMethod()->getPrice();
+      if ($Commandeencours->getTransportMethod() != null){
+  $coutLivraison    = $Commandeencours->getTransportMethod()->getPrice();
+}else { $coutLivraison = 0;}
       return $this->render('CommerceBundle:Default:commandeDetails.html.twig', array(
           'listePanier' => $detailcommande,
           'commande' => $Commandeencours,
@@ -174,5 +179,9 @@ if ($formAdress->handleRequest($request)->isValid()) {
       ));
     }
 
+    else{
+    throw $this->createNotFoundException('Cette commande est inexistante');
+    }
+}
 
 }

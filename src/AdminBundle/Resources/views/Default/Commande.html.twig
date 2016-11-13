@@ -13,7 +13,7 @@
 <div class="mdl-grid demo-content">
 <div><h4>Commande n°{{ commande.id }} du {{ commande.date|date("d-m-Y") }} - {% if commande.isvalid == true %}traité{% else %}à faire
 <button type="submit" onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
-  window.location.href = '{{ path("validate",{"id": commande.id}) }}'
+  window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
 }" class="btn btn-primary" style="margin-top:20px; margin-left:1%;">Valider la commande</button>{% endif %}
 
  </h4></div>

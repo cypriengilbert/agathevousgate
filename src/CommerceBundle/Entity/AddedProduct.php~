@@ -141,6 +141,13 @@ class AddedProduct
     */
    private $price;
 
+   /**
+    * @var float
+    *
+    * @ORM\Column(name="priceRemise", type="float", nullable=true)
+    */
+   private $priceRemise;
+
 
        /**
         * @var string

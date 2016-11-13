@@ -1,0 +1,49 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+
+<div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+<div class="mdl-cell mdl-cell--4-col">
+</div>
+<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
+<center>
+
+<div style="padding-bottom:20px;"><h5>Valider l'envoi</h5></div>
+{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+<div class="form-group">
+    {{ form_label(form.numerosuivi, "Numéro de suivi (laisser vide si pas de numéro)", {'label_attr': {'class': ''}}) }}
+    {{ form_errors(form.numerosuivi) }}
+    {{ form_widget(form.numerosuivi, {'attr': {'class': 'form-control'}}) }}
+
+</div>
+
+<div>
+        <input type="submit" value="Valider l'envoi" class="btn btn-primary" />
+</div>
+{{ form_end(form) }}
+
+
+</center>
+</div>
+<div class=" mdl-cell mdl-cell--4-col">
+</div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

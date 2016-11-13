@@ -17,8 +17,32 @@
                   {% set totalsum = null %}{% set numero_ligne = 0 %}
                   {% set remise = 0 %}
                   {% for listepanier in listePanier %}
-                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {{ listepanier.product.price * listepanier.quantity }}€ </h2>
+                  {% if listepanier.product.name == 'Noeud' %}
+                {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                {% elseif listepanier.product.name == 'Coffret1' %}
+                {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                {% elseif listepanier.product.name == 'Coffret2' %}
+                {% set totalsum = totalsum + listepanier.collection.priceCoffret2 * listepanier.quantity %}
+                {% elseif listepanier.product.name == 'Pochette' %}
+                {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                {% elseif listepanier.product.name == 'Boutons' %}
+                {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                {% else %}
+                {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                {% endif %}
+                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {% if listepanier.product.name == 'Noeud' %}
+                  {{ listepanier.collection.priceNoeud * listepanier.quantity }}
+                  {% elseif listepanier.product.name == 'Coffret1' %}
+                  {{ listepanier.collection.priceCoffret1 * listepanier.quantity }}
+                  {% elseif listepanier.product.name == 'Coffret2' %}
+                  {{ listepanier.collection.priceCoffret2 * listepanier.quantity }}
+                  {% elseif listepanier.product.name == 'Pochette' %}
+                  {{ listepanier.collection.pricePochette * listepanier.quantity }}
+                  {% elseif listepanier.product.name == 'Boutons' %}
+                  {{ listepanier.collection.priceBouton * listepanier.quantity }}
+                  {% else %}
+                  {{ listepanier.product.price * listepanier.quantity }}
+                  {% endif %}€ </h2>
                   <p>Collection {{ listepanier.collection.title }}</p>
                   <p>
                      {% if listepanier.Color1 %}
@@ -121,6 +145,10 @@
                                            {% set remise = codePromo.montant %}
                                        {% elseif codePromo.genre  == 'fdp' %}
                                            {% set livraison = 0 %}
+                                      {% elseif codePromo.genre  == 'fdp-remise' %}
+
+                                          {% set livraison = 0 %}
+                                            {% set remise = codePromo.montant %}
                                        {% endif %}
                                        <p class="text-right" ><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
                                        {% set totalsum = totalsum - remise|round(2, 'floor') %}
@@ -150,11 +178,15 @@
 
                                {% if codePromo %}
 
-                                   {% if codePromo.minimumCommande <= totalsum %}
+                                   {% if codePromo.minimumCommande <= totalsum + remise|round(2, 'floor')%}
 
                                      {% if codePromo.genre == 'fdp' %}
 
                                        {% set livraison = 0 %}
+                                       {% elseif codePromo.genre  == 'fdp-remise' %}
+                                           {% set livraison = 0 %}
+
+                                           {% set remise = codePromo.montant %}
 
 
                                      {% endif %}
@@ -188,7 +220,7 @@ data-allow-remember-me="false"
 data-label="Confirmer le paiement"></script>
                      </form>
 
-                     
+
                      <div style="margin-bottom:5px; font-size:10px;">
                         *Paiement sécurisé, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a>
                      </div>

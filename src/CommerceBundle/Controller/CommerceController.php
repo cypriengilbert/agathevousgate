@@ -227,7 +227,6 @@ class CommerceController extends Controller
             ));
         } else {
             $id_user = null;
-
             $nbcommande = null;
             $listeAddedProduct = $session->get('panier_session');
             $nbarticlepanier = $session->get('nb_article');
@@ -493,7 +492,7 @@ class CommerceController extends Controller
           'id' => $idCollection
       ));
 
-    if ($collectionOngoing->getActive() == true){
+    if ($collectionOngoing->getActive() == true and $collectionOngoing->getIsPerso() == true){
 
         $page = 'personnalisation';
 
@@ -1274,18 +1273,19 @@ throw $this->createNotFoundException('The collection does not exist');
                     'client' => $user,
                     'commande' => null
                 ));
-                $nombrearticle == count($listePanier);
+                $nombrearticle = count($listePanier);
 
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
-                    if ($commandeEncours->getRemise() == 0){
                     $value->setPrice($value->getProduct()->getPrice());
+                    if ($commandeEnCours->getRemise() == 0){
+                    $value->setPriceRemise($value->getProduct()->getPrice());
                   }
                   else{
-                    $prorata = $value->getProduct()->getPrice() / ($price - $commandeEncours->getTransportCost());
-                    $remiseparproduit = $commandeEncours->getRemise() * $prorata;
-                    $finalpriceproduit = $value->getProduct()->getPrice() - $remiseparproduit;
-                    $value->setPrice($finalpriceproduit);
+                    $prorata = ($value->getProduct()->getPrice() * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
+                    $remiseparproduit = $commandeEnCours->getRemise() * $prorata;
+                    $finalpriceproduit = ($value->getProduct()->getPrice() * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
+                    $value->setPriceRemise(round($finalpriceproduit, 2));
                   }
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($value);
@@ -1326,6 +1326,7 @@ throw $this->createNotFoundException('The collection does not exist');
                   // app/Resources/views/Emails/registration.html.twig
                       'emails/new_commande.html.twig', array(
                         'listePanier' => $listePanier,
+                        'franchise' => null,
                         'commande' => $commandeEnCours,
                         'date' => new \DateTime("now"),
                         'user' => $user,
@@ -1336,14 +1337,11 @@ throw $this->createNotFoundException('The collection does not exist');
                   $this->get('mailer')->send($message);
                 }
 
-
-
-
-
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
                     'user' => $user,
+                    'franchise' => null,
                     'date' => new \DateTime("now"),
                     'listePanier' => $listePanier,
                     'minLivraison' => $minLivraison,
@@ -1362,7 +1360,6 @@ throw $this->createNotFoundException('The collection does not exist');
                 $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
                 $parrain  = $repository->findOneBy(array(
                     'email' => $parrainEmail
-
                 ));
 
 
@@ -1510,12 +1507,12 @@ throw $this->createNotFoundException('The collection does not exist');
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             if ($commandeEnCours) {
-
                 $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
 
                 if ($form->handleRequest($request)->isValid()) {
                     $commandeEnCours->setAtelierLivraison(null);
-                    $commandeEnCours->setTransportCost($commandeEnCours->getTransportMethod()->getPrice());
+                    if($commandeEnCours->getTransportMethod()){
+                    $commandeEnCours->setTransportCost($commandeEnCours->getTransportMethod()->getPrice());}else{  $commandeEnCours->setTransportCost(0);}
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commandeEnCours);
 
@@ -1577,14 +1574,15 @@ throw $this->createNotFoundException('The collection does not exist');
                 }
                 $total_commande_100 = $total_commande * 100;
                 $newcommande->setPrice($total_commande);
-
+                $newcommande->setTransportCost(0);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newcommande);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $newcommande);
                 if ($form->handleRequest($request)->isValid()) {
-
+                    if($newcommande->getTransportMethod()){
+                    $newcommande->setTransportCost($newcommande->getTransportMethod()->getPrice());}
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commandeEnCours);
 
@@ -1715,9 +1713,30 @@ throw $this->createNotFoundException('The collection does not exist');
 
             $total_commande = 0;
             foreach ($listePanier as $value) {
-                $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-            }
 
+                if($value->getProduct()->getName() == 'Noeud'){
+                $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+
+                }
+                else if($value->getProduct()->getName() == 'Pochette'){
+                $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                }
+                else if($value->getProduct()->getName() == 'Boutons'){
+                $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                }
+                else if($value->getProduct()->getName() == 'Coffret1'){
+                $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                }
+                else if($value->getProduct()->getName() == 'Coffret2'){
+                $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret2() * $value->getQuantity());
+                }
+                else {
+                  $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+
+      }
+
+
+            }
             $newcommande->setClient($user);
             $newcommande->setIsValid(false);
             $newcommande->setIsPanier(true);
@@ -1728,17 +1747,13 @@ throw $this->createNotFoundException('The collection does not exist');
 
             $remise = 0;
             if ($codePromo) {
-
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
-
                     if ($codePromo->getGenre() == 'pourcentage') {
-
                         $remise = round($total_commande * $codePromo->getMontant() / 100, 2);
                     } elseif ($codePromo->getGenre() == 'remise') {
-
-
                         $remise = $codePromo->getMontant();
-
+                    }elseif ($codePromo->getGenre() == 'fdp-remise') {
+                        $remise = $codePromo->getMontant();
                     }
 
 
@@ -1762,8 +1777,10 @@ throw $this->createNotFoundException('The collection does not exist');
                     if ($total_commande >= $codePromo->getMinimumCommande()) {
                         if ($codePromo->getGenre() == 'fdp') {
                             $total_commande = $total_commande - $coutLivraison;
+                            }
+                        else if ($codePromo->getGenre() == 'fdp-remise') {
+                              $total_commande = $total_commande - $coutLivraison;                            }
 
-                        }
                     }
                 }
             }
@@ -1789,6 +1806,7 @@ throw $this->createNotFoundException('The collection does not exist');
                 'coutLivraison' => $coutLivraison,
                 'parrainage' => $remiseParrainage,
                 'price' => $total_commande,
+
                 'rem' => $newcommande->getRemise(),
 
             ));

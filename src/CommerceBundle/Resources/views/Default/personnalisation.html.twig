@@ -80,7 +80,8 @@ window.onbeforeunload = function () {
                       <div id="collapse0" class="panel-collapse collapse">
                           <div class="panel-body">
                             {% for collection in collection %}
-                             <a href="{{ path('personnalisation', {'idCollection': collection.id }) }}"> {{ collection.title }}</a></br>
+                              {% if collection.isPerso == true %}
+                             <a href="{{ path('personnalisation', {'idCollection': collection.id }) }}"> {{ collection.title }}</a></br>{% endif %}
                             {% endfor %}
 
                             </div>
@@ -112,7 +113,7 @@ window.onbeforeunload = function () {
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
                                             <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 0 ); " class="radio_colors" value="{{ colors.id }}" />
-                                            <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -130,7 +131,7 @@ window.onbeforeunload = function () {
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
                                             <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
-                                            <label class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                         {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -169,7 +170,7 @@ window.onbeforeunload = function () {
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 1 );" class="radio_colors" value="{{ colors.id }}" />
 
-                                              <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -191,7 +192,7 @@ window.onbeforeunload = function () {
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -234,7 +235,7 @@ window.onbeforeunload = function () {
 
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" ></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" ></label></a>
 
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -252,7 +253,7 @@ window.onbeforeunload = function () {
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -341,7 +342,7 @@ window.onbeforeunload = function () {
                                                               input[type="radio"] + .{{ colors.name }}_4 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                           </style>
                                                           <input type="radio" id="{{ colors.imageColorName }}_4" name="color4" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-4', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_1','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 3)" class="radio_colors" value="{{ colors.id }}" />
-                                                          <label class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label></a>
+                                                          <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label></a>
                                                       </div>
                                                       <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                                       {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -376,7 +377,7 @@ window.onbeforeunload = function () {
                                                             input[type="radio"] + .{{ colors.name }}_5 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                         </style>
                                                         <input type="radio" id="{{ colors.imageColorName }}_5" name="color5" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-5', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 4) " class="radio_colors" value="{{ colors.id }}" />
-                                                        <label class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label></a>
+                                                        <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label></a>
                                                     </div>
                                                     <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                                     {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -439,7 +440,7 @@ window.onbeforeunload = function () {
                                                     input[type="radio"] + .{{ colors.name }}_6 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
                                                 <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="changePochette('{{ colors.CouleurPochetteName }}')" class="radio_colors" value="{{ colors.id }}" />
-                                                <label class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
+                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
                                             </div>
 
 
@@ -492,7 +493,7 @@ window.onbeforeunload = function () {
                                                     input[type="radio"] + .{{ colors.name }}_7 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
                                                 <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="changeBoutons('{{ colors.couleurBoutonsName }}')" class="radio_colors" value="{{ colors.id }}" />
-                                                <label class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
+                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
                                             </div>
 
 
@@ -525,7 +526,7 @@ window.onbeforeunload = function () {
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% set noeud_price = product.price %}{% endif %}{% endfor %}€
+                          {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceNoeud }}{% set noeud_price = collection.priceNoeud  %}€{% endif %}{% endfor %}
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -542,7 +543,7 @@ window.onbeforeunload = function () {
                       </div>
                       <div class="col-sm-3 col-xs-3 text-right">
                           <h3 style="color: rgb(255, 255, 255);" class="panel-title">
-                            + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
+                          + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret1 }}{% set coffret1_price = collection.priceCoffret1  %}€{% endif %}{% endfor %}
                       </div>
                       <div class="col-sm-1 col-xs-1">
                           <input onclick="open_div('coffret1')" id="input_coffret1" type="checkbox">
@@ -558,7 +559,7 @@ window.onbeforeunload = function () {
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          + {% for product in allproduct %}{% if product.name == 'Coffret2' %}10{% set coffret2_price = 10 %}{% endif %}{% endfor %}€
+                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret2 }}{% set coffret2_price = collection.priceCoffret2  %}€{% endif %}{% endfor %}
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -575,7 +576,7 @@ window.onbeforeunload = function () {
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% set pochette_price = product.price %}{% endif %}{% endfor %}€
+                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.pricePochette }}{% set pochette_price = collection.pricePochette  %}€{% endif %}{% endfor %}
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -592,7 +593,7 @@ window.onbeforeunload = function () {
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% set boutons_price = product.price %}{% endif %}{% endfor %}€
+                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceBouton }}{% set boutons_price = collection.priceBouton  %}€{% endif %}{% endfor %}
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -761,7 +762,7 @@ window.onbeforeunload = function () {
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                       {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% set noeud_price = product.price %}{% endif %}{% endfor %}€
+                    {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceNoeud }}{% set noeud_price = collection.priceNoeud  %}€{% endif %}{% endfor %}
                     </h3>
                  </div>
 
@@ -776,7 +777,7 @@ window.onbeforeunload = function () {
                    </div>
                    <div class="col-sm-4 text-right">
                        <h3 style="color: rgb(255, 255, 255);" class="panel-title">
-                         + {% for product in allproduct %}{% if product.name == 'Coffret1' %}{{ product.price }}{% set coffret1_price = product.price %}{% endif %}{% endfor %}€</h3>
+                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret1 }}{% set coffret1_price = collection.priceCoffret1  %}€{% endif %}{% endfor %}
                    </div>
 
                </div>
@@ -789,7 +790,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                       + {% for product in allproduct %}{% if product.name == 'Coffret2' %}10{% set coffret2_price = 10 %}{% endif %}{% endfor %}€
+                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret2 }}{% set coffret2_price = collection.priceCoffret2  %}€{% endif %}{% endfor %}
                     </h3>
                  </div>
 
@@ -804,7 +805,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                       + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% set pochette_price = product.price %}{% endif %}{% endfor %}€
+                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.pricePochette }}{% set pochette_price = collection.pricePochette  %}€{% endif %}{% endfor %}
                     </h3>
                  </div>
 
@@ -819,7 +820,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                       + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% set boutons_price = product.price %}{% endif %}{% endfor %}€
+                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceBouton }}{% set boutons_price = collection.priceBouton  %}€{% endif %}{% endfor %}
                     </h3>
                  </div>
 
@@ -1654,17 +1655,40 @@ $(function () {
 </script>
 <script>
 
-{% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if colors == collection.firstColor %}
+{% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+{% if colors == collection.firstColor %}
 document.getElementById('{{ colors.imageColorName }}_2').click();
+{% if colors.isBasic == false %}
+document.getElementById('{{ colors.imageColorName }}_6').click();
+document.getElementById('{{ colors.imageColorName }}_7').click();
+
+{% endif %}
+{% elseif colors == collection.secondColor %}
+
 document.getElementById('{{ colors.imageColorName }}_1').click();
+{% if colors.isBasic == false %}
+document.getElementById('{{ colors.imageColorName }}_6').click();
+document.getElementById('{{ colors.imageColorName }}_7').click();
+
+{% endif %}
+{% elseif colors == collection.thirdColor %}
 
 document.getElementById('{{ colors.imageColorName }}_3').click();
+{% if colors.isBasic == false %}
+document.getElementById('{{ colors.imageColorName }}_6').click();
+document.getElementById('{{ colors.imageColorName }}_7').click();
+
+{% endif %}
 
 
 {% endif %}
 {% endfor %}
 {% endif %}
 {% endfor %}
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
 
 </body>

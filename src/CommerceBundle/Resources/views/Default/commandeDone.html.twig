@@ -12,7 +12,7 @@
             <div class="panel-body">
 
                 {{ liste.date|date("m/d/Y")}}
-                {{ liste.transportmethod.name }}
+                {% if liste.transportmethod %}{{ liste.transportmethod.name }}{% else %}retrait en atelier{% endif %}
 
 
             </div>
