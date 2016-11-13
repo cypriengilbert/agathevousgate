@@ -51,6 +51,7 @@ window.onbeforeunload = function () {
                 <!-- Aperçu noeud-->
                 <div class="noeud_position">
                 {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if colors == collection.firstColor %}
+                    <div id="noeudtext" class="noeud_text text-center"><h3 style="margin: 5px 3px;">{{ collection.title }}</h3></div>
                     <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ colors.imagecolorNoeud1Name )}});"></div>
                     <div id="noeudderriere" class="noeud_derriere" style="background:url({{ asset('/upload/color/noeud2/' ~ colors.imagecolorNoeud2Name )}});"></div>
                     <div id="noeudpetit" class="noeud_petit" style="background:url({{ asset('/upload/color/noeud3/' ~ colors.imagecolorNoeud3Name )}});"></div>
