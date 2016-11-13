@@ -1,325 +1,272 @@
 {% extends 'base.html.twig' %}
-
-
 {% block body %}
-
 <body>
-
-
-
- <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">Votre panier {% if not listePanier %} est vide {% endif %}</h2>
-
-
-
-                    <hr class="primary"><br />
-                </div>
+   <section>
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12 text-center">
+               <h2 class="section-heading">Votre panier {% if not listePanier %} est vide {% endif %}</h2>
+               <hr class="primary">
+               <br />
             </div>
-        </div>
-        {% if listePanier %}
-
-
-
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-md-12">
-                        <div class="col-md-9" >
-                                {% set totalsum = null %}{% set numero_ligne = 0 %}
-                                  {% set remise = 0 %}
-                                    {% for listepanier in listePanier %}
-                                    {% if listepanier.product.name == 'Noeud' %}
-                                  {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
-                                  {% elseif listepanier.product.name == 'Coffret1' %}
-                                  {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
-                                  {% elseif listepanier.product.name == 'Coffret2' %}
-                                  {% set totalsum = totalsum + listepanier.collection.priceCoffret2 * listepanier.quantity %}
-                                  {% elseif listepanier.product.name == 'Pochette' %}
-                                  {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
-                                  {% elseif listepanier.product.name == 'Boutons' %}
-                                  {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
-                                  {% else %}
-                                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                                  {% endif %}
-                             <div class="col-sm-12 col-md-12" >
-
-                            <div class="col-md-3 hidesmall" style="max-height:150px">
-                                <div class="noeud_position" style="max-height:150px" >
-                                {% if listepanier.product.name == 'Noeud' %}
-                                <div id="noeuddevant" class="noeud_devant" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud1/' ~ listepanier.Color1.imagecolorNoeud1Name)}});"></div>
-                                <div id="noeudderriere" class="noeud_derriere" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud2/' ~ listepanier.Color2.imagecolorNoeud2Name)}});"></div>
-                                <div id="noeudpetit" class="noeud_petit" style="margin-top:25px;max-height:100px; background:url({{ asset('/upload/color/noeud3/'~ listepanier.Color3.imagecolorNoeud3Name)}});"></div>
-{% elseif listepanier.product.name == 'Coffret1' %}
-
-        <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName )}});"></div>
-
-
-
-{% elseif listepanier.product.name == 'Coffret2' %}
-
-        <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName)}});"></div>
-        <div id="coffret_big_2" class="coffret_big_2" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color2.tissuColorName)}});"></div>
-
-
-
-
-{% elseif listepanier.product.name == 'Pochette' %}
-<div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px;background:url({{ asset('/upload/color/pochette/'~ listepanier.Color1.couleurPochetteName )}});"></div>
-
-{% elseif listepanier.product.name == 'Boutons' %}
-<div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px; background-size:contain;  background:url({{ asset('/upload/color/boutons/' ~ listepanier.Color1.couleurBoutonsName)}}) no-repeat;"></div>
-
-
-{% endif %}
-    </div>
-
-
-                            </div>
-                            <div class="col-md-8" class="objectpanier" style="">
-                                <div style="height:200px; width:100%; position:relative">
-                                    <h2>{{ listepanier.product.cartName }} {{ listepanier.size }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} -
-                                    {% if listepanier.product.name == 'Noeud' %}
-                                    {{ listepanier.collection.priceNoeud }}
-                                    {% elseif listepanier.product.name == 'Coffret1' %}
-                                    {{ listepanier.collection.priceCoffret1 }}
-                                    {% elseif listepanier.product.name == 'Coffret2' %}
-                                    {{ listepanier.collection.priceCoffret2 }}
-                                    {% elseif listepanier.product.name == 'Pochette' %}
-                                    {{ listepanier.collection.pricePochette }}
-                                    {% elseif listepanier.product.name == 'Boutons' %}
-                                    {{ listepanier.collection.priceBouton }}
-                                    {% else %}
-                                    {{ listepanier.product.price }}
-                                    {% endif %}€ </h2>
-<div class="row">
-<div class="col-md-4" style="">
-
-                                    <p>Collection {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}</p>
-                                    <p>
-                                        {% if listepanier.Color1 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color2 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color3 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color4 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color5 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color6 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color7 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color8 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color9 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                        {% if listepanier.Color10 %}
-                                        <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
-                                        {% endif %}
-                                    </p>
-</div>
-<div class="col-md-4" style="position:relative; ">
-
-</div>
-<div class="col-md-4" style="">
-<p>
-{% if listepanier.id %}
-
-    <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
-        <div style="position:relative; top:20px; left:35px">
-            <i class="fa fa-plus fa-1" aria-hidden="true"></i>
-        </div>
-    </a>
-    <div>
-    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
-    </div>
-    <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
-        <div>
-            <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
-            </i>
-        </div>
-    </a>
-{% else %}
-    <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
-        <div style="position:relative; top:20px; left:35px">
-            <i class="fa fa-plus fa-1" aria-hidden="true">
-            </i>
-        </div>
-    </a>
-    <div>
-        <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
-    </div>
-    <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
-        <div>
-            <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
-            </i>
-        </div>
-    </a>
+         </div>
+      </div>
+      {% if listePanier %}
+      <div class="container">
+         <div class="row">
+            <div class="col-sm-12 col-md-12">
+               <div class="col-md-9" >
+                  {% set totalsum = null %}{% set numero_ligne = 0 %}
+                  {% set remise = 0 %}
+                  {% for listepanier in listePanier %}
+                  {% if listepanier.product.name == 'Noeud' %}
+                  {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                  {% elseif listepanier.product.name == 'Coffret1' %}
+                  {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                  {% elseif listepanier.product.name == 'Coffret2' %}
+                  {% set totalsum = totalsum + listepanier.collection.priceCoffret2 * listepanier.quantity %}
+                  {% elseif listepanier.product.name == 'Pochette' %}
+                  {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                  {% elseif listepanier.product.name == 'Boutons' %}
+                  {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                  {% else %}
+                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                  {% endif %}
+                  <div class="col-sm-12 col-md-12" >
+                     <div class="col-md-3 hidesmall" style="max-height:150px">
+                        <div class="noeud_position" style="max-height:150px" >
+                           {% if listepanier.product.name == 'Noeud' %}
+                           <div id="noeuddevant" class="noeud_devant" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud1/' ~ listepanier.Color1.imagecolorNoeud1Name)}});"></div>
+                           <div id="noeudderriere" class="noeud_derriere" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/noeud2/' ~ listepanier.Color2.imagecolorNoeud2Name)}});"></div>
+                           <div id="noeudpetit" class="noeud_petit" style="margin-top:25px;max-height:100px; background:url({{ asset('/upload/color/noeud3/'~ listepanier.Color3.imagecolorNoeud3Name)}});"></div>
+                           {% elseif listepanier.product.name == 'Coffret1' %}
+                           <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName )}});"></div>
+                           {% elseif listepanier.product.name == 'Coffret2' %}
+                           <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color1.tissuColorName)}});"></div>
+                           <div id="coffret_big_2" class="coffret_big_2" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ listepanier.Color2.tissuColorName)}});"></div>
+                           {% elseif listepanier.product.name == 'Pochette' %}
+                           <div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px;background:url({{ asset('/upload/color/pochette/'~ listepanier.Color1.couleurPochetteName )}});"></div>
+                           {% elseif listepanier.product.name == 'Boutons' %}
+                           <div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px; background-size:contain;  background:url({{ asset('/upload/color/boutons/' ~ listepanier.Color1.couleurBoutonsName)}}) no-repeat;"></div>
+                           {% endif %}
+                        </div>
+                     </div>
+                     <div class="col-md-8" class="objectpanier" style="">
+                        <div style="height:200px; width:100%; position:relative">
+                           <h2>{{ listepanier.product.cartName }} {{ listepanier.size }} {% if listepanier.accessoire %}{{ listepanier.accessoire.name }}{% endif %} -
+                              {% if listepanier.product.name == 'Noeud' %}
+                              {{ listepanier.collection.priceNoeud }}
+                              {% elseif listepanier.product.name == 'Coffret1' %}
+                              {{ listepanier.collection.priceCoffret1 }}
+                              {% elseif listepanier.product.name == 'Coffret2' %}
+                              {{ listepanier.collection.priceCoffret2 }}
+                              {% elseif listepanier.product.name == 'Pochette' %}
+                              {{ listepanier.collection.pricePochette }}
+                              {% elseif listepanier.product.name == 'Boutons' %}
+                              {{ listepanier.collection.priceBouton }}
+                              {% else %}
+                              {{ listepanier.product.price }}
+                              {% endif %}€
+                           </h2>
+                           <div class="row">
+                              <div class="col-md-4" style="">
+                                 <p>Collection {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}</p>
+                                 <p>
+                                    {% if listepanier.Color1 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color2 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color3 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color4 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color4.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color5 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color5.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color6 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color6.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color7 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color7.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color8 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color8.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color9 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color9.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                    {% if listepanier.Color10 %}
+                                    <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color10.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                    {% endif %}
+                                 </p>
+                              </div>
+                              <div class="col-md-4" style="position:relative; ">
+                              </div>
+                              <div class="col-md-4" style="">
+                                 <p>
+                                    {% if listepanier.id %}
+                                    <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
+                                 <div style="position:relative; top:20px; left:35px">
+                                 <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                 </div>
+                                 </a>
+                                 <div>
+                                    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                 </div>
+                                 <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
+                                    <div>
+                                       <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                       </i>
+                                    </div>
+                                 </a>
+                                 {% else %}
+                                 <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+                                    <div style="position:relative; top:20px; left:35px">
+                                       <i class="fa fa-plus fa-1" aria-hidden="true">
+                                       </i>
+                                    </div>
+                                 </a>
+                                 <div>
+                                    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                 </div>
+                                 <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+                                    <div>
+                                       <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                       </i>
+                                    </div>
+                                 </a>
+                                 {% endif %}
+                                 </p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-1 delete_icon" >
+                        <p >
+                           <style>
+                              .delete{
+                              background:none;
+                              border:none;
+                              font-size:1em;
+                              }
+                           </style>
+                           {% if listepanier.id %}
+                           <button class="delete"  onclick="this.disabled=true; window.location = '{{ path("deleteproduct",{"id":listepanier.id} ) }}';" >
+                           <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                           </button>
+                           {% else  %}
+                           <a class="delete" href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}" onclick="this.href='#'; window.location = 'http://www.yoururl.com';" >
+                           <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                           </a>
+                           {% endif %}
+                        </p>
+                     </div>
+                  </div>
+                  {% set numero_ligne = numero_ligne + 1 %}
+                  {% endfor %}
+               </div>
+               <div class="col-md-3">
+                  <div class="col-md-12"  style="border:1px solid #A94141">
+                     <div class="row">
+                        <div class="col-xs-7 " style="">
+                           <p></p>
+                           <p>Sous-total</p>
+                           {% if is_granted('ROLE_USER') %}
+                           <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
+                           {% else %}
+                           <p> Remise </p>
+                           {% endif %}
+                           <p>Total</p>
+                        </div>
+                        <div class="col-xs-5" >
+                           <p></p>
+                           <p class="text-right"><strong>  {{ totalsum }} €</strong></p>
+                           {% set codePromo = app.session.get('codePromo') %}
+                           {% if codePromo %}
+                               {% if codePromo.minimumCommande <= totalsum %}
+                                   {% if codePromo.genre == 'pourcentage' %}
+                                    {% set remise = totalsum * codePromo.montant / 100 %}
+                                   {% elseif codePromo.genre  == 'remise' %}
+                                   {% set remise = codePromo.montant %}
+                                   {% elseif codePromo.genre  == 'fdp' %}
+                                   {% elseif codePromo.genre  == 'fdp-remise' %}
+                                   {% set remise = codePromo.montant %}
+                                   {% endif %}
+                               <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
+                               {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                               {% else %}
+                               <p class="text-right">0 €</p>
+                               {% endif %}
+                           {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
+                               {% if app.user.parrainEmail is not null %}
+                               {% set remise = totalsum * (parrainage.montant / 100) %}
+                               <p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
+                               {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                               {% else %}
+ <p class="text-right"><strong > 0 €</strong></p>
+                               {% endif %}
+                           {% else %}
+                           <p class="text-right">0 € </p>
+                           {% endif %}
+                           {% if codePromo %}
+                               {% if codePromo.minimumCommande <= totalsum %}
+                                   {% if codePromo.genre == 'fdp' %}
+                                       {% elseif codePromo.genre  == 'fdp-remise' %}
+                                       {% set remise = codePromo.montant %}
+                                   {% endif %}
+                               {% endif %}
+                           {% endif %}
+                           <p class="text-right"> <strong>  {{ totalsum }} €</strong></p>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-md-12" style="position:relative">
+                     <div class="col-md-4" style="">
+                        <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if is_granted('ROLE_USER') %}
+                        {% if nbcommande == 0 and app.user.parrainEmail is not null %} disabled {% endif %}{% endif %}>
+                     </div>
+                     <a onclick="verifCode()">
+                        <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px; {% if is_granted('ROLE_USER') %}{% if nbcommande == 0 and app.user.parrainEmail is not null %} opacity:0.5; cursor:auto;{% endif %} {% endif %}">
+                           <div class="col-md-12">
+                              <center>
+                                 <p style="color:white; position:absolute; top:5px; font-size:15px; left:5px"> Valider le coupon </p>
+                              </center>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-md-12" style="position:relative; top:29px;height:30px; background-color:#242258" >
+                     <div class="col-md-3">
+                     </div>
+                     <div class="col-md-6">
+                        <a href="{{ path('choixlivraison') }}">
+                           <p style="color:white; position:absolute; top:5px; "><span class="glyphicon glyphicon-shopping-cart"></span> Payer </p>
+                        </a>
+                     </div>
+                     <div class="col-md-3">
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
       {% endif %}
-</p>
+   </section>
+   <script>
+      function verifCode(){
+      var codepromo = document.getElementById("input_promo").value;
+      {% set codepromo_twig %}codepromo{% endset %}
+
+      var url = "{{ path('panier', { 'code': 'twig' }) }}";
+      url = url.replace("twig", codepromo);
+      window.location.replace(url);
 
 
-                                </div>
-              </div>              </div>
-</div>
-                            <div class="col-md-1 delete_icon" >
-                            <p >
-                          <style>
-                          .delete{
-                            background:none;
-                            border:none;
-                            font-size:1em;
+      }
 
-                          }
-</style>
-
-                            {% if listepanier.id %}
-                                <button class="delete"  onclick="this.disabled=true; window.location = '{{ path("deleteproduct",{"id":listepanier.id} ) }}';" >
-                                    <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                                </button>
-
-                            {% else  %}
-
-                                <a class="delete" href="{{ path('deleteproduct_session',{'id':numero_ligne} ) }}" onclick="this.href='#'; window.location = 'http://www.yoururl.com';" >
-                                    <i class="fa fa-trash-o" aria-hidden="true" ></i>
-
-                                </a>
-                            {% endif %}
-                            </p>
-                            </div>
-                                                </div>
-
-                        {% set numero_ligne = numero_ligne + 1 %}
-                        {% endfor %}
-                        </div>
-
-                        <div class="col-md-3">
-                        <div class="col-md-12"  style="border:1px solid #A94141">
-                            <div class="row">
-                            <div class="col-xs-7 " style="">
-                                <p></p>
-                                <p>Sous-total</p>
-{% if is_granted('ROLE_USER') %}
-
-                                <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
-
-{% else %} <p> Remise </p>
-{% endif %}
-
-                                <p>Total</p>
-                            </div>
-                            <div class="col-xs-5" >
-                                <p></p>
-                                <p class="text-right"><strong>  {{ totalsum }} €</strong></p>
-                                {% set codePromo = app.session.get('codePromo') %}
-                                    {% if codePromo %}
-                                        {% if codePromo.minimumCommande <= totalsum %}
-                                            {% if codePromo.genre == 'pourcentage' %}
-
-                                                {% set remise = totalsum * codePromo.montant / 100 %}
-
-                                            {% elseif codePromo.genre  == 'remise' %}
-                                                {% set remise = codePromo.montant %}
-                                            {% elseif codePromo.genre  == 'fdp' %}
-                                            {% elseif codePromo.genre  == 'fdp-remise' %}
-                                                {% set remise = codePromo.montant %}
-                                            {% endif %}
-                                            <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
-                                            {% set totalsum = totalsum - remise|round(2, 'floor') %}
-
-                                        {% else %}
-                                        <p class="text-right">0 €</p>
-                                      {% endif %}
-     {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
-    {% if app.user.parrainEmail is not null %}
-  {% set remise = totalsum * (parrainage.montant / 100) %}
-<p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
-  {% set totalsum = totalsum - remise|round(2, 'floor') %}
-{% endif %}
-                                     {% else %}
-
-                                     <p class="text-right">0 € </p>
-
-                                    {% endif %}
-
-
-
-
-
-                                    {% if codePromo %}
-
-                                        {% if codePromo.minimumCommande <= totalsum %}
-
-                                          {% if codePromo.genre == 'fdp' %}
-
-                                            {% elseif codePromo.genre  == 'fdp-remise' %}
-                                                {% set remise = codePromo.montant %}
-
-
-                                          {% endif %}
-
-                                        {% endif %}
-
-
-                                    {% endif %}
-                                <p class="text-right"> <strong>  {{ totalsum }} €</strong></p>
-                            </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12" style="position:relative">
-                            <div class="col-md-4" style="">
-                                <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if is_granted('ROLE_USER') %}
-{% if nbcommande == 0 and app.user.parrainEmail is not null %} disabled {% endif %}{% endif %}>
-                            </div>
-
-                            <a onclick="verifCode()"> <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px; {% if is_granted('ROLE_USER') %}{% if nbcommande == 0 and app.user.parrainEmail is not null %} opacity:0.5; cursor:auto;{% endif %} {% endif %}">
-                            <div class="col-md-12">
-                             <center>  <p style="color:white; position:absolute; top:5px; font-size:15px; left:5px"> Valider le coupon </p></center>
-                             </div>
-
-                            </div>
-                            </a>                       </div>
-                        <div class="col-md-12" style="position:relative; top:29px;height:30px; background-color:#242258" >
-                            <div class="col-md-3">
-                            </div>
-
-                            <div class="col-md-6">
-                                <a href="{{ path('choixlivraison') }}"><p style="color:white; position:absolute; top:5px; "><span class="glyphicon glyphicon-shopping-cart"></span> Payer </p></a>
-                            </div>
-                            <div class="col-md-3">
-                            </div>
-                        </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    </section>
-<script>
-function verifCode(){
-var codepromo = document.getElementById("input_promo").value;
-{% set codepromo_twig %}codepromo{% endset %}
-
-var url = "{{ path('panier', { 'code': 'twig' }) }}";
-url = url.replace("twig", codepromo);
-window.location.replace(url);
-
-
-}
-
-</script>
-
-
-{% endblock %}
+   </script>
+   {% endblock %}

@@ -1262,7 +1262,10 @@ throw $this->createNotFoundException('The collection does not exist');
 
                 ));
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+                if ($commandeEnCours->getTransportMethod() != null) {
+                  $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+
+              }         else{$coutLivraison = 0;}
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 $remiseParrainage = $repository->findOneBy(array(
                     'name' => 'Parrainage'
@@ -1277,14 +1280,42 @@ throw $this->createNotFoundException('The collection does not exist');
 
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
-                    $value->setPrice($value->getProduct()->getPrice());
+
+
+                    if($value->getProduct()->getName() == 'Noeud'){
+                    $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                    $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Pochette'){
+                      $pricebeforeremise = $value->getCollection()->getPricePochette();
+                      $value->setPrice($pricebeforeremise);
+
+                    }
+                    else if($value->getProduct()->getName() == 'Boutons'){
+                      $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret1'){
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret2'){
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2();
+                      $value->setPrice($pricebeforeremise);
+                    }
+                    else {
+                      $pricebeforeremise = $$value->getProduct()->getPrice();
+                      $value->setPrice($pricebeforeremise);
+
+                    }
+
                     if ($commandeEnCours->getRemise() == 0){
-                    $value->setPriceRemise($value->getProduct()->getPrice());
+                    $value->setPriceRemise($value->getPrice());
                   }
                   else{
-                    $prorata = ($value->getProduct()->getPrice() * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
+                    $prorata = ($pricebeforeremise * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
                     $remiseparproduit = $commandeEnCours->getRemise() * $prorata;
-                    $finalpriceproduit = ($value->getProduct()->getPrice() * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
+                    $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
                     $value->setPriceRemise(round($finalpriceproduit, 2));
                   }
                     $em = $this->getDoctrine()->getManager();
@@ -1636,7 +1667,7 @@ throw $this->createNotFoundException('The collection does not exist');
             'client' => $user,
             'isPanier' => true
         ));
-        $commandeEnCours->setTransportMethod('Atelier');
+        $commandeEnCours->setTransportMethod(null);
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
         $atelier    = $repository->findOneBy(array(
             'id' => $id
@@ -1696,8 +1727,11 @@ throw $this->createNotFoundException('The collection does not exist');
                 'name' => 'Livraison'
 
             ));
+            if ($commandeEnCours->getTransportMethod() != null) {
+              $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
 
-            $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+}         else{$coutLivraison = 0;}
+
             $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
             $remiseParrainage = $repository->findOneBy(array(
                 'name' => 'Parrainage'
