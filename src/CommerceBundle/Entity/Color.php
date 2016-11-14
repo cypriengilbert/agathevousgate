@@ -37,6 +37,13 @@ class Color
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="codehexa", type="integer")
+     */
+    private $codehexa;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_basic", type="boolean")
@@ -49,6 +56,13 @@ class Color
      * @ORM\Column(name="name", type="string", length=255)
      */
     public $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_public", type="string", length=255)
+     */
+    public $name_public;
 
 
     /**
@@ -792,4 +806,52 @@ class Color
 
 
 
+
+    /**
+     * Set namePublic
+     *
+     * @param string $namePublic
+     *
+     * @return Color
+     */
+    public function setNamePublic($namePublic)
+    {
+        $this->name_public = $namePublic;
+
+        return $this;
+    }
+
+    /**
+     * Get namePublic
+     *
+     * @return string
+     */
+    public function getNamePublic()
+    {
+        return $this->name_public;
+    }
+
+    /**
+     * Set codehexa
+     *
+     * @param integer $codehexa
+     *
+     * @return Color
+     */
+    public function setCodehexa($codehexa)
+    {
+        $this->codehexa = $codehexa;
+
+        return $this;
+    }
+
+    /**
+     * Get codehexa
+     *
+     * @return integer
+     */
+    public function getCodehexa()
+    {
+        return $this->codehexa;
+    }
 }

@@ -539,6 +539,10 @@ class CommerceController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
         $accessoire = $repository->findAll();
 
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $sortedColors = $collection_selected->getColors();
+
+
         $added_product = new AddedProduct();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
@@ -586,6 +590,7 @@ class CommerceController extends Controller
             'product_noeud' => $product_noeud,
             'accessoire' => $accessoire,
             'page' => $page,
+            'sortedcolor' => $sortedColors,
             'selected_collection' => $collection_selected->getId(),
             'allproduct' => $allproduct
 
@@ -947,13 +952,15 @@ throw $this->createNotFoundException('The collection does not exist');
             ));
             $new_coffret->setColor1($color1);
 
+            if($coffret_selected->getProduct()->getName() == 'Coffret2'){
+              $idColor2   = $coffret_selected->getColor2()->getId();
+              $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+              $color2     = $repository->findOneBy(array(
+                  'id' => $idColor2
+              ));
+              $new_coffret->setColor2($color2);
+              }
 
-            $idColor2   = $coffret_selected->getColor2()->getId();
-            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-            $color2     = $repository->findOneBy(array(
-                'id' => $idColor2
-            ));
-            $new_coffret->setColor2($color2);
 
             $idCoffret  = $coffret_selected->getProduct()->getId();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');

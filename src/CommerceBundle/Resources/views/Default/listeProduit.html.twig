@@ -82,9 +82,9 @@
             {% set i= i+1 %}
             <div class="col-md-6 col-sm-6 product">
                <div class="product_img" >
-                  <img  style="width:100%; height:auto; min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
+                  <img id="img_{{listeProduit.id}}" style="width:100%; height:auto; min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
                   <b>
-                     <h2 style="color:white;background-color:gb(169, 65, 65); ">{{ listeProduit.collection.title }} #{{ listeProduit.id }} - {{ listeProduit.Product.price }}€</h2>
+                     <h2 style="color:white;background-color:gb(169, 65, 65); ">{{ listeProduit.collection.title }} #{{ listeProduit.id }} - {{ listeProduit.collection.priceNoeud }}€</h2>
                   </b>
                </div>
                <div class="caption">
@@ -94,10 +94,26 @@
                      </p>
                   </div>
                   <div class="col-md-6 col-sm-6">
+
                      <p>
-                        <a style="width:90%" href="{{ path('product', {'id':listeProduit.id, 'coffret': 'true' })}}" class="btn btn-primary btn-lg active btn_collection">Voir le coffret</a>
+                        <a style="width:90%" id="bouton_{{listeProduit.id}}" href="{{ path('product', {'id':listeProduit.id, 'coffret': 'true' })}}" class="btn btn-primary btn-lg active btn_collection">Voir le coffret</a>
                      </p>
                   </div>
+
+                  <script>
+                  {% for enfant in listeProduit.enfants %}
+                    {% if  enfant.product.name == 'Coffret1' or enfant.product.name == 'Coffret2' %}
+                      var url_{{listeProduit.id}} = '{{ asset('/upload/image_produit_predefini/' ~ enfant.imageName ) }}';
+                    {% endif %}
+                  {% endfor %}
+                  $( "#bouton_{{listeProduit.id}}" ).hover(
+                    function() {
+                      $( '#img_{{listeProduit.id}}' ).attr("src", url_{{listeProduit.id}});
+                    }, function() {
+                      $( '#img_{{listeProduit.id}}' ).attr("src", "{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}");
+                    }
+                  );
+                  </script>
                </div>
             </div>
             {% if i == 2 %}
@@ -130,4 +146,6 @@
       <div class="container-fluid">
       </div>
    </section>
+
+
    {% endblock %}

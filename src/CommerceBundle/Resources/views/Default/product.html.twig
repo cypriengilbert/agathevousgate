@@ -176,10 +176,40 @@
                      </div>
                   </div>
                </div>
+
                {% for enfants in product.enfants %}
                {% if enfants.product.name == 'Coffret2' %}
+               {% set coffret_price = product.collection.priceCoffret2 %}
                {% set coffret_id = enfants.id %}
-               {% set coffret_price = enfants.product.price %}
+
+               <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
+                  <div class="panel-body">
+                     <div class="row">
+                        <div class="col-sm-6 no_padding text-center">
+                           <img style="max-height:350px;height:auto" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
+                        </div>
+                        <div class="col-sm-6 no_padding">
+                           <div class="row">
+                              <div class="col-sm-12 center">
+                                 <center>
+                                    <h2>{{ product.collection.title }} #{{ product.id }}</h2>
+                                 </center>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-sm-12" style="padding:50px;">
+                                 <center>
+                                    <h4>{{ product.collection.description }} </h4>
+                                 </center>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% elseif enfants.product.name == 'Coffret1' %}
+               {% set coffret_price = product.collection.priceCoffret1 %}
+               {% set coffret_id = enfants.id %}
                <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
                   <div class="panel-body">
                      <div class="row">
@@ -206,6 +236,7 @@
                   </div>
                </div>
                {% endif %}
+
                {% endfor %}
             </div>
          </div>
@@ -231,7 +262,7 @@
                   {% for enfants in product.enfants %}
                   {% if enfants.product.name == 'Pochette' %}
                   {% set pochette_id = enfants.id %}
-                  {% set pochette_price = enfants.product.price %}
+                  {% set pochette_price = product.collection.pricePochette %}
                   <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
                      <div class="panel-body text-center">
                         <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
@@ -260,7 +291,7 @@
             {% for enfants in product.enfants %}
             {% if enfants.product.name == 'Boutons' %}
             {% set boutons_id = enfants.id %}
-            {% set boutons_price = enfants.product.price %}
+            {% set boutons_price = product.collection.priceBouton %}
             <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
                <div class="panel-body text-center">
                   <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}"></br>
@@ -301,7 +332,7 @@
                   </div>
                   <div class="col-sm-2" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        {% for product in allproduct %}{% if product.name == 'Noeud' %}{{ product.price }}{% endif %}{% endfor %}€
+                        {{ product.collection.priceNoeud}}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -313,12 +344,26 @@
                <div class="row ">
                   <div class="col-sm-9" >
                      <h3 class="panel-title" style="color:white!important;">
-                        Coffret 2 couleurs supplémentaires
+                        Coffret   {% for enfants in product.enfants %}
+                          {% if enfants.product.name == 'Coffret2' %}
+                                2 couleurs supplémentaires
+                            {% elseif enfants.product.name == 'Coffret1' %}
+                            1 couleur supplémentaire
+                            {% endif %}
+                            {% endfor  %}
                      </h3>
                   </div>
                   <div class="col-sm-2" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {% for product in allproduct %}{% if product.name == 'Coffret2' %}{{ product.price }}{% endif %}{% endfor %}€
+                        +
+                        {% for enfants in product.enfants %}
+                        {% if enfants.product.name == 'Coffret2' %}
+                              {{ product.collection.priceCoffret2 }}€
+                          {% elseif enfants.product.name == 'Coffret1' %}
+                            {{ product.collection.priceCoffret1 }}€
+                          {% endif %}
+                          {% endfor  %}
+
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -335,7 +380,7 @@
                   </div>
                   <div class="col-sm-2" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {% for product in allproduct %}{% if product.name == 'Pochette' %}{{ product.price }}{% endif %}{% endfor %}€
+                        + {{ product.collection.pricePochette }}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -352,7 +397,7 @@
                   </div>
                   <div class="col-sm-2" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {% for product in allproduct %}{% if product.name == 'Boutons' %}{{ product.price }}{% endif %}{% endfor %}€
+                        + {{ product.collection.priceBouton }}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -524,7 +569,7 @@ document.getElementById('chevron_coffret').className = "fa fa-2x fa-chevron-up";
    }
    }
 
-   total = {{ product.product.price }};
+   total = {{ product.collection.priceNoeud }};
    if( document.getElementById('input_coffret').checked == true){
    total = total + {{ coffret_price }};
    }

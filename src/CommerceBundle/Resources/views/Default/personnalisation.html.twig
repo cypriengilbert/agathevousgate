@@ -49,7 +49,7 @@ window.onbeforeunload = function () {
         <div class="row">
             <div class="col-sm-6 no_padding">
                 <!-- Aperçu noeud-->
-                <div class="noeud_position">
+                <div class="noeud_position" style="margin-bottom:50px;">
                 {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %} {% if colors == collection.firstColor %}
                     <div id="noeudtext" class="noeud_text text-center"><h3 style="margin: 5px 3px;">{{ collection.title }}</h3></div>
                     <div id="noeuddevant" class="noeud_devant" style="background:url({{ asset('/upload/color/noeud1/' ~ colors.imagecolorNoeud1Name )}});"></div>
@@ -114,7 +114,7 @@ window.onbeforeunload = function () {
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
                                             <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 0 ); " class="radio_colors" value="{{ colors.id }}" />
-                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -132,7 +132,7 @@ window.onbeforeunload = function () {
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
                                             <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
-                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
+                                            <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                         {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -171,7 +171,7 @@ window.onbeforeunload = function () {
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 1 );" class="radio_colors" value="{{ colors.id }}" />
 
-                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -193,7 +193,7 @@ window.onbeforeunload = function () {
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
-                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -236,7 +236,7 @@ window.onbeforeunload = function () {
 
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" ></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" ></label></a>
 
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -254,7 +254,7 @@ window.onbeforeunload = function () {
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
                                               <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
-                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
+                                              <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                           {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -343,7 +343,7 @@ window.onbeforeunload = function () {
                                                               input[type="radio"] + .{{ colors.name }}_4 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                           </style>
                                                           <input type="radio" id="{{ colors.imageColorName }}_4" name="color4" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-4', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_1','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 3)" class="radio_colors" value="{{ colors.id }}" />
-                                                          <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label></a>
+                                                          <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label></a>
                                                       </div>
                                                       <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                                       {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -378,7 +378,7 @@ window.onbeforeunload = function () {
                                                             input[type="radio"] + .{{ colors.name }}_5 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                         </style>
                                                         <input type="radio" id="{{ colors.imageColorName }}_5" name="color5" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-5', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 4) " class="radio_colors" value="{{ colors.id }}" />
-                                                        <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label></a>
+                                                        <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label></a>
                                                     </div>
                                                     <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
                                                     {% set X1 = X1+1 %} {% if X1 == 7 %}
@@ -441,7 +441,7 @@ window.onbeforeunload = function () {
                                                     input[type="radio"] + .{{ colors.name }}_6 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
                                                 <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="changePochette('{{ colors.CouleurPochetteName }}')" class="radio_colors" value="{{ colors.id }}" />
-                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
+                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
                                             </div>
 
 
@@ -494,7 +494,7 @@ window.onbeforeunload = function () {
                                                     input[type="radio"] + .{{ colors.name }}_7 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
                                                 <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="changeBoutons('{{ colors.couleurBoutonsName }}')" class="radio_colors" value="{{ colors.id }}" />
-                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.name }}" class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
+                                                <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
                                             </div>
 
 
@@ -1301,7 +1301,7 @@ var name = 'color5';
 document.querySelector('input[name="color5"]:checked').value = '0';
 document.getElementById('panel-heading-plugin-5').style.backgroundImage = 'none';
 $('input[name=' + name + ']').prop('checked',false);
-
+document.getElementById('Coffret_petit_4').style.background = '';
 
 }
 else {

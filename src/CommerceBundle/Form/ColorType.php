@@ -19,7 +19,8 @@ class ColorType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('isbasic', CheckboxType::class)
+            ->add('codehexa')
+            ->add('isbasic', CheckboxType::class, array('required' => false))
             ->add('colorFile', 'vich_image', array(
               'required'      => false,
               'label' => false,

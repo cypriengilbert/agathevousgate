@@ -778,6 +778,10 @@ class DefaultController extends Controller
         $form = $this->get('form.factory')->create('CommerceBundle\Form\ColorType', $newColor);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $newColor->setNamePublic($newColor->getName());
+            $nomsansespace = str_replace(' ','_',$newColor->getName());
+            $nomsansespace = str_replace("'","-",$nomsansespace);
+            $newColor->setName($nomsansespace);
             $em->persist($newColor);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');
@@ -820,6 +824,10 @@ class DefaultController extends Controller
         $form = $this->get('form.factory')->create('CommerceBundle\Form\ColorType', $color);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $color->setNamePublic($color->getName());
+            $nomsansespace = str_replace(' ','_',$color->getName());
+            $nomsansespace = str_replace("'","-",$nomsansespace);
+            $color->setName($nomsansespace);
             $em->persist($color);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');

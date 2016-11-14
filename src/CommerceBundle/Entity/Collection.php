@@ -95,6 +95,7 @@ class Collection
 
      /**
      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
+     * @ORM\OrderBy({"codehexa" = "DESC"})
      */
      private $colors;
 

@@ -129,7 +129,7 @@ class defined_productType extends AbstractType
                                  'query_builder' => function (EntityRepository $er) {
                                          return $er->createQueryBuilder('u')
                                              ->orderBy('u.id', 'ASC')
-                                              ->where('u.product = 10 or u.product = 11 or u.product = 4');
+                                              ->where('u.product = 10 or u.product = 11 or u.product = 4 or u.product = 12');
                                      },
                              ))
         ;
