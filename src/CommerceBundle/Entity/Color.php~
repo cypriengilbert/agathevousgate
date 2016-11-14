@@ -37,9 +37,9 @@ class Color
 
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="codehexa", type="integer")
+     * @ORM\Column(name="codehexa", type="string")
      */
     private $codehexa;
 
@@ -829,5 +829,29 @@ class Color
     public function getNamePublic()
     {
         return $this->name_public;
+    }
+
+    /**
+     * Set codehexa
+     *
+     * @param integer $codehexa
+     *
+     * @return Color
+     */
+    public function setCodehexa($codehexa)
+    {
+        $this->codehexa = $codehexa;
+
+        return $this;
+    }
+
+    /**
+     * Get codehexa
+     *
+     * @return integer
+     */
+    public function getCodehexa()
+    {
+        return $this->codehexa;
     }
 }
