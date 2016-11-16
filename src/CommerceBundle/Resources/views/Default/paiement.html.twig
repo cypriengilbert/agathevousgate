@@ -22,7 +22,7 @@
                 {% elseif listepanier.product.name == 'Coffret1' %}
                 {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
                 {% elseif listepanier.product.name == 'Coffret2' %}
-                {% set totalsum = totalsum + listepanier.collection.priceCoffret2 * listepanier.quantity %}
+                {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
                 {% elseif listepanier.product.name == 'Pochette' %}
                 {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
                 {% elseif listepanier.product.name == 'Boutons' %}
@@ -35,7 +35,7 @@
                   {% elseif listepanier.product.name == 'Coffret1' %}
                   {{ listepanier.collection.priceCoffret1 * listepanier.quantity }}
                   {% elseif listepanier.product.name == 'Coffret2' %}
-                  {{ listepanier.collection.priceCoffret2 * listepanier.quantity }}
+                  {{ (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity }}
                   {% elseif listepanier.product.name == 'Pochette' %}
                   {{ listepanier.collection.pricePochette * listepanier.quantity }}
                   {% elseif listepanier.product.name == 'Boutons' %}

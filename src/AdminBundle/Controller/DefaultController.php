@@ -608,7 +608,7 @@ class DefaultController extends Controller
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findOneBy(array('id' => $id));
-
+        $collection->setActive(true);
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CollectionType', $collection);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -974,6 +974,7 @@ class DefaultController extends Controller
         return $this->render('AdminBundle:Default:editImage.html.twig', array(
             'form' => $form->createView(),
             'page' => $page,
+            'image' => $image,
 
 
 

@@ -105,98 +105,98 @@ vich_uploader:
         colorFile:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/thumbnail
-            upload_destination: %kernel.root_dir%/../web//upload/color/thumbnail
+            upload_destination: %kernel.root_dir%/../web/upload/color/thumbnail
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         photoFile:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/mediatheque
-            upload_destination: %kernel.root_dir%/../web//upload/mediatheque
+            upload_destination: %kernel.root_dir%/../web/upload/mediatheque
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         colorNoeud1File:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/noeud1
-            upload_destination: %kernel.root_dir%/../web//upload/color/noeud1
+            upload_destination: %kernel.root_dir%/../web/upload/color/noeud1
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         colorNoeud2File:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/noeud2
-            upload_destination: %kernel.root_dir%/../web//upload/color/noeud2
+            upload_destination: %kernel.root_dir%/../web/upload/color/noeud2
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         colorNoeud3File:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/noeud3
-            upload_destination: %kernel.root_dir%/../web//upload/color/noeud3
+            upload_destination: %kernel.root_dir%/../web/upload/color/noeud3
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         image:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/image_produit_predefini/
-            upload_destination: %kernel.root_dir%/../web//upload/image_produit_predefini/
+            upload_destination: %kernel.root_dir%/../web/upload/image_produit_predefini/
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         imageCollection:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/image_collection/
-            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web/upload/image_collection/
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         imageCollectionCarre:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/image_collection/
-            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web/upload/image_collection/
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         imageCollectionIcone:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/image_collection/
-            upload_destination: %kernel.root_dir%/../web//upload/image_collection/
+            upload_destination: %kernel.root_dir%/../web/upload/image_collection/
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         tissuColorFile:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/tissu/grand
-            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/grand
+            upload_destination: %kernel.root_dir%/../web/upload/color/tissu/grand
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         tissuMilieuColorFile:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/tissu/milieu
-            upload_destination: %kernel.root_dir%/../web//upload/color/tissu/milieu
+            upload_destination: %kernel.root_dir%/../web/upload/color/tissu/milieu
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         couleurPochette:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/pochette
-            upload_destination: %kernel.root_dir%/../web//upload/color/pochette
+            upload_destination: %kernel.root_dir%/../web/upload/color/pochette
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         couleurBoutons:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/color/boutons
-            upload_destination: %kernel.root_dir%/../web//upload/color/boutons
+            upload_destination: %kernel.root_dir%/../web/upload/color/boutons
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
         urlImage:
             namer:              vich_uploader.namer_uniqid
             uri_prefix:         /upload/image_site
-            upload_destination: %kernel.root_dir%/../web//upload/image_site
+            upload_destination: %kernel.root_dir%/../web/upload/image_site
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true

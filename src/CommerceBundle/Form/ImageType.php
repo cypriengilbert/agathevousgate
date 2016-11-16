@@ -17,10 +17,9 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
             ->add('url')
             ->add('urlImage', 'vich_image', array(
-              'required'      => true,
+              'required'      => false,
               'label' => false,
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true

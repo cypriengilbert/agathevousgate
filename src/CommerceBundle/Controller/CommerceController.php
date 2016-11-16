@@ -223,7 +223,13 @@ class CommerceController extends Controller
             $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listeAddedProduct = $repository->findBy(array(
                 'commande' => null,
-                'client' => $id_user
+                'client' => $id_user,
+            ));
+            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listeAddedProductParents = $repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user,
+                'parent' => null,
             ));
         } else {
             $id_user = null;
@@ -1307,7 +1313,7 @@ throw $this->createNotFoundException('The collection does not exist');
                       $value->setPrice($pricebeforeremise);
                     }
                     else if($value->getProduct()->getName() == 'Coffret2'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2();
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2() +  $value->getCollection()->getPriceCoffret1();
                       $value->setPrice($pricebeforeremise);
                     }
                     else {
@@ -1537,7 +1543,7 @@ throw $this->createNotFoundException('The collection does not exist');
                       $value->setPrice($pricebeforeremise);
                     }
                     else if($value->getProduct()->getName() == 'Coffret2'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2();
+                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2() +  $value->getCollection()->getPriceCoffret1();
                       $value->setPrice($pricebeforeremise);
                     }
                     else {
@@ -1885,8 +1891,27 @@ return $response;
                 $newcommande    = new Commande();
                 $total_commande = 0;
                 foreach ($listePanier as $value) {
-                    $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-                }
+
+                    if($value->getProduct()->getName() == 'Noeud'){
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+
+                    }
+                    else if($value->getProduct()->getName() == 'Pochette'){
+                    $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                    }
+                    else if($value->getProduct()->getName() == 'Boutons'){
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret1'){
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                    }
+                    else if($value->getProduct()->getName() == 'Coffret2'){
+                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2()+ $value->getCollection()->getPriceCoffret1())* $value->getQuantity());
+                    }
+                    else {
+                      $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+
+          }}
 
                 $newcommande->setClient($user);
                 $newcommande->setIsValid(false);
@@ -2069,7 +2094,7 @@ return $response;
                 $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
                 }
                 else if($value->getProduct()->getName() == 'Coffret2'){
-                $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret2() * $value->getQuantity());
+                  $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2()+ $value->getCollection()->getPriceCoffret1())* $value->getQuantity());
                 }
                 else {
                   $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());

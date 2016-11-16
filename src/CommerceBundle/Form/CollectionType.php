@@ -32,7 +32,7 @@ class CollectionType extends AbstractType
             ->add('priceCoffret1')
             ->add('priceCoffret2')
 
-            ->add('isPerso', 'checkbox')
+            ->add('isPerso', 'checkbox', array('required'=>false))
             ->add('firstColor', EntityType::class, array(
                                      'class' => 'CommerceBundle:Color',
                                      'choice_label' => 'name',
