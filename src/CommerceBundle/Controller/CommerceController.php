@@ -1851,8 +1851,18 @@ return $response;
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             if ($commandeEnCours) {
-                $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
 
+                if($nbarticlepanier > 1){
+                $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
+                }elseif ($nbarticlepanier == 1){
+  foreach ($listePanier as $value) {
+if($value->getQuantity() < 2){
+$form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonAllType', $commandeEnCours);
+}
+else{                $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
+}
+
+}}
                 if ($form->handleRequest($request)->isValid()) {
                     $commandeEnCours->setAtelierLivraison(null);
                     if($commandeEnCours->getTransportMethod()){

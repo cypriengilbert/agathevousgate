@@ -9,6 +9,7 @@ use CommerceBundle\Entity\Product;
 use CommerceBundle\Entity\Color;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class defined_productType extends AbstractType
@@ -21,6 +22,10 @@ class defined_productType extends AbstractType
     {
         $builder
             ->add('isactive')
+            ->add('name')
+
+            ->add('description', TextareaType::class)
+
             ->add('image', 'vich_image', array(
               'required'      => false,
               'allow_delete'  => false, // not mandatory, default is true

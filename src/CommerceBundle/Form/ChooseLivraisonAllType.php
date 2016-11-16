@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
-class ChooseLivraisonType extends AbstractType
+class ChooseLivraisonAllType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -26,11 +26,7 @@ class ChooseLivraisonType extends AbstractType
           ->add('transportMethod', EntityType::class , array(
        		'class' => 'CommerceBundle:ModeLivraison',
        		'choice_label' => 'description',
-          'query_builder' => function (EntityRepository $er) {
-                  return $er->createQueryBuilder('u')
-                      ->orderBy('u.id', 'ASC')
-                       ->where('u.price > 1.8');
-              }
+
 
        	));}
 
