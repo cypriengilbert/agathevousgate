@@ -225,12 +225,26 @@ class CommerceController extends Controller
                 'commande' => null,
                 'client' => $id_user,
             ));
+            $query = $repository
+                ->createQueryBuilder('u')
+                ->where('u.commande IS NULL')
+                ->andWhere('u.parent IS NOT NULL')
+                ->andWhere('u.client = :user')
+                ->setParameter('user', $id_user)
+                ->getQuery();
+            $listeAddedProductEnfants = $query->getResult();
+
+
             $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listeAddedProductParents = $repository->findBy(array(
                 'commande' => null,
                 'client' => $id_user,
                 'parent' => null,
             ));
+
+
+
+
         } else {
             $id_user = null;
             $nbcommande = null;
@@ -258,6 +272,8 @@ class CommerceController extends Controller
         return $this->render('CommerceBundle:Default:panier.html.twig', array(
             'iduser' => $id_user,
             'listePanier' => $listeAddedProduct,
+            'listePanierEnfant' => $listeAddedProductEnfants,
+            'listePanierParent' => $listeAddedProductParents,
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collectionActive,
             'page' => $page,

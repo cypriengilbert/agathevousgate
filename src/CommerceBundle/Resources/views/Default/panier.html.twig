@@ -13,26 +13,29 @@
       </div>
       {% if listePanier %}
       <div class="container">
-         <div class="row">
-            <div class="col-sm-12 col-md-12">
-               <div class="col-md-9" >
-                  {% set totalsum = null %}{% set numero_ligne = 0 %}
-                  {% set remise = 0 %}
-                  {% for listepanier in listePanier %}
-                  {% if listepanier.product.name == 'Noeud' %}
-                  {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
-                  {% elseif listepanier.product.name == 'Coffret1' %}
-                  {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
-                  {% elseif listepanier.product.name == 'Coffret2' %}
-                  {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
-                  {% elseif listepanier.product.name == 'Pochette' %}
-                  {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
-                  {% elseif listepanier.product.name == 'Boutons' %}
-                  {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
-                  {% else %}
-                  {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                  {% endif %}
-                  <div class="col-sm-12 col-md-12" >
+      <div class="row">
+         <div class="col-sm-12 col-md-12">
+            <div class="col-md-9" >
+               {% set totalsum = null %}{% set numero_ligne = 0 %}
+               {% set remise = 0 %}
+               {% for listepanier in listePanier %}
+               {% if listepanier.product.name == 'Noeud' %}
+               {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+               {% elseif listepanier.product.name == 'Coffret1' %}
+               {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+               {% elseif listepanier.product.name == 'Coffret2' %}
+               {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
+               {% elseif listepanier.product.name == 'Pochette' %}
+               {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+               {% elseif listepanier.product.name == 'Boutons' %}
+               {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+               {% else %}
+               {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+               {% endif %}
+               {% endfor %}
+               {% for listepanier in listePanierParent %}
+               <div class="col-sm-12 col-md-12" >
+                  <div class="row">
                      <div class="col-md-3 hidesmall" style="max-height:150px">
                         <div class="noeud_position" style="max-height:150px" >
                            {% if listepanier.product.name == 'Noeud' %}
@@ -166,9 +169,66 @@
                         </p>
                      </div>
                   </div>
-                  {% set numero_ligne = numero_ligne + 1 %}
-                  {% endfor %}
-               </div>
+                  <div class="row" style="margin-top:-20px">
+<div class="col-md-3" style="max-height:100px"></div>
+                    {% for enfants in listePanierEnfant %}
+                    {% if enfants.parent == listepanier %}
+                    <div class="col-md-3" style="max-height:150px">
+                       <div class="row">
+                          <div class="col-md-6">
+                             {% if enfants.product.name == 'Coffret1' %}
+                             <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ enfants.Color1.tissuColorName )}});"></div>
+                             {% elseif enfants.product.name == 'Coffret2' %}
+                             <div id="coffret_big_1" class="coffret_big_1" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ enfants.Color1.tissuColorName)}});"></div>
+                             <div id="coffret_big_2" class="coffret_big_2" style="margin-top:25px;max-height:100px;background:url({{ asset('/upload/color/tissu/grand/' ~ enfants.Color2.tissuColorName)}});"></div>
+                             {% elseif enfants.product.name == 'Pochette' %}
+                             <div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px;background:url({{ asset('/upload/color/pochette/'~ enfants.Color1.couleurPochetteName )}});"></div>
+                             {% elseif enfants.product.name == 'Boutons' %}
+                             <div id="coffret_big_2" class="coffret_big_2" style="margin-top:-25px;max-height:100px; background-size:contain;  background:url({{ asset('/upload/color/boutons/' ~ enfants.Color1.couleurBoutonsName)}}) no-repeat;"></div>
+                             {% endif %}
+                          </div>
+                          <div class="col-md-6">
+                             {% if enfants.id %}
+                             <a href="{{ path('plusproduct',{'id':enfants.id} ) }}">
+                                <div style="position:relative; top:20px; left:35px">
+                                   <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                </div>
+                             </a>
+                             <div>
+                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                             </div>
+                             <a href="{{ path('minusproduct',{'id':enfants.id} ) }}">
+                                <div>
+                                   <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                   </i>
+                                </div>
+                             </a>
+                             {% else %}
+                             <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+                                <div style="position:relative; top:20px; left:35px">
+                                   <i class="fa fa-plus fa-1" aria-hidden="true">
+                                   </i>
+                                </div>
+                             </a>
+                             <div>
+                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                             </div>
+                             <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+                                <div>
+                                   <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                   </i>
+                                </div>
+                             </a>
+                             {% endif %}
+                          </div>
+                       </div></div>
+                       {% endif %}
+                       {% endfor %}
+                    </div>
+                    {% set numero_ligne = numero_ligne + 1 %}
+                    {% endfor %}
+                 </div></div>
+              </div>
                <div class="col-md-3">
                   <div class="col-md-12"  style="border:1px solid #A94141">
                      <div class="row">
@@ -187,38 +247,38 @@
                            <p class="text-right"><strong>  {{ totalsum }} €</strong></p>
                            {% set codePromo = app.session.get('codePromo') %}
                            {% if codePromo %}
-                               {% if codePromo.minimumCommande <= totalsum %}
-                                   {% if codePromo.genre == 'pourcentage' %}
-                                    {% set remise = totalsum * codePromo.montant / 100 %}
-                                   {% elseif codePromo.genre  == 'remise' %}
-                                   {% set remise = codePromo.montant %}
-                                   {% elseif codePromo.genre  == 'fdp' %}
-                                   {% elseif codePromo.genre  == 'fdp-remise' %}
-                                   {% set remise = codePromo.montant %}
-                                   {% endif %}
-                               <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
-                               {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                               {% else %}
-                               <p class="text-right">0 €</p>
-                               {% endif %}
+                           {% if codePromo.minimumCommande <= totalsum %}
+                           {% if codePromo.genre == 'pourcentage' %}
+                           {% set remise = totalsum * codePromo.montant / 100 %}
+                           {% elseif codePromo.genre  == 'remise' %}
+                           {% set remise = codePromo.montant %}
+                           {% elseif codePromo.genre  == 'fdp' %}
+                           {% elseif codePromo.genre  == 'fdp-remise' %}
+                           {% set remise = codePromo.montant %}
+                           {% endif %}
+                           <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
+                           {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                           {% else %}
+                           <p class="text-right">0 €</p>
+                           {% endif %}
                            {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
-                               {% if app.user.parrainEmail is not null %}
-                               {% set remise = totalsum * (parrainage.montant / 100) %}
-                               <p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
-                               {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                               {% else %}
- <p class="text-right"><strong > 0 €</strong></p>
-                               {% endif %}
+                           {% if app.user.parrainEmail is not null %}
+                           {% set remise = totalsum * (parrainage.montant / 100) %}
+                           <p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
+                           {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                           {% else %}
+                           <p class="text-right"><strong > 0 €</strong></p>
+                           {% endif %}
                            {% else %}
                            <p class="text-right">0 € </p>
                            {% endif %}
                            {% if codePromo %}
-                               {% if codePromo.minimumCommande <= totalsum %}
-                                   {% if codePromo.genre == 'fdp' %}
-                                       {% elseif codePromo.genre  == 'fdp-remise' %}
-                                       {% set remise = codePromo.montant %}
-                                   {% endif %}
-                               {% endif %}
+                           {% if codePromo.minimumCommande <= totalsum %}
+                           {% if codePromo.genre == 'fdp' %}
+                           {% elseif codePromo.genre  == 'fdp-remise' %}
+                           {% set remise = codePromo.montant %}
+                           {% endif %}
+                           {% endif %}
                            {% endif %}
                            <p class="text-right"> <strong>  {{ totalsum }} €</strong></p>
                         </div>
