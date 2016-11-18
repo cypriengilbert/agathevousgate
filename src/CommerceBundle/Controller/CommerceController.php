@@ -38,7 +38,9 @@ class CommerceController extends Controller
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Photo bien enregistrée.');
 
-            return $this->redirect($this->generateUrl('accueil', array('slug' => 'photo')));
+            return $this->redirect($this->generateUrl('accueil', array(
+                'slug' => 'photo'
+            )));
         }
 
 
@@ -98,7 +100,7 @@ class CommerceController extends Controller
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $listeCommande2   = $repository->findAll();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
-        $listeImage  = $repository->findAll();
+        $listeImage       = $repository->findAll();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct     = $repository->findAll();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
@@ -112,14 +114,28 @@ class CommerceController extends Controller
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
 
         $first3Image = $repository->findBy(array(), null, 3);
-        $reco1  = $repository->findOneBy(array("name" => 'reco1'));
-        $reco2 = $repository->findOneBy(array("name" => 'reco2'));
-        $reco3  = $repository->findOneBy(array("name" => 'reco3'));
-        $sliderbas1  = $repository->findOneBy(array("name" => 'sliderbas1'));
-        $sliderbas2 = $repository->findOneBy(array("name" => 'sliderbas2'));
-        $sliderbas3  = $repository->findOneBy(array("name" => 'sliderbas3'));
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
-        $text = $repository->findBy(array('page' => 'index'));
+        $reco1       = $repository->findOneBy(array(
+            "name" => 'reco1'
+        ));
+        $reco2       = $repository->findOneBy(array(
+            "name" => 'reco2'
+        ));
+        $reco3       = $repository->findOneBy(array(
+            "name" => 'reco3'
+        ));
+        $sliderbas1  = $repository->findOneBy(array(
+            "name" => 'sliderbas1'
+        ));
+        $sliderbas2  = $repository->findOneBy(array(
+            "name" => 'sliderbas2'
+        ));
+        $sliderbas3  = $repository->findOneBy(array(
+            "name" => 'sliderbas3'
+        ));
+        $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text        = $repository->findBy(array(
+            'page' => 'index'
+        ));
 
 
         return $this->render('CommerceBundle:Default:index.html.twig', array(
@@ -220,37 +236,43 @@ class CommerceController extends Controller
             )));
 
 
-            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $listeAddedProduct = $repository->findBy(array(
+            $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listeAddedProduct        = $repository->findBy(array(
                 'commande' => null,
-                'client' => $id_user,
+                'client' => $id_user
             ));
-            $query = $repository
-                ->createQueryBuilder('u')
-                ->where('u.commande IS NULL')
-                ->andWhere('u.parent IS NOT NULL')
-                ->andWhere('u.client = :user')
-                ->setParameter('user', $id_user)
-                ->getQuery();
+            $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
             $listeAddedProductEnfants = $query->getResult();
 
 
-            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listeAddedProductParents = $repository->findBy(array(
                 'commande' => null,
                 'client' => $id_user,
-                'parent' => null,
+                'parent' => null
             ));
 
 
 
 
         } else {
-            $id_user = null;
-            $nbcommande = null;
-            $listeAddedProduct = $session->get('panier_session');
-            $nbarticlepanier = $session->get('nb_article');
+            $i                        = 0;
+            $id_user                  = null;
+            $nbcommande               = null;
+            $listeAddedProductEnfants = array();
+            $listeAddedProductParents = array();
+            $listeAddedProduct        = $session->get('panier_session');
+            foreach ($listeAddedProduct as $value) {
+                if ($value->getParent() == null) {
+                    $listeAddedProductParents[$i] = $value;
+                } elseif ($value->getParent() != null) {
+                    $listeAddedProductEnfants[$i] = $value;
+                }
+                $i = $i + 1;
             }
+
+            $nbarticlepanier = $session->get('nb_article');
+        }
 
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -335,21 +357,22 @@ class CommerceController extends Controller
 
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $em = $this->getDoctrine()->getManager();
-            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $em           = $this->getDoctrine()->getManager();
+            $id_user      = $this->container->get('security.context')->getToken()->getUser()->getId();
             $repository   = $em->getRepository('CommerceBundle:AddedProduct');
             $articletoadd = $repository->findOneBy(array(
                 'id' => $id
             ));
             $quantity     = $articletoadd->getQuantity();
             $articletoadd->setQuantity($quantity + 1);
-            if ($articletoadd->getParent()){
-              $parent = $articletoadd->getParent();
-              $quantityParent = $parent->getQuantity();
-              if ($quantityParent <= $quantity){
+            if ($articletoadd->getParent()) {
+                $parent         = $articletoadd->getParent();
+                $quantityParent = $parent->getQuantity();
+                if ($quantityParent <= $quantity) {
 
-              $parent->setQuantity($quantityParent + 1);}
-              $em->persist($parent);
+                    $parent->setQuantity($quantityParent + 1);
+                }
+                $em->persist($parent);
 
             }
             $em->persist($articletoadd);
@@ -365,11 +388,12 @@ class CommerceController extends Controller
             $listeAddedProduct = $session->get('panier_session');
             $quantity          = $listeAddedProduct[$id]->getQuantity();
             $listeAddedProduct[$id]->setQuantity($quantity + 1);
-            if ($listeAddedProduct[$id]->getParent()){
-              $parent = $listeAddedProduct[$id]->getParent();
-              $quantityParent = $parent->getQuantity();
-            if ($quantityParent <= $quantity){
-              $parent->setQuantity($quantityParent + 1);}
+            if ($listeAddedProduct[$id]->getParent()) {
+                $parent         = $listeAddedProduct[$id]->getParent();
+                $quantityParent = $parent->getQuantity();
+                if ($quantityParent <= $quantity) {
+                    $parent->setQuantity($quantityParent + 1);
+                }
             }
 
             $listeAddedProduct = array_values($listeAddedProduct);
@@ -392,41 +416,41 @@ class CommerceController extends Controller
 
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $em = $this->getDoctrine()->getManager();
-            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $em           = $this->getDoctrine()->getManager();
+            $id_user      = $this->container->get('security.context')->getToken()->getUser()->getId();
             $repository   = $em->getRepository('CommerceBundle:AddedProduct');
             $articletoadd = $repository->findOneBy(array(
                 'id' => $id
             ));
 
-            $repository     = $em->getRepository('CommerceBundle:AddedProduct');
-            $enfant = $repository->findBy(array(
+            $repository = $em->getRepository('CommerceBundle:AddedProduct');
+            $enfant     = $repository->findBy(array(
                 'parent' => $id
             ));
             foreach ($enfant as $value) {
 
-              $quantityEnfant = $value->getQuantity();
-              if ($value->getParent()->getQuantity() <= $quantityEnfant ){
-              if ($quantityEnfant == 1){
-                $em->remove($value);
-              }elseif($quantityEnfant > 1){
-              $value->setQuantity($quantityEnfant - 1);
-                }}
+                $quantityEnfant = $value->getQuantity();
+                if ($value->getParent()->getQuantity() <= $quantityEnfant) {
+                    if ($quantityEnfant == 1) {
+                        $em->remove($value);
+                    } elseif ($quantityEnfant > 1) {
+                        $value->setQuantity($quantityEnfant - 1);
+                    }
+                }
 
             }
 
-            $quantity     = $articletoadd->getQuantity();
-            if ($quantity == 1){
-            $this->deleteProductAction($id);
-            }elseif($quantity > 1){
-            $articletoadd->setQuantity($quantity - 1);
-            $em->persist($articletoadd);
-            $em->flush();
-            $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
-              }
-              else{
+            $quantity = $articletoadd->getQuantity();
+            if ($quantity == 1) {
+                $this->deleteProductAction($id);
+            } elseif ($quantity > 1) {
+                $articletoadd->setQuantity($quantity - 1);
+                $em->persist($articletoadd);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
+            } else {
 
-              }
+            }
 
         } else {
 
@@ -438,26 +462,29 @@ class CommerceController extends Controller
                 if ($listeAddedProduct[$i]->getParent()) {
                     if ($listeAddedProduct[$i]->getParent() == $listeAddedProduct[$id]) {
                         $quantityEnfant = $listeAddedProduct[$i]->getQuantity();
-                        if ($listeAddedProduct[$i]->getParent()->getQuantity() <= $quantityEnfant ){
-                        if ($quantityEnfant == 1){
-                          unset($listeAddedProduct[$i]);
-                        }elseif($quantityEnfant > 1){
-                        $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
-                          }}
+                        if ($listeAddedProduct[$i]->getParent()->getQuantity() <= $quantityEnfant) {
+                            if ($quantityEnfant == 1) {
+                                unset($listeAddedProduct[$i]);
+                            } elseif ($quantityEnfant > 1) {
+                                $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
+                            }
+                        }
                     }
                 }
             }
 
-            $quantity          = $listeAddedProduct[$id]->getQuantity();
-            if ($quantity == 1){
-            $this->deleteProductSessionAction($id);
-            }elseif($quantity > 1){
-            $listeAddedProduct[$id]->setQuantity($quantity - 1);
+            $quantity = $listeAddedProduct[$id]->getQuantity();
+            if ($quantity == 1) {
+                $this->deleteProductSessionAction($id);
+            } elseif ($quantity > 1) {
+                $listeAddedProduct[$id]->setQuantity($quantity - 1);
 
-            $listeAddedProduct = array_values($listeAddedProduct);
-            $session->set('panier_session', $listeAddedProduct);
-            $session->set('nb_article', count($listeAddedProduct));
-            $nbarticlepanier = $session->get('nb_article');}else{}
+                $listeAddedProduct = array_values($listeAddedProduct);
+                $session->set('panier_session', $listeAddedProduct);
+                $session->set('nb_article', count($listeAddedProduct));
+                $nbarticlepanier = $session->get('nb_article');
+            } else {
+            }
         }
 
         $url      = $this->generateUrl('panier');
@@ -477,7 +504,7 @@ class CommerceController extends Controller
         }
 
         else {
-            $session = $this->getRequest()->getSession();
+            $session           = $this->getRequest()->getSession();
             $listeAddedProduct = $session->get('panier_session');
             foreach ($listeAddedProduct as $i => $value) {
                 if ($listeAddedProduct[$i]->getParent()) {
@@ -509,119 +536,118 @@ class CommerceController extends Controller
     {
 
 
-      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-      $collectionOngoing   = $repository->findOneBy(array(
-          'id' => $idCollection
-      ));
-
-    if ($collectionOngoing->getActive() == true and $collectionOngoing->getIsPerso() == true){
-
-        $page = 'personnalisation';
-
-
-        $session = $this->get('session');
-        if ($session->get('panier_session')) {
-
-        } else {
-            $session->set('panier_session', array());
-        }
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-        $allproduct = $repository->findAll();
-
-        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collectionActive = $repository->findBy(array(
-            'active' => 1
-        ));
-
-        $repository          = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collection_selected = $repository->findOneBy(array(
+        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collectionOngoing = $repository->findOneBy(array(
             'id' => $idCollection
         ));
 
-        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
-            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $nbarticlepanier = count($repository->findBy(array(
-                'commande' => null,
-                'client' => $id_user
-            )));
-        } else {
-            $nbarticlepanier = null;
-        }
+        if ($collectionOngoing->getActive() == true and $collectionOngoing->getIsPerso() == true) {
 
-        $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-        $product_noeud   = $repository->findOneBy(array(
-            'name' => 'Noeud'
-        ));
-        $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-        $product_coffret = $repository->findOneBy(array(
-            'name' => 'Coffret'
-        ));
-
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
-        $accessoire = $repository->findAll();
-
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-        $sortedColors = $collection_selected->getColors();
+            $page = 'personnalisation';
 
 
-        $added_product = new AddedProduct();
-        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $session = $this->get('session');
+            if ($session->get('panier_session')) {
 
-            $user = $this->container->get('security.context')->getToken()->getUser();
-            $added_product->setClient($user);
-            $added_product->setCollection($collection_selected);
+            } else {
+                $session->set('panier_session', array());
+            }
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $allproduct = $repository->findAll();
 
-        }
+            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $collectionActive = $repository->findBy(array(
+                'active' => 1
+            ));
 
-        $added_product->setCommande(null);
+            $repository          = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $collection_selected = $repository->findOneBy(array(
+                'id' => $idCollection
+            ));
 
-        $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
+            if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $nbarticlepanier = count($repository->findBy(array(
+                    'commande' => null,
+                    'client' => $id_user
+                )));
+            } else {
+                $nbarticlepanier = null;
+            }
+
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $product_noeud   = $repository->findOneBy(array(
+                'name' => 'Noeud'
+            ));
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $product_coffret = $repository->findOneBy(array(
+                'name' => 'Coffret'
+            ));
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+            $accessoire = $repository->findAll();
+
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+            $sortedColors = $collection_selected->getColors();
 
 
-        if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($added_product);
+            $added_product = new AddedProduct();
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-                $em->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
-            } else {
-
-
-                $listeAddedProduct = $session->get('panier_session');
-                array_push($listeAddedProduct, $added_product);
-                $session->set('panier_session', $listeAddedProduct);
-                $session->set('nb_article', count($listeAddedProduct));
-
+                $user = $this->container->get('security.context')->getToken()->getUser();
+                $added_product->setClient($user);
+                $added_product->setCollection($collection_selected);
 
             }
 
+            $added_product->setCommande(null);
 
-            return $this->redirect($this->generateUrl('panier', array(
+            $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $added_product);
 
-                'validate' => 'Reception modifiée'
-            )));
+
+            if ($form->handleRequest($request)->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($added_product);
+                if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+                } else {
+
+
+                    $listeAddedProduct = $session->get('panier_session');
+                    array_push($listeAddedProduct, $added_product);
+                    $session->set('panier_session', $listeAddedProduct);
+                    $session->set('nb_article', count($listeAddedProduct));
+
+
+                }
+
+
+                return $this->redirect($this->generateUrl('panier', array(
+
+                    'validate' => 'Reception modifiée'
+                )));
+            }
+
+            return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
+
+                'product_coffret' => $product_coffret,
+                'nbarticlepanier' => $nbarticlepanier,
+                'collection' => $collectionActive,
+                'product_noeud' => $product_noeud,
+                'accessoire' => $accessoire,
+                'page' => $page,
+                'sortedcolor' => $sortedColors,
+                'selected_collection' => $collection_selected->getId(),
+                'allproduct' => $allproduct
+
+            ));
+
+        } else {
+            throw $this->createNotFoundException('The collection does not exist');
         }
-
-        return $this->render('CommerceBundle:Default:personnalisation.html.twig', array(
-
-            'product_coffret' => $product_coffret,
-            'nbarticlepanier' => $nbarticlepanier,
-            'collection' => $collectionActive,
-            'product_noeud' => $product_noeud,
-            'accessoire' => $accessoire,
-            'page' => $page,
-            'sortedcolor' => $sortedColors,
-            'selected_collection' => $collection_selected->getId(),
-            'allproduct' => $allproduct
-
-        ));
-
-}
-else{
-throw $this->createNotFoundException('The collection does not exist');
-}
 
 
     }
@@ -849,76 +875,75 @@ throw $this->createNotFoundException('The collection does not exist');
      */
     public function listeProduitAction($id)
     {
-      $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-      $collectionOngoing   = $repository->findOneBy(array(
-          'id' => $id
-      ));
+        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collectionOngoing = $repository->findOneBy(array(
+            'id' => $id
+        ));
 
-          if ($collectionOngoing->getActive() == true){
-
-
-
-
-                  $page = 'listeproduit';
-
-                  $session = $this->get('session');
-                  if ($session->get('panier_session')) {
-
-                  } else {
-                      $session->set('panier_session', array());
-                  }
-
-                  $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
-                  $listeProduitActive = $repository->findBy(array(
-                      'isactive' => true,
-                      'collection' => $id
-                  ));
-                  $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-                  $collectionActive   = $repository->findBy(array(
-                      'active' => 1
-                  ));
-                  $collectionPlus     = $repository->findOneBy(array(
-                      'id' => $id + 1
-                  ));
-                  $collectionMoins    = $repository->findOneBy(array(
-                      'id' => $id - 1
-                  ));
-
-                  if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-                      $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
-                      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-                      $nbarticlepanier = count($repository->findBy(array(
-                          'commande' => null,
-                          'client' => $id_user
-                      )));
-                  } else {
-                      $nbarticlepanier = 0;
-                  }
-                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-
-                  $collection = $repository->findOneBy(array(
-                      'id' => $id
-                  ));
-
-                  $colors = $collection->getColors();
+        if ($collectionOngoing->getActive() == true) {
 
 
 
-                  return $this->render('CommerceBundle:Default:listeProduit.html.twig', array(
-                      'nbarticlepanier' => $nbarticlepanier,
-                      'listecolor' => $colors,
-                      'listeProduit' => $listeProduitActive,
-                      'collection' => $collectionActive,
-                      'page' => $page,
-                      'collectionPlus' => $collectionPlus,
-                      'collectionMoins' => $collectionMoins
+
+            $page = 'listeproduit';
+
+            $session = $this->get('session');
+            if ($session->get('panier_session')) {
+
+            } else {
+                $session->set('panier_session', array());
+            }
+
+            $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
+            $listeProduitActive = $repository->findBy(array(
+                'isactive' => true,
+                'collection' => $id
+            ));
+            $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $collectionActive   = $repository->findBy(array(
+                'active' => 1
+            ));
+            $collectionPlus     = $repository->findOneBy(array(
+                'id' => $id + 1
+            ));
+            $collectionMoins    = $repository->findOneBy(array(
+                'id' => $id - 1
+            ));
+
+            if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $nbarticlepanier = count($repository->findBy(array(
+                    'commande' => null,
+                    'client' => $id_user
+                )));
+            } else {
+                $nbarticlepanier = 0;
+            }
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+
+            $collection = $repository->findOneBy(array(
+                'id' => $id
+            ));
+
+            $colors = $collection->getColors();
 
 
-                  ));
-          }
-          else{
-          throw $this->createNotFoundException('The product does not exist');
-          }
+
+            return $this->render('CommerceBundle:Default:listeProduit.html.twig', array(
+                'nbarticlepanier' => $nbarticlepanier,
+                'listecolor' => $colors,
+                'listeProduit' => $listeProduitActive,
+                'collection' => $collectionActive,
+                'page' => $page,
+                'collectionPlus' => $collectionPlus,
+                'collectionMoins' => $collectionMoins
+
+
+            ));
+        } else {
+            throw $this->createNotFoundException('The product does not exist');
+        }
     }
 
 
@@ -974,14 +999,14 @@ throw $this->createNotFoundException('The collection does not exist');
             ));
             $new_coffret->setColor1($color1);
 
-            if($coffret_selected->getProduct()->getName() == 'Coffret2'){
-              $idColor2   = $coffret_selected->getColor2()->getId();
-              $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-              $color2     = $repository->findOneBy(array(
-                  'id' => $idColor2
-              ));
-              $new_coffret->setColor2($color2);
-              }
+            if ($coffret_selected->getProduct()->getName() == 'Coffret2') {
+                $idColor2   = $coffret_selected->getColor2()->getId();
+                $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+                $color2     = $repository->findOneBy(array(
+                    'id' => $idColor2
+                ));
+                $new_coffret->setColor2($color2);
+            }
 
 
             $idCoffret  = $coffret_selected->getProduct()->getId();
@@ -1285,68 +1310,64 @@ throw $this->createNotFoundException('The collection does not exist');
                 $em->persist($commandeEnCours);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                $minLivraison     = $repository->findOneBy(array(
+                $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $minLivraison = $repository->findOneBy(array(
                     'name' => 'Livraison'
 
                 ));
-                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 if ($commandeEnCours->getTransportMethod() != null) {
-                  $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+                    $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
 
-              }         else{$coutLivraison = 0;}
+                } else {
+                    $coutLivraison = 0;
+                }
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 $remiseParrainage = $repository->findOneBy(array(
                     'name' => 'Parrainage'
 
                 ));
-                $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-                $listePanier = $repository->findBy(array(
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $listePanier      = $repository->findBy(array(
                     'client' => $user,
                     'commande' => null
                 ));
-                $nombrearticle = count($listePanier);
+                $nombrearticle    = count($listePanier);
 
                 foreach ($listePanier as $value) {
                     $value->setCommande($commandeEnCours);
 
 
-                    if($value->getProduct()->getName() == 'Noeud'){
-                    $pricebeforeremise = $value->getCollection()->getPriceNoeud();
-                    $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Pochette'){
-                      $pricebeforeremise = $value->getCollection()->getPricePochette();
-                      $value->setPrice($pricebeforeremise);
+                    if ($value->getProduct()->getName() == 'Noeud') {
+                        $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                        $value->setPrice($pricebeforeremise);
+                    } else if ($value->getProduct()->getName() == 'Pochette') {
+                        $pricebeforeremise = $value->getCollection()->getPricePochette();
+                        $value->setPrice($pricebeforeremise);
 
-                    }
-                    else if($value->getProduct()->getName() == 'Boutons'){
-                      $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret1'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret2'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2() +  $value->getCollection()->getPriceCoffret1();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else {
-                      $pricebeforeremise = $$value->getProduct()->getPrice();
-                      $value->setPrice($pricebeforeremise);
+                    } else if ($value->getProduct()->getName() == 'Boutons') {
+                        $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                        $value->setPrice($pricebeforeremise);
+                    } else if ($value->getProduct()->getName() == 'Coffret1') {
+                        $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                        $value->setPrice($pricebeforeremise);
+                    } else if ($value->getProduct()->getName() == 'Coffret2') {
+                        $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                        $value->setPrice($pricebeforeremise);
+                    } else {
+                        $pricebeforeremise = $$value->getProduct()->getPrice();
+                        $value->setPrice($pricebeforeremise);
 
                     }
 
-                    if ($commandeEnCours->getRemise() == 0){
-                    $value->setPriceRemise($value->getPrice());
-                  }
-                  else{
-                    $prorata = ($pricebeforeremise * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
-                    $remiseparproduit = $commandeEnCours->getRemise() * $prorata;
-                    $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
-                    $value->setPriceRemise(round($finalpriceproduit, 2));
-                  }
+                    if ($commandeEnCours->getRemise() == 0) {
+                        $value->setPriceRemise($value->getPrice());
+                    } else {
+                        $prorata           = ($pricebeforeremise * $value->getQuantity()) / (round($price / 100, 2) + $commandeEnCours->getRemise() - $commandeEnCours->getTransportCost());
+                        $remiseparproduit  = $commandeEnCours->getRemise() * $prorata;
+                        $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit) / $value->getQuantity();
+                        $value->setPriceRemise(round($finalpriceproduit, 2));
+                    }
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($value);
                     $em->flush();
@@ -1363,28 +1384,28 @@ throw $this->createNotFoundException('The collection does not exist');
                         'user' => $user,
                         'minLivraison' => $minLivraison,
                         'coutLivraison' => $coutLivraison,
-                        'parrainage' => $remiseParrainage,
+                        'parrainage' => $remiseParrainage
                     )), 'text/html');
                     $this->get('mailer')->send($message);
 
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/new_commande.html.twig', array(
-                          'franchise' => $atelier->getFranchise(),
-                          'listePanier' => $listePanier,
-                          'commande' => $commandeEnCours,
-                          'date' => new \DateTime("now"),
-                          'user' => $user,
-                          'minLivraison' => $minLivraison,
-                          'coutLivraison' => $coutLivraison,
-                          'parrainage' => $remiseParrainage,
+                        'franchise' => $atelier->getFranchise(),
+                        'listePanier' => $listePanier,
+                        'commande' => $commandeEnCours,
+                        'date' => new \DateTime("now"),
+                        'user' => $user,
+                        'minLivraison' => $minLivraison,
+                        'coutLivraison' => $coutLivraison,
+                        'parrainage' => $remiseParrainage
                     )), 'text/html');
                     $this->get('mailer')->send($message);
 
-                } else{
-                  $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/new_commande.html.twig', array(
+                } else {
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/new_commande.html.twig', array(
                         'listePanier' => $listePanier,
                         'franchise' => null,
                         'commande' => $commandeEnCours,
@@ -1392,9 +1413,9 @@ throw $this->createNotFoundException('The collection does not exist');
                         'user' => $user,
                         'minLivraison' => $minLivraison,
                         'coutLivraison' => $coutLivraison,
-                        'parrainage' => $remiseParrainage,
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
+                        'parrainage' => $remiseParrainage
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
                 }
 
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
@@ -1407,69 +1428,68 @@ throw $this->createNotFoundException('The collection does not exist');
                     'minLivraison' => $minLivraison,
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage,
-                    'commande' => $commandeEnCours,
+                    'commande' => $commandeEnCours
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
-                if($user->getParrainEmail() != null){
-                  $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                  $minParrainage = $repository->findOneBy(array(
-                      'name' => 'nb_parrainage',
-                  ));
-                $parrainEmail = $user->getParrainEmail();
-                $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-                $parrain  = $repository->findOneBy(array(
-                    'email' => $parrainEmail
-                ));
+                if ($user->getParrainEmail() != null) {
+                    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                    $minParrainage = $repository->findOneBy(array(
+                        'name' => 'nb_parrainage'
+                    ));
+                    $parrainEmail  = $user->getParrainEmail();
+                    $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+                    $parrain       = $repository->findOneBy(array(
+                        'email' => $parrainEmail
+                    ));
 
 
-                $nbparrainage = $parrain->getParrainage() + 1;
-                $parrain->setParrainage($nbparrainage);
-                $nbparrainage = $parrain->getParrainage();
+                    $nbparrainage = $parrain->getParrainage() + 1;
+                    $parrain->setParrainage($nbparrainage);
+                    $nbparrainage = $parrain->getParrainage();
 
 
 
-                if ($nbparrainage %$minParrainage->getMontant() == 0){
+                    if ($nbparrainage % $minParrainage->getMontant() == 0) {
 
-                  $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/parrainage_valide_client.html.twig', array(
-                        'user' => $parrain,
-                      'filleul' => $user,
-                      'nb' => $minParrainage->getMontant()
+                        $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'emails/parrainage_valide_client.html.twig', array(
+                            'user' => $parrain,
+                            'filleul' => $user,
+                            'nb' => $minParrainage->getMontant()
 
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
-                  $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/parrainage_valide_agathe.html.twig', array(
-                      'user' => $parrain,
-                      'nb' => $minParrainage->getMontant()
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                        $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'emails/parrainage_valide_agathe.html.twig', array(
+                            'user' => $parrain,
+                            'nb' => $minParrainage->getMontant()
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
 
 
-                }
-                else{
-                $nbmin = $minParrainage->getMontant();
-                $resultat = $nbmin - $nbparrainage;
-                while ($resultat < 0){
-                $nbmin = $nbmin + $nbmin;
-                $resultat = $nbmin - $nbparrainage;
+                    } else {
+                        $nbmin    = $minParrainage->getMontant();
+                        $resultat = $nbmin - $nbparrainage;
+                        while ($resultat < 0) {
+                            $nbmin    = $nbmin + $nbmin;
+                            $resultat = $nbmin - $nbparrainage;
 
-                }
+                        }
 
-                $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                'emails/parrainage_nonvalide_client.html.twig', array(
-                'user' => $parrain,
-                'filleul' => $parrain,
-                'nbmin' => $nbmin,
-                'nb' => $nbparrainage,
+                        $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'emails/parrainage_nonvalide_client.html.twig', array(
+                            'user' => $parrain,
+                            'filleul' => $parrain,
+                            'nbmin' => $nbmin,
+                            'nb' => $nbparrainage
 
-                )), 'text/html');
-                $this->get('mailer')->send($message);
-                }
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                    }
                 }
 
                 $url      = $this->generateUrl('paiementconfirmation');
@@ -1510,145 +1530,141 @@ throw $this->createNotFoundException('The collection does not exist');
         if ($commandeEnCours) {
             $price = $commandeEnCours->getPrice() * 100;
 
-                $commandeEnCours->setIsPanier(false);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($commandeEnCours);
-                $em->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                $minLivraison     = $repository->findOneBy(array(
-                    'name' => 'Livraison'
+            $commandeEnCours->setIsPanier(false);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($commandeEnCours);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            $minLivraison = $repository->findOneBy(array(
+                'name' => 'Livraison'
 
-                ));
-                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                if ($commandeEnCours->getTransportMethod() != null) {
-                  $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+            ));
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            if ($commandeEnCours->getTransportMethod() != null) {
+                $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
 
-              }         else{$coutLivraison = 0;}
-                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                $remiseParrainage = $repository->findOneBy(array(
-                    'name' => 'Parrainage'
+            } else {
+                $coutLivraison = 0;
+            }
+            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            $remiseParrainage = $repository->findOneBy(array(
+                'name' => 'Parrainage'
 
-                ));
-                $repository  = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-                $listePanier = $repository->findBy(array(
-                    'client' => $user,
-                    'commande' => null
-                ));
-                $nombrearticle = count($listePanier);
+            ));
+            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listePanier      = $repository->findBy(array(
+                'client' => $user,
+                'commande' => null
+            ));
+            $nombrearticle    = count($listePanier);
 
-                foreach ($listePanier as $value) {
-                    $value->setCommande($commandeEnCours);
+            foreach ($listePanier as $value) {
+                $value->setCommande($commandeEnCours);
 
 
-                    if($value->getProduct()->getName() == 'Noeud'){
+                if ($value->getProduct()->getName() == 'Noeud') {
                     $pricebeforeremise = $value->getCollection()->getPriceNoeud();
                     $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Pochette'){
-                      $pricebeforeremise = $value->getCollection()->getPricePochette();
-                      $value->setPrice($pricebeforeremise);
+                } else if ($value->getProduct()->getName() == 'Pochette') {
+                    $pricebeforeremise = $value->getCollection()->getPricePochette();
+                    $value->setPrice($pricebeforeremise);
 
-                    }
-                    else if($value->getProduct()->getName() == 'Boutons'){
-                      $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret1'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret2'){
-                      $pricebeforeremise = $value->getCollection()->getPriceCoffret2() +  $value->getCollection()->getPriceCoffret1();
-                      $value->setPrice($pricebeforeremise);
-                    }
-                    else {
-                      $pricebeforeremise = $$value->getProduct()->getPrice();
-                      $value->setPrice($pricebeforeremise);
+                } else if ($value->getProduct()->getName() == 'Boutons') {
+                    $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                    $value->setPrice($pricebeforeremise);
+                } else if ($value->getProduct()->getName() == 'Coffret1') {
+                    $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                    $value->setPrice($pricebeforeremise);
+                } else if ($value->getProduct()->getName() == 'Coffret2') {
+                    $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                    $value->setPrice($pricebeforeremise);
+                } else {
+                    $pricebeforeremise = $$value->getProduct()->getPrice();
+                    $value->setPrice($pricebeforeremise);
 
-                    }
+                }
 
-                    if ($commandeEnCours->getRemise() == 0){
+                if ($commandeEnCours->getRemise() == 0) {
                     $value->setPriceRemise($value->getPrice());
-                  }
-                  else{
-                    $prorata = ($pricebeforeremise * $value->getQuantity()) / (round($price/100,2) + $commandeEnCours->getRemise()- $commandeEnCours->getTransportCost());
-                    $remiseparproduit = $commandeEnCours->getRemise() * $prorata;
-                    $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit)/$value->getQuantity();
+                } else {
+                    $prorata           = ($pricebeforeremise * $value->getQuantity()) / (round($price / 100, 2) + $commandeEnCours->getRemise() - $commandeEnCours->getTransportCost());
+                    $remiseparproduit  = $commandeEnCours->getRemise() * $prorata;
+                    $finalpriceproduit = ($pricebeforeremise * $value->getQuantity() - $remiseparproduit) / $value->getQuantity();
                     $value->setPriceRemise(round($finalpriceproduit, 2));
-                  }
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($value);
-                    $em->flush();
-                    $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($value);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+            }
 
-                if ($commandeEnCours->getAtelierLivraison()) {
-                    $atelier = $commandeEnCours->getAtelierLivraison();
-                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('cyprien@cypriengilbert.com')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
-                        'franchise' => $atelier->getFranchise(),
-                        'listePanier' => $listePanier,
-                        'commande' => $commandeEnCours,
-                        'date' => new \DateTime("now"),
-                        'user' => $user,
-                        'minLivraison' => $minLivraison,
-                        'coutLivraison' => $coutLivraison,
-                        'parrainage' => $remiseParrainage,
-                    )), 'text/html');
-                    $this->get('mailer')->send($message);
-
-                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
-                    // app/Resources/views/Emails/registration.html.twig
-                        'emails/new_commande.html.twig', array(
-                          'franchise' => $atelier->getFranchise(),
-                          'listePanier' => $listePanier,
-                          'commande' => $commandeEnCours,
-                          'date' => new \DateTime("now"),
-                          'user' => $user,
-                          'minLivraison' => $minLivraison,
-                          'coutLivraison' => $coutLivraison,
-                          'parrainage' => $remiseParrainage,
-                    )), 'text/html');
-                    $this->get('mailer')->send($message);
-
-                } else{
-                  $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/new_commande.html.twig', array(
-                        'listePanier' => $listePanier,
-                        'franchise' => null,
-                        'commande' => $commandeEnCours,
-                        'date' => new \DateTime("now"),
-                        'user' => $user,
-                        'minLivraison' => $minLivraison,
-                        'coutLivraison' => $coutLivraison,
-                        'parrainage' => $remiseParrainage,
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
-                }
-
-                $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                    'emails/confirmation_commande.html.twig', array(
-                    'user' => $user,
-                    'franchise' => null,
-                    'date' => new \DateTime("now"),
+            if ($commandeEnCours->getAtelierLivraison()) {
+                $atelier = $commandeEnCours->getAtelierLivraison();
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('cyprien@cypriengilbert.com')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
+                    'franchise' => $atelier->getFranchise(),
                     'listePanier' => $listePanier,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
                     'minLivraison' => $minLivraison,
                     'coutLivraison' => $coutLivraison,
-                    'parrainage' => $remiseParrainage,
-                    'commande' => $commandeEnCours,
+                    'parrainage' => $remiseParrainage
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
-                if($user->getParrainEmail() != null){
-                  $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-                  $minParrainage = $repository->findOneBy(array(
-                      'name' => 'nb_parrainage',
-                  ));
-                $parrainEmail = $user->getParrainEmail();
-                $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-                $parrain  = $repository->findOneBy(array(
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/new_commande.html.twig', array(
+                    'franchise' => $atelier->getFranchise(),
+                    'listePanier' => $listePanier,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage
+                )), 'text/html');
+                $this->get('mailer')->send($message);
+
+            } else {
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/new_commande.html.twig', array(
+                    'listePanier' => $listePanier,
+                    'franchise' => null,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage
+                )), 'text/html');
+                $this->get('mailer')->send($message);
+            }
+
+            $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
+            // app/Resources/views/Emails/registration.html.twig
+                'emails/confirmation_commande.html.twig', array(
+                'user' => $user,
+                'franchise' => null,
+                'date' => new \DateTime("now"),
+                'listePanier' => $listePanier,
+                'minLivraison' => $minLivraison,
+                'coutLivraison' => $coutLivraison,
+                'parrainage' => $remiseParrainage,
+                'commande' => $commandeEnCours
+            )), 'text/html');
+            $this->get('mailer')->send($message);
+
+            if ($user->getParrainEmail() != null) {
+                $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+                $minParrainage = $repository->findOneBy(array(
+                    'name' => 'nb_parrainage'
+                ));
+                $parrainEmail  = $user->getParrainEmail();
+                $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+                $parrain       = $repository->findOneBy(array(
                     'email' => $parrainEmail
                 ));
 
@@ -1659,52 +1675,51 @@ throw $this->createNotFoundException('The collection does not exist');
 
 
 
-                if ($nbparrainage %$minParrainage->getMontant() == 0){
+                if ($nbparrainage % $minParrainage->getMontant() == 0) {
 
-                  $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/parrainage_valide_client.html.twig', array(
+                    $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/parrainage_valide_client.html.twig', array(
                         'user' => $parrain,
-                      'filleul' => $user,
-                      'nb' => $minParrainage->getMontant()
+                        'filleul' => $user,
+                        'nb' => $minParrainage->getMontant()
 
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
-                  $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
-                  // app/Resources/views/Emails/registration.html.twig
-                      'emails/parrainage_valide_agathe.html.twig', array(
-                      'user' => $parrain,
-                      'nb' => $minParrainage->getMontant()
-                  )), 'text/html');
-                  $this->get('mailer')->send($message);
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
+                    $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/parrainage_valide_agathe.html.twig', array(
+                        'user' => $parrain,
+                        'nb' => $minParrainage->getMontant()
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
 
 
+                } else {
+                    $nbmin    = $minParrainage->getMontant();
+                    $resultat = $nbmin - $nbparrainage;
+                    while ($resultat < 0) {
+                        $nbmin    = $nbmin + $nbmin;
+                        $resultat = $nbmin - $nbparrainage;
+
+                    }
+
+                    $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/parrainage_nonvalide_client.html.twig', array(
+                        'user' => $parrain,
+                        'filleul' => $parrain,
+                        'nbmin' => $nbmin,
+                        'nb' => $nbparrainage
+
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
                 }
-                else{
-                $nbmin = $minParrainage->getMontant();
-                $resultat = $nbmin - $nbparrainage;
-                while ($resultat < 0){
-                $nbmin = $nbmin + $nbmin;
-                $resultat = $nbmin - $nbparrainage;
+            }
 
-                }
-
-                $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
-                'emails/parrainage_nonvalide_client.html.twig', array(
-                'user' => $parrain,
-                'filleul' => $parrain,
-                'nbmin' => $nbmin,
-                'nb' => $nbparrainage,
-
-                )), 'text/html');
-                $this->get('mailer')->send($message);
-                }
-                }
-
-                $url      = 'https://agathevousgate.cypriengilbert.com/paiement/confirmation';
-                $response = new RedirectResponse($url);
-                return $response;
+            $url      = 'https://agathevousgate.cypriengilbert.com/paiement/confirmation';
+            $response = new RedirectResponse($url);
+            return $response;
 
 
         }
@@ -1722,76 +1737,76 @@ throw $this->createNotFoundException('The collection does not exist');
     public function chargePaypalAction()
     {
 
-      $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
-      $username            = 'agathe-facilitator_api1.agathevousgate.fr';
-      $password       = 'NZY9R22ZE2CKQET8';
-      $user            = $this->container->get('security.context')->getToken()->getUser();
-      $UserEmail       = $user->getEmail();
-      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-      $commandeEnCours = $repository->findOneBy(array(
-          'client' => $user,
-          'isPanier' => true
-      ));
-      $price = $commandeEnCours->getPrice();
-      $priceLivraison = $commandeEnCours->getTransportCost();
+        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
+        $username        = 'agathe-facilitator_api1.agathevousgate.fr';
+        $password        = 'NZY9R22ZE2CKQET8';
+        $user            = $this->container->get('security.context')->getToken()->getUser();
+        $UserEmail       = $user->getEmail();
+        $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $commandeEnCours = $repository->findOneBy(array(
+            'client' => $user,
+            'isPanier' => true
+        ));
+        $price           = $commandeEnCours->getPrice();
+        $priceLivraison  = $commandeEnCours->getTransportCost();
 
-      $params = array(
-      'USER'=>$username,
-      'PWD'=>$password,
-      'SIGNATURE'=>$token,
-      'METHOD'=>'SetExpressCheckout',
-      'VERSION'=>'124.0',
-      'RETURNURL'=>'https://agathevousgate.cypriengilbert.com/'.$this->generateUrl('confirmationpaypal'),
-      'CANCELURL'=>'https://agathevousgate.fr/'.$this->generateUrl('paiementechec'),
-      'PAYMENTREQUEST_0_AMT'=>$price,
-      'PAYMENTREQUEST_0_ITEMAMT'=>$price - $priceLivraison,
-      'PAYMENTREQUEST_0_SHIPPINGAMT'=>$priceLivraison,
-      'PAYMENTREQUEST_0_CURRENCYCODE'=>'EUR',
-      );
+        $params = array(
+            'USER' => $username,
+            'PWD' => $password,
+            'SIGNATURE' => $token,
+            'METHOD' => 'SetExpressCheckout',
+            'VERSION' => '124.0',
+            'RETURNURL' => 'https://agathevousgate.cypriengilbert.com/' . $this->generateUrl('confirmationpaypal'),
+            'CANCELURL' => 'https://agathevousgate.fr/' . $this->generateUrl('paiementechec'),
+            'PAYMENTREQUEST_0_AMT' => $price,
+            'PAYMENTREQUEST_0_ITEMAMT' => $price - $priceLivraison,
+            'PAYMENTREQUEST_0_SHIPPINGAMT' => $priceLivraison,
+            'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR'
+        );
 
-      $params = http_build_query($params);
-      $endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
-      $curl = curl_init();
-      curl_setopt_array($curl, array(
-      CURLOPT_URL => $endpoint,
-      CURLOPT_POST => 1,
-      CURLOPT_POSTFIELDS => $params,
-      CURLOPT_RETURNTRANSFER => 1,
-      CURLOPT_SSL_VERIFYPEER => false,
-      CURLOPT_SSL_VERIFYHOST => false,
-      CURLOPT_VERBOSE => 1,
+        $params   = http_build_query($params);
+        $endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
+        $curl     = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $endpoint,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $params,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_VERBOSE => 1,
 
-      CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+            CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
 
-      ));
+        ));
 
-      $response = curl_exec($curl);
-      $responseArray = array();
-      parse_str($response , $responseArray);
-      if(curl_error($curl)){
+        $response      = curl_exec($curl);
+        $responseArray = array();
+        parse_str($response, $responseArray);
+        if (curl_error($curl)) {
+            curl_close($curl);
+            $url      = $this->generateUrl('paiementechec');
+            $response = new RedirectResponse($url);
+
+            return $response;
+        } else {
+            if ($responseArray['ACK'] == 'Success') {
+            } else {
+
+                $url      = $this->generateUrl('paiementechec');
+                $response = new RedirectResponse($url);
+
+                return $response;
+            }
+
+        }
+        echo ('redirection vers Paypal en cours <br>');
+
         curl_close($curl);
-        $url      = $this->generateUrl('paiementechec');
+
+        $url      = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
         $response = new RedirectResponse($url);
-
         return $response;
-      } else{
-      if($responseArray['ACK'] == 'Success'){}
-      else{
-
-        $url      = $this->generateUrl('paiementechec');
-        $response = new RedirectResponse($url);
-
-        return $response;
-}
-
-      }
-      echo('redirection vers Paypal en cours <br>');
-
-      curl_close($curl);
-
-$url = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token='.$responseArray['TOKEN'];
-$response = new RedirectResponse($url);
-return $response;
     }
 
 
@@ -1800,41 +1815,44 @@ return $response;
      */
     public function choixLivraisonAction(Request $request)
     {
-        $session = $this->get('session');
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-        $ateliers   = $repository->findBy(array('active' => true));
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ModeLivraison');
-        $modelivraison  = $repository->findAll();
+        $session       = $this->get('session');
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+        $ateliers      = $repository->findBy(array(
+            'active' => true
+        ));
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ModeLivraison');
+        $modelivraison = $repository->findAll();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $user       = $this->container->get('security.context')->getToken()->getUser();
-            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $nbarticle       = count($repository->findBy(array(
+            $user              = $this->container->get('security.context')->getToken()->getUser();
+            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticle         = count($repository->findBy(array(
                 'commande' => null,
                 'client' => $user
             )));
-            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-            $commandeEnCours = $repository->findOneBy(array(
+            $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+            $commandeEnCours   = $repository->findOneBy(array(
                 'client' => $user,
                 'isPanier' => true
             ));
             $listeAddedProduct = $session->get('panier_session');
             $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $listePanier = $repository->findBy(array(
+            $listePanier       = $repository->findBy(array(
                 'client' => $user,
                 'commande' => null
             ));
-  if ($listeAddedProduct !== null){
-            foreach ($listeAddedProduct as $value) {
-                $rajoutpanier = $value;
-                $rajoutpanier->setClient($user);
-                $this->getDoctrine()->getManager()->merge($rajoutpanier);
-                $this->getDoctrine()->getManager()->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');            }
-}
+            if ($listeAddedProduct !== null) {
+                foreach ($listeAddedProduct as $value) {
+                    $rajoutpanier = $value;
+                    $rajoutpanier->setClient($user);
+                    $this->getDoctrine()->getManager()->merge($rajoutpanier);
+                    $this->getDoctrine()->getManager()->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+                }
+            }
             $this->get('session')->remove('panier_session');
 
-            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
             $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $nbarticlepanier = count($repository->findBy(array(
                 'commande' => null,
@@ -1853,8 +1871,7 @@ return $response;
 
 
             }
-        }
-        else {
+        } else {
             $listePanier = $session->get('panier_session');
             ;
             $nbarticlepanier = $session->get('nb_article');
@@ -1868,21 +1885,25 @@ return $response;
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             if ($commandeEnCours) {
 
-                if($nbarticlepanier > 1){
-                $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
-                }elseif ($nbarticlepanier == 1){
-  foreach ($listePanier as $value) {
-if($value->getQuantity() < 2){
-$form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonAllType', $commandeEnCours);
-}
-else{                $form       = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
-}
+                if ($nbarticlepanier > 1) {
+                    $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
+                } elseif ($nbarticlepanier == 1) {
+                    foreach ($listePanier as $value) {
+                        if ($value->getQuantity() < 2) {
+                            $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonAllType', $commandeEnCours);
+                        } else {
+                            $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
+                        }
 
-}}
+                    }
+                }
                 if ($form->handleRequest($request)->isValid()) {
                     $commandeEnCours->setAtelierLivraison(null);
-                    if($commandeEnCours->getTransportMethod()){
-                    $commandeEnCours->setTransportCost($commandeEnCours->getTransportMethod()->getPrice());}else{  $commandeEnCours->setTransportCost(0);}
+                    if ($commandeEnCours->getTransportMethod()) {
+                        $commandeEnCours->setTransportCost($commandeEnCours->getTransportMethod()->getPrice());
+                    } else {
+                        $commandeEnCours->setTransportCost(0);
+                    }
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commandeEnCours);
 
@@ -1918,26 +1939,22 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                 $total_commande = 0;
                 foreach ($listePanier as $value) {
 
-                    if($value->getProduct()->getName() == 'Noeud'){
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                    if ($value->getProduct()->getName() == 'Noeud') {
+                        $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+
+                    } else if ($value->getProduct()->getName() == 'Pochette') {
+                        $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                    } else if ($value->getProduct()->getName() == 'Boutons') {
+                        $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                    } else if ($value->getProduct()->getName() == 'Coffret1') {
+                        $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                    } else if ($value->getProduct()->getName() == 'Coffret2') {
+                        $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                    } else {
+                        $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
 
                     }
-                    else if($value->getProduct()->getName() == 'Pochette'){
-                    $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                    }
-                    else if($value->getProduct()->getName() == 'Boutons'){
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret1'){
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                    }
-                    else if($value->getProduct()->getName() == 'Coffret2'){
-                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2()+ $value->getCollection()->getPriceCoffret1())* $value->getQuantity());
-                    }
-                    else {
-                      $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-
-          }}
+                }
 
                 $newcommande->setClient($user);
                 $newcommande->setIsValid(false);
@@ -1970,8 +1987,9 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $newcommande);
                 if ($form->handleRequest($request)->isValid()) {
-                    if($newcommande->getTransportMethod()){
-                    $newcommande->setTransportCost($newcommande->getTransportMethod()->getPrice());}
+                    if ($newcommande->getTransportMethod()) {
+                        $newcommande->setTransportCost($newcommande->getTransportMethod()->getPrice());
+                    }
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($commandeEnCours);
 
@@ -2019,7 +2037,7 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
      */
     public function choosenAtelierAction(Request $request, $id)
     {
-        $user = $this->container->get('security.context')->getToken()->getUser();
+        $user            = $this->container->get('security.context')->getToken()->getUser();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $commandeEnCours = $repository->findOneBy(array(
             'client' => $user,
@@ -2070,25 +2088,27 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                 'isPanier' => false
             )));
 
-            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-            $listePanier      = $repository->findBy(array(
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listePanier     = $repository->findBy(array(
                 'client' => $user,
                 'commande' => null
             ));
-            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-            $commandeEnCours  = $repository->findOneBy(array(
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+            $commandeEnCours = $repository->findOneBy(array(
                 'client' => $user,
                 'isPanier' => true
             ));
-            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
-            $minLivraison     = $repository->findOneBy(array(
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            $minLivraison    = $repository->findOneBy(array(
                 'name' => 'Livraison'
 
             ));
             if ($commandeEnCours->getTransportMethod() != null) {
-              $coutLivraison    = $commandeEnCours->getTransportMethod()->getPrice();
+                $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
 
-}         else{$coutLivraison = 0;}
+            } else {
+                $coutLivraison = 0;
+            }
 
             $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
             $remiseParrainage = $repository->findOneBy(array(
@@ -2106,26 +2126,21 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
             $total_commande = 0;
             foreach ($listePanier as $value) {
 
-                if($value->getProduct()->getName() == 'Noeud'){
-                $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                if ($value->getProduct()->getName() == 'Noeud') {
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+
+                } else if ($value->getProduct()->getName() == 'Pochette') {
+                    $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                } else if ($value->getProduct()->getName() == 'Boutons') {
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                } else if ($value->getProduct()->getName() == 'Coffret1') {
+                    $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                } else if ($value->getProduct()->getName() == 'Coffret2') {
+                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                } else {
+                    $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
 
                 }
-                else if($value->getProduct()->getName() == 'Pochette'){
-                $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                }
-                else if($value->getProduct()->getName() == 'Boutons'){
-                $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                }
-                else if($value->getProduct()->getName() == 'Coffret1'){
-                $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                }
-                else if($value->getProduct()->getName() == 'Coffret2'){
-                  $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2()+ $value->getCollection()->getPriceCoffret1())* $value->getQuantity());
-                }
-                else {
-                  $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-
-      }
 
 
             }
@@ -2144,7 +2159,7 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                         $remise = round($total_commande * $codePromo->getMontant() / 100, 2);
                     } elseif ($codePromo->getGenre() == 'remise') {
                         $remise = $codePromo->getMontant();
-                    }elseif ($codePromo->getGenre() == 'fdp-remise') {
+                    } elseif ($codePromo->getGenre() == 'fdp-remise') {
                         $remise = $codePromo->getMontant();
                     }
 
@@ -2169,9 +2184,9 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                     if ($total_commande >= $codePromo->getMinimumCommande()) {
                         if ($codePromo->getGenre() == 'fdp') {
                             $total_commande = $total_commande - $coutLivraison;
-                            }
-                        else if ($codePromo->getGenre() == 'fdp-remise') {
-                              $total_commande = $total_commande - $coutLivraison;                            }
+                        } else if ($codePromo->getGenre() == 'fdp-remise') {
+                            $total_commande = $total_commande - $coutLivraison;
+                        }
 
                     }
                 }
@@ -2199,7 +2214,7 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
                 'parrainage' => $remiseParrainage,
                 'price' => $total_commande,
 
-                'rem' => $newcommande->getRemise(),
+                'rem' => $newcommande->getRemise()
 
             ));
 
@@ -2542,12 +2557,16 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
             $nbarticlepanier = null;
         }
 
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
-        $text_question = $repository->findBy(array('page' => 'faq_question'));
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
-        $text_reponse = $repository->findBy(array('page' => 'faq_reponse'));
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collection = $repository->findAll();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text_question = $repository->findBy(array(
+            'page' => 'faq_question'
+        ));
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
+        $text_reponse  = $repository->findBy(array(
+            'page' => 'faq_reponse'
+        ));
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collection    = $repository->findAll();
         return $this->render('CommerceBundle:Default:faq.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
@@ -2589,18 +2608,22 @@ else{                $form       = $this->get('form.factory')->create('CommerceB
         }
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Text');
-        $text = $repository->findOneBy(array('page' => 'qsn'));
+        $text       = $repository->findOneBy(array(
+            'page' => 'qsn'
+        ));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
-        $apropos  = $repository->findOneBy(array("name" => 'apropos'));
+        $apropos    = $repository->findOneBy(array(
+            "name" => 'apropos'
+        ));
 
         return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
             'page' => $page,
             'text' => $text,
-            'apropos' => $apropos,
+            'apropos' => $apropos
 
         ));
 
