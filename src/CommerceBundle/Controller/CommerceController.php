@@ -668,7 +668,7 @@ class CommerceController extends Controller
 
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $product_noeud = $repository->findOneBy(array(
-            'name' => 'Noeud'
+            'id' => 3
         ));
 
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');

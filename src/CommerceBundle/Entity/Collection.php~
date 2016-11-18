@@ -95,6 +95,7 @@ class Collection
 
      /**
      * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
+     * @ORM\OrderBy({"codehexa" = "DESC"})
      */
      private $colors;
 
@@ -162,6 +163,16 @@ class Collection
      * @ORM\JoinColumn(nullable=true)
      */
      private $thirdColor;
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\JoinColumn(nullable=true)
+     */
+     private $colorCoffret1;
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\JoinColumn(nullable=true)
+     */
+     private $colorCoffret2;
 
 
     /**
@@ -505,5 +516,125 @@ class Collection
     public function getThirdColor()
     {
         return $this->thirdColor;
+    }
+
+    /**
+     * Set priceNoeud
+     *
+     * @param float $priceNoeud
+     *
+     * @return Collection
+     */
+    public function setPriceNoeud($priceNoeud)
+    {
+        $this->priceNoeud = $priceNoeud;
+
+        return $this;
+    }
+
+    /**
+     * Get priceNoeud
+     *
+     * @return float
+     */
+    public function getPriceNoeud()
+    {
+        return $this->priceNoeud;
+    }
+
+    /**
+     * Set pricePochette
+     *
+     * @param float $pricePochette
+     *
+     * @return Collection
+     */
+    public function setPricePochette($pricePochette)
+    {
+        $this->pricePochette = $pricePochette;
+
+        return $this;
+    }
+
+    /**
+     * Get pricePochette
+     *
+     * @return float
+     */
+    public function getPricePochette()
+    {
+        return $this->pricePochette;
+    }
+
+    /**
+     * Set priceBouton
+     *
+     * @param float $priceBouton
+     *
+     * @return Collection
+     */
+    public function setPriceBouton($priceBouton)
+    {
+        $this->priceBouton = $priceBouton;
+
+        return $this;
+    }
+
+    /**
+     * Get priceBouton
+     *
+     * @return float
+     */
+    public function getPriceBouton()
+    {
+        return $this->priceBouton;
+    }
+
+    /**
+     * Set priceCoffret1
+     *
+     * @param float $priceCoffret1
+     *
+     * @return Collection
+     */
+    public function setPriceCoffret1($priceCoffret1)
+    {
+        $this->priceCoffret1 = $priceCoffret1;
+
+        return $this;
+    }
+
+    /**
+     * Get priceCoffret1
+     *
+     * @return float
+     */
+    public function getPriceCoffret1()
+    {
+        return $this->priceCoffret1;
+    }
+
+    /**
+     * Set priceCoffret2
+     *
+     * @param float $priceCoffret2
+     *
+     * @return Collection
+     */
+    public function setPriceCoffret2($priceCoffret2)
+    {
+        $this->priceCoffret2 = $priceCoffret2;
+
+        return $this;
+    }
+
+    /**
+     * Get priceCoffret2
+     *
+     * @return float
+     */
+    public function getPriceCoffret2()
+    {
+        return $this->priceCoffret2;
     }
 }

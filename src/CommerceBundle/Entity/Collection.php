@@ -163,6 +163,16 @@ class Collection
      * @ORM\JoinColumn(nullable=true)
      */
      private $thirdColor;
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\JoinColumn(nullable=true)
+     */
+     private $colorCoffret1;
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\JoinColumn(nullable=true)
+     */
+     private $colorCoffret2;
 
 
     /**
@@ -626,5 +636,53 @@ class Collection
     public function getPriceCoffret2()
     {
         return $this->priceCoffret2;
+    }
+
+    /**
+     * Set colorCoffret1
+     *
+     * @param \CommerceBundle\Entity\Color $colorCoffret1
+     *
+     * @return Collection
+     */
+    public function setColorCoffret1(\CommerceBundle\Entity\Color $colorCoffret1 = null)
+    {
+        $this->colorCoffret1 = $colorCoffret1;
+
+        return $this;
+    }
+
+    /**
+     * Get colorCoffret1
+     *
+     * @return \CommerceBundle\Entity\Color
+     */
+    public function getColorCoffret1()
+    {
+        return $this->colorCoffret1;
+    }
+
+    /**
+     * Set colorCoffret2
+     *
+     * @param \CommerceBundle\Entity\Color $colorCoffret2
+     *
+     * @return Collection
+     */
+    public function setColorCoffret2(\CommerceBundle\Entity\Color $colorCoffret2 = null)
+    {
+        $this->colorCoffret2 = $colorCoffret2;
+
+        return $this;
+    }
+
+    /**
+     * Get colorCoffret2
+     *
+     * @return \CommerceBundle\Entity\Color
+     */
+    public function getColorCoffret2()
+    {
+        return $this->colorCoffret2;
     }
 }

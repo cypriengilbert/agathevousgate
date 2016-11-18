@@ -1687,6 +1687,16 @@ document.getElementById('{{ colors.imageColorName }}_7').click();
 
 
 {% endif %}
+{% if colors == collection.colorCoffret1 %}
+document.getElementById('{{ colors.imageColorName }}_4').click();
+blnBlocage = false;
+
+{% endif %}
+{% if colors == collection.colorCoffret2 %}
+document.getElementById('{{ colors.imageColorName }}_5').click();
+blnBlocage = false;
+
+{% endif %}
 {% endfor %}
 {% endif %}
 blnBlocage = false;
