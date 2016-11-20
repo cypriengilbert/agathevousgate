@@ -185,7 +185,7 @@
 
                {% for enfants in product.enfants %}
                {% if enfants.product.name == 'Coffret2' %}
-               {% set coffret_price = product.collection.priceCoffret2 %}
+               {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
                {% set coffret_id = enfants.id %}
 
                <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
@@ -364,7 +364,7 @@
                         +
                         {% for enfants in product.enfants %}
                         {% if enfants.product.name == 'Coffret2' %}
-                              {{ product.collection.priceCoffret2 }}€
+                              {{ product.collection.priceCoffret2  + product.collection.priceCoffret1 }}€
                           {% elseif enfants.product.name == 'Coffret1' %}
                             {{ product.collection.priceCoffret1 }}€
                           {% endif %}

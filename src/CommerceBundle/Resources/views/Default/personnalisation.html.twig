@@ -25,7 +25,8 @@ window.onbeforeunload = function () {
 
         </ul>
     </div>
-
+    {% set first_open2 = 0 %}
+    {% set first_open1 = 0 %}
     {% set noeud_price = 0 %}
     {% set coffret1_price = 0%}
     {% set coffret2_price = 0 %}
@@ -277,7 +278,19 @@ window.onbeforeunload = function () {
 <section class="Coffret">
     <div class="container no_padding">
         <div class="panel panel-default">
-            <div id="panel-heading-plugin-6" style="margin-bottom: -0.5px;" class="panel-heading panel-heading-plugin" onclick="open_div('coffret1')" >
+            <div id="panel-heading-plugin-6" style="margin-bottom: -0.5px;" class="panel-heading panel-heading-plugin" onclick="open_div('coffret1');
+            {% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+            {% if colors == collection.colorCoffret1 %}
+            {%  if first_open1 == 0 %}
+            {% set first_open1 = 1 %}
+            document.getElementById('{{ colors.imageColorName }}_4').click();
+            blnBlocage = false;
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            " >
                 <div class="row" aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" href="" style="margin-right: 0px;">
                     <div class="col-sm-11 col-xs-10">
                         <h4 id="titre_coffret1" class="panel-title" style="color:#25225B; text-shadow:none; background-color:rgba(0,0,0,0);">
@@ -356,7 +369,18 @@ window.onbeforeunload = function () {
 
 
                                   <div class="panel panel-default">
-                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2')" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );">
+                                      <div aria-hidden="true" data-toggle="collapse" data-parent="#accordion_coffret" id="panel-heading-plugin-5" class="panel-heading panel-heading-plugin" onclick="open_div('coffret2');{% for collection in collection %} {% if collection.id == selected_collection %} {% for colors in collection.colors %}
+                                      {% if colors == collection.colorCoffret2 %}
+                                      {%  if first_open2 == 0 %}
+                                      {% set first_open2 = 1 %}
+
+                                      document.getElementById('{{ colors.imageColorName }}_5').click();
+                                      blnBlocage = false;
+                                      {% endif %}
+                                      {% endif %}
+                                      {% endfor %}
+                                      {% endif %}
+                                      {% endfor %}" style="background:linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );">
                                           <div class="row"  href=""  >
                                               <div class="col-sm-11 col-xs-10">
                                                   <h4 class="panel-title">
@@ -1687,16 +1711,8 @@ document.getElementById('{{ colors.imageColorName }}_7').click();
 
 
 {% endif %}
-{% if colors == collection.colorCoffret1 %}
-document.getElementById('{{ colors.imageColorName }}_4').click();
-blnBlocage = false;
 
-{% endif %}
-{% if colors == collection.colorCoffret2 %}
-document.getElementById('{{ colors.imageColorName }}_5').click();
-blnBlocage = false;
 
-{% endif %}
 {% endfor %}
 {% endif %}
 blnBlocage = false;
@@ -1708,4 +1724,10 @@ $(function () {
 </script>
 
 </body>
+
+
+
+
+
+
 {% endblock %}
