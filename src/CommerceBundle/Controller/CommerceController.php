@@ -366,13 +366,17 @@ class CommerceController extends Controller
             $quantity     = $articletoadd->getQuantity();
             $articletoadd->setQuantity($quantity + 1);
             if ($articletoadd->getParent()) {
+              if ( ($articletoadd->getProduct()->getName() == 'Coffret1') or ($articletoadd->getProduct()->getName() == 'Coffret2') ){
                 $parent         = $articletoadd->getParent();
                 $quantityParent = $parent->getQuantity();
                 if ($quantityParent <= $quantity) {
 
                     $parent->setQuantity($quantityParent + 1);
+                    $em->persist($parent);
+
                 }
-                $em->persist($parent);
+}
+
 
             }
             $em->persist($articletoadd);
@@ -388,7 +392,7 @@ class CommerceController extends Controller
             $listeAddedProduct = $session->get('panier_session');
             $quantity          = $listeAddedProduct[$id]->getQuantity();
             $listeAddedProduct[$id]->setQuantity($quantity + 1);
-            if ($listeAddedProduct[$id]->getParent()) {
+            if ($listeAddedProduct[$id]->getParent() and ($listeAddedProduct[$id]->getProduct()->getName() == 'Coffret1' or $listeAddedProduct[$id]->getProduct()->getName() == 'Coffret2')) {
                 $parent         = $listeAddedProduct[$id]->getParent();
                 $quantityParent = $parent->getQuantity();
                 if ($quantityParent <= $quantity) {
@@ -434,7 +438,8 @@ class CommerceController extends Controller
                     if ($quantityEnfant == 1) {
                         $em->remove($value);
                     } elseif ($quantityEnfant > 1) {
-                        $value->setQuantity($quantityEnfant - 1);
+                  if ( ($value->getProduct()->getName() == 'Coffret1') or ($value->getProduct()->getName() == 'Coffret2') ){
+                        $value->setQuantity($quantityEnfant - 1);}
                     }
                 }
 
@@ -466,7 +471,10 @@ class CommerceController extends Controller
                             if ($quantityEnfant == 1) {
                                 unset($listeAddedProduct[$i]);
                             } elseif ($quantityEnfant > 1) {
+                                if ( ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret1') or ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret2') ){
+
                                 $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
+                                }
                             }
                         }
                     }
@@ -798,10 +806,6 @@ class CommerceController extends Controller
                     $em->persist($newNoeud);
                 }
 
-                if (isset($newPochette)) {
-                    $newPochette->setClient($user);
-                    $em->persist($newPochette);
-                }
                 if (isset($newCoffret1)) {
                     $newCoffret1->setClient($user);
                     $em->persist($newCoffret1);
@@ -810,6 +814,13 @@ class CommerceController extends Controller
                     $newCoffret2->setClient($user);
                     $em->persist($newCoffret2);
                 }
+
+                if (isset($newPochette)) {
+                    $newPochette->setClient($user);
+                    $em->persist($newPochette);
+                }
+
+
                 if (isset($newBoutons)) {
                     $newBoutons->setClient($user);
                     $em->persist($newBoutons);
@@ -821,13 +832,6 @@ class CommerceController extends Controller
                 if (isset($newNoeud)) {
                     $listeAddedProduct = $session->get('panier_session');
                     array_push($listeAddedProduct, $newNoeud);
-                    $session->set('panier_session', $listeAddedProduct);
-                    $session->set('nb_article', count($listeAddedProduct));
-                    $nbarticlepanier = $session->get('nb_article');
-                }
-                if (isset($newBoutons)) {
-                    $listeAddedProduct = $session->get('panier_session');
-                    array_push($listeAddedProduct, $newBoutons);
                     $session->set('panier_session', $listeAddedProduct);
                     $session->set('nb_article', count($listeAddedProduct));
                     $nbarticlepanier = $session->get('nb_article');
@@ -847,9 +851,18 @@ class CommerceController extends Controller
                     $nbarticlepanier = $session->get('nb_article');
                 }
 
+
+
                 if (isset($newPochette)) {
                     $listeAddedProduct = $session->get('panier_session');
                     array_push($listeAddedProduct, $newPochette);
+                    $session->set('panier_session', $listeAddedProduct);
+                    $session->set('nb_article', count($listeAddedProduct));
+                    $nbarticlepanier = $session->get('nb_article');
+                }
+                if (isset($newBoutons)) {
+                    $listeAddedProduct = $session->get('panier_session');
+                    array_push($listeAddedProduct, $newBoutons);
                     $session->set('panier_session', $listeAddedProduct);
                     $session->set('nb_article', count($listeAddedProduct));
                     $nbarticlepanier = $session->get('nb_article');
@@ -1197,13 +1210,14 @@ class CommerceController extends Controller
             $em   = $this->getDoctrine()->getManager();
             $new_noeud->setClient($user);
 
-            if ($pochette_selected) {
-                $new_pochette->setClient($user);
-                $em->persist($new_pochette);
-            }
+
             if ($coffret_selected) {
                 $new_coffret->setClient($user);
                 $em->persist($new_coffret);
+            }
+            if ($pochette_selected) {
+                $new_pochette->setClient($user);
+                $em->persist($new_pochette);
             }
             if ($boutons_selected) {
                 $new_boutons->setClient($user);
@@ -1222,13 +1236,7 @@ class CommerceController extends Controller
             $session->set('panier_session', $listeAddedProduct);
             $session->set('nb_article', count($listeAddedProduct));
             $nbarticlepanier = $session->get('nb_article');
-            if ($boutons_selected) {
-                $listeAddedProduct = $session->get('panier_session');
-                array_push($listeAddedProduct, $new_boutons);
-                $session->set('panier_session', $listeAddedProduct);
-                $session->set('nb_article', count($listeAddedProduct));
-                $nbarticlepanier = $session->get('nb_article');
-            }
+
             if ($coffret_selected) {
                 $listeAddedProduct = $session->get('panier_session');
                 array_push($listeAddedProduct, $new_coffret);
@@ -1240,6 +1248,13 @@ class CommerceController extends Controller
             if ($pochette_selected) {
                 $listeAddedProduct = $session->get('panier_session');
                 array_push($listeAddedProduct, $new_pochette);
+                $session->set('panier_session', $listeAddedProduct);
+                $session->set('nb_article', count($listeAddedProduct));
+                $nbarticlepanier = $session->get('nb_article');
+            }
+            if ($boutons_selected) {
+                $listeAddedProduct = $session->get('panier_session');
+                array_push($listeAddedProduct, $new_boutons);
                 $session->set('panier_session', $listeAddedProduct);
                 $session->set('nb_article', count($listeAddedProduct));
                 $nbarticlepanier = $session->get('nb_article');

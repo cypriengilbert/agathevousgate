@@ -38,29 +38,45 @@
                   <div class="row">
                      <div class="col-sm-12 col-md-12" >
                         {% set is_alone = 1 %}
+                        {% set price_line = 0 %}
+
                         {% for listepanierenfant in listePanierEnfant %}
                         {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
+                        {% set price_line = listepanier.collection.priceNoeud %}
                         {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
+                        {% set price_line = listepanier.collection.priceNoeud %}
+
                         {% endif  %}
                         {% endfor %}
                         <h2>
                            {% if is_alone == 1 %}
-                           Noeud {{ listepanier.collection.title }} -
+                           Noeud {{ listepanier.collection.title }}
+                           {% set price_line = listepanier.collection.priceNoeud %}
+
                            {% endif  %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
-                           Coffret Trio {{ listepanier.collection.title }} -
+                           Coffret Trio {{ listepanier.collection.title }}
+                           {% set price_line = price_line + listepanier.collection.priceCoffret1 %}
                            {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
-                           Coffret Prestige {{ listepanier.collection.title }} - {% endif %}
+                           Coffret Prestige {{ listepanier.collection.title }}
+                           {% set price_line = price_line + listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2 %}
+{% endif %}
+
                            {% endfor %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %}
-                           Pochette  {% endif %}
+                           - Pochette
+                           {% set price_line = price_line + listepanier.collection.pricePochette %}
+                          {% endif %}
                            {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
-                           - Boutons{% endif %}
+                           - Boutons
+                           {% set price_line = price_line + listepanier.collection.priceBouton %}
+                            {% endif %}
                            {% endfor %}
+                            - {{ price_line }}€
                         </h2>
                      </div>
                   </div>
@@ -168,7 +184,7 @@
                                     </thead>
                                     <tbody>
                                        <tr>
-                                          <td>{{ listepanier.product.name }} {{ listepanier.size }} {% if listepanier.accessoire %} avec {{ listepanier.accessoire.name }}{% endif %}<br>
+                                          <td>{{ listepanier.product.cartname }} {{ listepanier.size }} {% if listepanier.accessoire %} avec {{ listepanier.accessoire.name }}{% endif %}<br>
                                              {% if listepanier.Color1 %}
                                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                              {% endif %}
@@ -197,7 +213,7 @@
                                                 </div>
                                              </a>
                                              {% else %}
-                                             <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+                                             <a href="{{ path('plusproduct',{'id':key } ) }}">
                                                 <div style="position:relative; top:20px; left:35px">
                                                    <i class="fa fa-plus fa-1" aria-hidden="true">
                                                    </i>
@@ -206,7 +222,7 @@
                                              <div>
                                                 <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
                                              </div>
-                                             <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+                                             <a href="{{ path('minusproduct',{'id':key } ) }}">
                                                 <div>
                                                    <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
                                                    </i>
@@ -216,9 +232,10 @@
                                           </td>
                                           <td>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</td>
                                        </tr>
-                                       {% for listepanierenfant in listePanierEnfant %}
+                                       {% for keyEnfant, listepanierenfant in listePanierEnfant %}
+                                        {% if (listepanierenfant.parent == listepanier) %}
                                        <tr>
-                                          <td>{{ listepanierenfant.product.name }}<br>
+                                          <td>{{ listepanierenfant.product.cartname }}<br>
                                              {% if listepanierenfant.Color1 %}
                                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                              {% endif %}
@@ -247,16 +264,16 @@
                                                 </div>
                                              </a>
                                              {% else %}
-                                             <a href="{{ path('plusproduct',{'id':numero_ligne } ) }}">
+                                             <a href="{{ path('plusproduct',{'id':keyEnfant } ) }}">
                                                 <div style="position:relative; top:20px; left:35px">
                                                    <i class="fa fa-plus fa-1" aria-hidden="true">
                                                    </i>
                                                 </div>
                                              </a>
                                              <div>
-                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanierenfant.quantity }}" disabled>
                                              </div>
-                                             <a href="{{ path('minusproduct',{'id':numero_ligne } ) }}">
+                                             <a href="{{ path('minusproduct',{'id':keyEnfant } ) }}">
                                                 <div>
                                                    <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
                                                    </i>
@@ -276,6 +293,7 @@
                                              {% endif %}
                                           </td>
                                        </tr>
+                                        {% endif %}
                                        {% endfor %}
                                     </tbody>
                                  </table>
