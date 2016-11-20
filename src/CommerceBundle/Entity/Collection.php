@@ -147,29 +147,31 @@ class Collection
 
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $firstColor;
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $secondColor;
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $thirdColor;
+
+
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $colorCoffret1;
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $colorCoffret2;

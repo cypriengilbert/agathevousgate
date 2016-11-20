@@ -40,7 +40,7 @@ class AddedProduct
       private $parent;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
     * @ORM\JoinColumn(nullable=true)
     */
     public $color1;
@@ -48,61 +48,61 @@ class AddedProduct
 
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color2;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color3;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color4;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color5;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color6;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color7;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color8;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color9;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color" )
     * @ORM\JoinColumn(nullable=true)
     */
     public $color10;
 
     /**
-    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product")
     * @ORM\JoinColumn(nullable=false)
     */
     private $product;
@@ -121,14 +121,14 @@ class AddedProduct
     private $collection;
 
     /**
-    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User" ,cascade={"persist"})
+    * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User" )
     * @ORM\JoinColumn(nullable=false)
     */
    private $client;
 
 
    /**
-   * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Accessoire" ,cascade={"persist"})
+   * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Accessoire")
    * @ORM\JoinColumn(nullable=true)
    */
    private $accessoire;

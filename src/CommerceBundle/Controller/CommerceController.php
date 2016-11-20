@@ -49,24 +49,105 @@ class CommerceController extends Controller
             $user              = $this->container->get('security.context')->getToken()->getUser();
             $listeAddedProduct = $session->get('panier_session');
             $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-
             $listePanier = $repository->findBy(array(
                 'client' => $user,
                 'commande' => null
             ));
+            $em   = $this->getDoctrine()->getManager();
 
 
             foreach ($listeAddedProduct as $value) {
                 $rajoutpanier = $value;
+                $addcart      = new AddedProduct();
+                $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+                $color1 = $repository->findOneBy(array(
+                    'name' => $rajoutpanier->getColor1()->getName(),
+                    ));
+                    if ($rajoutpanier->getColor2()) {
+
+                    $color2 = $repository->findOneBy(array(
+                        'name' => $rajoutpanier->getColor2()->getName(),
+                        ));                  $rajoutpanier->setColor2($color2);
+}
+                        if ($rajoutpanier->getColor3()) {
+
+                        $color3 = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getColor3()->getName(),
+                            ));                  $rajoutpanier->setColor3($color3);
+}
+                            if ($rajoutpanier->getColor4()) {
+
+                            $color4 = $repository->findOneBy(array(
+                                'name' => $rajoutpanier->getColor4()->getName(),
+                                ));
+                                $rajoutpanier->setColor4($color4);
+}
+if ($rajoutpanier->getColor5()) {
+                                $color5 = $repository->findOneBy(array(
+                                    'name' => $rajoutpanier->getColor5()->getName(),
+                                    ));                  $rajoutpanier->setColor5($color5);
+}
+
+                  $rajoutpanier->setColor1($color1);
+
+
+                  if ($rajoutpanier->getProduct()) {
+
+                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+                    $product = $repository->findOneBy(array(
+                        'name' => $rajoutpanier->getProduct()->getName(),
+                        ));
+                      $rajoutpanier->setProduct($product);
+
+                  }
+                if ($rajoutpanier->getAccessoire()) {
+                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+                  $accessoire = $repository->findOneBy(array(
+                      'name' => $rajoutpanier->getAccessoire()->getName(),
+                      ));
+                    $rajoutpanier->setAccessoire($accessoire);
+
+
+                }
+
+                if ($rajoutpanier->getCollection()) {
+                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                  $collection = $repository->findOneBy(array(
+                      'title' => $rajoutpanier->getCollection()->getTitle(),
+                      ));
+                    $rajoutpanier->setCollection($collection);
+
+
+                }
+
+                if ($rajoutpanier->getParent() != null) {
+                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                  $parent = $repository->findOneBy(array(
+                      'product' => $rajoutpanier->getParent()->getProduct(),
+                      'color1' => $rajoutpanier->getParent()->getColor1(),
+                      'color2' => $rajoutpanier->getParent()->getColor2(),
+                      'color3' => $rajoutpanier->getParent()->getColor3(),
+                      'accessoire' => $rajoutpanier->getParent()->getAccessoire(),
+                      'client' => $rajoutpanier->getParent()->getClient(),
+                      'commande' => null,
+
+
+
+                      ));
+                    $rajoutpanier->setParent($parent);
+
+
+                }
+
+
+
                 $rajoutpanier->setClient($user);
-                $this->getDoctrine()->getManager()->merge($rajoutpanier);
-                $this->getDoctrine()->getManager()->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
 
-
-            }
-            $this->get('session')->remove('panier_session');
-
+                $em->merge($rajoutpanier);
+                $em->flush();
+               $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+              }
+$this->get('session')->remove('panier_session');
             $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
 
 
@@ -366,16 +447,16 @@ class CommerceController extends Controller
             $quantity     = $articletoadd->getQuantity();
             $articletoadd->setQuantity($quantity + 1);
             if ($articletoadd->getParent()) {
-              if ( ($articletoadd->getProduct()->getName() == 'Coffret1') or ($articletoadd->getProduct()->getName() == 'Coffret2') ){
-                $parent         = $articletoadd->getParent();
-                $quantityParent = $parent->getQuantity();
-                if ($quantityParent <= $quantity) {
+                if (($articletoadd->getProduct()->getName() == 'Coffret1') or ($articletoadd->getProduct()->getName() == 'Coffret2')) {
+                    $parent         = $articletoadd->getParent();
+                    $quantityParent = $parent->getQuantity();
+                    if ($quantityParent <= $quantity) {
 
-                    $parent->setQuantity($quantityParent + 1);
-                    $em->persist($parent);
+                        $parent->setQuantity($quantityParent + 1);
+                        $em->persist($parent);
 
+                    }
                 }
-}
 
 
             }
@@ -438,8 +519,9 @@ class CommerceController extends Controller
                     if ($quantityEnfant == 1) {
                         $em->remove($value);
                     } elseif ($quantityEnfant > 1) {
-                  if ( ($value->getProduct()->getName() == 'Coffret1') or ($value->getProduct()->getName() == 'Coffret2') ){
-                        $value->setQuantity($quantityEnfant - 1);}
+                        if (($value->getProduct()->getName() == 'Coffret1') or ($value->getProduct()->getName() == 'Coffret2')) {
+                            $value->setQuantity($quantityEnfant - 1);
+                        }
                     }
                 }
 
@@ -471,9 +553,9 @@ class CommerceController extends Controller
                             if ($quantityEnfant == 1) {
                                 unset($listeAddedProduct[$i]);
                             } elseif ($quantityEnfant > 1) {
-                                if ( ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret1') or ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret2') ){
+                                if (($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret1') or ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret2')) {
 
-                                $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
+                                    $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
                                 }
                             }
                         }
@@ -1837,6 +1919,7 @@ class CommerceController extends Controller
         ));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ModeLivraison');
         $modelivraison = $repository->findAll();
+        $em   = $this->getDoctrine()->getManager();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user              = $this->container->get('security.context')->getToken()->getUser();
@@ -1857,12 +1940,96 @@ class CommerceController extends Controller
                 'commande' => null
             ));
             if ($listeAddedProduct !== null) {
-                foreach ($listeAddedProduct as $value) {
-                    $rajoutpanier = $value;
-                    $rajoutpanier->setClient($user);
-                    $this->getDoctrine()->getManager()->merge($rajoutpanier);
-                    $this->getDoctrine()->getManager()->flush();
-                    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+              foreach ($listeAddedProduct as $value) {
+                  $rajoutpanier = $value;
+                  $addcart      = new AddedProduct();
+                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+                  $color1 = $repository->findOneBy(array(
+                      'name' => $rajoutpanier->getColor1()->getName(),
+                      ));
+                      if ($rajoutpanier->getColor2()) {
+
+                      $color2 = $repository->findOneBy(array(
+                          'name' => $rajoutpanier->getColor2()->getName(),
+                          ));                  $rajoutpanier->setColor2($color2);
+  }
+                          if ($rajoutpanier->getColor3()) {
+
+                          $color3 = $repository->findOneBy(array(
+                              'name' => $rajoutpanier->getColor3()->getName(),
+                              ));                  $rajoutpanier->setColor3($color3);
+  }
+                              if ($rajoutpanier->getColor4()) {
+
+                              $color4 = $repository->findOneBy(array(
+                                  'name' => $rajoutpanier->getColor4()->getName(),
+                                  ));
+                                  $rajoutpanier->setColor4($color4);
+  }
+  if ($rajoutpanier->getColor5()) {
+                                  $color5 = $repository->findOneBy(array(
+                                      'name' => $rajoutpanier->getColor5()->getName(),
+                                      ));                  $rajoutpanier->setColor5($color5);
+  }
+
+                    $rajoutpanier->setColor1($color1);
+
+
+                    if ($rajoutpanier->getProduct()) {
+
+                      $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+                      $product = $repository->findOneBy(array(
+                          'name' => $rajoutpanier->getProduct()->getName(),
+                          ));
+                        $rajoutpanier->setProduct($product);
+
+                    }
+                  if ($rajoutpanier->getAccessoire()) {
+                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+                    $accessoire = $repository->findOneBy(array(
+                        'name' => $rajoutpanier->getAccessoire()->getName(),
+                        ));
+                      $rajoutpanier->setAccessoire($accessoire);
+
+
+                  }
+
+                  if ($rajoutpanier->getCollection()) {
+                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                    $collection = $repository->findOneBy(array(
+                        'title' => $rajoutpanier->getCollection()->getTitle(),
+                        ));
+                      $rajoutpanier->setCollection($collection);
+
+
+                  }
+
+                  if ($rajoutpanier->getParent() != null) {
+                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                    $parent = $repository->findOneBy(array(
+                        'product' => $rajoutpanier->getParent()->getProduct(),
+                        'color1' => $rajoutpanier->getParent()->getColor1(),
+                        'color2' => $rajoutpanier->getParent()->getColor2(),
+                        'color3' => $rajoutpanier->getParent()->getColor3(),
+                        'accessoire' => $rajoutpanier->getParent()->getAccessoire(),
+                        'client' => $rajoutpanier->getParent()->getClient(),
+                        'commande' => null,
+
+
+
+                        ));
+                      $rajoutpanier->setParent($parent);
+
+
+                  }
+
+
+
+                  $rajoutpanier->setClient($user);
+
+                  $em->merge($rajoutpanier);
+                  $em->flush();
+                 $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
                 }
             }
             $this->get('session')->remove('panier_session');

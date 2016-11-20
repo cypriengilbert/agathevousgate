@@ -43,37 +43,37 @@
                         {% for listepanierenfant in listePanierEnfant %}
                         {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
-                        {% set price_line = listepanier.collection.priceNoeud %}
+                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
                         {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
-                        {% set price_line = listepanier.collection.priceNoeud %}
+                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
 
                         {% endif  %}
                         {% endfor %}
                         <h2>
                            {% if is_alone == 1 %}
                            Noeud {{ listepanier.collection.title }}
-                           {% set price_line = listepanier.collection.priceNoeud %}
+                           {% set price_line = listepanier.collection.priceNoeud  * listepanier.quantity %}
 
                            {% endif  %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
                            Coffret Trio {{ listepanier.collection.title }}
-                           {% set price_line = price_line + listepanier.collection.priceCoffret1 %}
+                           {% set price_line = price_line + listepanier.collection.priceCoffret1 * listepanierenfant.quantity %}
                            {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
                            Coffret Prestige {{ listepanier.collection.title }}
-                           {% set price_line = price_line + listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2 %}
+                           {% set price_line = price_line + (listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2) * listepanierenfant.quantity %}
 {% endif %}
 
                            {% endfor %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %}
                            - Pochette
-                           {% set price_line = price_line + listepanier.collection.pricePochette %}
+                           {% set price_line = price_line + listepanier.collection.pricePochette  * listepanierenfant.quantity %}
                           {% endif %}
                            {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
                            - Boutons
-                           {% set price_line = price_line + listepanier.collection.priceBouton %}
+                           {% set price_line = price_line + listepanier.collection.priceBouton * listepanierenfant.quantity %}
                             {% endif %}
                            {% endfor %}
                             - {{ price_line }}€

@@ -39,7 +39,7 @@ class Color
     /**
      * @var string
      *
-     * @ORM\Column(name="codehexa", type="string")
+     * @ORM\Column(name="codehexa", type="string", nullable=true)
      */
     private $codehexa;
 
