@@ -252,6 +252,36 @@ $this->get('session')->remove('panier_session');
     }
 
     /**
+     * @Route("/cgv",  name="cgv")
+     */
+    public function cgvAction()
+    {
+      if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+        $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+
+          $page    = 'cgv';
+          $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+
+          $nbarticlepanier = count($repository->findBy(array(
+              'commande' => null,
+              'client' => $id_user
+          )));
+
+      } else {
+          $listePanier = $session->get('panier_session');
+          ;
+          $nbarticlepanier = $session->get('nb_article');
+      }
+
+      return $this->render('CommerceBundle:Default:cgv.html.twig', array(
+          'nbarticlepanier' => $nbarticlepanier,
+
+
+
+      ));
+  }
+
+    /**
      * @Route("/panier", name="panier")
      */
     public function panierAction(Request $request)

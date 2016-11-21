@@ -73,12 +73,17 @@
       </div>
       <div class="row text-center creer_top">
         <div class="col-sm-text-center12">
-            <h1>UN NOEUD INNOVANT</h1>
         </div>
       </div>
       <div class="row text-center creer_bottom">
-        <div class="col-sm-12">
+      <div class="col-sm-3">
+
+      </div>
+        <div class="col-sm-6">
             <p>{{ text[0].text| raw }}</p>
+        </div>
+        <div class="col-sm-3">
+
         </div>
       </div>
 
@@ -123,11 +128,9 @@
 
         <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%;height:auto; margin-top:50px;margin-bottom:50px;">
         <div>
-          {{ collection.title }}
+        DECOUVREZ LA COLLECTION {{ collection.title }}
         </div>
-        <div>
-            COLLECTION SUMMER 2016
-        </div>
+
 
         </div>
         <div class="col-sm-6 nos_collections"><img src="{{ asset('upload/image_collection/' ~ collection.imageNameCarre) }}" alt="londre noeud" style="width: 100%; height: auto;"></div>
@@ -145,10 +148,7 @@
 
   <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%;  max-height: 40% ; height: auto; margin-top:50px;margin-bottom:50px;">
   <div>
-    {{ collection.title }}
-  </div>
-  <div>
-      COLLECTION SUMMER 2016
+  DECOUVREZ LA COLLECTION {{ collection.title }}
   </div>
 
   </div>
@@ -167,11 +167,9 @@
 
   <img src="{{ asset('upload/image_collection/' ~ collection.imageNameIcone ) }}" alt="londre_noeud" style="width: 40%; max-height: 40%; height: auto; margin-top:50px;margin-bottom:50px;">
   <div>
-    {{ collection.title }}
+  DECOUVREZ LA COLLECTION {{ collection.title }}
   </div>
-  <div>
-      COLLECTION SUMMER 2016
-  </div>
+
 
   </div>
 
@@ -226,8 +224,8 @@
 
 
       <div class="col-sm-6 no_padding">
-        <div class="no_padding">
-        <div id="carousel1-example-generic" class="carousel slide index-carousel" data-ride="carousel1">
+        <div class="">
+        <div style="margin:25% 7%;" id="carousel1-example-generic" class="carousel slide index-carousel" data-ride="carousel1">
             <!-- Indicators -->
             <ol class="carousel-indicators">
             {% set ta_go_cest_ma_groupie = 0 %}
@@ -260,14 +258,7 @@
             </div>
 
             <!-- Controls -->
-            <a class="left carousel-control" href="#carousel1-example-generic" role="button" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                <span class="sr-only">Précédent</span>
-            </a>
-            <a class="right carousel-control" href="#carousel1-example-generic" role="button" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                <span class="sr-only">Suivant</span>
-            </a>
+
         </div>
         </div>
 

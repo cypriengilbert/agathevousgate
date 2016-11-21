@@ -12,7 +12,7 @@
             overflow:hidden;
             padding-left:0;
             padding-right:0;
-            height:360px;
+            height:330px;
             }
             .product_img{
             position:relative;
@@ -75,14 +75,14 @@
             <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; ">
                <img  style="width:100%;" src="{{ asset('/upload/image_collection/' ~ listeProduit.collection.imageName ) }}" alt="">
             </div>
-            <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; padding-top:20px; padding-bottom:20px;background-color:#E0EAF1;  ">
+            <div class="col-md-12 col-sm-12 hero-feature" style="padding-left:0;padding-right:0; padding-top:40px; padding-bottom:40px;background-color:#E0EAF1;  ">
                <div style="font-size: 1.25em; font-weight: bold; color:#242258; font-family:Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter;">	{{ listeProduit.collection.description }}</div>
             </div>
             {% endif %}
             {% set i= i+1 %}
             <div class="col-md-6 col-sm-6 product">
                <div class="product_img" style="height:100%">
-                  <img id="img_{{listeProduit.id}}" style="max-width:100%; margin-top:-30px;height:auto;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
+                  <img id="img_{{listeProduit.id}}" style="width:100%; max-height:auto;margin-top:0px;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
                   <b>
                      <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} - {{ listeProduit.collection.priceNoeud }}€</h2>
                   </b>
@@ -133,7 +133,7 @@
 									</div>
 									<div class="row text-center creer_bottom">
 										<div class="col-sm-4 col-xs-1"></div>
-										<div class="col-sm-4 col-xs-10"><a href="{{ path('personnalisation', {'idCollection': 16})}}" class="btn btn-primary btn-lg active btn_agathe" role="button">OK, LET'S GO !</a></div>
+										<div class="col-sm-4 col-xs-10"><a href="{{ path('personnalisation', {'idCollection': listeProduit.collection.id })}}" class="btn btn-primary btn-lg active btn_agathe" role="button">OK, LET'S GO !</a></div>
 										<div class="col-sm-4 col-xs-1"></div>
 									</div>
 						</div>
