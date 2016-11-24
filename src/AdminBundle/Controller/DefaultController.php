@@ -275,7 +275,7 @@ class DefaultController extends Controller
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
-        $message = \Swift_Message::newInstance()->setSubject('Votre commande a été expédiée ! ')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+        $message = \Swift_Message::newInstance()->setSubject('Votre commande a été expédiée ! ')->setFrom('commande@agathevousgate.fr')->setTo($user->getEmail())->setBody($this->renderView(
         // app/Resources/views/Emails/registration.html.twig
             'emails/expedition_commande.html.twig', array(
               'commande' => $commande,
@@ -1117,25 +1117,13 @@ class DefaultController extends Controller
 
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $produit->setProduct($product);
-
             $em->persist($produit);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
 
 
-            return $this->redirect($this->generateUrl('definedProduct', array(
-                'validate' => 'Produit bien ajouté',
-                'listeDefinedProduct' => $listeDefinedProduct,
-                'listeCommande' => $listeCommande,
-                'produit' => $produit,
-                'page' => $page,
+            return $this->redirect($this->generateUrl('definedProduct'));
 
-
-
-
-
-            )));
         }
         return $this->render('AdminBundle:Default:addDefinedProduct.html.twig', array(
             'form' => $form->createView(),

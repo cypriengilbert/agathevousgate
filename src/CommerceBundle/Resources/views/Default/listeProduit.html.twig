@@ -12,7 +12,7 @@
             overflow:hidden;
             padding-left:0;
             padding-right:0;
-            height:330px;
+            height:340px;
             }
             .product_img{
             position:relative;
@@ -81,8 +81,10 @@
             {% endif %}
             {% set i= i+1 %}
             <div class="col-md-6 col-sm-6 product">
+            <div id="whitebackground_{{listeProduit.id}}" style="position:absolute; top:0px; left:0px; background-color:white; height:55%; width:100%">
+              </div>
                <div class="product_img" style="height:100%">
-                  <img id="img_{{listeProduit.id}}" style="width:100%; max-height:auto;margin-top:0px;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
+                  <img id="img_{{listeProduit.id}}" style="width:100%; max-height:auto;margin-top:0px;height:auto;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
                   <b>
                      <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} - {{ listeProduit.collection.priceNoeud }}€</h2>
                   </b>
@@ -108,9 +110,9 @@
                   {% endfor %}
                   $( "#bouton_{{listeProduit.id}}" ).hover(
                     function() {
-                      $( '#img_{{listeProduit.id}}' ).attr("src", url_{{listeProduit.id}});  $( '#img_{{listeProduit.id}}' ).css('max-height' , '80%');$( '#img_{{listeProduit.id}}' ).css('width' , 'auto');$( '#img_{{listeProduit.id}}' ).css('margin-top' , '10%');$( '#text_{{listeProduit.id}}' ).css('margin-top' , '-10%');
+                      $( '#img_{{listeProduit.id}}' ).attr("src", url_{{listeProduit.id}});  $( '#img_{{listeProduit.id}}' ).css('max-height' , '80%');$( '#img_{{listeProduit.id}}' ).css('width' , 'auto');$( '#img_{{listeProduit.id}}' ).css('margin-top' , '10%');$( '#text_{{listeProduit.id}}' ).css('margin-top' , '-10%');$( '#text_{{listeProduit.id}}' ).css('background-color' , 'white');$( '#img_{{listeProduit.id}}' ).css('margin-top' , '10%');$( '#whitebackground_{{listeProduit.id}}' ).css('height' , '72%');
                     }, function() {
-                      $( '#img_{{listeProduit.id}}' ).attr("src", "{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}");$( '#img_{{listeProduit.id}}' ).css('max-height' , 'auto');$( '#img_{{listeProduit.id}}' ).css('width' , '100%');$( '#img_{{listeProduit.id}}' ).css('margin-top' , '0');$( '#text_{{listeProduit.id}}' ).css('margin-top' , '20px');
+                      $( '#img_{{listeProduit.id}}' ).attr("src", "{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}");$( '#img_{{listeProduit.id}}' ).css('max-height' , 'auto');$( '#img_{{listeProduit.id}}' ).css('width' , '100%');$( '#img_{{listeProduit.id}}' ).css('margin-top' , '0');$( '#text_{{listeProduit.id}}' ).css('margin-top' , '20px');$( '#whitebackground_{{listeProduit.id}}' ).css('height' , '55%');$( '#text_{{listeProduit.id}}' ).css('background-color' , '');
                     }
                   );
                   $('#navigation ul li').css('display', 'inline-block');

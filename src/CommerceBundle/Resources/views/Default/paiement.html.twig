@@ -208,7 +208,7 @@
                      <form action="{{ path('charge')}}" method="POST">
                         <script
                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                           data-key="pk_test_syF86OI1zS3NV2MTSFh5Ca8l"
+                           data-key="pk_live_miMlmwMmksv9SJdNrsyEVcGV"
                            data-amount="{{ prixtotal }}"
                            data-name="Agathe Vous Gâte"
                            data-description=""
@@ -222,10 +222,10 @@ data-label="Payer en carte bancaire"></script>
 
 
                      <div style="margin-bottom:5px; font-size:10px;">
-                        *Paiement sécurisé, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a><br><br>
+                        *Paiement sécurisé par Stripe, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a><br><br>
                      </div>
-                     <div style="margin-bottom:5px; font-size:10px;"> OU <br>
-                      <a href="{{ path('chargepaypal') }}"><button type="submit" class="btn btn-primary btn-lg active btn_send" >Payer avec Paypal</button></a>
+                  {#  <div style="margin-bottom:5px; font-size:10px;"> OU <br>
+                      <a href="{{ path('chargepaypal') }}"><button type="submit" class="btn btn-primary btn-lg active btn_send" >Payer avec Paypal</button></a> #}
                      </div>
                   </div>
                </div>

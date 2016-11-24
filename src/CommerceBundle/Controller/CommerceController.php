@@ -1412,7 +1412,7 @@ $this->get('session')->remove('panier_session');
      */
     public function chargeAction(Request $request)
     {
-        \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+        \Stripe\Stripe::setApiKey("sk_live_YiRsNIDkffMqZF6JlF1TtxLF");
 
         // Get the credit card details submitted by the form
         $token           = $_POST['stripeToken'];
@@ -1503,7 +1503,7 @@ $this->get('session')->remove('panier_session');
 
                 if ($commandeEnCours->getAtelierLivraison()) {
                     $atelier = $commandeEnCours->getAtelierLivraison();
-                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('cyprien@cypriengilbert.com')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('commande@agathevousgate.fr')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
                         'franchise' => $atelier->getFranchise(),
                         'listePanier' => $listePanier,
                         'commande' => $commandeEnCours,
@@ -1515,7 +1515,7 @@ $this->get('session')->remove('panier_session');
                     )), 'text/html');
                     $this->get('mailer')->send($message);
 
-                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/new_commande.html.twig', array(
                         'franchise' => $atelier->getFranchise(),
@@ -1530,7 +1530,7 @@ $this->get('session')->remove('panier_session');
                     $this->get('mailer')->send($message);
 
                 } else {
-                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/new_commande.html.twig', array(
                         'listePanier' => $listePanier,
@@ -1545,7 +1545,7 @@ $this->get('session')->remove('panier_session');
                     $this->get('mailer')->send($message);
                 }
 
-                $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
+                $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
                     'user' => $user,
@@ -1579,7 +1579,7 @@ $this->get('session')->remove('panier_session');
 
                     if ($nbparrainage % $minParrainage->getMontant() == 0) {
 
-                        $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                        $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('commande@agathevousgate.fr')->setTo($parrain->getEmail())->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_client.html.twig', array(
                             'user' => $parrain,
@@ -1588,7 +1588,7 @@ $this->get('session')->remove('panier_session');
 
                         )), 'text/html');
                         $this->get('mailer')->send($message);
-                        $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                        $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
                             'user' => $parrain,
@@ -1606,7 +1606,7 @@ $this->get('session')->remove('panier_session');
 
                         }
 
-                        $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                        $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo($parrain->getEmail())->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_nonvalide_client.html.twig', array(
                             'user' => $parrain,
@@ -1728,7 +1728,7 @@ $this->get('session')->remove('panier_session');
 
             if ($commandeEnCours->getAtelierLivraison()) {
                 $atelier = $commandeEnCours->getAtelierLivraison();
-                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('cyprien@cypriengilbert.com')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('commande@agathevousgate.fr')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
                     'franchise' => $atelier->getFranchise(),
                     'listePanier' => $listePanier,
                     'commande' => $commandeEnCours,
@@ -1740,7 +1740,7 @@ $this->get('session')->remove('panier_session');
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
-                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/new_commande.html.twig', array(
                     'franchise' => $atelier->getFranchise(),
@@ -1755,7 +1755,7 @@ $this->get('session')->remove('panier_session');
                 $this->get('mailer')->send($message);
 
             } else {
-                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/new_commande.html.twig', array(
                     'listePanier' => $listePanier,
@@ -1770,7 +1770,7 @@ $this->get('session')->remove('panier_session');
                 $this->get('mailer')->send($message);
             }
 
-            $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('cyprien@cypriengilbert.com')->setTo($UserEmail)->setBody($this->renderView(
+            $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
             // app/Resources/views/Emails/registration.html.twig
                 'emails/confirmation_commande.html.twig', array(
                 'user' => $user,
@@ -1804,7 +1804,7 @@ $this->get('session')->remove('panier_session');
 
                 if ($nbparrainage % $minParrainage->getMontant() == 0) {
 
-                    $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                    $message = \Swift_Message::newInstance()->setSubject('Parrainages validés')->setFrom('commande@agathevousgate.fr')->setTo($parrain->getEmail())->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/parrainage_valide_client.html.twig', array(
                         'user' => $parrain,
@@ -1813,7 +1813,7 @@ $this->get('session')->remove('panier_session');
 
                     )), 'text/html');
                     $this->get('mailer')->send($message);
-                    $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo('cypriengilbert@gmail.com')->setBody($this->renderView(
+                    $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/parrainage_valide_agathe.html.twig', array(
                         'user' => $parrain,
@@ -1831,7 +1831,7 @@ $this->get('session')->remove('panier_session');
 
                     }
 
-                    $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('cyprien@cypriengilbert.com')->setTo($parrain->getEmail())->setBody($this->renderView(
+                    $message = \Swift_Message::newInstance()->setSubject('Parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo($parrain->getEmail())->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/parrainage_nonvalide_client.html.twig', array(
                         'user' => $parrain,
@@ -1844,7 +1844,7 @@ $this->get('session')->remove('panier_session');
                 }
             }
 
-            $url      = 'https://agathevousgate.cypriengilbert.com/paiement/confirmation';
+            $url      = 'https://agathevousgate.fr/paiement/confirmation';
             $response = new RedirectResponse($url);
             return $response;
 
@@ -1883,8 +1883,8 @@ $this->get('session')->remove('panier_session');
             'SIGNATURE' => $token,
             'METHOD' => 'SetExpressCheckout',
             'VERSION' => '124.0',
-            'RETURNURL' => 'https://agathevousgate.cypriengilbert.com/' . $this->generateUrl('confirmationpaypal'),
-            'CANCELURL' => 'https://agathevousgate.fr/' . $this->generateUrl('paiementechec'),
+            'RETURNURL' => 'https://staging.agathevousgate.fr' . $this->generateUrl('confirmationpaypal'),
+            'CANCELURL' => 'https://staging.agathevousgate.fr' . $this->generateUrl('paiementechec'),
             'PAYMENTREQUEST_0_AMT' => $price,
             'PAYMENTREQUEST_0_ITEMAMT' => $price - $priceLivraison,
             'PAYMENTREQUEST_0_SHIPPINGAMT' => $priceLivraison,
@@ -2823,6 +2823,10 @@ $this->get('session')->remove('panier_session');
         $text       = $repository->findOneBy(array(
             'page' => 'qsn'
         ));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $image       = $repository->findOneBy(array(
+            'name' => 'apropos'
+        ));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $repository->findAll();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
@@ -2835,6 +2839,8 @@ $this->get('session')->remove('panier_session');
             'collection' => $collection,
             'page' => $page,
             'text' => $text,
+            'image' => $image,
+
             'apropos' => $apropos
 
         ));
