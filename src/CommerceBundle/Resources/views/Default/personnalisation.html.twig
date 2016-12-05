@@ -115,7 +115,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 0 ); " class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');" class="radio_colors" value="{{ colors.id }}" />
                                             <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
@@ -674,21 +674,21 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
         </div>
         <div class="row text-center type_noeud" >
 
-            <div class="col-sm-4 no_padding selector_type active_1" style="cursor:pointer; "onclick="get_data()">
+            <div class="col-sm-4 no_padding selector_type active_1" style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille enfant/ado">
               <input type="radio" name="radio_accessoire" id="radio-tdecou" value="S" style="visibility: hidden; position: absolute;" checked>
               <label for="radio-tdecou" style="cursor:pointer;">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
                         <h1>S</h1></div>
                 </div>
-                <div class="row text-center no_padding">
+                <div class="row text-center no_padding" >
                     <div class="col-sm-1"></div>
                     <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">30-40cm</div>
                     <div class="col-sm-1"></div>
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; "onclick="get_data()">
+            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille moyenne (homme ou femme)">
               <input type="radio" name="radio_accessoire" id="radio-barette" value="M" style="visibility: hidden; position: absolute;">
               <label for="radio-barette" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
@@ -702,7 +702,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; "onclick="get_data()">
+            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Cou musclé :)">
               <input type="radio" name="radio_accessoire" id="radio-broche" value="L" style="visibility: hidden; position: absolute;">
               <label for="radio-broche" style="cursor:pointer;" >
                 <div class="row text-center no_padding">

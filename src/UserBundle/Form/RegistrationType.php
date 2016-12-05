@@ -23,6 +23,8 @@ class RegistrationType extends AbstractType
 
         $builder
             ->add('nom')
+->add('phone')
+->add('is_newsletter')
             ->add('prenom')
             ->add('naissance', DateType::class, array(
     'widget' => 'single_text',

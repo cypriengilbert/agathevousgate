@@ -41,7 +41,7 @@
                                           {{ atelier.adresse1 }}<br>
                                           {% if atelier.adresse2 is not empty %}{{ atelier.adresse2 }}<br>{% endif %}
                                           {{ atelier.zipcode }} {{ atelier.city }}<br>
-                                          <center><a class="btn btn-primary btn-lg active btn_send" href="{{ path('choosen_atelier', {'id': atelier.id }) }}" >Je choisi cet atelier</a></center>
+                                          <center><a class="btn btn-primary btn-lg active btn_send" href="{{ path('choosen_atelier', {'id': atelier.id }) }}" >Je choisis cet atelier</a></center>
                                         </div>
                                       </div>
                                   {% endfor %}

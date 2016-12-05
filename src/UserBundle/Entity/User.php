@@ -65,6 +65,13 @@ class User extends BaseUser
       */
      private $parrainage;
 
+     /**
+      * @var integer
+      *
+      * @ORM\Column(name="phone", type="integer", nullable=true)
+      */
+     private $phone;
+
 
      /**
       * @var string
@@ -86,6 +93,13 @@ class User extends BaseUser
       * @ORM\Column(name="is_pro", type="integer", nullable=true)
       */
      private $isPro;
+
+     /**
+      * @var bool
+      *
+      * @ORM\Column(name="is_newsletter", type="integer", nullable=true)
+      */
+     private $is_newsletter;
 
 
     /**
@@ -285,5 +299,53 @@ class User extends BaseUser
     public function getParrainage()
     {
         return $this->parrainage;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set isNewsletter
+     *
+     * @param integer $isNewsletter
+     *
+     * @return User
+     */
+    public function setIsNewsletter($isNewsletter)
+    {
+        $this->is_newsletter = $isNewsletter;
+
+        return $this;
+    }
+
+    /**
+     * Get isNewsletter
+     *
+     * @return integer
+     */
+    public function getIsNewsletter()
+    {
+        return $this->is_newsletter;
     }
 }
