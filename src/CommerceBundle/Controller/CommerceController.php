@@ -1864,9 +1864,9 @@ $this->get('session')->remove('panier_session');
     public function chargePaypalAction()
     {
 
-        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
-        $username        = 'agathe-facilitator_api1.agathevousgate.fr';
-        $password        = 'NZY9R22ZE2CKQET8';
+        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
+        $username        = 'agathe_api1.agathevousgate.fr';
+        $password        = 'CMB8E34GPEK2BXM8';
         $user            = $this->container->get('security.context')->getToken()->getUser();
         $UserEmail       = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -1883,8 +1883,8 @@ $this->get('session')->remove('panier_session');
             'SIGNATURE' => $token,
             'METHOD' => 'SetExpressCheckout',
             'VERSION' => '124.0',
-            'RETURNURL' => 'https://staging.agathevousgate.fr' . $this->generateUrl('confirmationpaypal'),
-            'CANCELURL' => 'https://staging.agathevousgate.fr' . $this->generateUrl('paiementechec'),
+            'RETURNURL' => 'https://agathevousgate.fr' . $this->generateUrl('confirmationpaypal'),
+            'CANCELURL' => 'https://agathevousgate.fr' . $this->generateUrl('paiementechec'),
             'PAYMENTREQUEST_0_AMT' => $price,
             'PAYMENTREQUEST_0_ITEMAMT' => $price - $priceLivraison,
             'PAYMENTREQUEST_0_SHIPPINGAMT' => $priceLivraison,
@@ -1892,7 +1892,7 @@ $this->get('session')->remove('panier_session');
         );
 
         $params   = http_build_query($params);
-        $endpoint = 'https://api-3t.sandbox.paypal.com/nvp';
+        $endpoint = 'https://api-3t.paypal.com/nvp';
         $curl     = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $endpoint,
@@ -1902,8 +1902,6 @@ $this->get('session')->remove('panier_session');
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
             CURLOPT_VERBOSE => 1,
-
-            CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
 
         ));
 
@@ -1919,7 +1917,7 @@ $this->get('session')->remove('panier_session');
         } else {
             if ($responseArray['ACK'] == 'Success') {
             } else {
-
+              exit($responseArray['ACK']);
                 $url      = $this->generateUrl('paiementechec');
                 $response = new RedirectResponse($url);
 
@@ -1931,7 +1929,7 @@ $this->get('session')->remove('panier_session');
 
         curl_close($curl);
 
-        $url      = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
+        $url      = 'https://www.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
         $response = new RedirectResponse($url);
         return $response;
     }

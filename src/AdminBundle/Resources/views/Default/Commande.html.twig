@@ -26,7 +26,7 @@
   {{ commande.client.adress.adressMore }}</br>
 {% endif %}
   {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}</br>
-livraison : {{ commande.transportmethod.description }}
+{% if commande.transportmethod is not null %} livraison : {{ commande.transportmethod.description }}{% else %} Livraison en atelier : {{ commande.atelierlivraison.name }} {% endif %}
 
 
 

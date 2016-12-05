@@ -274,7 +274,7 @@ class DefaultController extends Controller
         $em->persist($commande);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
-
+        if($commande->getAtelierLivraison() == null){
         $message = \Swift_Message::newInstance()->setSubject('Votre commande a été expédiée ! ')->setFrom('commande@agathevousgate.fr')->setTo($user->getEmail())->setBody($this->renderView(
         // app/Resources/views/Emails/registration.html.twig
             'emails/expedition_commande.html.twig', array(
@@ -284,7 +284,17 @@ class DefaultController extends Controller
 
         )), 'text/html');
         $this->get('mailer')->send($message);
+}else {
+  $message = \Swift_Message::newInstance()->setSubject('Votre commande est prête ! ')->setFrom('commande@agathevousgate.fr')->setTo($user->getEmail())->setBody($this->renderView(
+  // app/Resources/views/Emails/registration.html.twig
+      'emails/commande_prete_atelier.html.twig', array(
+        'commande' => $commande,
+        'date' => new \DateTime("now"),
+        'user' => $user,
+        'atelier' => $commande->getAtelierLivraison(),
 
+  )), 'text/html');
+  $this->get('mailer')->send($message);}
 
 
         $newId = $commande->getId();

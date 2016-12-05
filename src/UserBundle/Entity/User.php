@@ -97,7 +97,7 @@ class User extends BaseUser
      /**
       * @var bool
       *
-      * @ORM\Column(name="is_newsletter", type="integer", nullable=true)
+      * @ORM\Column(name="is_newsletter", type="boolean", nullable=true)
       */
      private $is_newsletter;
 
