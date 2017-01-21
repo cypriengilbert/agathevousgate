@@ -1433,6 +1433,8 @@ $this->get('session')->remove('panier_session');
                     "description" => "Example charge"
                 ));
                 $commandeEnCours->setIsPanier(false);
+                $commandeEnCours->setPaiementMethod('Stripe');
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($commandeEnCours);
                 $em->flush();
@@ -1658,6 +1660,7 @@ $this->get('session')->remove('panier_session');
             $price = $commandeEnCours->getPrice() * 100;
 
             $commandeEnCours->setIsPanier(false);
+            $commandeEnCours->setPaiementMethod('Paypal');
             $em = $this->getDoctrine()->getManager();
             $em->persist($commandeEnCours);
             $em->flush();
@@ -1864,9 +1867,13 @@ $this->get('session')->remove('panier_session');
     public function chargePaypalAction()
     {
 
-        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
-        $username        = 'agathe_api1.agathevousgate.fr';
+       //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
+       $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
+
+       $username        = 'agathe_api1.agathevousgate.fr';
         $password        = 'CMB8E34GPEK2BXM8';
+        //$username        = 'agathe-facilitator_api1.agathevousgate.fr';
+        //$password        = 'NZY9R22ZE2CKQET8';
         $user            = $this->container->get('security.context')->getToken()->getUser();
         $UserEmail       = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -1883,7 +1890,7 @@ $this->get('session')->remove('panier_session');
             'SIGNATURE' => $token,
             'METHOD' => 'SetExpressCheckout',
             'VERSION' => '124.0',
-            'RETURNURL' => 'https://agathevousgate.fr' . $this->generateUrl('confirmationpaypal'),
+            'RETURNURL' => 'https://agathevousgate.fr' . $this->generateUrl('processpaypal'),
             'CANCELURL' => 'https://agathevousgate.fr' . $this->generateUrl('paiementechec'),
             'PAYMENTREQUEST_0_AMT' => $price,
             'PAYMENTREQUEST_0_ITEMAMT' => $price - $priceLivraison,
@@ -1932,6 +1939,132 @@ $this->get('session')->remove('panier_session');
         $url      = 'https://www.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
         $response = new RedirectResponse($url);
         return $response;
+    }
+
+    /**
+     * @Route("/paiement/process/paypal", name="processpaypal")
+     */
+    public function processChargePaypalAction()
+    {
+
+        //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
+        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
+        $username        = 'agathe_api1.agathevousgate.fr';
+        $password        = 'CMB8E34GPEK2BXM8';
+        //$username        = 'agathe-facilitator_api1.agathevousgate.fr';
+        //$password        = 'NZY9R22ZE2CKQET8';
+        $user            = $this->container->get('security.context')->getToken()->getUser();
+        $UserEmail       = $user->getEmail();
+        $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $commandeEnCours = $repository->findOneBy(array(
+            'client' => $user,
+            'isPanier' => true
+        ));
+        $price           = $commandeEnCours->getPrice();
+        $priceLivraison  = $commandeEnCours->getTransportCost();
+
+        $params = array(
+            'USER' => $username,
+            'PWD' => $password,
+            'SIGNATURE' => $token,
+            'TOKEN' => $_GET['token'],
+            'METHOD' => 'GetExpressCheckoutDetails',
+            'VERSION' => '124.0'
+        );
+
+        $params   = http_build_query($params);
+        $endpoint = 'https://api-3t.paypal.com/nvp';
+        $curl     = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $endpoint,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $params,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_VERBOSE => 1,
+
+        ));
+
+        $response      = curl_exec($curl);
+        $responseArray = array();
+        parse_str($response, $responseArray);
+        if (curl_error($curl)) {
+            curl_close($curl);
+            $url      = $this->generateUrl('paiementechec');
+            $response = new RedirectResponse($url);
+
+            return $response;
+        } else {
+            if ($responseArray['ACK'] == 'Success') {
+            } else {
+              exit($responseArray['ACK']);
+                $url      = $this->generateUrl('paiementechec');
+                $response = new RedirectResponse($url);
+
+                return $response;
+            }
+
+        }
+
+        $params2 = array(
+            'USER' => $username,
+            'PWD' => $password,
+            'SIGNATURE' => $token,
+            'TOKEN' => $_GET['token'],
+            'PAYERID' => $_GET['PayerID'],
+            'PAYMENTREQUEST_0_AMT' => $price,
+            'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR',
+            'PAYMENTACTION' => 'Sale',
+            'METHOD' => 'DoExpressCheckoutPayment',
+            'VERSION' => '124.0'
+        );
+
+        $params2   = http_build_query($params2);
+        $endpoint = 'https://api-3t.paypal.com/nvp';
+        $curl     = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $endpoint,
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $params2,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_VERBOSE => 1,
+
+        ));
+
+        $response      = curl_exec($curl);
+        $responseArray = array();
+        parse_str($response, $responseArray);
+        if (curl_error($curl)) {
+            curl_close($curl);
+            $url      = $this->generateUrl('paiementechec');
+            $response = new RedirectResponse($url);
+            return $response;
+        } else {
+            if ($responseArray['ACK'] == 'Success') {
+                var_dump($responseArray);
+           $url      = $this->generateUrl('confirmationpaypal');
+            $response = new RedirectResponse($url);
+            return $response;
+
+            } else {
+              var_dump($responseArray);
+              exit($responseArray['ACK']);
+                $url      = $this->generateUrl('paiementechec');
+                $response = new RedirectResponse($url);
+
+                return $response;
+            }
+
+        }
+
+        
+         $url      = $this->generateUrl('paiementechec');
+                $response = new RedirectResponse($url);
+
+                return $response;
     }
 
 
