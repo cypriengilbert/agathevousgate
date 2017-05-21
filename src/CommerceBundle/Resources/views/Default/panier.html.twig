@@ -19,19 +19,23 @@
                {% set totalsum = null %}{% set numero_ligne = 0 %}
                {% set remise = 0 %}
                {% for listepanier in listePanier %}
-               {% if listepanier.product.name == 'Noeud' %}
-               {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
-               {% elseif listepanier.product.name == 'Coffret1' %}
-               {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
-               {% elseif listepanier.product.name == 'Coffret2' %}
-               {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
-               {% elseif listepanier.product.name == 'Pochette' %}
-               {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
-               {% elseif listepanier.product.name == 'Boutons' %}
-               {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
-               {% else %}
-               {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-               {% endif %}
+                  {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                     {% if listepanier.product.name == 'Noeud' %}
+                        {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                     {% elseif listepanier.product.name == 'Coffret1' %}
+                        {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                     {% elseif listepanier.product.name == 'Coffret2' %}
+                        {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
+                     {% elseif listepanier.product.name == 'Pochette' %}
+                        {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                     {% elseif listepanier.product.name == 'Boutons' %}
+                        {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                     {% else %}
+                        {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                     {% endif %}
+                  {% else %}
+                      {% set totalsum = totalsum + listepanier.productsource.discount * listepanier.quantity %}
+                  {% endif %}
                {% endfor %}
                {% for key, listepanier in listePanierParent %}
                <div class="col-sm-12 col-md-12" >
@@ -43,37 +47,64 @@
                         {% for listepanierenfant in listePanierEnfant %}
                         {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
+                        {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
                         {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
+                        {% else %}
+                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
+                        {% endif %}
                         {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
                         {% set is_alone = 0 %}
+                        {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
                         {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
-
-                        {% endif  %}
+                        {% else %}
+                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
+                        {% endif %}                        {% endif  %}
                         {% endfor %}
                         <h2>
                            {% if is_alone == 1 %}
                            Noeud {{ listepanier.collection.title }}
+                           {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
                            {% set price_line = listepanier.collection.priceNoeud  * listepanier.quantity %}
+                           {% else %}
+                           {% set price_line = listepanier.productsource.discount  * listepanier.quantity %}
+                           {% endif %}
 
                            {% endif  %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
                            Coffret Trio {{ listepanier.collection.title }}
-                           {% set price_line = price_line + listepanier.collection.priceCoffret1 * listepanierenfant.quantity %}
+                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                              {% set price_line = price_line + (listepanier.collection.priceCoffret1 * listepanierenfant.quantity) %}
+                             {% else %}
+                              {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
+                             {% endif %}
                            {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
                            Coffret Prestige {{ listepanier.collection.title }}
-                           {% set price_line = price_line + (listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2) * listepanierenfant.quantity %}
-{% endif %}
+                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                             {% set price_line = price_line + (listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2) * listepanierenfant.quantity %}
+                             {% else %}
+                             {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
+                             {% endif %}
+
+                            {% endif %}
 
                            {% endfor %}
                            {% for listepanierenfant in listePanierEnfant %}
                            {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %}
                            - Pochette
-                           {% set price_line = price_line + listepanier.collection.pricePochette  * listepanierenfant.quantity %}
+                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                             {% set price_line = price_line + listepanier.collection.pricePochette  * listepanierenfant.quantity %}
+                             {% else %}
+                             {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
+                             {% endif %}
                           {% endif %}
                            {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
                            - Boutons
+                           {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
                            {% set price_line = price_line + listepanier.collection.priceBouton * listepanierenfant.quantity %}
+                           {% else %}
+                           {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
+                           {% endif %}
                             {% endif %}
                            {% endfor %}
                             - {{ price_line }}€
@@ -230,7 +261,13 @@
                                              </a>
                                              {% endif %}
                                           </td>
-                                          <td>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</td>
+                                          <td>{% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                          {{ listepanier.collection.priceNoeud * listepanier.quantity }}€
+                                          {% else %}
+                                          <s>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</s><br>
+                                          {{ listepanier.productsource.discount }}€
+                                          {% endif %}
+                                          </td>
                                        </tr>
                                        {% for keyEnfant, listepanierenfant in listePanierEnfant %}
                                         {% if (listepanierenfant.parent == listepanier) %}
@@ -282,6 +319,7 @@
                                              {% endif %}
                                           </td>
                                           <td>
+                                            {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
                                              {% if listepanierenfant.product.name == 'Boutons' %}
                                              {{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€
                                              {% elseif listepanierenfant.product.name == 'Pochette' %}
@@ -289,8 +327,23 @@
                                              {% elseif listepanierenfant.product.name == 'Coffret1' %}
                                              {{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€
                                              {% elseif listepanierenfant.product.name == 'Coffret2' %}
-                                             {{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret2 }}€
+                                             {{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€
                                              {% endif %}
+                                            {% else %}
+                                              {% if listepanierenfant.product.name == 'Boutons' %}
+                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€</s><br>
+                                              {{ listepanierenfant.productsource.discount }}€
+                                              {% elseif listepanierenfant.product.name == 'Pochette' %}
+                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€</s><br>
+                                              {{ listepanierenfant.productsource.discount }}€
+                                              {% elseif listepanierenfant.product.name == 'Coffret1' %}
+                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€</s><br>
+                                              {{ listepanierenfant.productsource.discount }}€
+                                              {% elseif listepanierenfant.product.name == 'Coffret2' %}
+                                              <s>{{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€</s><br>
+                                              {{ listepanierenfant.productsource.discount }}€
+                                              {% endif %}
+                                            {% endif %}
                                           </td>
                                        </tr>
                                         {% endif %}

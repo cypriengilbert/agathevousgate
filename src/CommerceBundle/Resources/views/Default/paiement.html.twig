@@ -17,32 +17,43 @@
                   {% set totalsum = null %}{% set numero_ligne = 0 %}
                   {% set remise = 0 %}
                   {% for listepanier in listePanier %}
-                  {% if listepanier.product.name == 'Noeud' %}
-                {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
-                {% elseif listepanier.product.name == 'Coffret1' %}
-                {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
-                {% elseif listepanier.product.name == 'Coffret2' %}
-                {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
-                {% elseif listepanier.product.name == 'Pochette' %}
-                {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
-                {% elseif listepanier.product.name == 'Boutons' %}
-                {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
-                {% else %}
-                {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                {% endif %}
-                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} - {% if listepanier.product.name == 'Noeud' %}
-                  {{ listepanier.collection.priceNoeud * listepanier.quantity }}
-                  {% elseif listepanier.product.name == 'Coffret1' %}
-                  {{ listepanier.collection.priceCoffret1 * listepanier.quantity }}
-                  {% elseif listepanier.product.name == 'Coffret2' %}
-                  {{ (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity }}
-                  {% elseif listepanier.product.name == 'Pochette' %}
-                  {{ listepanier.collection.pricePochette * listepanier.quantity }}
-                  {% elseif listepanier.product.name == 'Boutons' %}
-                  {{ listepanier.collection.priceBouton * listepanier.quantity }}
+                  {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                    {% if listepanier.product.name == 'Noeud' %}
+                    {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                    {% elseif listepanier.product.name == 'Coffret1' %}
+                    {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                    {% elseif listepanier.product.name == 'Coffret2' %}
+                    {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
+                    {% elseif listepanier.product.name == 'Pochette' %}
+                    {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                    {% elseif listepanier.product.name == 'Boutons' %}
+                    {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                    {% else %}
+                    {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                    {% endif %}
                   {% else %}
-                  {{ listepanier.product.price * listepanier.quantity }}
-                  {% endif %}€ </h2>
+                  {% set totalsum = totalsum + listepanier.productsource.discount * listepanier.quantity %}
+
+                  {% endif %}
+                  <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} -
+                  {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                      {% if listepanier.product.name == 'Noeud' %}
+                      {{ listepanier.collection.priceNoeud * listepanier.quantity }}
+                      {% elseif listepanier.product.name == 'Coffret1' %}
+                      {{ listepanier.collection.priceCoffret1 * listepanier.quantity }}
+                      {% elseif listepanier.product.name == 'Coffret2' %}
+                      {{ (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity }}
+                      {% elseif listepanier.product.name == 'Pochette' %}
+                      {{ listepanier.collection.pricePochette * listepanier.quantity }}
+                      {% elseif listepanier.product.name == 'Boutons' %}
+                      {{ listepanier.collection.priceBouton * listepanier.quantity }}
+                      {% else %}
+                      {{ listepanier.product.price * listepanier.quantity }}
+                      {% endif %}€
+                  {% else %}
+                  {{ listepanier.productsource.discount * listepanier.quantity }} €
+                  {% endif %}
+                  </h2>
                   <p>Collection {{ listepanier.collection.title }}</p>
                   <p>
                      {% if listepanier.Color1 %}
@@ -225,7 +236,7 @@ data-label="Payer en carte bancaire"></script>
                         *Paiement sécurisé par Stripe, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a><br><br>
                      </div>
                    <div style="margin-bottom:5px; font-size:10px;"> OU <br>
-                      <a href="{{ path('chargepaypal') }}"><button type="submit" class="btn btn-primary btn-lg active btn_send" ><i class="fa fa-paypal" aria-hidden="true"></i> Payer avec Paypal </button></a> 
+                      <a href="{{ path('chargepaypal') }}"><button type="submit" class="btn btn-primary btn-lg active btn_send" ><i class="fa fa-paypal" aria-hidden="true"></i> Payer avec Paypal </button></a>
                     </div>
                   </div>
                </div>

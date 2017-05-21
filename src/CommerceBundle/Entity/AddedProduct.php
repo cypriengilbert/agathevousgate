@@ -121,6 +121,12 @@ class AddedProduct
     private $collection;
 
     /**
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\defined_product",cascade={"persist"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $product_source;
+
+    /**
     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User" )
     * @ORM\JoinColumn(nullable=false)
     */
@@ -612,5 +618,29 @@ class AddedProduct
     public function getPriceRemise()
     {
         return $this->priceRemise;
+    }
+
+    /**
+     * Set productSource
+     *
+     * @param \CommerceBundle\Entity\defined_product $productSource
+     *
+     * @return AddedProduct
+     */
+    public function setProductSource(\CommerceBundle\Entity\defined_product $productSource = null)
+    {
+        $this->product_source = $productSource;
+
+        return $this;
+    }
+
+    /**
+     * Get productSource
+     *
+     * @return \CommerceBundle\Entity\defined_product
+     */
+    public function getProductSource()
+    {
+        return $this->product_source;
     }
 }

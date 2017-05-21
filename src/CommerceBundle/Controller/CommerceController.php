@@ -791,6 +791,7 @@ class CommerceController extends Controller
                 'id' => $idColor1
             ));
             $new_coffret->setColor1($color1);
+            $new_coffret->setProductSource($coffret_selected);
 
             if ($coffret_selected->getProduct()->getName() == 'Coffret2') {
                 $idColor2   = $coffret_selected->getColor2()->getId();
@@ -827,6 +828,8 @@ class CommerceController extends Controller
                 'id' => $idColor1
             ));
             $new_boutons->setColor1($color1);
+            $new_boutons->setProductSource($boutons_selected);
+
 
             $idBoutons  = $boutons_selected->getProduct()->getId();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -851,6 +854,7 @@ class CommerceController extends Controller
                 'id' => $idColor1
             ));
             $new_pochette->setColor1($color1);
+            $new_pochette->setProductSource($pochette_selected);
 
             $idPochette = $pochette_selected->getProduct()->getId();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -877,6 +881,7 @@ class CommerceController extends Controller
             'id' => $idColor1
         ));
         $new_noeud->setColor1($color1);
+        $new_noeud->setProductSource($product_selected);
 
 
         $idColor2   = $product_selected->getColor2()->getId();
@@ -1136,23 +1141,49 @@ class CommerceController extends Controller
 
 
                     if ($value->getProduct()->getName() == 'Noeud') {
+                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                         $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                      }
+                      else{
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                      }
                         $value->setPrice($pricebeforeremise);
                     } else if ($value->getProduct()->getName() == 'Pochette') {
+                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                         $pricebeforeremise = $value->getCollection()->getPricePochette();
+                      }
+                      else{
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                      }
                         $value->setPrice($pricebeforeremise);
 
                     } else if ($value->getProduct()->getName() == 'Boutons') {
+                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                         $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                      }
+                      else{
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                      }
                         $value->setPrice($pricebeforeremise);
                     } else if ($value->getProduct()->getName() == 'Coffret1') {
+                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                         $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
                         $value->setPrice($pricebeforeremise);
                     } else if ($value->getProduct()->getName() == 'Coffret2') {
                         $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                      }
+                      else{
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                      }
                         $value->setPrice($pricebeforeremise);
                     } else {
+                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
+
                         $pricebeforeremise = $$value->getProduct()->getPrice();
+                      }
+                      else{
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                      }
                         $value->setPrice($pricebeforeremise);
 
                     }
@@ -1360,25 +1391,50 @@ class CommerceController extends Controller
             foreach ($listePanier as $value) {
                 $value->setCommande($commandeEnCours);
 
-
                 if ($value->getProduct()->getName() == 'Noeud') {
+                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                     $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                  }
+                  else{
+                    $pricebeforeremise = $value->getProductSource()->getDiscount();
+                  }
                     $value->setPrice($pricebeforeremise);
                 } else if ($value->getProduct()->getName() == 'Pochette') {
+                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                     $pricebeforeremise = $value->getCollection()->getPricePochette();
+                  }
+                  else{
+                    $pricebeforeremise = $value->getProductSource()->getDiscount();
+                  }
                     $value->setPrice($pricebeforeremise);
 
                 } else if ($value->getProduct()->getName() == 'Boutons') {
+                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                     $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                  }
+                  else{
+                    $pricebeforeremise = $value->getProductSource()->getDiscount();
+                  }
                     $value->setPrice($pricebeforeremise);
                 } else if ($value->getProduct()->getName() == 'Coffret1') {
+                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
                     $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
                     $value->setPrice($pricebeforeremise);
                 } else if ($value->getProduct()->getName() == 'Coffret2') {
                     $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                  }
+                  else{
+                    $pricebeforeremise = $value->getProductSource()->getDiscount();
+                  }
                     $value->setPrice($pricebeforeremise);
                 } else {
+                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
+
                     $pricebeforeremise = $$value->getProduct()->getPrice();
+                  }
+                  else{
+                    $pricebeforeremise = $value->getProductSource()->getDiscount();
+                  }
                     $value->setPrice($pricebeforeremise);
 
                 }
@@ -1952,18 +2008,48 @@ class CommerceController extends Controller
                 foreach ($listePanier as $value) {
 
                     if ($value->getProduct()->getName() == 'Noeud') {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                      }
+                      else {
+                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                      }
 
                     } else if ($value->getProduct()->getName() == 'Pochette') {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                      }
+                      else {
+                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                      }
                     } else if ($value->getProduct()->getName() == 'Boutons') {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                      }
+                        else {
+                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
                     } else if ($value->getProduct()->getName() == 'Coffret1') {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                      }
+                        else {
+                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
                     } else if ($value->getProduct()->getName() == 'Coffret2') {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                      }
+                        else {
+                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
                     } else {
+                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
                         $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+                      }
+                        else {
+                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
 
                     }
                 }
@@ -2139,21 +2225,52 @@ class CommerceController extends Controller
             $total_commande = 0;
             foreach ($listePanier as $value) {
 
-                if ($value->getProduct()->getName() == 'Noeud') {
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
 
-                } else if ($value->getProduct()->getName() == 'Pochette') {
-                    $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                } else if ($value->getProduct()->getName() == 'Boutons') {
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                } else if ($value->getProduct()->getName() == 'Coffret1') {
-                    $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                } else if ($value->getProduct()->getName() == 'Coffret2') {
-                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
-                } else {
-                    $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+                                  if ($value->getProduct()->getName() == 'Noeud') {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                                    }
+                                    else {
+                                      $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                    }
 
-                }
+                                  } else if ($value->getProduct()->getName() == 'Pochette') {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                                    }
+                                    else {
+                                      $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                    }
+                                  } else if ($value->getProduct()->getName() == 'Boutons') {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                                    }
+                                      else {
+                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                      }
+                                  } else if ($value->getProduct()->getName() == 'Coffret1') {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                                    }
+                                      else {
+                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                      }
+                                  } else if ($value->getProduct()->getName() == 'Coffret2') {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                                    }
+                                      else {
+                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                      }
+                                  } else {
+                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
+                                      $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+                                    }
+                                      else {
+                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                                      }
+
+                                  }
 
 
             }

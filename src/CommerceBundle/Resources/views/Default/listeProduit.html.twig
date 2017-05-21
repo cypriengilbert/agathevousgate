@@ -86,7 +86,7 @@
                <div class="product_img" style="height:100%">
                   <img id="img_{{listeProduit.id}}" style="width:100%; max-height:auto;margin-top:0px;height:auto;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
                   <b>
-                     <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} - {{ listeProduit.collection.priceNoeud }}€</h2>
+                     <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} - {% if listeProduit.discount == 0 %}{{ listeProduit.collection.priceNoeud }}€ {% else %}<s>{{ listeProduit.collection.priceNoeud }}</s> {{ listeProduit.discount }}€ {% endif %}</h2>
                   </b>
                </div>
                <div class="caption">

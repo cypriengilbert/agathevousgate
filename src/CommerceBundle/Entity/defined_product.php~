@@ -25,6 +25,13 @@ class defined_product
      */
     private $id;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discount", type="float")
+     */
+     private $discount;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -680,5 +687,29 @@ class defined_product
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return defined_product
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

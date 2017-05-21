@@ -54,8 +54,7 @@
    }*/
 </style>
 <script>
-   var total = {{ product.product.price }};
-
+   var total =  {% if product.discount == 0 %}{{ product.product.price }}{% else %}{{ product.discount }}{% endif %};
 </script>
 <body {% if coffret == 'true' %}onload="open_div('coffret'); document.getElementById('Coffret').checked = true;" {% endif %} id="page-top" >
 {% set coffret_id = null %}
@@ -185,8 +184,13 @@
 
                {% for enfants in product.enfants %}
                {% if enfants.product.name == 'Coffret2' %}
-               {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
-               {% set coffret_id = enfants.id %}
+                  {% if enfants.discount == 0 %}
+                     {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
+                  {% else %}
+                      {% set coffret_price = enfants.discount %}
+                  {% endif %}
+
+                     {% set coffret_id = enfants.id %}
 
                <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
                   <div class="panel-body">
@@ -214,7 +218,11 @@
                   </div>
                </div>
                {% elseif enfants.product.name == 'Coffret1' %}
+               {% if enfants.discount == 0 %}
                {% set coffret_price = product.collection.priceCoffret1 %}
+               {% else %}
+                   {% set coffret_price = enfants.discount %}
+               {% endif %}
                {% set coffret_id = enfants.id %}
                <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
                   <div class="panel-body">
@@ -267,8 +275,12 @@
                   </div>
                   {% for enfants in product.enfants %}
                   {% if enfants.product.name == 'Pochette' %}
-                  {% set pochette_id = enfants.id %}
+                  {% if enfants.discount == 0 %}
                   {% set pochette_price = product.collection.pricePochette %}
+                  {% else %}
+                      {% set pochette_price = enfants.discount %}
+                  {% endif %}
+                  {% set pochette_id = enfants.id %}
                   <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
                      <div class="panel-body text-center">
                         <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
@@ -297,7 +309,11 @@
             {% for enfants in product.enfants %}
             {% if enfants.product.name == 'Boutons' %}
             {% set boutons_id = enfants.id %}
+            {% if enfants.discount == 0 %}
             {% set boutons_price = product.collection.priceBouton %}
+            {% else %}
+                {% set boutons_price = enfants.discount %}
+            {% endif %}
             <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
                <div class="panel-body text-center">
                   <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}"></br>
@@ -331,14 +347,15 @@
          <div class="panel panel-default" style="margin-top:20px; background-color:white;">
             <div class="panel-heading blue_recap" style="border-top: 0px">
                <div class="row ">
-                  <div class="col-sm-9" >
+                  <div class="col-sm-7" >
                      <h3 class="panel-title" style="color:white!important;">
                         Noeud
                      </h3>
                   </div>
-                  <div class="col-sm-2" >
+                  <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        {{ product.collection.priceNoeud}}€
+                        {% if product.discount == 0 %}  {{ product.collection.priceNoeud}}€{% else %}{{ product.discount }}€{% endif %}
+
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -348,7 +365,7 @@
             </div>
             <div class="panel-heading blue_recap">
                <div class="row ">
-                  <div class="col-sm-9" >
+                  <div class="col-sm-7" >
                      <h3 class="panel-title" style="color:white!important;">
                         Coffret   {% for enfants in product.enfants %}
                           {% if enfants.product.name == 'Coffret2' %}
@@ -359,15 +376,28 @@
                             {% endfor  %}
                      </h3>
                   </div>
-                  <div class="col-sm-2" >
+                  <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
                         +
                         {% for enfants in product.enfants %}
+
                         {% if enfants.product.name == 'Coffret2' %}
+                        {% if enfants.discount == 0 %}
                               {{ product.collection.priceCoffret2  + product.collection.priceCoffret1 }}€
+                              {% else %}
+                              <s>{{ product.collection.priceCoffret2  + product.collection.priceCoffret1 }}</s> {{ enfants.discount }}€
+                              {% endif %}
+
                           {% elseif enfants.product.name == 'Coffret1' %}
+                          {% if enfants.discount == 0 %}
+
                             {{ product.collection.priceCoffret1 }}€
+                            {% else %}
+                            <s>{{ product.collection.priceCoffret1 }}</s> {{ enfants.discount }}€
+                            {% endif %}
                           {% endif %}
+
+
                           {% endfor  %}
 
                      </h3>
@@ -379,14 +409,14 @@
             </div>
             <div class="panel-heading blue_recap">
                <div class="row ">
-                  <div class="col-sm-9" >
+                  <div class="col-sm-7" >
                      <h3 class="panel-title" style="color:white!important;">
                         Pochette
                      </h3>
                   </div>
-                  <div class="col-sm-2" >
+                  <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {{ product.collection.pricePochette }}€
+                        + {% if product.collection.pricePochette == pochette_price %} {{ pochette_price }}€ {% else %}<s>{{ product.collection.pricePochette }}</s> {{ pochette_price }}€{% endif %}
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -396,14 +426,14 @@
             </div>
             <div class="panel-heading blue_recap">
                <div class="row ">
-                  <div class="col-sm-9" >
+                  <div class="col-sm-7" >
                      <h3 class="panel-title" style="color:white!important;">
                         Boutons de manchette
                      </h3>
                   </div>
-                  <div class="col-sm-2" >
+                  <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {{ product.collection.priceBouton }}€
+                     + {% if product.collection.priceBouton == boutons_price %} {{ boutons_price }}€ {% else %}<s>{{ product.collection.priceBouton }}</s> {{ boutons_price }}€{% endif %}
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -575,7 +605,7 @@ document.getElementById('chevron_coffret').className = "fa fa-2x fa-chevron-up";
    }
    }
 
-   total = {{ product.collection.priceNoeud }};
+   total = {% if product.discount == 0 %}{{ product.product.price }}{% else %}{{ product.discount }}{% endif %};
    if( document.getElementById('input_coffret').checked == true){
    total = total + {{ coffret_price }};
    }

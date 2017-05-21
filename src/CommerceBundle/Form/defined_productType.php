@@ -125,6 +125,7 @@ class defined_productType extends AbstractType
         'choice_label' => 'title',
 
         ))
+        ->add('discount')
         ->add('enfants', EntityType::class, array(
                             'class' => 'CommerceBundle:defined_product',
                             'multiple' => true,
