@@ -44,7 +44,7 @@
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
                       {% for product in commande.addedproducts %}
-                        <b>{{ product.product.name }} {{ product.accessoire.name }} : {{ product.quantity }}<br></b>
+                        <b>{{ product.product.name }}  {% if product.accessoire  %}{{ product.accessoire.name }}{% endif %} : {{ product.quantity }}<br></b>
                         {% if product.Color1 %}
                         {{ product.Color1.name }} /
                           {% endif %}
@@ -97,7 +97,7 @@
   <td>{{ commande.date|date("d-m-Y") }}</td>
   <td>
       {% for product in commande.addedproducts %}
-        <b>{{ product.product.name }} {{ product.accessoire.name }} : {{ product.quantity }}<br></b>
+        <b>{{ product.product.name }} {% if product.accessoire  %}{{ product.accessoire.name }}{% endif %} : {{ product.quantity }}<br></b>
         {% if product.Color1 %}
         {{ product.Color1.name }} /
           {% endif %}

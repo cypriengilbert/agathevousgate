@@ -31,7 +31,6 @@ class ChooseLivraisonType extends AbstractType
                       ->orderBy('u.id', 'ASC')
                        ->where('u.price > 1.8');
               }
-
        	));}
 
 

@@ -33,17 +33,14 @@ class DefaultController extends Controller
         $page = 'dashboard';
         $session = $request->getSession();
         $dateout = $session->get('dateout');
-
         if ($session->get('datein') === null) {
             $datein = new \Datetime('2016-01-01');
         } else {
-
             $datein = $session->get('datein');
-
         }
 
         if ($session->get('dateout') === null) {
-            $dateout = new \Datetime('2016-12-31');
+            $dateout = new \Datetime('2056-12-31');
         } else {
 
             $dateout = $session->get('dateout');
@@ -176,7 +173,6 @@ class DefaultController extends Controller
 
                 'validate' => 'Reception modifiée',
                 'form' => $form->createView()
-
             )));
         }
 
@@ -184,9 +180,6 @@ class DefaultController extends Controller
             'commande' => $Commande,
             'form' => $form->createView(),
             'page' => $page,
-
-
-
         ));
     }
 

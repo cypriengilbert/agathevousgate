@@ -45,6 +45,15 @@
                                         </div>
                                       </div>
                                   {% endfor %}
+                                  {% if ateliers is empty %}
+                                  <div class="panel panel-info">
+                                    <div class="panel-heading" style="position:relative;"><h3 class="panel-title"></h3>
+                                    </div>
+                                    <div class="panel-body">
+                                      Malheureusement, aucun atelier n'est disponible pour un retrait.
+                                    </div>
+                                  </div>
+                                  {% endif %}
                                 </div>
                               </div>
 

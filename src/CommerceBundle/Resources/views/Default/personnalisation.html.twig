@@ -17,6 +17,7 @@ window.onbeforeunload = function () {
           </div>
         </div>
       </section>
+
     <div class="container text-center">
         <h1 class="heading">CRÉER SON NOEUD</h1>
         <ul rel="sequence" class="seq-pagination list-inline" role="navigation" aria-label="Pagination">
@@ -674,8 +675,8 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
         </div>
         <div class="row text-center type_noeud" >
 
-            <div class="col-sm-4 no_padding selector_type active_1" style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille enfant/ado">
-              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="S" style="visibility: hidden; position: absolute;" checked>
+            <div class="col-sm-3 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille enfant/ado">
+              <input type="radio" name="radio_accessoire" id="radio-tdecou" value="S" style="visibility: hidden; position: absolute;" >
               <label for="radio-tdecou" style="cursor:pointer;">
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
@@ -683,13 +684,13 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                 </div>
                 <div class="row text-center no_padding" >
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">30-40cm</div>
+                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">Tour de cou <br>30-40cm</div>
                     <div class="col-sm-1"></div>
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille moyenne (homme ou femme)">
-              <input type="radio" name="radio_accessoire" id="radio-barette" value="M" style="visibility: hidden; position: absolute;">
+            <div class="col-sm-3 no_padding selector_type active_1 " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Taille moyenne (homme ou femme)">
+              <input type="radio" name="radio_accessoire" id="radio-barette" value="M" style="visibility: hidden; position: absolute;" checked>
               <label for="radio-barette" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
                     <div class="col-sm-12 no_padding">
@@ -697,12 +698,12 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">40-50cm</div>
+                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">Tour de cou <br> 40-50cm</div>
                     <div class="col-sm-1"></div>
                 </div>
               </label>
             </div>
-            <div class="col-sm-4 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Cou musclé :)">
+            <div class="col-sm-3 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="Cou musclé :)">
               <input type="radio" name="radio_accessoire" id="radio-broche" value="L" style="visibility: hidden; position: absolute;">
               <label for="radio-broche" style="cursor:pointer;" >
                 <div class="row text-center no_padding">
@@ -711,12 +712,25 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                 </div>
                 <div class="row text-center no_padding">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">50-60cm</div>
+                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;">Tour de cou <br> 50-60cm</div>
                     <div class="col-sm-1"></div>
                 </div>
                 </label>
             </div>
-
+            <div class="col-sm-3 no_padding selector_type " style="cursor:pointer; " onclick="get_data()" data-toggle="tooltip" title="">
+              <input type="radio" name="radio_accessoire" id="radio-accessoire" value="Accessoire femme" style="visibility: hidden; position: absolute;">
+              <label for="radio-accessoire" style="cursor:pointer;" >
+                <div class="row text-center no_padding">
+                    <div class="col-sm-12 no_padding">
+                        <h1>Accessoire Femme</h1></div>
+                </div>
+                <div class="row text-center no_padding">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10 no_padding text-center" style="margin-left:18px;"><br><br></div>
+                    <div class="col-sm-1"></div>
+                </div>
+                </label>
+            </div>
         </div>
     </div>
     <div class="container choix_type_taille_noeud">

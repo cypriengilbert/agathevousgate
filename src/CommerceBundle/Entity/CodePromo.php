@@ -58,9 +58,9 @@ class CodePromo
     private $code;
 
     /**
-     * @var int
+     * @var float
      *
-     * @ORM\Column(name="montant", type="integer", nullable=true)
+     * @ORM\Column(name="montant", type="float", nullable=true)
      */
     private $montant;
 
@@ -181,7 +181,7 @@ class CodePromo
     /**
      * Set montant
      *
-     * @param integer $montant
+     * @param float $montant
      *
      * @return CodePromo
      */
@@ -195,7 +195,7 @@ class CodePromo
     /**
      * Get montant
      *
-     * @return int
+     * @return float
      */
     public function getMontant()
     {
