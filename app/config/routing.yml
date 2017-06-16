@@ -1,3 +1,8 @@
+boutique:
+    resource: "@BoutiqueBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 
 compte:
     resource: "@CompteBundle/Controller/"

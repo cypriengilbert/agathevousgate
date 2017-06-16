@@ -2,6 +2,7 @@
 
 
 {% block body %}
+
 <body id="page-top" ng-app="noeudPap" ng-controller="noeudPapController as noeudPap">
 	<!-- Message d'accueil -->
     <section id="slider-homepage">
@@ -14,12 +15,15 @@
 
 				<div class="col-md-3 col-sm-6 hero-feature">
 						<div class="thumbnail">
-								<img  style="max-height:150px; max-width:250px" src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" alt="">
+								<img  style="max-height:50px; max-width:50px" src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" alt="">
 								<div class="caption">
-										<h3>{{ color.name }}</h3>
+										<h3>{{ color.name_public }}</h3>
 
 										<p>
-												<a href="{{ path('addedTissutoCart', {'id': color.id, 'idCollection' : thiscollection.id }) }}" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</a>
+												<a style"padding:-5px;" href="{{ path('addedTissutoCart', {'id': color.id, 'idCollection' : thiscollection.id }) }}" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</a>
+										</p>
+										<p>
+												<a style"padding:-5px;" onclick="addtoCart('{{color.id}}', 'Tissu')" class="btn btn-primary btn-lg active btn_send">Ajouter au panier</a>
 										</p>
 								</div>
 						</div>
@@ -46,6 +50,17 @@
 
         </div>
     </section>
+
+		<script>
+			function addtoCart(color, product){
+				var array_cart = [color, product];
+			}
+
+			array_cart.forEach(function(element)){
+			console.log(element)
+			});
+
+		</srcipt>
 
 
 {% endblock %}

@@ -23,10 +23,7 @@ class AppKernel extends Kernel
             new CompteBundle\CompteBundle(),
              new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
              new Vich\UploaderBundle\VichUploaderBundle(),
-
-
-
-
+            new BoutiqueBundle\BoutiqueBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

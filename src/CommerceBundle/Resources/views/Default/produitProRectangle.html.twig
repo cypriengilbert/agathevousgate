@@ -21,7 +21,7 @@
 						<div class="thumbnail">
 								<img  style="max-height:150px; max-width:250px" src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" alt="">
 								<div class="caption">
-										<h3>{{ color.name }}</h3>
+										<h3>{{ color.name_public }}</h3>
 
 										<p>
 												<a href="{{ path('addRectangle', {'id': color.id, 'product' : 'Rectangle_petit'}) }}" class="btn btn-primary btn-lg active btn_send">Ajouter un petit</a>
