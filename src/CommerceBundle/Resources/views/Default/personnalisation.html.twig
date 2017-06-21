@@ -28,11 +28,33 @@ window.onbeforeunload = function () {
     </div>
     {% set first_open2 = 0 %}
     {% set first_open1 = 0 %}
-    {% set noeud_price = 0 %}
-    {% set coffret1_price = 0%}
-    {% set coffret2_price = 0 %}
-    {% set boutons_price = 0 %}
-    {% set pochette_price = 0 %}
+    {% set coffret1_price = collection_on.priceCoffret1 %}
+    {% set coffret2_price = collection_on.priceCoffret2 %}
+    {% set boutons_price = collection_on.priceBouton %}
+    {% set pochette_price = collection_on.pricePochette %}
+    {% set noeud_price = collection_on.priceNoeud  %}
+
+    {% for reduction in reductions %}
+      {% if collection_on == reduction.collection or reduction.collection is null  %}
+
+        {% if reduction.product.id == 3 %}
+        {% set noeud_price = (reduction.reduction * collection_on.priceNoeud)/100 %}
+        {% elseif reduction.product.id == 4 %}
+          {% set coffret2_price = (reduction.reduction * collection_on.priceCoffret2)/100 %}
+
+        {% elseif reduction.product.id == 10 %}   
+
+          {% set boutons_price = (reduction.reduction * collection_on.priceBouton)/100 %}
+        {% elseif reduction.product.id == 11 %}
+          {% set pochette_price = (reduction.reduction * collection_on.pricePochette)/100 %}
+        {% elseif reduction.product.id == 12 %}
+          {% set coffret1_price = (reduction.reduction * collection_on.priceCoffret1)/100 %}
+        {% elseif reduction.product.id == 13 %}
+        {% set boite_price = (reduction.reduction * collection_on.priceBoite)/100 %}
+        {% endif %}
+      {% endif %}
+
+    {% endfor %}
 
   <!-- Page Produit & Taille -->
 <div class="main_page">
@@ -553,7 +575,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                          {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceNoeud }}{% set noeud_price = collection.priceNoeud  %}€{% endif %}{% endfor %}
+                       {{ noeud_price|round(2, 'floor') }}€
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -570,7 +592,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                       </div>
                       <div class="col-sm-3 col-xs-3 text-right">
                           <h3 style="color: rgb(255, 255, 255);" class="panel-title">
-                          + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret1 }}{% set coffret1_price = collection.priceCoffret1  %}€{% endif %}{% endfor %}
+                          + {{ coffret1_price|round(2, 'floor') }}€
                       </div>
                       <div class="col-sm-1 col-xs-1">
                           <input onclick="open_div('coffret1')" id="input_coffret1" type="checkbox">
@@ -586,7 +608,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret2 }}{% set coffret2_price = collection.priceCoffret2  %}€{% endif %}{% endfor %}
+                       + {{ coffret2_price|round(2, 'floor') }}€
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -603,7 +625,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.pricePochette }}{% set pochette_price = collection.pricePochette  %}€{% endif %}{% endfor %}
+                       + {{pochette_price|round(2, 'floor') }}€
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -620,7 +642,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" >
                        <h3 class="panel-title" style="color:white!important;">
-                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceBouton }}{% set boutons_price = collection.priceBouton  %}€{% endif %}{% endfor %}
+                       + {{ boutons_price|round(2, 'floor') }}€
                        </h3>
                     </div>
                     <div class="col-sm-1 col-xs-1" >
@@ -637,7 +659,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                     </div>
                     <div class="col-sm-3 col-xs-3 text-right" style="position:absolute; right:30px;" >
                        <h3 class="panel-title" style="color:white!important;position:absolute; right:43px" id="total" >
-                          {{ noeud_price }} €
+                       {{ noeud_price|round(2, 'floor') }}€
                        </h3>
                     </div>
 <div class="col-sm-1 col-xs-1 text-right" ></div>
@@ -802,7 +824,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                    {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceNoeud }}{% set noeud_price = collection.priceNoeud  %}€{% endif %}{% endfor %}
+                    {{ noeud_price|round(2, 'floor') }}€
                     </h3>
                  </div>
 
@@ -817,7 +839,8 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                    </div>
                    <div class="col-sm-4 text-right">
                        <h3 style="color: rgb(255, 255, 255);" class="panel-title">
-                       + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret1 }}{% set coffret1_price = collection.priceCoffret1  %}€{% endif %}{% endfor %}
+                       + {{ coffret1_price|round(2, 'floor') }}€
+
                    </div>
 
                </div>
@@ -830,7 +853,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceCoffret2 }}{% set coffret2_price = collection.priceCoffret2  %}€{% endif %}{% endfor %}
+                    + {{ coffret2_price|round(2, 'floor') }}€
                     </h3>
                  </div>
 
@@ -845,7 +868,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.pricePochette }}{% set pochette_price = collection.pricePochette  %}€{% endif %}{% endfor %}
+                    + {{pochette_price|round(2, 'floor') }}€
                     </h3>
                  </div>
 
@@ -860,7 +883,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right" >
                     <h3 class="panel-title" style="color:white!important;">
-                    + {% for collection in collection %}{% if collection.id == selected_collection %}{{ collection.priceBouton }}{% set boutons_price = collection.priceBouton  %}€{% endif %}{% endfor %}
+                    + {{ boutons_price|round(2, 'floor') }}€
                     </h3>
                  </div>
 
@@ -875,7 +898,7 @@ Couleur 4                    </h3>
                  </div>
                  <div class="col-sm-4 text-right"  >
                     <h3 class="panel-title" style="color:white!important;" id="total2" >
-                       {{ noeud_price }} €
+                    {{ noeud_price|round(2, 'floor') }}€
                     </h3>
                  </div>
 

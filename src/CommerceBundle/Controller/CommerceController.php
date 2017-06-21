@@ -443,6 +443,8 @@ class CommerceController extends Controller
                 $user = $this->container->get('security.context')->getToken()->getUser();
                 $added_product->setClient($user);
                 $added_product->setCollection($collection_selected);
+                $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+
             }
 
             $added_product->setCommande(null);
@@ -474,7 +476,9 @@ class CommerceController extends Controller
                 'page' => $page,
                 'sortedcolor' => $sortedColors,
                 'selected_collection' => $collection_selected->getId(),
-                'allproduct' => $allproduct
+                'collection_on' => $collection_selected,
+                'allproduct' => $allproduct,
+                'reductions' => $allreduction
             ));
         }
         else
