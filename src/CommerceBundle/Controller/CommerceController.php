@@ -437,6 +437,7 @@ class CommerceController extends Controller
             $product_noeud = $this->getOneBy('Product',array('name' => 'Noeud'));
             $product_coffret = $this->getOneBy('Product',array('name' => 'Coffret'));
             $accessoire = $this->getAll('Accessoire');
+            $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
             $sortedColors = $collection_selected->getColors();
             $added_product = new AddedProduct();
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -478,7 +479,8 @@ class CommerceController extends Controller
                 'selected_collection' => $collection_selected->getId(),
                 'collection_on' => $collection_selected,
                 'allproduct' => $allproduct,
-                'reductions' => $allreduction
+                'reductions' => $allreduction,
+                'tva' => $tva,
             ));
         }
         else

@@ -34,27 +34,30 @@ window.onbeforeunload = function () {
     {% set pochette_price = collection_on.pricePochette %}
     {% set noeud_price = collection_on.priceNoeud  %}
 
+{% if app.user.isPro == 2 %}
     {% for reduction in reductions %}
       {% if collection_on == reduction.collection or reduction.collection is null  %}
 
         {% if reduction.product.id == 3 %}
-        {% set noeud_price = (reduction.reduction * collection_on.priceNoeud)/100 %}
+        {% set noeud_price = ((reduction.reduction * collection_on.priceNoeud)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 4 %}
-          {% set coffret2_price = (reduction.reduction * collection_on.priceCoffret2)/100 %}
+          {% set coffret2_price = ((reduction.reduction * collection_on.priceCoffret2)/100) / (1+tva/100) %}
 
-        {% elseif reduction.product.id == 10 %}   
+        {% elseif reduction.product.id == 10 %}
 
-          {% set boutons_price = (reduction.reduction * collection_on.priceBouton)/100 %}
+          {% set boutons_price = ((reduction.reduction * collection_on.priceBouton)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 11 %}
-          {% set pochette_price = (reduction.reduction * collection_on.pricePochette)/100 %}
+          {% set pochette_price = ((reduction.reduction * collection_on.pricePochette)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 12 %}
-          {% set coffret1_price = (reduction.reduction * collection_on.priceCoffret1)/100 %}
+          {% set coffret1_price = ((reduction.reduction * collection_on.priceCoffret1)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 13 %}
-        {% set boite_price = (reduction.reduction * collection_on.priceBoite)/100 %}
+        {% set boite_price = ((reduction.reduction * collection_on.priceBoite)/100) / (1+tva/100) %}
         {% endif %}
       {% endif %}
 
     {% endfor %}
+
+    {% endif %}
 
   <!-- Page Produit & Taille -->
 <div class="main_page">
@@ -662,16 +665,19 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                        {{ noeud_price|round(2, 'floor') }}€
                        </h3>
                     </div>
+
 <div class="col-sm-1 col-xs-1 text-right" ></div>
 
                  </div>
               </div>
+              <p class="text-center">Prix HT et réductions déduites</p>
            </div>
         </div>
 
         </div>
     </div>
 </section>
+
 
     <!-- champs cachés -->
 
