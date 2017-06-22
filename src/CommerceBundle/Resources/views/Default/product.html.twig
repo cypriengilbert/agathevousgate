@@ -53,16 +53,109 @@
    color:#FFF !important;
    }*/
 </style>
-<script>
-   var total =  {% if product.discount == 0 %}{{ product.product.price }}{% else %}{{ product.discount }}{% endif %};
-</script>
+
 <body {% if coffret == 'true' %}onload="open_div('coffret'); document.getElementById('Coffret').checked = true;" {% endif %} id="page-top" >
 {% set coffret_id = null %}
 {% set pochette_id = null %}
 {% set boutons_id = null %}
-{% set pochette_price = 0 %}
-{% set coffret_price = 0 %}
-{% set boutons_price = 0 %}
+
+{% set coffret_price = collection_on.priceCoffret1 %}
+{% set boutons_price = collection_on.priceBouton %}
+{% set pochette_price = collection_on.pricePochette %}
+{% set noeud_price = collection_on.priceNoeud  %}
+
+{% if app.user and app.user.isPro == 2  %}
+{% for reduction in reductions %}
+  {% if collection_on == reduction.collection or reduction.collection is null  %}
+
+    {% if reduction.product.id == 3 %}
+    {% set noeud_price = ((reduction.reduction * collection_on.priceNoeud)/100) / (1+tva/100) %}
+    {% elseif reduction.product.id == 4 %}
+        {% for enfants in product.enfants %}
+          {% if enfants.product.name == 'Coffret2' %}
+             {% if enfants.discount == 0 %}
+                {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
+             {% else %}
+                 {% set coffret_price = enfants.discount %}
+             {% endif %}
+          {% elseif enfants.product.name == 'Coffret1' %}
+             {% if enfants.discount == 0 %}
+                {% set coffret_price = product.collection.priceCoffret1 %}
+             {% else %}
+                 {% set coffret_price = enfants.discount %}
+             {% endif %}
+          {% endif %}
+        {% endfor %}
+
+      {% set coffret_price = ((reduction.reduction * coffret_price)/100) / (1+tva/100) %}
+
+    {% elseif reduction.product.id == 10 %}
+
+      {% set boutons_price = ((reduction.reduction * collection_on.priceBouton)/100) / (1+tva/100) %}
+    {% elseif reduction.product.id == 11 %}
+      {% set pochette_price = ((reduction.reduction * collection_on.pricePochette)/100) / (1+tva/100) %}
+    {% elseif reduction.product.id == 12 %}
+      {% for enfants in product.enfants %}
+        {% if enfants.product.name == 'Coffret2' %}
+           {% if enfants.discount == 0 %}
+              {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
+           {% else %}
+               {% set coffret_price = enfants.discount %}
+           {% endif %}
+        {% elseif enfants.product.name == 'Coffret1' %}
+           {% if enfants.discount == 0 %}
+              {% set coffret_price = product.collection.priceCoffret1 %}
+           {% else %}
+               {% set coffret_price = enfants.discount %}
+           {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% set coffret_price = ((reduction.reduction * coffret_price)/100) / (1+tva/100) %}
+
+    {% elseif reduction.product.id == 13 %}
+    {% set boite_price = ((reduction.reduction * collection_on.priceBoite)/100) / (1+tva/100) %}
+    {% endif %}
+  {% endif %}
+
+{% endfor %}
+{% else %}
+  {% for enfants in product.enfants %}
+    {% if enfants.product.name == 'Coffret2' %}
+      {% if enfants.discount == 0 %}
+        {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
+      {% else %}
+        {% set coffret_price = enfants.discount %}
+      {% endif %}
+      {% set coffret_id = enfants.id %}
+    {% elseif enfants.product.name == 'Coffret1' %}
+      {% if enfants.discount == 0 %}
+        {% set coffret_price = product.collection.priceCoffret1 %}
+      {% else %}
+        {% set coffret_price = enfants.discount %}
+      {% endif %}
+      {% set coffret_id = enfants.id %}
+    {% elseif enfants.product.name == 'Pochette' %}
+      {% if enfants.discount == 0 %}
+        {% set pochette_price = product.collection.pricePochette %}
+      {% else %}
+        {% set pochette_price = enfants.discount %}
+      {% endif %}
+    {% elseif enfants.product.name == 'Boutons' %}
+      {% if enfants.discount == 0 %}
+       {% set boutons_price = product.collection.priceBouton %}
+      {% else %}
+       {% set boutons_price = enfants.discount %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+
+<script>
+   var total = {{noeud_price|round(2,'floor')}};
+
+</script>
 <center style="margin-top:70px">
    <h2>{{ product.collection.title }} </h2>
 </center>
@@ -184,13 +277,6 @@
 
                {% for enfants in product.enfants %}
                {% if enfants.product.name == 'Coffret2' %}
-                  {% if enfants.discount == 0 %}
-                     {% set coffret_price = product.collection.priceCoffret2 + product.collection.priceCoffret1 %}
-                  {% else %}
-                      {% set coffret_price = enfants.discount %}
-                  {% endif %}
-
-                     {% set coffret_id = enfants.id %}
 
                <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
                   <div class="panel-body">
@@ -218,13 +304,7 @@
                   </div>
                </div>
                {% elseif enfants.product.name == 'Coffret1' %}
-               {% if enfants.discount == 0 %}
-               {% set coffret_price = product.collection.priceCoffret1 %}
-               {% else %}
-                   {% set coffret_price = enfants.discount %}
-               {% endif %}
-               {% set coffret_id = enfants.id %}
-               <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
+                 <div id="collapse1" class="panel-collapse collapse" style="background-color:white;">
                   <div class="panel-body">
                      <div class="row">
                         <div class="col-sm-6 no_padding text-center">
@@ -275,11 +355,7 @@
                   </div>
                   {% for enfants in product.enfants %}
                   {% if enfants.product.name == 'Pochette' %}
-                  {% if enfants.discount == 0 %}
-                  {% set pochette_price = product.collection.pricePochette %}
-                  {% else %}
-                      {% set pochette_price = enfants.discount %}
-                  {% endif %}
+
                   {% set pochette_id = enfants.id %}
                   <div id="collapse2" class="panel-collapse collapse" style="background-color:white;">
                      <div class="panel-body text-center">
@@ -309,11 +385,6 @@
             {% for enfants in product.enfants %}
             {% if enfants.product.name == 'Boutons' %}
             {% set boutons_id = enfants.id %}
-            {% if enfants.discount == 0 %}
-            {% set boutons_price = product.collection.priceBouton %}
-            {% else %}
-                {% set boutons_price = enfants.discount %}
-            {% endif %}
             <div id="collapse3" class="panel-collapse collapse" style="background-color:white;">
                <div class="panel-body text-center">
                   <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}"></br>
@@ -354,7 +425,8 @@
                   </div>
                   <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        {% if product.discount == 0 %}  {{ product.collection.priceNoeud}}€{% else %}{{ product.discount }}€{% endif %}
+
+                            {{noeud_price|round(2,'floor')}}€
 
                      </h3>
                   </div>
@@ -378,27 +450,8 @@
                   </div>
                   <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        +
-                        {% for enfants in product.enfants %}
+                     +  {{ coffret_price|round(2,'floor') }}€
 
-                        {% if enfants.product.name == 'Coffret2' %}
-                        {% if enfants.discount == 0 %}
-                              {{ product.collection.priceCoffret2  + product.collection.priceCoffret1 }}€
-                              {% else %}
-                              <s>{{ product.collection.priceCoffret2  + product.collection.priceCoffret1 }}</s> {{ enfants.discount }}€
-                              {% endif %}
-
-                          {% elseif enfants.product.name == 'Coffret1' %}
-                          {% if enfants.discount == 0 %}
-
-                            {{ product.collection.priceCoffret1 }}€
-                            {% else %}
-                            <s>{{ product.collection.priceCoffret1 }}</s> {{ enfants.discount }}€
-                            {% endif %}
-                          {% endif %}
-
-
-                          {% endfor  %}
 
                      </h3>
                   </div>
@@ -416,7 +469,7 @@
                   </div>
                   <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                        + {% if product.collection.pricePochette == pochette_price %} {{ pochette_price }}€ {% else %}<s>{{ product.collection.pricePochette }}</s> {{ pochette_price }}€{% endif %}
+                     +  {{ pochette_price|round(2,'floor') }}€
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -433,7 +486,10 @@
                   </div>
                   <div class="col-sm-4" >
                      <h3 class="panel-title text-right" style="color:white!important;">
-                     + {% if product.collection.priceBouton == boutons_price %} {{ boutons_price }}€ {% else %}<s>{{ product.collection.priceBouton }}</s> {{ boutons_price }}€{% endif %}
+                     +  {{ boutons_price|round(2,'floor') }}€
+
+
+
                      </h3>
                   </div>
                   <div class="col-sm-1" >
@@ -605,7 +661,7 @@ document.getElementById('chevron_coffret').className = "fa fa-2x fa-chevron-up";
    }
    }
 
-   total = {% if product.discount == 0 %}{{ product.product.price }}{% else %}{{ product.discount }}{% endif %};
+   total = {{noeud_price|round(2,'floor')}};
    if( document.getElementById('input_coffret').checked == true){
    total = total + {{ coffret_price }};
    }

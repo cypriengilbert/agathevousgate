@@ -688,18 +688,12 @@ class CommerceController extends Controller
      */
     public function listeProduitAction($id)
     {
-        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $collectionOngoing = $repository->findOneBy(array(
-            'id' => $id
-        ));
+      $collectionOngoing = $this->getOneBy('Collection', array('id' => $id));
+      $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
+
 
         if ($collectionOngoing->getActive() == true) {
-
-
-
-
             $page = 'listeproduit';
-
             $session = $this->createSession();
             $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
             $listeProduitActive = $repository->findBy(array(
@@ -717,13 +711,17 @@ class CommerceController extends Controller
                 'id' => $id - 1
             ));
 
+
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-                $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+                $user = $this->container->get('security.context')->getToken()->getUser();
+                $id_user         = $user->getId();
                 $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $nbarticlepanier = count($repository->findBy(array(
                     'commande' => null,
                     'client' => $id_user
                 )));
+                $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+
             } else {
                 $nbarticlepanier = 0;
             }
@@ -742,9 +740,12 @@ class CommerceController extends Controller
                 'listecolor' => $colors,
                 'listeProduit' => $listeProduitActive,
                 'collection' => $collectionActive,
+                'collection_on' => $collectionOngoing,
                 'page' => $page,
                 'collectionPlus' => $collectionPlus,
-                'collectionMoins' => $collectionMoins
+                'collectionMoins' => $collectionMoins,
+                'reductions' => $allreduction,
+                'tva' => $tva,
 
 
             ));
@@ -2500,11 +2501,25 @@ class CommerceController extends Controller
         $product = $this->getOneBy('defined_product', array('id' =>$id));
         $allproduct = $this->getAll('product');
         $nbarticlepanier = $this->countArticleCart();
+        $idCollection = $product->getCollection()->getId();
+        $collectionOngoing = $this->getOneBy('Collection',array('id' => $idCollection));
+        $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+        }
+        else{
+          $allreduction = [];
+        }
+
         return $this->render('CommerceBundle:Default:product.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'product' => $product,
             'coffret' => $coffret,
-            'allproduct' => $allproduct
+            'allproduct' => $allproduct,
+            'tva' => $tva,
+            'collection_on' => $collectionOngoing,
+            'reductions' => $allreduction,
         ));
     }
 

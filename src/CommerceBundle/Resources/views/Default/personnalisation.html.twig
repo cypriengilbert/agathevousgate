@@ -34,6 +34,7 @@ window.onbeforeunload = function () {
     {% set pochette_price = collection_on.pricePochette %}
     {% set noeud_price = collection_on.priceNoeud  %}
 
+{% if app.user %}
 {% if app.user.isPro == 2 %}
     {% for reduction in reductions %}
       {% if collection_on == reduction.collection or reduction.collection is null  %}
@@ -57,6 +58,7 @@ window.onbeforeunload = function () {
 
     {% endfor %}
 
+    {% endif %}
     {% endif %}
 
   <!-- Page Produit & Taille -->

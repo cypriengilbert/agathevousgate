@@ -48,10 +48,28 @@
             }
             }
          </style>
+         {% set noeud_price = 0 %}
+         {% if app.user %}
+         {% if app.user.isPro == 2 %}
+             {% for reduction in reductions %}
+               {% if collection_on == reduction.collection or reduction.collection is null  %}
+
+                 {% if reduction.product.id == 3 %}
+                 {% set noeud_price = ((reduction.reduction * collection_on.priceNoeud)/100) / (1+tva/100) %}
+                 {% endif %}
+
+               {% endif %}
+
+             {% endfor %}
+
+             {% endif %}
+             {% endif %}
          {% set i=0 %}
          {% for listeProduit in listeProduit %}
          {% if listeProduit.product.name == 'Noeud' %}
          {% if i == 0 %}
+
+
          <div class="col-md-12 col-sm-12 hero-feature" >
             <div class='row'>
                <div class="col-md-4 col-sm-4 col-xs-4 text-left">
@@ -86,7 +104,24 @@
                <div class="product_img" style="height:100%">
                   <img id="img_{{listeProduit.id}}" style="width:100%; max-height:auto;margin-top:0px;height:auto;min-width:100px;" src="{{ asset('/upload/image_produit_predefini/' ~ listeProduit.imageName ) }}" alt="">
                   <b>
-                     <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} - {% if listeProduit.discount == 0 %}{{ listeProduit.collection.priceNoeud }}€ {% else %}<s>{{ listeProduit.collection.priceNoeud }}</s> {{ listeProduit.discount }}€ {% endif %}</h2>
+                     <h2 id="text_{{listeProduit.id}}" style="color:white;background-color:rgb(169, 65, 65); ">{{ listeProduit.collection.title }} {{listeProduit.name }} -
+                    {% if app.user %}
+                      {% if app.user.isPro == 2 %}
+                        {{ noeud_price|round(2, 'floor') }}€
+                      {% else %}
+                        {% if listeProduit.discount == 0 %}
+                          {{ listeProduit.collection.priceNoeud }}€
+                        {% else %}
+                          <s>{{ listeProduit.collection.priceNoeud }}</s> {{ listeProduit.discount }}€
+                        {% endif %}
+                      {% endif %}
+                    {% else %}
+                      {% if listeProduit.discount == 0 %}
+                        {{ listeProduit.collection.priceNoeud }}€
+                      {% else %}
+                        <s>{{ listeProduit.collection.priceNoeud }}</s> {{ listeProduit.discount }}€
+                      {% endif %}
+                    {% endif %}</h2>
                   </b>
                </div>
                <div class="caption">
