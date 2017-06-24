@@ -40,19 +40,17 @@ window.onbeforeunload = function () {
       {% if collection_on == reduction.collection or reduction.collection is null  %}
 
         {% if reduction.product.id == 3 %}
-        {% set noeud_price = ((reduction.reduction * collection_on.priceNoeud)/100) / (1+tva/100) %}
+        {% set noeud_price = (((100 - reduction.reduction) * collection_on.priceNoeud)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 4 %}
-          {% set coffret2_price = ((reduction.reduction * collection_on.priceCoffret2)/100) / (1+tva/100) %}
-
+          {% set coffret2_price = (((100 - reduction.reduction) * collection_on.priceCoffret2)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 10 %}
-
-          {% set boutons_price = ((reduction.reduction * collection_on.priceBouton)/100) / (1+tva/100) %}
+          {% set boutons_price = (((100 - reduction.reduction) * collection_on.priceBouton)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 11 %}
-          {% set pochette_price = ((reduction.reduction * collection_on.pricePochette)/100) / (1+tva/100) %}
+          {% set pochette_price = (((100 - reduction.reduction) * collection_on.pricePochette)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 12 %}
-          {% set coffret1_price = ((reduction.reduction * collection_on.priceCoffret1)/100) / (1+tva/100) %}
+          {% set coffret1_price = (((100 - reduction.reduction) * collection_on.priceCoffret1)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 13 %}
-        {% set boite_price = ((reduction.reduction * collection_on.priceBoite)/100) / (1+tva/100) %}
+        {% set boite_price = (((100 - reduction.reduction) * collection_on.priceBoite)/100) / (1+tva/100) %}
         {% endif %}
       {% endif %}
 
@@ -672,7 +670,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
 
                  </div>
               </div>
-              <p class="text-center">Prix HT et réductions déduites</p>
+            {% if app.user and app.user.isPro == 2%}  <p class="text-center">Prix HT et réductions déduites</p>{% endif %}
            </div>
         </div>
 

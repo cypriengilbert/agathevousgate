@@ -194,6 +194,7 @@ class CommerceController extends Controller
         }
         $collectionActive = $this->getBy('Collection', array('active' => true));
         $session          = $this->getRequest()->getSession();
+        $tva = $this->getOneBy('Variable', array('name'=>'tva'))->getMontant();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user    = $this->container->get('security.context')->getToken()->getUser();
             $id_user = $user->getId();
@@ -204,9 +205,13 @@ class CommerceController extends Controller
             $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
             $listeAddedProductEnfants = $query->getResult();
             $listeAddedProductParents = $this->getBy('AddedProduct', array('client' => $id_user,'commande' => null, 'parent' => null));
+            $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+
+
         }
         else
         {
+            $allreduction = [];
             $i                        = 0;
             $id_user                  = null;
             $nbcommande               = null;
@@ -239,7 +244,9 @@ class CommerceController extends Controller
             'nbcommande' => $nbcommande,
             'minLivraison' => $minLivraison,
             'coutLivraison' => $coutLivraison,
-            'parrainage' => $remiseParrainage
+            'parrainage' => $remiseParrainage,
+            'reductions' => $allreduction,
+            'tva' => $tva,
 
         ));
     }
@@ -446,6 +453,9 @@ class CommerceController extends Controller
                 $added_product->setCollection($collection_selected);
                 $allreduction = $this->getBy('ProDiscount', array('account' => $user));
 
+            }
+            else{
+              $allreduction =[];
             }
 
             $added_product->setCommande(null);
@@ -2414,12 +2424,13 @@ class CommerceController extends Controller
 
         $added_product = new AddedProduct();
 
-
+        $collection = $this->getOneBy('Collection', array('id' => $idCollection ));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $product    = $repository->findOneBy(array(
             'name' => 'Tissu'
         ));
 
+        $added_product->setCollection($collection);
         $added_product->setProduct($product);
         $added_product->setColor1($product_selected);
         $added_product->setCommande(null);

@@ -20,19 +20,39 @@
                {% set remise = 0 %}
                {% for listepanier in listePanier %}
                   {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
-                     {% if listepanier.product.name == 'Noeud' %}
-                        {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
-                     {% elseif listepanier.product.name == 'Coffret1' %}
-                        {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
-                     {% elseif listepanier.product.name == 'Coffret2' %}
-                        {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
-                     {% elseif listepanier.product.name == 'Pochette' %}
-                        {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
-                     {% elseif listepanier.product.name == 'Boutons' %}
-                        {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
-                     {% else %}
-                        {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
-                     {% endif %}
+                      {% if app.user and app.user.isPro == 2 %}
+                          {% for reduction in reductions %}
+                              {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                {% if listepanier.product.name == 'Noeud' and reduction.product.name == 'Noeud' %}
+                                      {% set totalsum = totalsum + ((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                    {% elseif listepanier.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
+                                      {% set totalsum = totalsum + ((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                    {% elseif listepanier.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
+                                      {% set totalsum = totalsum + ((listepanier.collection.priceCoffret2 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                    {% elseif listepanier.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                      {% set totalsum = totalsum + ((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                    {% elseif listepanier.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                      {% set totalsum = totalsum + ((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                    {% elseif (listepanier.product.name == 'tour_de_cou' and reduction.product.name == 'tour_de_cou') or (listepanier.product.name == 'pochon' and reduction.product.name == 'pochon') or (listepanier.product.name == 'packaging_coffret' and reduction.product.name == 'packaging_coffret') or (listepanier.product.name == 'tuto' and reduction.product.name == 'tuto')  or (listepanier.product.name == 'brochure' and reduction.product.name == 'brochure')  or (listepanier.product.name == 'boite' and reduction.product.name == 'boite')  or (listepanier.product.name == 'Rectangle_petit' and reduction.product.name == 'Rectangle_petit')  or (listepanier.product.name == 'Rectangle_grand' and reduction.product.name == 'Rectangle_grand') %}
+                                      {% set totalsum = totalsum + ((listepanier.product.price * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                   {% endif %}
+                            {% endif %}
+                          {% endfor %}
+                      {% else %}
+                          {% if listepanier.product.name == 'Noeud' %}
+                            {% set totalsum = totalsum + listepanier.collection.priceNoeud * listepanier.quantity %}
+                          {% elseif listepanier.product.name == 'Coffret1' %}
+                            {% set totalsum = totalsum + listepanier.collection.priceCoffret1 * listepanier.quantity %}
+                          {% elseif listepanier.product.name == 'Coffret2' %}
+                            {% set totalsum = totalsum + (listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * listepanier.quantity %}
+                          {% elseif listepanier.product.name == 'Pochette' %}
+                            {% set totalsum = totalsum + listepanier.collection.pricePochette * listepanier.quantity %}
+                          {% elseif listepanier.product.name == 'Boutons' %}
+                            {% set totalsum = totalsum + listepanier.collection.priceBouton * listepanier.quantity %}
+                         {% else %}
+                            {% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                         {% endif %}
+                      {% endif %}
                   {% else %}
                       {% set totalsum = totalsum + listepanier.productsource.discount * listepanier.quantity %}
                   {% endif %}
@@ -43,90 +63,182 @@
                      <div class="col-sm-12 col-md-12" >
                         {% set is_alone = 1 %}
                         {% set price_line = 0 %}
-
-                        {% for listepanierenfant in listePanierEnfant %}
-                        {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
-                        {% set is_alone = 0 %}
-                        {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
-                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
+                        {% if app.user and app.user.isPro == 2 %}
+                            {% for reduction in reductions %}
+                                {% if (reduction.collection == listepanier.collection or reduction.collection is null) and (reduction.product.name == 'Noeud') %}
+                                    {% for listepanierenfant in listePanierEnfant %}
+                                        {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
+                                            {% set is_alone = 0 %}
+                                            {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                {% set price_line = ((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                            {% else %}
+                                                {% set price_line = ((listepanier.productsource.discount * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                            {% endif %}
+                                        {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) and (reduction.product.name == 'Coffret2') %}
+                                            {% set is_alone = 0 %}
+                                            {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                              {% set price_line = ((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                            {% else %}
+                                              {% set price_line = ((listepanier.productsource.discount * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                            {% endif %}
+                                        {% endif  %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
                         {% else %}
-                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
+                            {% for listepanierenfant in listePanierEnfant %}
+                                {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
+                                    {% set is_alone = 0 %}
+                                    {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
+                                    {% else %}
+                                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
+                                    {% endif %}
+                                {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
+                                    {% set is_alone = 0 %}
+                                    {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
+                                    {% else %}
+                                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
+                                    {% endif %}
+                                {% endif  %}
+                            {% endfor %}
                         {% endif %}
-                        {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
-                        {% set is_alone = 0 %}
-                        {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
-                        {% set price_line = listepanier.collection.priceNoeud * listepanier.quantity %}
-                        {% else %}
-                        {% set price_line = listepanier.productsource.discount * listepanier.quantity %}
-                        {% endif %}                        {% endif  %}
-                        {% endfor %}
                         <h2>
                            {% if is_alone == 1 %}
-                           Noeud {{ listepanier.collection.title }}
-                           {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
-                           {% set price_line = listepanier.collection.priceNoeud  * listepanier.quantity %}
-                           {% else %}
-                           {% set price_line = listepanier.productsource.discount  * listepanier.quantity %}
-                           {% endif %}
+                              {% if app.user and app.user.isPro == 2 %}
+                                           Noeud {{ listepanier.collection.title }}
+                                           {% for reduction in reductions %}
+                                               {% if (reduction.collection == listepanier.collection or reduction.collection is null) and (reduction.product.name == 'Noeud') %}
+                                                 {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                    {% set price_line = ((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                                 {% else %}
+                                                    {% set price_line = ((listepanier.productsource.discount * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                                 {% endif %}
+                                        {% endif %}
+                                   {% endfor %}
+                              {% else %}
+                                  Noeud {{ listepanier.collection.title }}
+                                  {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                     {% set price_line = listepanier.collection.priceNoeud  * listepanier.quantity %}
+                                  {% else %}
+                                     {% set price_line = listepanier.productsource.discount  * listepanier.quantity %}
+                                  {% endif %}
+                              {% endif %}
 
                            {% endif  %}
-                           {% for listepanierenfant in listePanierEnfant %}
-                           {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
-                           Coffret Trio {{ listepanier.collection.title }}
-                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
-                              {% set price_line = price_line + (listepanier.collection.priceCoffret1 * listepanierenfant.quantity) %}
-                             {% else %}
-                              {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
-                             {% endif %}
-                           {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
-                           Coffret Prestige {{ listepanier.collection.title }}
-                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
-                             {% set price_line = price_line + (listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2) * listepanierenfant.quantity %}
-                             {% else %}
-                             {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
-                             {% endif %}
 
-                            {% endif %}
+                           {% if app.user and app.user.isPro == 2 %}
+                                         {% for listepanierenfant in listePanierEnfant %}
+                                             {% for reduction in reductions %}
+                                                 {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                             {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) and (reduction.product.name == 'Coffret1') %}
+                                                Coffret Trio {{ listepanier.collection.title }}
 
+                                                      {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                          {% set price_line = price_line + ((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                                      {% else %}
+                                                          {% set price_line = price_line + ((listepanierenfant.productsource.discount * (100 - reduction.reduction)  * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                                      {% endif %}
+
+                                             {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) and (listepanierenfant.product.name == 'Coffret2') %}
+                                                Coffret Prestige {{ listepanier.collection.title }}
+                                                        {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                            {% set price_line = price_line + ((listepanier.collection.priceCoffret2 * (100 - reduction.reduction) * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                                       {% else %}
+                                                            {% set price_line = price_line + ((listepanierenfant.productsource.discount * (100 - reduction.reduction)  * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                                       {% endif %}
+
+                                      {% endif %}
+                                      {% endif %}
+                                {% endfor %}
+                                  {% endfor %}
+                              {% else %}
+                                  {% for listepanierenfant in listePanierEnfant %}
+                                      {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
+                                         Coffret Trio {{ listepanier.collection.title }}
+                                         {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                             {% set price_line = price_line + (listepanier.collection.priceCoffret1 * listepanierenfant.quantity) %}
+                                         {% else %}
+                                             {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
+                                         {% endif %}
+                                      {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
+                                         Coffret Prestige {{ listepanier.collection.title }}
+                                         {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                             {% set price_line = price_line + (listepanier.collection.priceCoffret1 + listepanier.collection.priceCoffret2) * listepanierenfant.quantity %}
+                                        {% else %}
+                                             {% set price_line = price_line + (listepanierenfant.productsource.discount  * listepanierenfant.quantity) %}
+                                        {% endif %}
+                                      {% endif %}
+                                  {% endfor %}
+                              {% endif %}
+
+
+                        {% if app.user and app.user.isPro == 2 %}
+                             {% for listepanierenfant in listePanierEnfant %}
+                               {% for reduction in reductions %}
+                                   {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                   {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) and (reduction.product.name == 'Pochette') %}
+                                       - Pochette
+                                               {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                 {% set price_line = price_line +  ((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                               {% else %}
+                                                 {% set price_line = price_line + ((listepanierenfant.productsource.discount * (100 - reduction.reduction)  * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                               {% endif %}
+
+                                   {% endif %}
+                                 {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) and (reduction.product.name == 'Boutons') %}
+                                     - Boutons
+                                    {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                               {% set price_line = price_line +  ((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                             {% else %}
+                                               {% set price_line = price_line + ((listepanierenfant.productsource.discount * (100 - reduction.reduction)  * listepanierenfant.quantity)/100) / (1+tva/100) %}
+                                             {% endif %}
+
+                                {% endif %}
+                                {% endif %}
                            {% endfor %}
-                           {% for listepanierenfant in listePanierEnfant %}
-                           {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %}
-                           - Pochette
-                             {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
-                             {% set price_line = price_line + listepanier.collection.pricePochette  * listepanierenfant.quantity %}
-                             {% else %}
-                             {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
-                             {% endif %}
+                              {% endfor %}
+                          {% else %}
+                              {% for listepanierenfant in listePanierEnfant %}
+                                  {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %}
+                                      - Pochette
+                                      {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                        {% set price_line = price_line + listepanier.collection.pricePochette  * listepanierenfant.quantity %}
+                                      {% else %}
+                                        {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
+                                      {% endif %}
+                                  {% endif %}
+                                  {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
+                                      - Boutons
+                                      {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                         {% set price_line = price_line + listepanier.collection.priceBouton * listepanierenfant.quantity %}
+                                      {% else %}
+                                         {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
+                                      {% endif %}
+                                 {% endif %}
+                               {% endfor %}
                           {% endif %}
-                           {% if (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
-                           - Boutons
-                           {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
-                           {% set price_line = price_line + listepanier.collection.priceBouton * listepanierenfant.quantity %}
-                           {% else %}
-                           {% set price_line = price_line + listepanierenfant.productsource.discount  * listepanierenfant.quantity %}
-                           {% endif %}
-                            {% endif %}
-                           {% endfor %}
-                            - {{ price_line }}€
+                            - {{ price_line|round(2, 'common') }}€
                         </h2>
                      </div>
                   </div>
                   <div class="row">
                      <div class="col-md-6 hidesmall" style="max-height:200px">
                         <div class="noeud_position" style="max-height:200px" >
-                           {% if listepanier.product.name == 'Noeud' %}
-                           <div id="noeuddevant" class="noeud_devant" style="max-height:200px;background:url({{ asset('/upload/color/noeud1/' ~ listepanier.Color1.imagecolorNoeud1Name)}});"></div>
-                           <div id="noeudderriere" class="noeud_derriere" style="max-height:200px;background:url({{ asset('/upload/color/noeud2/' ~ listepanier.Color2.imagecolorNoeud2Name)}});"></div>
-                           <div id="noeudpetit" class="noeud_petit" style="max-height:200px; background:url({{ asset('/upload/color/noeud3/'~ listepanier.Color3.imagecolorNoeud3Name)}});"></div>
-                           {% endif %}
-                           {% if listepanier.id %}
-                           <button style="position:absolute;cursor:pointer; bottom:10px;z-index:3; right:10px; background-color:white;font-size:20px" class="delete"  onclick="this.disabled=true; window.location = '{{ path("deleteproduct",{"id":listepanier.id} ) }}';" >
-                           <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                           </button>
-                           {% else  %}
-                           <a style="position:absolute; bottom:10px; cursor:pointer; z-index:3; right:10px; background-color:white;font-size:20px" class="delete" href="{{ path('deleteproduct_session',{'id':key} ) }}" onclick="this.href='{{ path('deleteproduct_session',{'id':key} ) }}'; " >
-                           <i class="fa fa-trash-o" aria-hidden="true" ></i>
-                           </a>
+                               {% if listepanier.product.name == 'Noeud' %}
+                                   <div id="noeuddevant" class="noeud_devant" style="max-height:200px;background:url({{ asset('/upload/color/noeud1/' ~ listepanier.Color1.imagecolorNoeud1Name)}});"></div>
+                                   <div id="noeudderriere" class="noeud_derriere" style="max-height:200px;background:url({{ asset('/upload/color/noeud2/' ~ listepanier.Color2.imagecolorNoeud2Name)}});"></div>
+                                   <div id="noeudpetit" class="noeud_petit" style="max-height:200px; background:url({{ asset('/upload/color/noeud3/'~ listepanier.Color3.imagecolorNoeud3Name)}});"></div>
+                               {% endif %}
+                               {% if listepanier.id %}
+                                   <button style="position:absolute;cursor:pointer; bottom:10px;z-index:3; right:10px; background-color:white;font-size:20px" class="delete"  onclick="this.disabled=true; window.location = '{{ path("deleteproduct",{"id":listepanier.id} ) }}';" >
+                                      <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                   </button>
+                               {% else  %}
+                                  <a style="position:absolute; bottom:10px; cursor:pointer; z-index:3; right:10px; background-color:white;font-size:20px" class="delete" href="{{ path('deleteproduct_session',{'id':key} ) }}" onclick="this.href='{{ path('deleteproduct_session',{'id':key} ) }}'; " >
+                                    <i class="fa fa-trash-o" aria-hidden="true" ></i>
+                                 </a>
                            {% endif %}
                         </div>
                      </div>
@@ -226,23 +338,22 @@
                                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                              {% endif %}
                                           </td>
-                                          <td>{{ listepanier.quantity }}</td>
                                           <td>
                                              {% if listepanier.id %}
-                                             <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
-                                                <div style="position:relative; top:20px; left:35px">
-                                                   <i class="fa fa-plus fa-1" aria-hidden="true"></i>
-                                                </div>
-                                             </a>
-                                             <div>
-                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
-                                             </div>
-                                             <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
-                                                <div>
-                                                   <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
-                                                   </i>
-                                                </div>
-                                             </a>
+                                                 <a href="{{ path('plusproduct',{'id':listepanier.id} ) }}">
+                                                    <div style="position:relative; top:20px; left:35px">
+                                                       <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                                    </div>
+                                                 </a>
+                                                 <div>
+                                                    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                                 </div>
+                                                 <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
+                                                    <div>
+                                                       <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                                       </i>
+                                                    </div>
+                                                 </a>
                                              {% else %}
                                              <a href="{{ path('plusproduct',{'id':key } ) }}">
                                                 <div style="position:relative; top:20px; left:35px">
@@ -261,12 +372,51 @@
                                              </a>
                                              {% endif %}
                                           </td>
-                                          <td>{% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
-                                          {{ listepanier.collection.priceNoeud * listepanier.quantity }}€
-                                          {% else %}
-                                          <s>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</s><br>
-                                          {{ listepanier.productsource.discount }}€
-                                          {% endif %}
+                                          <td>
+                                            {% if app.user and app.user.isPro == 2 %}
+                                              {% for reduction in reductions %}
+                                                  {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                                    {% if reduction.product.name == 'Noeud' %}
+                                                      {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                            {{ (((listepanier.collection.priceNoeud * (100 - reduction.reduction) )/100) / (1+tva/100))|round(2,'common') }}€
+                                                            {% else %}
+                                                            <s>{{ (((listepanier.collection.priceNoeud * (100 - reduction.reduction) )/100) / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                            {{ (listepanier.productsource.discount * (100 - reduction.reduction) /100 / (1+tva/100))|round(2,'common') }}€
+                                                        {% endif %}
+                                                      {% endif %}
+                                                  {% else %}
+                                                    {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                      {{ listepanier.collection.priceNoeud }}€
+                                                      {% else %}
+                                                      <s>{{ listepanier.collection.priceNoeud }}€</s><br>
+                                                      {{ listepanier.productsource.discount }}€
+                                                    {% endif %}
+                                                  {% endif %}
+                                              {% endfor %}
+                                            {% endif %}
+                                          </td>
+                                          <td>
+                                            {% if app.user and app.user.isPro == 2 %}
+                                              {% for reduction in reductions %}
+                                                  {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                                    {% if reduction.product.name == 'Noeud' %}
+                                                      {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                            {{ (((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100))|round(2,'common') }}€
+                                                            {% else %}
+                                                            <s>{{ (((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                            {{ (listepanier.productsource.discount * (100 - reduction.reduction) * liste.quantity/100 / (1+tva/100))|round(2,'common') }}€
+                                                        {% endif %}
+                                                      {% endif %}
+                                                  {% else %}
+                                                    {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
+                                                      {{ listepanier.collection.priceNoeud * listepanier.quantity }}€
+                                                      {% else %}
+                                                      <s>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</s><br>
+                                                      {{ listepanier.productsource.discount * listepanier.quantity }}€
+                                                    {% endif %}
+                                                  {% endif %}
+                                              {% endfor %}
+                                            {% endif %}
                                           </td>
                                        </tr>
                                        {% for keyEnfant, listepanierenfant in listePanierEnfant %}
@@ -283,7 +433,6 @@
                                              <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
                                              {% endif %}
                                           </td>
-                                          <td>{{ listepanierenfant.quantity }}</td>
                                           <td>
                                              {% if listepanierenfant.id %}
                                              <a href="{{ path('plusproduct',{'id':listepanierenfant.id} ) }}">
@@ -319,32 +468,130 @@
                                              {% endif %}
                                           </td>
                                           <td>
-                                            {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
-                                             {% if listepanierenfant.product.name == 'Boutons' %}
-                                             {{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€
-                                             {% elseif listepanierenfant.product.name == 'Pochette' %}
-                                             {{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€
-                                             {% elseif listepanierenfant.product.name == 'Coffret1' %}
-                                             {{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€
-                                             {% elseif listepanierenfant.product.name == 'Coffret2' %}
-                                             {{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€
-                                             {% endif %}
-                                            {% else %}
-                                              {% if listepanierenfant.product.name == 'Boutons' %}
-                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€</s><br>
-                                              {{ listepanierenfant.productsource.discount }}€
-                                              {% elseif listepanierenfant.product.name == 'Pochette' %}
-                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€</s><br>
-                                              {{ listepanierenfant.productsource.discount }}€
-                                              {% elseif listepanierenfant.product.name == 'Coffret1' %}
-                                              <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€</s><br>
-                                              {{ listepanierenfant.productsource.discount }}€
-                                              {% elseif listepanierenfant.product.name == 'Coffret2' %}
-                                              <s>{{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€</s><br>
-                                              {{ listepanierenfant.productsource.discount }}€
+                                          {% if app.user and app.user.isPro == 2 %}
+                                            {% for reduction in reductions %}
+                                                {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                                      {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                          {% if listepanierenfant.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                                              {{ (( listepanierenfant.collection.priceBouton * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                                            {{ (( listepanierenfant.collection.pricePochette * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
+                                                            {{ (( listepanierenfant.collection.priceCoffret1 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
+                                                              {{ (( listepanierenfant.collection.priceCoffret2 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% endif %}
+                                                      {% else %}
+                                                          {% if listepanierenfant.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                                              <s>  {{ (( listepanierenfant.collection.priceBouton * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                                              <s>{{ (( listepanierenfant.collection.pricePochette * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ (( (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
+                                                              <s>{{ (( listepanierenfant.collection.priceCoffret1 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret2'  and reduction.product.name == 'Coffret2' %}
+                                                              <s>{{ (( listepanierenfant.collection.priceCoffret2 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% endif %}
+                                                      {% endif %}
+                                                  {% endif %}
+                                                  {% endfor %}
+
+                                          {% else %}
+                                          {% if reduction.product.name == 'Noeud' %}
+                                              {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                  {% if listepanierenfant.product.name == 'Boutons' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€
+                                                  {% elseif listepanierenfant.product.name == 'Pochette' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret1' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret2' %}
+                                                      {{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€
+                                                  {% endif %}
+                                              {% else %}
+                                                  {% if listepanierenfant.product.name == 'Boutons' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€</s><br>
+                                                      {{ listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Pochette' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€</s><br>
+                                                      {{ listepanierenfant.quantity *listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret1' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€</s><br>
+                                                      {{listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret2' %}
+                                                      <s>{{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€</s><br>
+                                                      {{listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% endif %}
                                               {% endif %}
-                                            {% endif %}
+                                          {% endif %}
+                                          {% endif %}
                                           </td>
+                                          <td>
+                                          {% if app.user and app.user.isPro == 2 %}
+                                            {% for reduction in reductions %}
+                                                {% if reduction.collection == listepanier.collection or reduction.collection is null %}
+                                                      {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                          {% if listepanierenfant.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                                              {{ ((listepanierenfant.quantity * listepanierenfant.collection.priceBouton * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                                            {{ ((listepanierenfant.quantity * listepanierenfant.collection.pricePochette * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
+                                                            {{ ((listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
+                                                              {{ ((listepanierenfant.quantity * listepanierenfant.collection.priceCoffret2 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€
+                                                          {% endif %}
+                                                      {% else %}
+                                                          {% if listepanierenfant.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                                              <s>  {{ ((listepanierenfant.quantity * listepanierenfant.collection.priceBouton * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                                              <s>{{ ((listepanierenfant.quantity * listepanierenfant.collection.pricePochette * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
+                                                              <s>{{ ((listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% elseif listepanierenfant.product.name == 'Coffret2'  and reduction.product.name == 'Coffret2' %}
+                                                              <s>{{ ((listepanierenfant.quantity * listepanierenfant.collection.priceCoffret2 * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2,'common') }}€</s><br>
+                                                              {{ ((listepanierenfant.productsource.discount * (100 - reduction.reduction)) / 100 / (1+tva/100))|round(2, 'common') }}€
+                                                          {% endif %}
+                                                      {% endif %}
+                                                  {% endif %}
+                                                  {% endfor %}
+
+                                          {% else %}
+                                          {% if reduction.product.name == 'Noeud' %}
+                                              {% if listepanierenfant.productsource is null or listepanierenfant.productsource.discount == 0 %}
+                                                  {% if listepanierenfant.product.name == 'Boutons' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€
+                                                  {% elseif listepanierenfant.product.name == 'Pochette' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret1' %}
+                                                      {{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret2' %}
+                                                      {{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€
+                                                  {% endif %}
+                                              {% else %}
+                                                  {% if listepanierenfant.product.name == 'Boutons' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceBouton }}€</s><br>
+                                                      {{ listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Pochette' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.pricePochette }}€</s><br>
+                                                      {{ listepanierenfant.quantity *listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret1' %}
+                                                      <s>{{ listepanierenfant.quantity * listepanierenfant.collection.priceCoffret1 }}€</s><br>
+                                                      {{listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% elseif listepanierenfant.product.name == 'Coffret2' %}
+                                                      <s>{{ listepanierenfant.quantity * (listepanierenfant.collection.priceCoffret2 + listepanierenfant.collection.priceCoffret1) }}€</s><br>
+                                                      {{listepanierenfant.quantity * listepanierenfant.productsource.discount }}€
+                                                  {% endif %}
+                                              {% endif %}
+                                          {% endif %}
+                                          {% endif %}
+                                          </td>
+
                                        </tr>
                                         {% endif %}
                                        {% endfor %}
@@ -378,7 +625,7 @@
                            </div>
                            <div class="col-xs-5" >
                               <p></p>
-                              <p class="text-right"><strong>  {{ totalsum }} €</strong></p>
+                              <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
                               {% set codePromo = app.session.get('codePromo') %}
                               {% if codePromo %}
                               {% if codePromo.minimumCommande <= totalsum %}
@@ -390,16 +637,16 @@
                               {% elseif codePromo.genre  == 'fdp-remise' %}
                               {% set remise = codePromo.montant %}
                               {% endif %}
-                              <p class="text-right"><strong> - {{ remise|round(2, 'floor') }} €</strong></p>
-                              {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                              <p class="text-right"><strong> - {{ remise|round(2, 'common') }} €</strong></p>
+                              {% set totalsum = totalsum - remise|round(2, 'common') %}
                               {% else %}
                               <p class="text-right">0 €</p>
                               {% endif %}
                               {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
                               {% if app.user.parrainEmail is not null %}
                               {% set remise = totalsum * (parrainage.montant / 100) %}
-                              <p class="text-right"><strong > - {{ remise|round(2, 'floor') }} €</strong></p>
-                              {% set totalsum = totalsum - remise|round(2, 'floor') %}
+                              <p class="text-right"><strong > - {{ remise|round(2, 'common') }} €</strong></p>
+                              {% set totalsum = totalsum - remise|round(2, 'common') %}
                               {% else %}
                               <p class="text-right"><strong > 0 €</strong></p>
                               {% endif %}
@@ -414,7 +661,7 @@
                               {% endif %}
                               {% endif %}
                               {% endif %}
-                              <p class="text-right"> <strong>  {{ totalsum }} €</strong></p>
+                              <p class="text-right"> <strong>  {{ totalsum|round(2,'common') }} €</strong></p>
                            </div>
                         </div>
                      </div>
