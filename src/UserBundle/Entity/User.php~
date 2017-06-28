@@ -44,6 +44,13 @@ class User extends BaseUser
      private $adress;
 
 
+     /**
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Company", cascade={"persist"})
+      * @ORM\JoinColumn(nullable=true)
+      */
+     private $company;
+
+
       /**
       * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
       * @ORM\JoinColumn(nullable=true)
@@ -97,7 +104,7 @@ class User extends BaseUser
      /**
       * @var bool
       *
-      * @ORM\Column(name="is_newsletter", type="integer", nullable=true)
+      * @ORM\Column(name="is_newsletter", type="boolean", nullable=true)
       */
      private $is_newsletter;
 
@@ -171,7 +178,7 @@ class User extends BaseUser
         return $this->adress;
       }
 
-//parrain
+        //parrain
         public function setParrain(User $parrain)
       {
         $this->parrain = $parrain;
@@ -299,5 +306,77 @@ class User extends BaseUser
     public function getParrainage()
     {
         return $this->parrainage;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set isNewsletter
+     *
+     * @param integer $isNewsletter
+     *
+     * @return User
+     */
+    public function setIsNewsletter($isNewsletter)
+    {
+        $this->is_newsletter = $isNewsletter;
+
+        return $this;
+    }
+
+    /**
+     * Get isNewsletter
+     *
+     * @return integer
+     */
+    public function getIsNewsletter()
+    {
+        return $this->is_newsletter;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \UserBundle\Entity\Company $company
+     *
+     * @return User
+     */
+    public function setCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \UserBundle\Entity\Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
     }
 }

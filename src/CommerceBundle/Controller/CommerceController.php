@@ -19,8 +19,8 @@ class CommerceController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $page    = 'accueil';
-        $session = $this->createSession();
+        $page     = 'accueil';
+        $session  = $this->createSession();
         $newPhoto = new Photo();
         $form     = $this->get('form.factory')->create('CommerceBundle\Form\PhotoType', $newPhoto);
         if ($form->handleRequest($request)->isValid()) {
@@ -36,45 +36,64 @@ class CommerceController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user              = $this->container->get('security.context')->getToken()->getUser();
             $listeAddedProduct = $session->get('panier_session');
-            $listePanier = $this->getBy('AddedProduct', array('client'=> $user, 'commande' => null));
-            $em   = $this->getDoctrine()->getManager();
+            $listePanier       = $this->getBy('AddedProduct', array(
+                'client' => $user,
+                'commande' => null
+            ));
+            $em                = $this->getDoctrine()->getManager();
             foreach ($listeAddedProduct as $value) {
                 $rajoutpanier = $value;
                 $addcart      = new AddedProduct();
-                $color1= $repository->getOneBy('Color', array('name' => $rajoutpanier->getColor1()->getName()));
+                $color1       = $repository->getOneBy('Color', array(
+                    'name' => $rajoutpanier->getColor1()->getName()
+                ));
                 $rajoutpanier->setColor1($color1);
-                    if ($rajoutpanier->getColor2()) {
-                      $color2= $repository->getOneBy('Color', array('name' => $rajoutpanier->getColor2()->getName()));
-                      $rajoutpanier->setColor2($color2);
-                    }
-                    if ($rajoutpanier->getColor3()) {
-                      $color3= $repository->getOneBy('Color', array('name' => $rajoutpanier->getColor3()->getName()));
-                      $rajoutpanier->setColor3($color3);
-                    }
-                    if ($rajoutpanier->getColor4()) {
-                      $color4= $repository->getOneBy('Color', array('name' => $rajoutpanier->getColor4()->getName()));
-                      $rajoutpanier->setColor4($color4);
-                    }
-                    if ($rajoutpanier->getColor5()) {
-                      $color5= $repository->getOneBy('Color', array('name' => $rajoutpanier->getColor5()->getName()));
-                      $rajoutpanier->setColor5($color5);
-                    }
+                if ($rajoutpanier->getColor2()) {
+                    $color2 = $repository->getOneBy('Color', array(
+                        'name' => $rajoutpanier->getColor2()->getName()
+                    ));
+                    $rajoutpanier->setColor2($color2);
+                }
+                if ($rajoutpanier->getColor3()) {
+                    $color3 = $repository->getOneBy('Color', array(
+                        'name' => $rajoutpanier->getColor3()->getName()
+                    ));
+                    $rajoutpanier->setColor3($color3);
+                }
+                if ($rajoutpanier->getColor4()) {
+                    $color4 = $repository->getOneBy('Color', array(
+                        'name' => $rajoutpanier->getColor4()->getName()
+                    ));
+                    $rajoutpanier->setColor4($color4);
+                }
+                if ($rajoutpanier->getColor5()) {
+                    $color5 = $repository->getOneBy('Color', array(
+                        'name' => $rajoutpanier->getColor5()->getName()
+                    ));
+                    $rajoutpanier->setColor5($color5);
+                }
 
-                  if ($rajoutpanier->getProduct()) {
-                      $product = $this->getOneBy('Product', array('name' => $rajoutpanier->getProduct()->getName()));
-                      $rajoutpanier->setProduct($product);
-                  }
-                  if ($rajoutpanier->getAccessoire()) {
-                    $accessoire = $this->getOneBy('Accessoire', array('name' => $rajoutpanier->getAccessoire()->getName()));
+                if ($rajoutpanier->getProduct()) {
+                    $product = $this->getOneBy('Product', array(
+                        'name' => $rajoutpanier->getProduct()->getName()
+                    ));
+                    $rajoutpanier->setProduct($product);
+                }
+                if ($rajoutpanier->getAccessoire()) {
+                    $accessoire = $this->getOneBy('Accessoire', array(
+                        'name' => $rajoutpanier->getAccessoire()->getName()
+                    ));
                     $rajoutpanier->setAccessoire($accessoire);
-                  }
-                  if ($rajoutpanier->getCollection()) {
-                    $collection = $this->getOneBy('Collection', array('title' => $rajoutpanier->getCollection()->getTitle()));
+                }
+                if ($rajoutpanier->getCollection()) {
+                    $collection = $this->getOneBy('Collection', array(
+                        'title' => $rajoutpanier->getCollection()->getTitle()
+                    ));
                     $rajoutpanier->setCollection($collection);
-                  }
+                }
 
-                  if ($rajoutpanier->getParent() != null) {
-                      $parent = $this->getOneBy('AddedProduct', array(
+                if ($rajoutpanier->getParent() != null) {
+                    $parent = $this->getOneBy('AddedProduct', array(
                         'product' => $rajoutpanier->getParent()->getProduct(),
                         'color1' => $rajoutpanier->getParent()->getColor1(),
                         'color2' => $rajoutpanier->getParent()->getColor2(),
@@ -82,53 +101,67 @@ class CommerceController extends Controller
                         'accessoire' => $rajoutpanier->getParent()->getAccessoire(),
                         'client' => $rajoutpanier->getParent()->getClient(),
                         'commande' => null
-                      ));
+                    ));
                     $rajoutpanier->setParent($parent);
-                  }
+                }
                 $rajoutpanier->setClient($user);
                 $em->merge($rajoutpanier);
                 $em->flush();
-               $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+                $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
             }
             $this->get('session')->remove('panier_session');
-            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
             $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $nbarticlepanier = count($repository->findBy(array(
                 'commande' => null,
                 'client' => $id_user
             )));
-          }
-          else
-          {
-            $listePanier = $session->get('panier_session');
+        } else {
+            $listePanier     = $session->get('panier_session');
             $nbarticlepanier = $session->get('nb_article');
-          }
+        }
         $listeAddedProduct = $this->getAll('AddedProduct');
         $listeCollection   = $this->getAll('Collection');
         $listeColor        = $this->getAll('Color');
-        $collectionActive = $this->getBy('Collection', array('active'=> 1));
-        $listeCommande2   = $this->getAll('Commande');
-        $listeImage       = $this->getAll('Image');
-        $listeProduct     = $this->getAll('Product');
-        $listePromoCode   = $this->getAll('PromoCode');
-        $repository       = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $listeUser        = $repository->findAll();
-        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-        $first3collection = $repository->findBy(array(
+        $collectionActive  = $this->getBy('Collection', array(
+            'active' => 1
+        ));
+        $listeCommande2    = $this->getAll('Commande');
+        $listeImage        = $this->getAll('Image');
+        $listeProduct      = $this->getAll('Product');
+        $listePromoCode    = $this->getAll('PromoCode');
+        $repository        = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser         = $repository->findAll();
+        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $first3collection  = $repository->findBy(array(
             'active' => 1
         ), null, 3);
-        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
-        $first3Image = $repository->findBy(array(), null, 3);
-        $reco1 = $this->getOneBy('Image', array("name" => 'reco1'));
-        $reco2 = $this->getOneBy('Image', array("name" => 'reco2'));
-        $reco3 = $this->getOneBy('Image', array("name" => 'reco3'));
-        $sliderbas1  = $repository->findOneBy(array(
+        $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Image');
+        $first3Image       = $repository->findBy(array(), null, 3);
+        $reco1             = $this->getOneBy('Image', array(
+            "name" => 'reco1'
+        ));
+        $reco2             = $this->getOneBy('Image', array(
+            "name" => 'reco2'
+        ));
+        $reco3             = $this->getOneBy('Image', array(
+            "name" => 'reco3'
+        ));
+        $sliderbas1        = $repository->findOneBy(array(
             "name" => 'sliderbas1'
         ));
-        $sliderbas1 = $this->getOneBy('Image', array("name" => 'sliderbas1'));
-        $sliderbas2 = $this->getOneBy('Image', array("name" => 'sliderbas2'));
-        $sliderbas3 = $this->getOneBy('Image', array("name" => 'sliderbas3'));
-        $text= $this->getBy('Text', array('page' => 'index'));
+        $sliderbas1        = $this->getOneBy('Image', array(
+            "name" => 'sliderbas1'
+        ));
+        $sliderbas2        = $this->getOneBy('Image', array(
+            "name" => 'sliderbas2'
+        ));
+        $sliderbas3        = $this->getOneBy('Image', array(
+            "name" => 'sliderbas3'
+        ));
+        $text              = $this->getBy('Text', array(
+            'page' => 'index'
+        ));
 
 
         return $this->render('CommerceBundle:Default:index.html.twig', array(
@@ -162,11 +195,11 @@ class CommerceController extends Controller
      */
     public function cgvAction()
     {
-      $page    = 'cgv';
-      $nbarticlepanier = $this->countArticleCart();
-      return $this->render('CommerceBundle:Default:cgv.html.twig', array(
-          'nbarticlepanier' => $nbarticlepanier,
-      ));
+        $page            = 'cgv';
+        $nbarticlepanier = $this->countArticleCart();
+        return $this->render('CommerceBundle:Default:cgv.html.twig', array(
+            'nbarticlepanier' => $nbarticlepanier
+        ));
     }
 
     /**
@@ -175,43 +208,60 @@ class CommerceController extends Controller
     public function panierAction(Request $request)
     {
         $page      = 'panier';
-        $session = $this->createSession();
+        $session   = $this->createSession();
         $request   = Request::createFromGlobals();
         $codePromo = $request->query->get('code');
         if ($codePromo) {
-            $EntiteCode = $this->getOneBy('CodePromo', array('code' => $codePromo));
+            $EntiteCode = $this->getOneBy('CodePromo', array(
+                'code' => $codePromo
+            ));
             $datetime   = new \Datetime('now');
             if ($EntiteCode) {
                 if ($EntiteCode->getDateDebut() >= $datetime && $EntiteCode->getDateFin() <= $datetime) {
-                  $EntiteCode = null;
+                    $EntiteCode = null;
                 }
             }
             $session->set('codePromo', $EntiteCode);
+        } else {
+            $EntiteCode = null;
         }
-        else
-        {
-          $EntiteCode = null;
-        }
-        $collectionActive = $this->getBy('Collection', array('active' => true));
+        $collectionActive = $this->getBy('Collection', array(
+            'active' => true
+        ));
         $session          = $this->getRequest()->getSession();
-        $tva = $this->getOneBy('Variable', array('name'=>'tva'))->getMontant();
+        $tva              = $this->getOneBy('Variable', array(
+            'name' => 'tva'
+        ))->getMontant();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $user    = $this->container->get('security.context')->getToken()->getUser();
-            $id_user = $user->getId();
-            $nbcommande = count($this->getBy('Commande', array('client' => $user,'isPanier' => false)));
-            $nbarticlepanier = count($this->getBy('AddedProduct', array('client' => $id_user,'commande' => null)));
-            $listeAddedProduct = $this->getBy('AddedProduct', array('client' => $id_user,'commande' => null));
-            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $user                     = $this->container->get('security.context')->getToken()->getUser();
+            $id_user                  = $user->getId();
+            $nbcommande               = count($this->getBy('Commande', array(
+                'client' => $user,
+                'isPanier' => false
+            )));
+            $nbarticlepanier          = count($this->getBy('AddedProduct', array(
+                'client' => $id_user,
+                'commande' => null
+            )));
+            $listeAddedProduct        = $this->getBy('AddedProduct', array(
+                'client' => $id_user,
+                'commande' => null
+            ));
+            $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
             $listeAddedProductEnfants = $query->getResult();
-            $listeAddedProductParents = $this->getBy('AddedProduct', array('client' => $id_user,'commande' => null, 'parent' => null));
-            $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+            $listeAddedProductParents = $this->getBy('AddedProduct', array(
+                'client' => $id_user,
+                'commande' => null,
+                'parent' => null
+            ));
+            $allreduction             = $this->getBy('ProDiscount', array(
+                'account' => $user
+            ));
 
 
-        }
-        else
-        {
-            $allreduction = [];
+        } else {
+            $allreduction             = array();
             $i                        = 0;
             $id_user                  = null;
             $nbcommande               = null;
@@ -228,9 +278,15 @@ class CommerceController extends Controller
             }
             $nbarticlepanier = $session->get('nb_article');
         }
-        $minLivraison = $this->getBy('Variable', array('name' => 'Livraison'));
-        $coutLivraison = $this->getBy('Variable', array('name' => 'Cout_livraison'));
-        $remiseParrainage = $this->getBy('Variable', array('name' => 'Parrainage'));
+        $minLivraison     = $this->getBy('Variable', array(
+            'name' => 'Livraison'
+        ));
+        $coutLivraison    = $this->getBy('Variable', array(
+            'name' => 'Cout_livraison'
+        ));
+        $remiseParrainage = $this->getBy('Variable', array(
+            'name' => 'Parrainage'
+        ));
 
         return $this->render('CommerceBundle:Default:panier.html.twig', array(
             'iduser' => $id_user,
@@ -246,7 +302,7 @@ class CommerceController extends Controller
             'coutLivraison' => $coutLivraison,
             'parrainage' => $remiseParrainage,
             'reductions' => $allreduction,
-            'tva' => $tva,
+            'tva' => $tva
 
         ));
     }
@@ -258,18 +314,20 @@ class CommerceController extends Controller
     public function deleteProductAction($id)
     {
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $em = $this->getDoctrine()->getManager();
-            $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
-            $enfanttodelete = $this->getBy('AddedProduct', array('parent'=> $id));
+            $em             = $this->getDoctrine()->getManager();
+            $id_user        = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $enfanttodelete = $this->getBy('AddedProduct', array(
+                'parent' => $id
+            ));
             foreach ($enfanttodelete as $value) {
                 $em->remove($value);
             }
-            $articletodelete = $this->getOneBy('AddedProduct', array('id'=> $id));
+            $articletodelete = $this->getOneBy('AddedProduct', array(
+                'id' => $id
+            ));
             $em->remove($articletodelete);
             $em->flush();
-        }
-        else
-        {
+        } else {
             $nbarticlepanier   = 0;
             $listeAddedProduct = null;
         }
@@ -285,7 +343,9 @@ class CommerceController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $em           = $this->getDoctrine()->getManager();
             $id_user      = $this->container->get('security.context')->getToken()->getUser()->getId();
-            $articletoadd = $this->getOneBy('AddedProduct', array('id'=> $id));
+            $articletoadd = $this->getOneBy('AddedProduct', array(
+                'id' => $id
+            ));
             $quantity     = $articletoadd->getQuantity();
             $articletoadd->setQuantity($quantity + 1);
             if ($articletoadd->getParent()) {
@@ -301,10 +361,8 @@ class CommerceController extends Controller
             $em->persist($articletoadd);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
-        }
-        else
-        {
-            $session = $this->getRequest()->getSession();
+        } else {
+            $session           = $this->getRequest()->getSession();
             $listeAddedProduct = $session->get('panier_session');
             $quantity          = $listeAddedProduct[$id]->getQuantity();
             $listeAddedProduct[$id]->setQuantity($quantity + 1);
@@ -334,17 +392,19 @@ class CommerceController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $em           = $this->getDoctrine()->getManager();
             $id_user      = $this->container->get('security.context')->getToken()->getUser()->getId();
-            $articletoadd = $this->getOneBy('AddedProduct', array('id'=> $id));
-            $enfant = $this->getBy('AddedProduct', array('parent'=> $id));
+            $articletoadd = $this->getOneBy('AddedProduct', array(
+                'id' => $id
+            ));
+            $enfant       = $this->getBy('AddedProduct', array(
+                'parent' => $id
+            ));
 
             foreach ($enfant as $value) {
                 $quantityEnfant = $value->getQuantity();
                 if ($value->getParent()->getQuantity() <= $quantityEnfant) {
                     if ($quantityEnfant == 1) {
                         $em->remove($value);
-                    }
-                    elseif ($quantityEnfant > 1)
-                    {
+                    } elseif ($quantityEnfant > 1) {
                         if (($value->getProduct()->getName() == 'Coffret1') or ($value->getProduct()->getName() == 'Coffret2')) {
                             $value->setQuantity($quantityEnfant - 1);
                         }
@@ -355,18 +415,14 @@ class CommerceController extends Controller
             $quantity = $articletoadd->getQuantity();
             if ($quantity == 1) {
                 $this->deleteProductAction($id);
-            }
-            elseif ($quantity > 1)
-            {
+            } elseif ($quantity > 1) {
                 $articletoadd->setQuantity($quantity - 1);
                 $em->persist($articletoadd);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Produit bien ajouté.');
             }
-        }
-        else
-        {
-            $session = $this->getRequest()->getSession();
+        } else {
+            $session           = $this->getRequest()->getSession();
             $listeAddedProduct = $session->get('panier_session');
             foreach ($listeAddedProduct as $i => $value) {
                 if ($listeAddedProduct[$i]->getParent()) {
@@ -375,9 +431,7 @@ class CommerceController extends Controller
                         if ($listeAddedProduct[$i]->getParent()->getQuantity() <= $quantityEnfant) {
                             if ($quantityEnfant == 1) {
                                 unset($listeAddedProduct[$i]);
-                            }
-                            elseif ($quantityEnfant > 1)
-                            {
+                            } elseif ($quantityEnfant > 1) {
                                 if (($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret1') or ($listeAddedProduct[$i]->getProduct()->getName() == 'Coffret2')) {
                                     $listeAddedProduct[$i]->setQuantity($quantityEnfant - 1);
                                 }
@@ -389,9 +443,7 @@ class CommerceController extends Controller
             $quantity = $listeAddedProduct[$id]->getQuantity();
             if ($quantity == 1) {
                 $this->deleteProductSessionAction($id);
-            }
-            elseif ($quantity > 1)
-            {
+            } elseif ($quantity > 1) {
                 $listeAddedProduct[$id]->setQuantity($quantity - 1);
                 $listeAddedProduct = array_values($listeAddedProduct);
                 $session->set('panier_session', $listeAddedProduct);
@@ -433,29 +485,42 @@ class CommerceController extends Controller
      */
     public function personnalisationAction(Request $request, $idCollection)
     {
-        $collectionOngoing = $this->getOneBy('Collection',array('id' => $idCollection));
+        $collectionOngoing = $this->getOneBy('Collection', array(
+            'id' => $idCollection
+        ));
         if ($collectionOngoing->getActive() == true and $collectionOngoing->getIsPerso() == true) {
-            $page = 'personnalisation';
-            $session = $this->createSession();
-            $nbarticlepanier = $this->countArticleCart();
-            $allproduct = $this->getAll('Product');
-            $collectionActive = $this->getBy('Collection',array('active' => 1));
-            $collection_selected = $this->getOneBy('Collection',array('id' => $idCollection));
-            $product_noeud = $this->getOneBy('Product',array('name' => 'Noeud'));
-            $product_coffret = $this->getOneBy('Product',array('name' => 'Coffret'));
-            $accessoire = $this->getAll('Accessoire');
-            $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
-            $sortedColors = $collection_selected->getColors();
-            $added_product = new AddedProduct();
+            $page                = 'personnalisation';
+            $session             = $this->createSession();
+            $nbarticlepanier     = $this->countArticleCart();
+            $allproduct          = $this->getAll('Product');
+            $collectionActive    = $this->getBy('Collection', array(
+                'active' => 1
+            ));
+            $collection_selected = $this->getOneBy('Collection', array(
+                'id' => $idCollection
+            ));
+            $product_noeud       = $this->getOneBy('Product', array(
+                'name' => 'Noeud'
+            ));
+            $product_coffret     = $this->getOneBy('Product', array(
+                'name' => 'Coffret'
+            ));
+            $accessoire          = $this->getAll('Accessoire');
+            $tva                 = $this->getOneBy('Variable', array(
+                'name' => 'tva'
+            ))->getMontant();
+            $sortedColors        = $collection_selected->getColors();
+            $added_product       = new AddedProduct();
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
                 $user = $this->container->get('security.context')->getToken()->getUser();
                 $added_product->setClient($user);
                 $added_product->setCollection($collection_selected);
-                $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+                $allreduction = $this->getBy('ProDiscount', array(
+                    'account' => $user
+                ));
 
-            }
-            else{
-              $allreduction =[];
+            } else {
+                $allreduction = array();
             }
 
             $added_product->setCommande(null);
@@ -466,9 +531,7 @@ class CommerceController extends Controller
                 if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
                     $em->flush();
                     $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
-                }
-                else
-                {
+                } else {
                     $listeAddedProduct = $session->get('panier_session');
                     array_push($listeAddedProduct, $added_product);
                     $session->set('panier_session', $listeAddedProduct);
@@ -490,11 +553,9 @@ class CommerceController extends Controller
                 'collection_on' => $collection_selected,
                 'allproduct' => $allproduct,
                 'reductions' => $allreduction,
-                'tva' => $tva,
+                'tva' => $tva
             ));
-        }
-        else
-        {
+        } else {
             throw $this->createNotFoundException('The collection does not exist');
         }
     }
@@ -505,13 +566,25 @@ class CommerceController extends Controller
      */
     public function addPersotoCartAction(Request $request, $quantity, $couleurNoeud1, $couleurNoeud2, $couleurNoeud3, $type, $taille, $couleurCoffret1, $couleurCoffret2, $couleurPochette, $couleurBoutons, $collection)
     {
-        $session = $this->createSession();
-        $product_noeud = $this->getOneBy('Product', array('id'=>3));
-        $collection_ent = $this->getOneBy('Collection', array('id'=>$collection));
-        $product_coffret1 = $this->getOneBy('Product', array('name'=>'Coffret1'));
-        $product_coffret2 = $this->getOneBy('Product', array('name'=>'Coffret2'));
-        $product_pochette = $this->getOneBy('Product', array('name'=>'Pochette'));
-        $product_boutons = $this->getOneBy('Product', array('name'=>'Boutons'));
+        $session          = $this->createSession();
+        $product_noeud    = $this->getOneBy('Product', array(
+            'id' => 3
+        ));
+        $collection_ent   = $this->getOneBy('Collection', array(
+            'id' => $collection
+        ));
+        $product_coffret1 = $this->getOneBy('Product', array(
+            'name' => 'Coffret1'
+        ));
+        $product_coffret2 = $this->getOneBy('Product', array(
+            'name' => 'Coffret2'
+        ));
+        $product_pochette = $this->getOneBy('Product', array(
+            'name' => 'Pochette'
+        ));
+        $product_boutons  = $this->getOneBy('Product', array(
+            'name' => 'Boutons'
+        ));
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
         $typeNoeud  = $repository->findOneBy(array(
@@ -698,13 +771,17 @@ class CommerceController extends Controller
      */
     public function listeProduitAction($id)
     {
-      $collectionOngoing = $this->getOneBy('Collection', array('id' => $id));
-      $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
+        $collectionOngoing = $this->getOneBy('Collection', array(
+            'id' => $id
+        ));
+        $tva               = $this->getOneBy('Variable', array(
+            'name' => 'tva'
+        ))->getMontant();
 
 
         if ($collectionOngoing->getActive() == true) {
-            $page = 'listeproduit';
-            $session = $this->createSession();
+            $page               = 'listeproduit';
+            $session            = $this->createSession();
             $repository         = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
             $listeProduitActive = $repository->findBy(array(
                 'isactive' => true,
@@ -723,17 +800,20 @@ class CommerceController extends Controller
 
 
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-                $user = $this->container->get('security.context')->getToken()->getUser();
+                $user            = $this->container->get('security.context')->getToken()->getUser();
                 $id_user         = $user->getId();
                 $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $nbarticlepanier = count($repository->findBy(array(
                     'commande' => null,
                     'client' => $id_user
                 )));
-                $allreduction = $this->getBy('ProDiscount', array('account' => $user));
+                $allreduction    = $this->getBy('ProDiscount', array(
+                    'account' => $user
+                ));
 
             } else {
                 $nbarticlepanier = 0;
+                $allreduction    = array();
             }
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
 
@@ -755,7 +835,7 @@ class CommerceController extends Controller
                 'collectionPlus' => $collectionPlus,
                 'collectionMoins' => $collectionMoins,
                 'reductions' => $allreduction,
-                'tva' => $tva,
+                'tva' => $tva
 
 
             ));
@@ -772,7 +852,7 @@ class CommerceController extends Controller
     public function addDefinedToCartAction($id_noeud, $id_coffret, $id_boutons, $id_pochette, $id_collection, $size, $id_accessoire, Request $request)
     {
 
-        $session = $this->createSession();
+        $session             = $this->createSession();
         $repository          = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:defined_product');
         $product_selected    = $repository->findOneBy(array(
             'id' => $id_noeud
@@ -1158,49 +1238,44 @@ class CommerceController extends Controller
 
 
                     if ($value->getProduct()->getName() == 'Noeud') {
-                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                        $pricebeforeremise = $value->getCollection()->getPriceNoeud();
-                      }
-                      else{
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                        } else {
+                            $pricebeforeremise = $value->getProductSource()->getDiscount();
+                        }
                         $value->setPrice($pricebeforeremise);
                     } else if ($value->getProduct()->getName() == 'Pochette') {
-                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                        $pricebeforeremise = $value->getCollection()->getPricePochette();
-                      }
-                      else{
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $pricebeforeremise = $value->getCollection()->getPricePochette();
+                        } else {
+                            $pricebeforeremise = $value->getProductSource()->getDiscount();
+                        }
                         $value->setPrice($pricebeforeremise);
 
                     } else if ($value->getProduct()->getName() == 'Boutons') {
-                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                        $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                      }
-                      else{
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                        } else {
+                            $pricebeforeremise = $value->getProductSource()->getDiscount();
+                        }
                         $value->setPrice($pricebeforeremise);
                     } else if ($value->getProduct()->getName() == 'Coffret1') {
-                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                        $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                        $value->setPrice($pricebeforeremise);
-                    } else if ($value->getProduct()->getName() == 'Coffret2') {
-                        $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
-                      }
-                      else{
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                            $value->setPrice($pricebeforeremise);
+                        } else if ($value->getProduct()->getName() == 'Coffret2') {
+                            $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                        } else {
+                            $pricebeforeremise = $value->getProductSource()->getDiscount();
+                        }
                         $value->setPrice($pricebeforeremise);
                     } else {
-                      if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
 
-                        $pricebeforeremise = $$value->getProduct()->getPrice();
-                      }
-                      else{
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                      }
+                            $pricebeforeremise = $$value->getProduct()->getPrice();
+                        } else {
+                            $pricebeforeremise = $value->getProductSource()->getDiscount();
+                        }
                         $value->setPrice($pricebeforeremise);
 
                     }
@@ -1409,49 +1484,44 @@ class CommerceController extends Controller
                 $value->setCommande($commandeEnCours);
 
                 if ($value->getProduct()->getName() == 'Noeud') {
-                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                    $pricebeforeremise = $value->getCollection()->getPriceNoeud();
-                  }
-                  else{
-                    $pricebeforeremise = $value->getProductSource()->getDiscount();
-                  }
+                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                        $pricebeforeremise = $value->getCollection()->getPriceNoeud();
+                    } else {
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                    }
                     $value->setPrice($pricebeforeremise);
                 } else if ($value->getProduct()->getName() == 'Pochette') {
-                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                    $pricebeforeremise = $value->getCollection()->getPricePochette();
-                  }
-                  else{
-                    $pricebeforeremise = $value->getProductSource()->getDiscount();
-                  }
+                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                        $pricebeforeremise = $value->getCollection()->getPricePochette();
+                    } else {
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                    }
                     $value->setPrice($pricebeforeremise);
 
                 } else if ($value->getProduct()->getName() == 'Boutons') {
-                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                    $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                  }
-                  else{
-                    $pricebeforeremise = $value->getProductSource()->getDiscount();
-                  }
+                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                        $pricebeforeremise = $value->getCollection()->getPriceBouton();
+                    } else {
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                    }
                     $value->setPrice($pricebeforeremise);
                 } else if ($value->getProduct()->getName() == 'Coffret1') {
-                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
-                    $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                    $value->setPrice($pricebeforeremise);
-                } else if ($value->getProduct()->getName() == 'Coffret2') {
-                    $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
-                  }
-                  else{
-                    $pricebeforeremise = $value->getProductSource()->getDiscount();
-                  }
+                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                        $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
+                        $value->setPrice($pricebeforeremise);
+                    } else if ($value->getProduct()->getName() == 'Coffret2') {
+                        $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
+                    } else {
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                    }
                     $value->setPrice($pricebeforeremise);
                 } else {
-                  if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0 ){
+                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
 
-                    $pricebeforeremise = $$value->getProduct()->getPrice();
-                  }
-                  else{
-                    $pricebeforeremise = $value->getProductSource()->getDiscount();
-                  }
+                        $pricebeforeremise = $$value->getProduct()->getPrice();
+                    } else {
+                        $pricebeforeremise = $value->getProductSource()->getDiscount();
+                    }
                     $value->setPrice($pricebeforeremise);
 
                 }
@@ -1608,10 +1678,10 @@ class CommerceController extends Controller
     public function chargePaypalAction()
     {
 
-       //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
-       $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
+        //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
+        $token = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
 
-       $username        = 'agathe_api1.agathevousgate.fr';
+        $username        = 'agathe_api1.agathevousgate.fr';
         $password        = 'CMB8E34GPEK2BXM8';
         //$username        = 'agathe-facilitator_api1.agathevousgate.fr';
         //$password        = 'NZY9R22ZE2CKQET8';
@@ -1649,7 +1719,7 @@ class CommerceController extends Controller
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_VERBOSE => 1,
+            CURLOPT_VERBOSE => 1
 
         ));
 
@@ -1665,7 +1735,7 @@ class CommerceController extends Controller
         } else {
             if ($responseArray['ACK'] == 'Success') {
             } else {
-              exit($responseArray['ACK']);
+                exit($responseArray['ACK']);
                 $url      = $this->generateUrl('paiementechec');
                 $response = new RedirectResponse($url);
 
@@ -1723,7 +1793,7 @@ class CommerceController extends Controller
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_VERBOSE => 1,
+            CURLOPT_VERBOSE => 1
 
         ));
 
@@ -1739,7 +1809,7 @@ class CommerceController extends Controller
         } else {
             if ($responseArray['ACK'] == 'Success') {
             } else {
-              exit($responseArray['ACK']);
+                exit($responseArray['ACK']);
                 $url      = $this->generateUrl('paiementechec');
                 $response = new RedirectResponse($url);
 
@@ -1761,7 +1831,7 @@ class CommerceController extends Controller
             'VERSION' => '124.0'
         );
 
-        $params2   = http_build_query($params2);
+        $params2  = http_build_query($params2);
         $endpoint = 'https://api-3t.paypal.com/nvp';
         $curl     = curl_init();
         curl_setopt_array($curl, array(
@@ -1771,7 +1841,7 @@ class CommerceController extends Controller
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_VERBOSE => 1,
+            CURLOPT_VERBOSE => 1
 
         ));
 
@@ -1786,13 +1856,13 @@ class CommerceController extends Controller
         } else {
             if ($responseArray['ACK'] == 'Success') {
                 var_dump($responseArray);
-           $url      = $this->generateUrl('confirmationpaypal');
-            $response = new RedirectResponse($url);
-            return $response;
+                $url      = $this->generateUrl('confirmationpaypal');
+                $response = new RedirectResponse($url);
+                return $response;
 
             } else {
-              var_dump($responseArray);
-              exit($responseArray['ACK']);
+                var_dump($responseArray);
+                exit($responseArray['ACK']);
                 $url      = $this->generateUrl('paiementechec');
                 $response = new RedirectResponse($url);
 
@@ -1802,10 +1872,10 @@ class CommerceController extends Controller
         }
 
 
-         $url      = $this->generateUrl('paiementechec');
-                $response = new RedirectResponse($url);
+        $url      = $this->generateUrl('paiementechec');
+        $response = new RedirectResponse($url);
 
-                return $response;
+        return $response;
     }
 
 
@@ -1820,7 +1890,7 @@ class CommerceController extends Controller
             'active' => true
         ));
         $modelivraison = $this->getAll('ModeLivraison');
-        $em   = $this->getDoctrine()->getManager();
+        $em            = $this->getDoctrine()->getManager();
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user              = $this->container->get('security.context')->getToken()->getUser();
@@ -1841,96 +1911,99 @@ class CommerceController extends Controller
                 'commande' => null
             ));
             if ($listeAddedProduct !== null) {
-              foreach ($listeAddedProduct as $value) {
-                  $rajoutpanier = $value;
-                  $addcart      = new AddedProduct();
-                  $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-                  $color1 = $repository->findOneBy(array(
-                      'name' => $rajoutpanier->getColor1()->getName(),
-                      ));
-                      if ($rajoutpanier->getColor2()) {
+                foreach ($listeAddedProduct as $value) {
+                    $rajoutpanier = $value;
+                    $addcart      = new AddedProduct();
+                    $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+                    $color1       = $repository->findOneBy(array(
+                        'name' => $rajoutpanier->getColor1()->getName()
+                    ));
+                    if ($rajoutpanier->getColor2()) {
 
-                      $color2 = $repository->findOneBy(array(
-                          'name' => $rajoutpanier->getColor2()->getName(),
-                          ));                  $rajoutpanier->setColor2($color2);
-  }
-                          if ($rajoutpanier->getColor3()) {
+                        $color2 = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getColor2()->getName()
+                        ));
+                        $rajoutpanier->setColor2($color2);
+                    }
+                    if ($rajoutpanier->getColor3()) {
 
-                          $color3 = $repository->findOneBy(array(
-                              'name' => $rajoutpanier->getColor3()->getName(),
-                              ));                  $rajoutpanier->setColor3($color3);
-  }
-                              if ($rajoutpanier->getColor4()) {
+                        $color3 = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getColor3()->getName()
+                        ));
+                        $rajoutpanier->setColor3($color3);
+                    }
+                    if ($rajoutpanier->getColor4()) {
 
-                              $color4 = $repository->findOneBy(array(
-                                  'name' => $rajoutpanier->getColor4()->getName(),
-                                  ));
-                                  $rajoutpanier->setColor4($color4);
-  }
-  if ($rajoutpanier->getColor5()) {
-                                  $color5 = $repository->findOneBy(array(
-                                      'name' => $rajoutpanier->getColor5()->getName(),
-                                      ));                  $rajoutpanier->setColor5($color5);
-  }
+                        $color4 = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getColor4()->getName()
+                        ));
+                        $rajoutpanier->setColor4($color4);
+                    }
+                    if ($rajoutpanier->getColor5()) {
+                        $color5 = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getColor5()->getName()
+                        ));
+                        $rajoutpanier->setColor5($color5);
+                    }
 
                     $rajoutpanier->setColor1($color1);
 
 
                     if ($rajoutpanier->getProduct()) {
 
-                      $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-                      $product = $repository->findOneBy(array(
-                          'name' => $rajoutpanier->getProduct()->getName(),
-                          ));
+                        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+                        $product    = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getProduct()->getName()
+                        ));
                         $rajoutpanier->setProduct($product);
 
                     }
-                  if ($rajoutpanier->getAccessoire()) {
-                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
-                    $accessoire = $repository->findOneBy(array(
-                        'name' => $rajoutpanier->getAccessoire()->getName(),
+                    if ($rajoutpanier->getAccessoire()) {
+                        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Accessoire');
+                        $accessoire = $repository->findOneBy(array(
+                            'name' => $rajoutpanier->getAccessoire()->getName()
                         ));
-                      $rajoutpanier->setAccessoire($accessoire);
+                        $rajoutpanier->setAccessoire($accessoire);
 
 
-                  }
+                    }
 
-                  if ($rajoutpanier->getCollection()) {
-                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-                    $collection = $repository->findOneBy(array(
-                        'title' => $rajoutpanier->getCollection()->getTitle(),
+                    if ($rajoutpanier->getCollection()) {
+                        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                        $collection = $repository->findOneBy(array(
+                            'title' => $rajoutpanier->getCollection()->getTitle()
                         ));
-                      $rajoutpanier->setCollection($collection);
+                        $rajoutpanier->setCollection($collection);
 
 
-                  }
+                    }
 
-                  if ($rajoutpanier->getParent() != null) {
-                    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-                    $parent = $repository->findOneBy(array(
-                        'product' => $rajoutpanier->getParent()->getProduct(),
-                        'color1' => $rajoutpanier->getParent()->getColor1(),
-                        'color2' => $rajoutpanier->getParent()->getColor2(),
-                        'color3' => $rajoutpanier->getParent()->getColor3(),
-                        'accessoire' => $rajoutpanier->getParent()->getAccessoire(),
-                        'client' => $rajoutpanier->getParent()->getClient(),
-                        'commande' => null,
+                    if ($rajoutpanier->getParent() != null) {
+                        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                        $parent     = $repository->findOneBy(array(
+                            'product' => $rajoutpanier->getParent()->getProduct(),
+                            'color1' => $rajoutpanier->getParent()->getColor1(),
+                            'color2' => $rajoutpanier->getParent()->getColor2(),
+                            'color3' => $rajoutpanier->getParent()->getColor3(),
+                            'accessoire' => $rajoutpanier->getParent()->getAccessoire(),
+                            'client' => $rajoutpanier->getParent()->getClient(),
+                            'commande' => null
 
 
 
                         ));
-                      $rajoutpanier->setParent($parent);
+                        $rajoutpanier->setParent($parent);
 
 
-                  }
+                    }
 
 
 
-                  $rajoutpanier->setClient($user);
+                    $rajoutpanier->setClient($user);
 
-                  $em->merge($rajoutpanier);
-                  $em->flush();
-                 $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+                    $em->merge($rajoutpanier);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
                 }
             }
             $this->get('session')->remove('panier_session');
@@ -1969,15 +2042,11 @@ class CommerceController extends Controller
             if ($commandeEnCours) {
                 if ($nbarticlepanier > 1) {
                     $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
-                }
-                elseif ($nbarticlepanier <= 1)
-                {
+                } elseif ($nbarticlepanier <= 1) {
                     foreach ($listePanier as $value) {
                         if ($value->getQuantity() < 2) {
                             $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonAllType', $commandeEnCours);
-                        }
-                        else
-                       {
+                        } else {
                             $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $commandeEnCours);
                         }
                     }
@@ -2025,47 +2094,41 @@ class CommerceController extends Controller
                 foreach ($listePanier as $value) {
 
                     if ($value->getProduct()->getName() == 'Noeud') {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
-                      }
-                      else {
-                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
 
                     } else if ($value->getProduct()->getName() == 'Pochette') {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                      }
-                      else {
-                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                      }
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
                     } else if ($value->getProduct()->getName() == 'Boutons') {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                      }
-                        else {
-                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
                         }
                     } else if ($value->getProduct()->getName() == 'Coffret1') {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                      }
-                        else {
-                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
                         }
                     } else if ($value->getProduct()->getName() == 'Coffret2') {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
-                      }
-                        else {
-                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
                         }
                     } else {
-                      if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                        $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-                      }
-                        else {
-                          $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
                         }
 
                     }
@@ -2183,7 +2246,7 @@ class CommerceController extends Controller
      */
     public function choixPaiementAction(Request $request)
     {
-        $session = $this->createSession();
+        $session          = $this->createSession();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $repository->findBy(array(
             'active' => 1
@@ -2191,8 +2254,14 @@ class CommerceController extends Controller
 
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
 
-            $user       = $this->container->get('security.context')->getToken()->getUser();
-            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $user         = $this->container->get('security.context')->getToken()->getUser();
+            $allreduction = $this->getBy('ProDiscount', array(
+                'account' => $user
+            ));
+            $tva          = $this->getOneBy('Variable', array(
+                'name' => 'tva'
+            ))->getMontant();
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
 
             $nbarticle  = count($repository->findBy(array(
                 'commande' => null,
@@ -2224,6 +2293,7 @@ class CommerceController extends Controller
 
             } else {
                 $coutLivraison = 0;
+                $allreduction = array();
             }
 
             $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -2240,57 +2310,98 @@ class CommerceController extends Controller
             }
 
             $total_commande = 0;
-            foreach ($listePanier as $value) {
+                if ($user->getIsPro() == 2) {
+                    foreach ($allreduction as $reduction) {
+                      foreach ($listePanier as $value) {
+                        if ($value->getCollection() == $reduction->getCollection()) {
+                            if ($value->getProduct()->getName() == 'Noeud' && $reduction->getProduct()->getName() == 'Noeud') {
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceNoeud() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                } else {
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+                            } else if ($value->getProduct()->getName() == 'Pochette' && $reduction->getProduct()->getName() == 'Pochette') {
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + (($value->getCollection()->getPricePochette() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                } else {
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+                            } else if ($value->getProduct()->getName() == 'Boutons' && $reduction->getProduct()->getName() == 'Boutons') {
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceBouton() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                } else {
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+                            } else if ($value->getProduct()->getName() == 'Coffret1'&& $reduction->getProduct()->getName() == 'Coffret1') {
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret1() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                } else {
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+                            } else if ($value->getProduct()->getName() == 'Coffret2'&& $reduction->getProduct()->getName() == 'Coffret2') {
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + ((($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                } else {
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+                            } else  if (($value->getProduct()->getName() == 'tour_de_cou' && $reduction->getProduct()->getName() == 'tour_de_cou') || ($value->getProduct()->getName() == 'pochon'&& $reduction->getProduct()->getName() == 'pochon') || ($value->getProduct()->getName() == 'packaging_coffret' && $reduction->getProduct()->getName() == 'packaging_coffret') || ($value->getProduct()->getName() == 'tuto' && $reduction->getProduct()->getName() == 'tuto') || ($value->getProduct()->getName() == 'brochure' && $reduction->getProduct()->getName() == 'brochure') || ($value->getProduct()->getName() == 'boite'&& $reduction->getProduct()->getName() == 'boite') || ($value->getProduct()->getName() == 'Rectangle_petit'&& $reduction->getProduct()->getName() == 'Rectangle_petit') || ($value->getProduct()->getName() == 'Rectangle_grand'&& $reduction->getProduct()->getName() == 'Rectangle_grand')){
+                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                                    $total_commande = $total_commande + (($value->getProduct()->getPrice() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                            } else {
+                                   $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                }
+
+                            }
+                        }
+                      }
+                    }
+
+                } else {
 
 
-                                  if ($value->getProduct()->getName() == 'Noeud') {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
-                                    }
-                                    else {
-                                      $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                    }
+                    if ($value->getProduct()->getName() == 'Noeud') {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
 
-                                  } else if ($value->getProduct()->getName() == 'Pochette') {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                                    }
-                                    else {
-                                      $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                    }
-                                  } else if ($value->getProduct()->getName() == 'Boutons') {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                                    }
-                                      else {
-                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                      }
-                                  } else if ($value->getProduct()->getName() == 'Coffret1') {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                                    }
-                                      else {
-                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                      }
-                                  } else if ($value->getProduct()->getName() == 'Coffret2') {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
-                                    }
-                                      else {
-                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                      }
-                                  } else {
-                                    if($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0){
-                                      $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-                                    }
-                                      else {
-                                        $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                                      }
+                    } else if ($value->getProduct()->getName() == 'Pochette') {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
+                    } else if ($value->getProduct()->getName() == 'Boutons') {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
+                    } else if ($value->getProduct()->getName() == 'Coffret1') {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
+                    } else if ($value->getProduct()->getName() == 'Coffret2') {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
+                    } else {
+                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
+                            $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
+                        } else {
+                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
+                        }
 
-                                  }
+                    }
 
 
-            }
+                }
+
             $newcommande->setClient($user);
             $newcommande->setIsValid(false);
             $newcommande->setIsPanier(true);
@@ -2360,7 +2471,8 @@ class CommerceController extends Controller
                 'coutLivraison' => $coutLivraison,
                 'parrainage' => $remiseParrainage,
                 'price' => $total_commande,
-
+                'reductions' => $allreduction,
+                'tva'=> $tva,
                 'rem' => $newcommande->getRemise()
 
             ));
@@ -2376,8 +2488,8 @@ class CommerceController extends Controller
      */
     public function listeTissuAction($id)
     {
-        $page = 'tissu';
-        $session = $this->createSession();
+        $page             = 'tissu';
+        $session          = $this->createSession();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collectionActive = $this->getAll('Collection');
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
@@ -2416,7 +2528,7 @@ class CommerceController extends Controller
     public function addedTissutoCartAction($id, $idCollection, Request $request)
     {
 
-        $session = $this->createSession();
+        $session          = $this->createSession();
         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
         $product_selected = $repository->findOneBy(array(
             'id' => $id
@@ -2424,7 +2536,9 @@ class CommerceController extends Controller
 
         $added_product = new AddedProduct();
 
-        $collection = $this->getOneBy('Collection', array('id' => $idCollection ));
+        $collection = $this->getOneBy('Collection', array(
+            'id' => $idCollection
+        ));
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $product    = $repository->findOneBy(array(
             'name' => 'Tissu'
@@ -2476,8 +2590,8 @@ class CommerceController extends Controller
      */
     public function listeProRectangleAction()
     {
-        $page = 'rectangle';
-        $session = $this->createSession();
+        $page       = 'rectangle';
+        $session    = $this->createSession();
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collection = $this->getAll('Collection');
 
@@ -2508,19 +2622,26 @@ class CommerceController extends Controller
      */
     public function productAction(Request $request, $id, $coffret)
     {
-        $session = $this->createSession();
-        $product = $this->getOneBy('defined_product', array('id' =>$id));
-        $allproduct = $this->getAll('product');
-        $nbarticlepanier = $this->countArticleCart();
-        $idCollection = $product->getCollection()->getId();
-        $collectionOngoing = $this->getOneBy('Collection',array('id' => $idCollection));
-        $tva = $this->getOneBy('Variable', array('name' => 'tva'))->getMontant();
+        $session           = $this->createSession();
+        $product           = $this->getOneBy('defined_product', array(
+            'id' => $id
+        ));
+        $allproduct        = $this->getAll('product');
+        $nbarticlepanier   = $this->countArticleCart();
+        $idCollection      = $product->getCollection()->getId();
+        $collectionOngoing = $this->getOneBy('Collection', array(
+            'id' => $idCollection
+        ));
+        $tva               = $this->getOneBy('Variable', array(
+            'name' => 'tva'
+        ))->getMontant();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            $user = $this->container->get('security.context')->getToken()->getUser();
-            $allreduction = $this->getBy('ProDiscount', array('account' => $user));
-        }
-        else{
-          $allreduction = [];
+            $user         = $this->container->get('security.context')->getToken()->getUser();
+            $allreduction = $this->getBy('ProDiscount', array(
+                'account' => $user
+            ));
+        } else {
+            $allreduction = array();
         }
 
         return $this->render('CommerceBundle:Default:product.html.twig', array(
@@ -2530,7 +2651,7 @@ class CommerceController extends Controller
             'allproduct' => $allproduct,
             'tva' => $tva,
             'collection_on' => $collectionOngoing,
-            'reductions' => $allreduction,
+            'reductions' => $allreduction
         ));
     }
 
@@ -2540,10 +2661,14 @@ class CommerceController extends Controller
      */
     public function addedRectangleAction($id, $product, Request $request)
     {
-        $session = $this->createSession();
-        $product_selected = $this->getOneBy('Color', array('id' => $id));
-        $added_product = new AddedProduct();
-        $product = $this->getOneBy('Product', array('name' => $product));
+        $session          = $this->createSession();
+        $product_selected = $this->getOneBy('Color', array(
+            'id' => $id
+        ));
+        $added_product    = new AddedProduct();
+        $product          = $this->getOneBy('Product', array(
+            'name' => $product
+        ));
         $added_product->setProduct($product);
         $added_product->setColor1($product_selected);
         $added_product->setCommande(null);
@@ -2560,9 +2685,7 @@ class CommerceController extends Controller
             $em->persist($added_product);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
-        }
-        else
-        {
+        } else {
             $listeAddedProduct = $session->get('panier_session');
             array_push($listeAddedProduct, $added_product);
             $session->set('panier_session', $listeAddedProduct);
@@ -2582,8 +2705,8 @@ class CommerceController extends Controller
      */
     public function agathequeAction()
     {
-        $page = 'agatheque';
-        $session = $this->createSession();
+        $page            = 'agatheque';
+        $session         = $this->createSession();
         $collection      = $this->getAll('Collection');
         $nbarticlepanier = $this->countArticleCart();
         return $this->render('CommerceBundle:Default:agatheque.html.twig', array(
@@ -2598,11 +2721,15 @@ class CommerceController extends Controller
      */
     public function faqAction()
     {
-        $page = 'faq';
-        $session = $this->createSession();
+        $page            = 'faq';
+        $session         = $this->createSession();
         $nbarticlepanier = $this->countArticleCart();
-        $text_question = $this->getBy('Text',array('page' => 'faq_question'));
-        $text_reponse = $this->getBy('Text',array('page' => 'faq_reponse'));
+        $text_question   = $this->getBy('Text', array(
+            'page' => 'faq_question'
+        ));
+        $text_reponse    = $this->getBy('Text', array(
+            'page' => 'faq_reponse'
+        ));
         $collection      = $this->getAll('Collection');
         return $this->render('CommerceBundle:Default:faq.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
@@ -2619,18 +2746,22 @@ class CommerceController extends Controller
      */
     public function quiSommesNousAction()
     {
-        $page = 'quisommesnous';
-        $session = $this->createSession();
+        $page            = 'quisommesnous';
+        $session         = $this->createSession();
         $nbarticlepanier = $this->countArticleCart();
-        $text       = $this->getOneBy('Text', array("page" => 'qsn'));
-        $image       = $this->getOneBy('Image', array("name" => 'apropos'));
+        $text            = $this->getOneBy('Text', array(
+            "page" => 'qsn'
+        ));
+        $image           = $this->getOneBy('Image', array(
+            "name" => 'apropos'
+        ));
         $collection      = $this->getAll('Collection');
         return $this->render('CommerceBundle:Default:quisommesnous.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection,
             'page' => $page,
             'text' => $text,
-            'image' => $image,
+            'image' => $image
         ));
     }
 
@@ -2639,9 +2770,9 @@ class CommerceController extends Controller
      */
     public function echecPaiementAction()
     {
-      $session = $this->createSession();
-      $nbarticlepanier = $this->countArticleCart();
-      $collection      = $this->getAll('Collection');
+        $session         = $this->createSession();
+        $nbarticlepanier = $this->countArticleCart();
+        $collection      = $this->getAll('Collection');
         return $this->render('CommerceBundle:Default:echecPaiement.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection
@@ -2653,9 +2784,9 @@ class CommerceController extends Controller
      */
     public function confirmationPaiementAction()
     {
-      $session = $this->createSession();
-      $nbarticlepanier = $this->countArticleCart();
-      $collection      = $this->getAll('Collection');
+        $session         = $this->createSession();
+        $nbarticlepanier = $this->countArticleCart();
+        $collection      = $this->getAll('Collection');
         return $this->render('CommerceBundle:Default:confirmationPaiement.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection
@@ -2668,10 +2799,12 @@ class CommerceController extends Controller
      */
     public function collectionAction()
     {
-        $page = 'collection';
-        $session = $this->createSession();
+        $page            = 'collection';
+        $session         = $this->createSession();
         $nbarticlepanier = $this->countArticleCart();
-        $listeCollection = $this->getBy('Collection', array('active' => true));
+        $listeCollection = $this->getBy('Collection', array(
+            'active' => true
+        ));
         return $this->render('CommerceBundle:Default:collections.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collections' => $listeCollection,
@@ -2680,55 +2813,54 @@ class CommerceController extends Controller
     }
 
 
-// ---------------------Simplification code ----------------//
+    // ---------------------Simplification code ----------------//
     public function createSession()
     {
-      $session = $this->get('session');
-      if ($session->get('panier_session')) {
-      }
-      else
-      {
-        $session->set('panier_session', array());
-      }
-      return $session;
+        $session = $this->get('session');
+        if ($session->get('panier_session')) {
+        } else {
+            $session->set('panier_session', array());
+        }
+        return $session;
     }
 
 
-    public function countArticleCart(){
-      if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER'))
-      {
-        $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
-        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
-        $nbarticlepanier = count($repository->findBy(array(
-          'commande' => null,
-          'client' => $id_user
-        )));
-      }
-      else
-      {
-        $nbarticlepanier = null;
-      }
-      return $nbarticlepanier;
+    public function countArticleCart()
+    {
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticlepanier = count($repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user
+            )));
+        } else {
+            $nbarticlepanier = null;
+        }
+        return $nbarticlepanier;
     }
 
 
 
-    public function getAll($entity){
-      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
-      $entities      = $repository->findAll();
-      return $entities;
+    public function getAll($entity)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+        $entities   = $repository->findAll();
+        return $entities;
     }
 
-    public function getBy($entity, $arrayParam){
-      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
-      $entities= $repository->findBy($arrayParam);
-      return $entities;
+    public function getBy($entity, $arrayParam)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+        $entities   = $repository->findBy($arrayParam);
+        return $entities;
     }
 
-    public function getOneBy($entity, $arrayParam){
-      $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
-      $entities = $repository->findOneBy($arrayParam);
-      return $entities;
+    public function getOneBy($entity, $arrayParam)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+        $entities   = $repository->findOneBy($arrayParam);
+        return $entities;
     }
 
 

@@ -28,7 +28,7 @@
                                     {% elseif listepanier.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
                                       {% set totalsum = totalsum + ((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif listepanier.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
-                                      {% set totalsum = totalsum + ((listepanier.collection.priceCoffret2 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                      {% set totalsum = totalsum + (((listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif listepanier.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
                                       {% set totalsum = totalsum + ((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif listepanier.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}

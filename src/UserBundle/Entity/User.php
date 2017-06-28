@@ -44,6 +44,13 @@ class User extends BaseUser
      private $adress;
 
 
+     /**
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\Company", cascade={"persist"})
+      * @ORM\JoinColumn(nullable=true)
+      */
+     private $company;
+
+
       /**
       * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
       * @ORM\JoinColumn(nullable=true)
@@ -347,5 +354,29 @@ class User extends BaseUser
     public function getIsNewsletter()
     {
         return $this->is_newsletter;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \UserBundle\Entity\Company $company
+     *
+     * @return User
+     */
+    public function setCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \UserBundle\Entity\Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
     }
 }
