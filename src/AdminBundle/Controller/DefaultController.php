@@ -998,8 +998,6 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser  = $repository->findAll();
 
-
-
         return $this->render('AdminBundle:Default:users.html.twig', array(
             'listeUser' => $listeUser,
             'page' => $page,
@@ -1009,6 +1007,91 @@ class DefaultController extends Controller
         ));
 
     }
+
+
+        /**
+         * @Route("/s/users/companies", name="companies")
+         */
+        public function usersCompaniesAction()
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $listeUser  = $repository->findBy(array(
+            'isPro' => 2));
+            $listeUser_waiting = $repository->findBy(array(
+            'isPro' => 3));
+
+            return $this->render('AdminBundle:Default:usersCompanies.html.twig', array(
+                'listeUser' => $listeUser,
+                'listeUser_waiting' => $listeUser_waiting,
+                'page' => $page,
+
+
+
+            ));
+
+        }
+
+        /**
+         * @Route("/s/users/companies/view/{id}", name="companiesView")
+         */
+        public function usersCompaniesViewAction($id)
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+
+
+            return $this->render('AdminBundle:Default:Company.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+
+
+
+            ));
+
+        }
+
+
+        /**
+         * @Route("/s/users/companies/validate/{id}", name="companyValidation")
+         */
+        public function usersCompanyValidationAction($id, Request $request)
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+
+
+          if($user->getIsPro() == 2){
+            $user->setIsPro('3');
+          }
+          elseif($user->getIsPro() == 3){
+            $user->setIsPro('2');
+          }
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($user);
+          $em->flush();
+          $request->getSession()->getFlashBag()->add('notice', 'Boutique bien activée.');
+
+            return $this->render('AdminBundle:Default:Company.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+
+
+
+            ));
+
+        }
+
 
     /**
      * @Route("/s/desactive_user/{id}", name="desactiveuser")

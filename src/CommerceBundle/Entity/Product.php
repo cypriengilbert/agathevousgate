@@ -3,6 +3,9 @@
 namespace CommerceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Product
@@ -56,6 +59,30 @@ class Product
      * @ORM\Column(name="nb_color", type="integer")
      */
     private $nb_color;
+
+
+        /**
+         *
+         * @Vich\UploadableField(mapping="productFile", fileNameProperty="imageProductName", maxSize = "5M")
+         *
+         * @var File
+         */
+        private $productFile;
+
+        /**
+         * @ORM\Column(type="string", length=255)
+         *
+         * @var string
+         */
+        private $imageProductName;
+
+        /**
+         * @ORM\Column(type="datetime")
+         *
+         * @var \DateTime
+         */
+        private $updatedAt;
+
 
 
 
@@ -184,5 +211,53 @@ class Product
     public function getCartName()
     {
         return $this->cartName;
+    }
+
+    /**
+     * Set imageProductName
+     *
+     * @param string $imageProductName
+     *
+     * @return Product
+     */
+    public function setImageProductName($imageProductName)
+    {
+        $this->imageProductName = $imageProductName;
+
+        return $this;
+    }
+
+    /**
+     * Get imageProductName
+     *
+     * @return string
+     */
+    public function getImageProductName()
+    {
+        return $this->imageProductName;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Product
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

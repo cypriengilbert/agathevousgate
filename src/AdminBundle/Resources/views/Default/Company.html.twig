@@ -1,0 +1,48 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Boutique {{user.company.name}}</h4></div>
+<div><a  href="{{ path('companyValidation', { 'id' : user.id }) }}"><button  style="position:relative; top:20px;left:350%" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+{% if user.isPro == 3 %}Valider la demande{% elseif user.isPro == 2 %}Désactiver la boutique {% endif %}
+</button></a></div>
+
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--6-col mdl-grid" style="padding:20px;">
+
+  <div><h4>Info Boutique</h4></div><br>
+
+  <div>Nom : {{user.company.name}}</div><br>
+
+  <div>Siren : {{user.company.siren}}</div><br>
+
+
+
+
+  </div>
+
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--6-col mdl-grid" style="padding:20px;">
+  <div><h4>Info Utilisateur</h4></div><br>
+
+  </div>
+  </div>
+
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

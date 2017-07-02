@@ -1,0 +1,116 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+<a href="{{ path('newuser') }}"><button style="z-index:999;position:fixed; bottom:60px;right:60px;" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button></a>
+
+<div class="mdl-grid demo-content">
+<div><h4>Boutiques en attente d'approbation</h4></div>
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+  <table id="users_waiting" class="table table-striped table-bordered" cellspacing="0" width="100%">
+  <thead>
+           <tr>
+           <th width=5%>ID</th>
+           <th width=20%>Nom</th>
+           <th width=20% >Email</th>
+           <th width=25%>Adresse de livraison</th>
+           <th width=10%>Dernière connexion</th>
+            <th width=10%> Statut </th>
+            <th width=10%> Validé ? </th>
+           <th width=5%>Action</th>
+           </tr>
+       </thead>
+
+       <tbody>
+            {% for user in listeUser_waiting %}
+                <tr>
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.prenom }} {{ user.nom }}</td>
+                  <td>{{ user.email }}
+                  </td>
+                  <td>{{ user.adress.adress }} <br> {{ user.adress.zipcode }} {{ user.adress.city }} </td>
+                  <td>{{ user.lastlogin|date("d-m-Y") }}</td>
+                  <td>
+                    {% if user.isPro == 1 %}
+
+                    Franchisé
+                    {% elseif user.isPro == 2 %}
+                      Pro
+                    {% else %}
+                    Utilisateur
+                    {% endif %}
+                  </td>
+                  <td> <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i> </td>
+
+                  <td> <a href="{{ path('companiesView', { 'id' : user.id }) }}"> Info</a></td>
+
+              </tr>
+            {% endfor %}
+       </tbody>
+  </table>
+</div>
+<div class="mdl-grid demo-content">
+
+  <div><h4>Utilisateurs</h4></div>
+    <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+    <table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+             <tr>
+             <th width=5%>ID</th>
+             <th width=20%>Nom</th>
+             <th width=20% >Email</th>
+             <th width=25%>Adresse de livraison</th>
+             <th width=10%>Dernière connexion</th>
+              <th width=10%> Statut </th>
+              <th width=10%> Validé ? </th>
+             <th width=5%>Action</th>
+             </tr>
+         </thead>
+
+         <tbody>
+              {% for user in listeUser %}
+                  <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.prenom }} {{ user.nom }}</td>
+                    <td>{{ user.email }}
+                    </td>
+                    <td>{{ user.adress.adress }} <br> {{ user.adress.zipcode }} {{ user.adress.city }} </td>
+                    <td>{{ user.lastlogin|date("d-m-Y") }}</td>
+                    <td>
+                      {% if user.isPro == 1 %}
+
+                      Franchisé
+                      {% elseif user.isPro == 2 %}
+                        Pro
+                      {% else %}
+                      Utilisateur
+                      {% endif %}
+                    </td>
+                    <td> <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i> </td>
+                    <td> <a href="{{ path('companiesView', { 'id' : user.id }) }}"> Info</a></td>
+
+
+                </tr>
+              {% endfor %}
+         </tbody>
+    </table>
+
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

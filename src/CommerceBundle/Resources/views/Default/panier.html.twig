@@ -106,8 +106,9 @@
                         {% endif %}
                         <h2>
                            {% if is_alone == 1 %}
+                            {% if listepanier.product.name == 'Noeud' %}
                               {% if app.user and app.user.isPro == 2 %}
-                                           Noeud {{ listepanier.collection.title }}
+                                           Noeud {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}
                                            {% for reduction in reductions %}
                                                {% if (reduction.collection == listepanier.collection or reduction.collection is null) and (reduction.product.name == 'Noeud') %}
                                                  {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
@@ -115,8 +116,8 @@
                                                  {% else %}
                                                     {% set price_line = ((listepanier.productsource.discount * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                                  {% endif %}
-                                        {% endif %}
-                                   {% endfor %}
+                                              {% endif %}
+                                          {% endfor %}
                               {% else %}
                                   Noeud {{ listepanier.collection.title }}
                                   {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
@@ -125,6 +126,9 @@
                                      {% set price_line = listepanier.productsource.discount  * listepanier.quantity %}
                                   {% endif %}
                               {% endif %}
+                            {% else %}
+                            {{ listepanier.product.cartName }}
+                            {% endif  %}
 
                            {% endif  %}
 
@@ -219,10 +223,13 @@
                                  {% endif %}
                                {% endfor %}
                           {% endif %}
+                          {% if price_line != 0 %}
                             - {{ price_line|round(2, 'common') }}€
+                          {%  endif %}
                         </h2>
                      </div>
                   </div>
+                  {% if listepanier.product.name == "Noeud" %}
                   <div class="row">
                      <div class="col-md-6 hidesmall" style="max-height:200px">
                         <div class="noeud_position" style="max-height:200px" >
@@ -313,7 +320,8 @@
                               <p style="cursor:pointer" id="afficher_{{loop.index}}">Afficher les détails</p>
                            </div>
                         </div>
-                        <div class="row" id="details_{{ loop.index }}" style="display:none">
+                        {% endif %}
+                        <div class="row" id="details_{{ loop.index }}" {% if listepanier.product.name == "Noeud" %}style="display:none"{% else %}style="display:block"{% endif %}>
                            <div class="col-sm-12 col-md-12" >
                               <div class="table-responsive">
                                  <table class="table table-bordered">
@@ -385,12 +393,14 @@
                                                         {% endif %}
                                                       {% endif %}
                                                   {% else %}
+                                                  {% if listepanier.collection %}
                                                     {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
                                                       {{ listepanier.collection.priceNoeud }}€
                                                       {% else %}
                                                       <s>{{ listepanier.collection.priceNoeud }}€</s><br>
                                                       {{ listepanier.productsource.discount }}€
                                                     {% endif %}
+                                                  {% endif %}
                                                   {% endif %}
                                               {% endfor %}
                                             {% endif %}
@@ -408,12 +418,14 @@
                                                         {% endif %}
                                                       {% endif %}
                                                   {% else %}
+                                                  {% if listepanier.collection %}
                                                     {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
                                                       {{ listepanier.collection.priceNoeud * listepanier.quantity }}€
                                                       {% else %}
                                                       <s>{{ listepanier.collection.priceNoeud * listepanier.quantity }}€</s><br>
                                                       {{ listepanier.productsource.discount * listepanier.quantity }}€
                                                     {% endif %}
+                                                  {% endif %}
                                                   {% endif %}
                                               {% endfor %}
                                             {% endif %}

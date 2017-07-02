@@ -16,6 +16,7 @@
                <div class="panel-body">
                {% set totalsum = null %}{% set numero_ligne = 0 %}
                {% set remise = 0 %}
+              {% set total_taxes = 0 %}
                {% set total_reduction = 0 %}
                {% for listepanier in listePanier %}
                   {% if listepanier.productsource is null or listepanier.productsource.discount == 0 %}
@@ -24,16 +25,23 @@
                               {% if reduction.collection == listepanier.collection or reduction.collection is null %}
                                 {% if listepanier.product.name == 'Noeud' and reduction.product.name == 'Noeud' %}
                                       {% set totalsum = totalsum + ((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                      {% set total_reduction = total_reduction + (listepanier.collection.priceNoeud * listepanier.quantity) - (((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100))  |round(2, 'common') %}
                                     {% elseif listepanier.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
                                       {% set totalsum = totalsum + ((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                      {% set total_reduction = total_reduction + (listepanier.collection.priceCoffret1 * listepanier.quantity) - (((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100))  |round(2, 'common') %}
                                     {% elseif listepanier.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
+                                    {% set total_reduction =  total_reduction + (listepanier.collection.priceCoffret1 + (listepanier.collection.priceCoffret2)  * listepanier.quantity) - ((((listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1)) * (100 - reduction.reduction) * listepanier.quantity)/100)  %}
                                       {% set totalsum = totalsum + (((listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif listepanier.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
+                                    {% set total_reduction = total_reduction + (listepanier.collection.pricePochette * listepanier.quantity) - (((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100)) |round(2, 'common') %}
                                       {% set totalsum = totalsum + ((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif listepanier.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
+                                    {% set total_reduction =  total_reduction + (listepanier.collection.priceBouton * listepanier.quantity) - (((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanier.quantity)/100)) |round(2, 'common') %}
                                       {% set totalsum = totalsum + ((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {% elseif (listepanier.product.name == 'tour_de_cou' and reduction.product.name == 'tour_de_cou') or (listepanier.product.name == 'pochon' and reduction.product.name == 'pochon') or (listepanier.product.name == 'packaging_coffret' and reduction.product.name == 'packaging_coffret') or (listepanier.product.name == 'tuto' and reduction.product.name == 'tuto')  or (listepanier.product.name == 'brochure' and reduction.product.name == 'brochure')  or (listepanier.product.name == 'boite' and reduction.product.name == 'boite')  or (listepanier.product.name == 'Rectangle_petit' and reduction.product.name == 'Rectangle_petit')  or (listepanier.product.name == 'Rectangle_grand' and reduction.product.name == 'Rectangle_grand') %}
                                       {% set totalsum = totalsum + ((listepanier.product.price * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
+                                      {% set total_reduction = total_reduction + (listepanier.product.price * listepanier.quantity) - (((listepanier.product.price * (100 - reduction.reduction) * listepanier.quantity)/100) ) |round(2, 'common') %}
+
                                    {% endif %}
                             {% endif %}
                           {% endfor %}
@@ -63,21 +71,15 @@
                           {% if reduction.collection == listepanier.collection or reduction.collection is null %}
                                 {% if listepanier.product.name == 'Noeud' and reduction.product.name == 'Noeud' %}
                                     {{ (((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') }}€
-                                    {% set total_reduction = (listepanier.collection.priceNoeud * listepanier.quantity) - (((listepanier.collection.priceNoeud * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') %}
                                 {% elseif listepanier.product.name == 'Coffret1' and reduction.product.name == 'Coffret1' %}
                                     {{ (((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') }}€
-                                    {% set total_reduction = (listepanier.collection.priceCoffret1 * listepanier.quantity) - (((listepanier.collection.priceCoffret1 * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') %}
                                 {% elseif listepanier.product.name == 'Coffret2' and reduction.product.name == 'Coffret2' %}
-                                    {% set total_reduction = (listepanier.collection.priceCoffret1 + (listepanier.collection.priceCoffret2)  * listepanier.quantity) - (((listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) %}
                                     {{ ((((listepanier.collection.priceCoffret2 + listepanier.collection.priceCoffret1) * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') }}€
                                 {% elseif listepanier.product.name == 'Pochette' and reduction.product.name == 'Pochette' %}
                                     {{ (((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') }}€
-                                    {% set total_reduction = (listepanier.collection.pricePochette * listepanier.quantity) - (((listepanier.collection.pricePochette * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') %}
                                 {% elseif listepanier.product.name == 'Boutons' and reduction.product.name == 'Boutons' %}
                                     {{ (((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') }}€
-                                    {% set total_reduction = (listepanier.collection.priceBouton * listepanier.quantity) - (((listepanier.collection.priceBouton * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common') %}
                                 {% elseif (listepanier.product.name == 'tour_de_cou' and reduction.product.name == 'tour_de_cou') or (listepanier.product.name == 'pochon' and reduction.product.name == 'pochon') or (listepanier.product.name == 'packaging_coffret' and reduction.product.name == 'packaging_coffret') or (listepanier.product.name == 'tuto' and reduction.product.name == 'tuto')  or (listepanier.product.name == 'brochure' and reduction.product.name == 'brochure')  or (listepanier.product.name == 'boite' and reduction.product.name == 'boite')  or (listepanier.product.name == 'Rectangle_petit' and reduction.product.name == 'Rectangle_petit')  or (listepanier.product.name == 'Rectangle_grand' and reduction.product.name == 'Rectangle_grand') %}
-                                    {% set total_reduction = (listepanier.product.price * listepanier.quantity) - ((listepanier.product.price * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100) |round(2, 'common') %}
                                     {{ (((listepanier.product.price * (100 - reduction.reduction) * listepanier.quantity)/100) / (1+tva/100)) |round(2, 'common')  }}€
                                 {% endif %}
                                 {% endif %}
@@ -183,19 +185,20 @@
                      <div class="row">
                         <div class="col-xs-6 " style="">
                            <p class="text-left"></p>
-                           <p class="text-left">Sous-total</p>
-                           {% if app.user and app.user.isPro == 2 %}<p class="text-left">Réduction</p>{% endif %}
+                           <p class="text-left">Sous-total {% if app.user and app.user.isPro == 2 %}HT{% endif %}</p>
+                           {% if app.user and app.user.isPro == 2 %}<p class="text-left">Dont réduction</p>{% endif %}
 
                            <p class="text-left"> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
 <p class="text-left">Livraison</p>
-                           <p class="text-left">Total</p>
-                           {% if app.user and app.user.isPro == 2 %}<p class="text-left">Dont TVA</p>{% endif %}
+{% if app.user and app.user.isPro == 2 %}<p class="text-left">Dont TVA</p>{% endif %}
+
+                           <p class="text-left">Total TTC</p>
 
                         </div>
                         <div class="col-xs-6" >
                            <p></p>
                            <p class="text-right"> {{ totalsum|round(2, 'common') }} €</p>
-                           {% if app.user and app.user.isPro == 2 %}<p class="text-right"> {{ total_reduction|round(2, 'common') }} €</p>{% endif %}
+                           {% if app.user and app.user.isPro == 2 %}<p class="text-right"> - {{ (total_reduction / (1+tva/100))|round(2, 'common') }} €</p>{% endif %}
 
                            {% set livraison = 0 %}
                            {% set codePromo = app.session.get('codePromo') %}
@@ -232,6 +235,7 @@
 
 
 
+
                                {% if totalsum + remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
 
                                  {% set livraison = 0 %}
@@ -259,9 +263,13 @@
 
 
                                {% endif %}
-                           <p class="text-right"><strong> + {{ livraison }} €</strong></p>
 
-                           <p class="text-right"><strong>  {{ totalsum|round(2, 'common') + livraison }} €</strong></p>
+                           <p class="text-right"><strong> + {% if app.user and app.user.isPro == 2 %}{{ (livraison / (1+tva/100))|round(2, 'common') }}{% else %}{{ livraison }}{% endif %} €</strong></p>
+                           {% if app.user and app.user.isPro == 2 %}
+                           <p class="text-right"><strong> + {{ ((totalsum  * (1+tva/100) - totalsum) + livraison - (livraison / (1+tva/100)))|round(2, 'common') }} €</strong></p>
+
+                           {% endif %}
+                           <p class="text-right"><strong>  {{ ((totalsum * (1+tva/100) + livraison))|round(2, 'common') }} €</strong></p>
                         </div>
                      </div>
 

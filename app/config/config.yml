@@ -201,3 +201,10 @@ vich_uploader:
             inject_on_load:     false
             delete_on_update:   true
             delete_on_remove:   true
+        productFile:
+            namer:              vich_uploader.namer_uniqid
+            uri_prefix:         /upload/product/
+            upload_destination: %kernel.root_dir%/../web/upload/product/
+            inject_on_load:     false
+            delete_on_update:   true
+            delete_on_remove:   true

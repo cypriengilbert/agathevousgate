@@ -2316,39 +2316,39 @@ class CommerceController extends Controller
                         if ($value->getCollection() == $reduction->getCollection()) {
                             if ($value->getProduct()->getName() == 'Noeud' && $reduction->getProduct()->getName() == 'Noeud') {
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceNoeud() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceNoeud() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 }
                             } else if ($value->getProduct()->getName() == 'Pochette' && $reduction->getProduct()->getName() == 'Pochette') {
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPricePochette() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getCollection()->getPricePochette() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
                                 } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
                                 }
                             } else if ($value->getProduct()->getName() == 'Boutons' && $reduction->getProduct()->getName() == 'Boutons') {
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceBouton() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceBouton() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
                                 } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
                                 }
                             } else if ($value->getProduct()->getName() == 'Coffret1'&& $reduction->getProduct()->getName() == 'Coffret1') {
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret1() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret1() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 }
                             } else if ($value->getProduct()->getName() == 'Coffret2'&& $reduction->getProduct()->getName() == 'Coffret2') {
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + ((($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + ((($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 }
                             } else  if (($value->getProduct()->getName() == 'tour_de_cou' && $reduction->getProduct()->getName() == 'tour_de_cou') || ($value->getProduct()->getName() == 'pochon'&& $reduction->getProduct()->getName() == 'pochon') || ($value->getProduct()->getName() == 'packaging_coffret' && $reduction->getProduct()->getName() == 'packaging_coffret') || ($value->getProduct()->getName() == 'tuto' && $reduction->getProduct()->getName() == 'tuto') || ($value->getProduct()->getName() == 'brochure' && $reduction->getProduct()->getName() == 'brochure') || ($value->getProduct()->getName() == 'boite'&& $reduction->getProduct()->getName() == 'boite') || ($value->getProduct()->getName() == 'Rectangle_petit'&& $reduction->getProduct()->getName() == 'Rectangle_petit') || ($value->getProduct()->getName() == 'Rectangle_grand'&& $reduction->getProduct()->getName() == 'Rectangle_grand')){
                                 if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getProduct()->getPrice() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                    $total_commande = $total_commande + (($value->getProduct()->getPrice() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                             } else {
-                                   $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) / (1 + $tva / 100));
+                                   $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
                                 }
 
                             }
