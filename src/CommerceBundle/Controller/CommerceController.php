@@ -288,6 +288,10 @@ class CommerceController extends Controller
             'name' => 'Parrainage'
         ));
 
+        $this->setTemporaryPrice();
+
+
+
         return $this->render('CommerceBundle:Default:panier.html.twig', array(
             'iduser' => $id_user,
             'listePanier' => $listeAddedProduct,
@@ -2863,5 +2867,141 @@ class CommerceController extends Controller
         return $entities;
     }
 
+    public function setTemporaryPrice(){
+
+      $collectionActive = $this->getBy('Collection', array(
+          'active' => true
+      ));
+      $session          = $this->getRequest()->getSession();
+      $tva              = $this->getOneBy('Variable', array(
+          'name' => 'tva'
+      ))->getMontant();
+
+      if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+          $user                     = $this->container->get('security.context')->getToken()->getUser();
+          $id_user                  = $user->getId();
+          $listeAddedProduct        = $this->getBy('AddedProduct', array(
+              'client' => $id_user,
+              'commande' => null
+          ));
+
+          $allreduction             = $this->getBy('ProDiscount', array(
+              'account' => $user
+          ));
+
+      } else {
+          $allreduction             = array();
+          $i                        = 0;
+          $listeAddedProduct        = $session->get('panier_session');
+          foreach ($listeAddedProduct as $value) {
+              if ($value->getParent() == null) {
+                  $listeAddedProductParents[$i] = $value;
+              } elseif ($value->getParent() != null) {
+                  $listeAddedProductEnfants[$i] = $value;
+              }
+              $i = $i + 1;
+          }
+      }
+      $z = 0;
+      foreach ($listeAddedProduct as $item) {
+        if($item->getProductSource() == null or $item->getProductSource()->getDiscount() == 0){
+          if($user->getIsPro() == 2){
+            foreach ($allreduction as $reductionPro) {
+
+              if($item->getCollection() != null){
+              if($reductionPro->getCollection() == $item->getCollection() || $reductionPro->getCollection() == null){
+                if($item->getProduct() == $reductionPro->getProduct()){
+                  $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                  $priceitemReduc = ($priceitem * (100 - $reductionPro->getreduction())/100);
+                  $priceRemise = ($priceitem - $priceitemReduc) / (1+$tva/100);
+                  $priceTemp = $priceitemReduc / (1+$tva/100);
+                  $z = 1;
+                }
+                elseif ($z == 0){
+                    $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                    $priceTemp =  $priceitem / (1+$tva/100);
+                    $priceRemise = 0;
+                }
+              }
+            }
+              else{
+                $priceitem = $this->getPriceItemGeneric($item->getProduct());
+                $priceitemReduc = ($priceitem * (100 - $user->getCompany()->getReductionGeneric()) /100);
+               $priceTemp = $priceitemReduc / (1+$tva/100);
+               $priceRemise = ($priceitem - $priceitemReduc) / (1+$tva/100);
+
+              }
+            }
+            }
+
+          else{
+            $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+            $priceTemp = $priceitem ;
+            $priceRemise = 0;
+          }
+        }
+        else{
+          $priceTemp = $item->getProductSource()->getDiscount() ;
+          $priceRemise = 0;
+
+        }
+
+        $item->setPriceTemp($priceTemp);
+        $item->setPriceRemise($priceRemise);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($item);
+        $em->flush();
+        $z = 0;
+
+          }
+
+      }
+
+
+
+public function getPriceItem($product, $collection){
+
+  if($product->getName() == 'Noeud'){
+    return $collection->getPriceNoeud();
+  }
+  elseif($product->getName() == 'Coffret1'){
+    return $collection->getPriceCoffret1();
+  }
+  elseif($product->getName() == 'Coffret2'){
+    return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
+  }
+  elseif($product->getName()  == 'Pochette'){
+    return $collection->getPricePochette();
+  }
+  elseif($product->getName()  == 'Boutons'){
+    return $collection->getPriceBouton();
+  }
+  elseif($product->getName()  == 'Rectangle_petit'){
+    return $collection->getPriceRectanglePetit();
+  }
+  elseif($product->getName()  == 'Rectangle_grand'){
+    return $collection->getPriceRectangleGrand();
+  }
+  elseif($product->getName()  == 'Milieu'){
+    return $collection->getPriceMilieu();
+  }
+  elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+    return $product->getPrice();
+  }
+
+
+
+}
+
+public function getPriceItemGeneric($product){
+
+
+  if($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+    return $product->getPrice();
+  }
+
+
+
+}
 
 }

@@ -49,6 +49,30 @@ class Collection
      */
      private $priceNoeud;
 
+
+
+      /**
+       * @var float
+       *
+       * @ORM\Column(name="priceMilieu", type="float")
+       */
+       private $priceMilieu;
+
+       /**
+        * @var float
+        *
+        * @ORM\Column(name="priceRectangle_petit", type="float")
+        */
+        private $priceRectangle_petit;
+
+
+        /**
+         * @var float
+         *
+         * @ORM\Column(name="priceRectangle_grand", type="float")
+         */
+         private $priceRectangle_grand;
+
      /**
       * @var float
       *
@@ -94,7 +118,7 @@ class Collection
 
 
      /**
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\OrderBy({"codehexa" = "DESC"})
      */
      private $colors;
@@ -147,19 +171,19 @@ class Collection
 
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $firstColor;
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $secondColor;
 
      /**
-     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
      private $thirdColor;

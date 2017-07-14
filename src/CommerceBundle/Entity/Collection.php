@@ -49,6 +49,30 @@ class Collection
      */
      private $priceNoeud;
 
+
+
+      /**
+       * @var float
+       *
+       * @ORM\Column(name="priceMilieu", type="float")
+       */
+       private $priceMilieu;
+
+       /**
+        * @var float
+        *
+        * @ORM\Column(name="priceRectangle_petit", type="float")
+        */
+        private $priceRectangle_petit;
+
+
+        /**
+         * @var float
+         *
+         * @ORM\Column(name="priceRectangle_grand", type="float")
+         */
+         private $priceRectangle_grand;
+
      /**
       * @var float
       *
@@ -686,5 +710,77 @@ class Collection
     public function getColorCoffret2()
     {
         return $this->colorCoffret2;
+    }
+
+    /**
+     * Set priceMilieu
+     *
+     * @param float $priceMilieu
+     *
+     * @return Collection
+     */
+    public function setPriceMilieu($priceMilieu)
+    {
+        $this->priceMilieu = $priceMilieu;
+
+        return $this;
+    }
+
+    /**
+     * Get priceMilieu
+     *
+     * @return float
+     */
+    public function getPriceMilieu()
+    {
+        return $this->priceMilieu;
+    }
+
+    /**
+     * Set priceRectanglePetit
+     *
+     * @param float $priceRectanglePetit
+     *
+     * @return Collection
+     */
+    public function setPriceRectanglePetit($priceRectanglePetit)
+    {
+        $this->priceRectangle_petit = $priceRectanglePetit;
+
+        return $this;
+    }
+
+    /**
+     * Get priceRectanglePetit
+     *
+     * @return float
+     */
+    public function getPriceRectanglePetit()
+    {
+        return $this->priceRectangle_petit;
+    }
+
+    /**
+     * Set priceRectangleGrand
+     *
+     * @param float $priceRectangleGrand
+     *
+     * @return Collection
+     */
+    public function setPriceRectangleGrand($priceRectangleGrand)
+    {
+        $this->priceRectangle_grand = $priceRectangleGrand;
+
+        return $this;
+    }
+
+    /**
+     * Get priceRectangleGrand
+     *
+     * @return float
+     */
+    public function getPriceRectangleGrand()
+    {
+        return $this->priceRectangle_grand;
     }
 }

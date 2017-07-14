@@ -101,28 +101,4 @@ class Company
     {
         return $this->siren;
     }
-
-    /**
-     * Set reductionGeneric
-     *
-     * @param float $reductionGeneric
-     *
-     * @return Company
-     */
-    public function setReductionGeneric($reductionGeneric)
-    {
-        $this->reductionGeneric = $reductionGeneric;
-
-        return $this;
-    }
-
-    /**
-     * Get reductionGeneric
-     *
-     * @return float
-     */
-    public function getReductionGeneric()
-    {
-        return $this->reductionGeneric;
-    }
 }

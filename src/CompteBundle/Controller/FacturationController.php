@@ -67,7 +67,7 @@ class FacturationController extends Controller
         $listeAddedProduct = null;
           }
         if($commande->getClient() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-          $content = $this->renderView('CommerceBundle:Default:test.html.twig', array('user'=>$user, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commande' => $commande));
+          $content = $this->renderView('CommerceBundle:Default:test.html.twig', array('user'=>$commande->getClient(), 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande));
           $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
           $html2pdf->pdf->SetDisplayMode('real');
           $html2pdf->writeHTML($content);
