@@ -191,7 +191,7 @@
                            <p class="text-right"><strong> + {{ ((totalsum  * (1+tva/100) - totalsum) + livraison - (livraison / (1+tva/100)))|round(2, 'common') }} €</strong></p>
 
                            {% endif %}
-                           <p class="text-right"><strong>  {{ ((totalsum * (1+tva/100) + livraison))|round(2, 'common') }} €</strong></p>
+                          {% if app.user and app.user.isPro == 2 %} <p class="text-right"><strong>  {{ ((totalsum * (1+tva/100) + livraison))|round(2, 'common') }} €</strong></p>{% else %}<p class="text-right"><strong>  {{ ((totalsum + livraison))|round(2, 'common') }} €</strong></p> {% endif %}
                         </div>
                      </div>
 
@@ -203,7 +203,7 @@
                      <form action="{{ path('charge')}}" method="POST">
                         <script
                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                           data-key="pk_live_miMlmwMmksv9SJdNrsyEVcGV"
+                           data-key="{{stripe_public_key}}"
                            data-amount="{{ prixtotal }}"
                            data-name="Agathe Vous Gâte"
                            data-description=""

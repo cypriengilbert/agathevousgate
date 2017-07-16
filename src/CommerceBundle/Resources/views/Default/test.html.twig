@@ -56,7 +56,7 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; text-align: left;font-size: 10pt'>
         <tr>
             <td style='width:50%;'></td>
-            <td style='width:50%; '>Reims, le 08/05/2017</td>
+            <td style='width:50%; '>Reims, le {{ "now"|date("d/m/Y") }}</td>
         </tr>
     </table>
     <br>
@@ -70,16 +70,16 @@ td    { vertical-align: top; }
             <th style='width: 32%'>Couleur</th>
             <th style='width: 13%'>Prix Unitaire</th>
             <th style='width: 10%'>Quantité</th>
-            <th style='width: 13%'>Prix Net</th>
+            <th style='width: 13%'>Prix</th>
         </tr>
     </table>
 
     {% for listepanier in listePanier %}
-    {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
+    {% set totalsum = (totalsum + listepanier.price * listepanier.quantity)|round(2, 'common') %}
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
         <tr>
-            <td style='width: 12%; text-align: left'>{{ listepanier.product.cartname }}</td>
-            <td style='width: 52%; text-align: left'>
+            <td style='width: 12%; text-align: center'>{{ listepanier.product.cartname }}</td>
+            <td style='width: 52%; text-align: center'>
             {% if listepanier.Color1 %}
             <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
             {% endif %}
@@ -90,9 +90,9 @@ td    { vertical-align: top; }
             <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
             {% endif %}
             </td>
-            <td style='width: 13%; text-align: right'>{{ listepanier.price }}</td>
+            <td style='width: 13%; text-align: right'>{{ listepanier.price|round(2, 'common') }}</td>
             <td style='width: 10%'>{{ listepanier.quantity }}</td>
-            <td style='width: 13%; text-align: right;'>{{ listepanier.price * listepanier.quantity }}€</td>
+            <td style='width: 13%; text-align: right;'>{{ (listepanier.price * listepanier.quantity)|round(2, 'common')  }}€</td>
         </tr>
     </table>
     {% endfor %}
@@ -107,7 +107,7 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Livraison : </th>
-            <th style='width: 13%; text-align: right;'>{{ commande.transportCost }}€</th>
+            <th style='width: 13%; text-align: right;'>{% if user.isPro == 2 %}{% set transport =  commande.transportCost / (1+ tva/100) %}{{ transport }}€{% else %}{{ commande.transportCost }}€{% endif %}</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
@@ -118,8 +118,20 @@ td    { vertical-align: top; }
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
+            <th style='width: 87%; text-align: right;'>{% if user.isPro != 2  %}Dont{% endif %} TVA : </th>
+            <th style='width: 13%; text-align: right;'>
+            {% if user.isPro == 2  %}
+            {% set taxe = ((totalsum + transport) * (1+tva/100) - totalsum - transport)|round(2, 'common') %}+ {{ taxe }}€
+            {% else %}
+            {% set taxe = (totalsum + commande.transportCost - ((totalsum + commande.transportCost) / (1+tva/100)))|round(2, 'common') %} {{ taxe }}€
+            {% endif %}
+            </th>
+        </tr>
+    </table>
+    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+        <tr>
             <th style='width: 87%; text-align: right;'>Total réglé : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum + commande.transportCost - commande.remise }}€</th>
+            <th style='width: 13%; text-align: right;'>{% if user.isPro == 2  %}{{ totalsum + taxe + transport - commande.remise }}{% else %}{{ totalsum + commande.transportCost - commande.remise }}{% endif %}€</th>
         </tr>
     </table>
 

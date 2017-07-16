@@ -11,6 +11,8 @@ use CommerceBundle\Entity\Photo;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Controller\SessionController;
 use Symfony\Component\HttpFoundation\Request;
+use Stripe\HttpClient;
+
 
 class CommerceController extends Controller
 {
@@ -33,6 +35,7 @@ class CommerceController extends Controller
             )));
         }
 
+
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user              = $this->container->get('security.context')->getToken()->getUser();
             $listeAddedProduct = $session->get('panier_session');
@@ -41,33 +44,34 @@ class CommerceController extends Controller
                 'commande' => null
             ));
             $em                = $this->getDoctrine()->getManager();
+
             foreach ($listeAddedProduct as $value) {
                 $rajoutpanier = $value;
                 $addcart      = new AddedProduct();
-                $color1       = $repository->getOneBy('Color', array(
+                $color1       = $this->getOneBy('Color', array(
                     'name' => $rajoutpanier->getColor1()->getName()
                 ));
                 $rajoutpanier->setColor1($color1);
                 if ($rajoutpanier->getColor2()) {
-                    $color2 = $repository->getOneBy('Color', array(
+                    $color2 = $this->getOneBy('Color', array(
                         'name' => $rajoutpanier->getColor2()->getName()
                     ));
                     $rajoutpanier->setColor2($color2);
                 }
                 if ($rajoutpanier->getColor3()) {
-                    $color3 = $repository->getOneBy('Color', array(
+                    $color3 = $this->getOneBy('Color', array(
                         'name' => $rajoutpanier->getColor3()->getName()
                     ));
                     $rajoutpanier->setColor3($color3);
                 }
                 if ($rajoutpanier->getColor4()) {
-                    $color4 = $repository->getOneBy('Color', array(
+                    $color4 = $this->getOneBy('Color', array(
                         'name' => $rajoutpanier->getColor4()->getName()
                     ));
                     $rajoutpanier->setColor4($color4);
                 }
                 if ($rajoutpanier->getColor5()) {
-                    $color5 = $repository->getOneBy('Color', array(
+                    $color5 = $this->getOneBy('Color', array(
                         'name' => $rajoutpanier->getColor5()->getName()
                     ));
                     $rajoutpanier->setColor5($color5);
@@ -1186,7 +1190,7 @@ class CommerceController extends Controller
      */
     public function chargeAction(Request $request)
     {
-        \Stripe\Stripe::setApiKey("sk_live_YiRsNIDkffMqZF6JlF1TtxLF");
+        \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_private_key'));
 
         // Get the credit card details submitted by the form
         $token           = $_POST['stripeToken'];
@@ -1204,7 +1208,7 @@ class CommerceController extends Controller
                     "amount" => $price, // amount in cents, again
                     "currency" => "eur",
                     "source" => $token,
-                    "description" => "Example charge"
+                    "description" => "Commande n°".$commandeEnCours->getId()
                 ));
                 $commandeEnCours->setIsPanier(false);
                 $commandeEnCours->setPaiementMethod('Stripe');
@@ -1241,48 +1245,10 @@ class CommerceController extends Controller
                     $value->setCommande($commandeEnCours);
 
 
-                    if ($value->getProduct()->getName() == 'Noeud') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $pricebeforeremise = $value->getCollection()->getPriceNoeud();
-                        } else {
-                            $pricebeforeremise = $value->getProductSource()->getDiscount();
-                        }
-                        $value->setPrice($pricebeforeremise);
-                    } else if ($value->getProduct()->getName() == 'Pochette') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $pricebeforeremise = $value->getCollection()->getPricePochette();
-                        } else {
-                            $pricebeforeremise = $value->getProductSource()->getDiscount();
-                        }
-                        $value->setPrice($pricebeforeremise);
-
-                    } else if ($value->getProduct()->getName() == 'Boutons') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                        } else {
-                            $pricebeforeremise = $value->getProductSource()->getDiscount();
-                        }
-                        $value->setPrice($pricebeforeremise);
-                    } else if ($value->getProduct()->getName() == 'Coffret1') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                            $value->setPrice($pricebeforeremise);
-                        } else if ($value->getProduct()->getName() == 'Coffret2') {
-                            $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
-                        } else {
-                            $pricebeforeremise = $value->getProductSource()->getDiscount();
-                        }
-                        $value->setPrice($pricebeforeremise);
-                    } else {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-
-                            $pricebeforeremise = $$value->getProduct()->getPrice();
-                        } else {
-                            $pricebeforeremise = $value->getProductSource()->getDiscount();
-                        }
-                        $value->setPrice($pricebeforeremise);
-
-                    }
+                    
+                    $value->setCommande($commandeEnCours);
+                $value->setPrice($value->getPriceTemp());
+                $pricebeforeremise = $value;
 
                     if ($commandeEnCours->getRemise() == 0) {
                         $value->setPriceRemise($value->getPrice());
@@ -1310,7 +1276,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                  //  $this->get('mailer')->send($message);
 
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
@@ -1324,7 +1290,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                   // $this->get('mailer')->send($message);
 
                 } else {
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1339,7 +1305,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                  //  $this->get('mailer')->send($message);
                 }
 
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
@@ -1354,7 +1320,7 @@ class CommerceController extends Controller
                     'parrainage' => $remiseParrainage,
                     'commande' => $commandeEnCours
                 )), 'text/html');
-                $this->get('mailer')->send($message);
+              //  $this->get('mailer')->send($message);
 
                 if ($user->getParrainEmail() != null) {
                     $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -1384,14 +1350,14 @@ class CommerceController extends Controller
                             'nb' => $minParrainage->getMontant()
 
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                     //   $this->get('mailer')->send($message);
                         $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
                             'user' => $parrain,
                             'nb' => $minParrainage->getMontant()
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                      //  $this->get('mailer')->send($message);
 
 
                     } else {
@@ -1412,7 +1378,7 @@ class CommerceController extends Controller
                             'nb' => $nbparrainage
 
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                      //  $this->get('mailer')->send($message);
                     }
                 }
 
@@ -1486,50 +1452,8 @@ class CommerceController extends Controller
 
             foreach ($listePanier as $value) {
                 $value->setCommande($commandeEnCours);
-
-                if ($value->getProduct()->getName() == 'Noeud') {
-                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                        $pricebeforeremise = $value->getCollection()->getPriceNoeud();
-                    } else {
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                    }
-                    $value->setPrice($pricebeforeremise);
-                } else if ($value->getProduct()->getName() == 'Pochette') {
-                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                        $pricebeforeremise = $value->getCollection()->getPricePochette();
-                    } else {
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                    }
-                    $value->setPrice($pricebeforeremise);
-
-                } else if ($value->getProduct()->getName() == 'Boutons') {
-                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                        $pricebeforeremise = $value->getCollection()->getPriceBouton();
-                    } else {
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                    }
-                    $value->setPrice($pricebeforeremise);
-                } else if ($value->getProduct()->getName() == 'Coffret1') {
-                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                        $pricebeforeremise = $value->getCollection()->getPriceCoffret1();
-                        $value->setPrice($pricebeforeremise);
-                    } else if ($value->getProduct()->getName() == 'Coffret2') {
-                        $pricebeforeremise = $value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1();
-                    } else {
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                    }
-                    $value->setPrice($pricebeforeremise);
-                } else {
-                    if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-
-                        $pricebeforeremise = $$value->getProduct()->getPrice();
-                    } else {
-                        $pricebeforeremise = $value->getProductSource()->getDiscount();
-                    }
-                    $value->setPrice($pricebeforeremise);
-
-                }
-
+                $value->setPrice($value->getPriceTemp());
+                $pricebeforeremise = $value;
                 if ($commandeEnCours->getRemise() == 0) {
                     $value->setPriceRemise($value->getPrice());
                 } else {
@@ -1682,13 +1606,10 @@ class CommerceController extends Controller
     public function chargePaypalAction()
     {
 
-        //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
-        $token = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
-
-        $username        = 'agathe_api1.agathevousgate.fr';
-        $password        = 'CMB8E34GPEK2BXM8';
-        //$username        = 'agathe-facilitator_api1.agathevousgate.fr';
-        //$password        = 'NZY9R22ZE2CKQET8';
+ 
+        $token           = $this->container->getParameter('paypal_token');
+        $username        = $this->container->getParameter('paypal_username');
+        $password        = $this->container->getParameter('paypal_password');
         $user            = $this->container->get('security.context')->getToken()->getUser();
         $UserEmail       = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -1714,7 +1635,7 @@ class CommerceController extends Controller
         );
 
         $params   = http_build_query($params);
-        $endpoint = 'https://api-3t.paypal.com/nvp';
+        $endpoint = $this->container->getParameter('paypal_endpoint');
         $curl     = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $endpoint,
@@ -1751,7 +1672,7 @@ class CommerceController extends Controller
 
         curl_close($curl);
 
-        $url      = 'https://www.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
+        $url      = 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&useraction=commit&token=' . $responseArray['TOKEN'];
         $response = new RedirectResponse($url);
         return $response;
     }
@@ -1762,12 +1683,9 @@ class CommerceController extends Controller
     public function processChargePaypalAction()
     {
 
-        //$token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31AczqVylxva1cCu5yDg8KXcjHcoOA';
-        $token           = 'AFcWxV21C7fd0v3bYYYRCpSSRl31ALF-DiFc2F0L4V3ilOXJ66IL219B';
-        $username        = 'agathe_api1.agathevousgate.fr';
-        $password        = 'CMB8E34GPEK2BXM8';
-        //$username        = 'agathe-facilitator_api1.agathevousgate.fr';
-        //$password        = 'NZY9R22ZE2CKQET8';
+        $token           = $this->container->getParameter('paypal_token');
+        $username        = $this->container->getParameter('paypal_username');
+        $password        = $this->container->getParameter('paypal_password');
         $user            = $this->container->get('security.context')->getToken()->getUser();
         $UserEmail       = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -1788,7 +1706,7 @@ class CommerceController extends Controller
         );
 
         $params   = http_build_query($params);
-        $endpoint = 'https://api-3t.paypal.com/nvp';
+        $endpoint = $this->container->getParameter('paypal_endpoint');
         $curl     = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $endpoint,
@@ -1836,7 +1754,7 @@ class CommerceController extends Controller
         );
 
         $params2  = http_build_query($params2);
-        $endpoint = 'https://api-3t.paypal.com/nvp';
+        $endpoint = $this->container->getParameter('paypal_endpoint');
         $curl     = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $endpoint,
@@ -2314,98 +2232,13 @@ class CommerceController extends Controller
             }
 
             $total_commande = 0;
-                if ($user->getIsPro() == 2) {
-                    foreach ($allreduction as $reduction) {
-                      foreach ($listePanier as $value) {
-                        if ($value->getCollection() == $reduction->getCollection()) {
-                            if ($value->getProduct()->getName() == 'Noeud' && $reduction->getProduct()->getName() == 'Noeud') {
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceNoeud() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                }
-                            } else if ($value->getProduct()->getName() == 'Pochette' && $reduction->getProduct()->getName() == 'Pochette') {
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPricePochette() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
-                                } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
-                                }
-                            } else if ($value->getProduct()->getName() == 'Boutons' && $reduction->getProduct()->getName() == 'Boutons') {
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceBouton() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
-                                } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity()  * (100 - $reduction->getreduction()) / 100) );
-                                }
-                            } else if ($value->getProduct()->getName() == 'Coffret1'&& $reduction->getProduct()->getName() == 'Coffret1') {
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret1() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                }
-                            } else if ($value->getProduct()->getName() == 'Coffret2'&& $reduction->getProduct()->getName() == 'Coffret2') {
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + ((($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                } else {
-                                    $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                }
-                            } else  if (($value->getProduct()->getName() == 'tour_de_cou' && $reduction->getProduct()->getName() == 'tour_de_cou') || ($value->getProduct()->getName() == 'pochon'&& $reduction->getProduct()->getName() == 'pochon') || ($value->getProduct()->getName() == 'packaging_coffret' && $reduction->getProduct()->getName() == 'packaging_coffret') || ($value->getProduct()->getName() == 'tuto' && $reduction->getProduct()->getName() == 'tuto') || ($value->getProduct()->getName() == 'brochure' && $reduction->getProduct()->getName() == 'brochure') || ($value->getProduct()->getName() == 'boite'&& $reduction->getProduct()->getName() == 'boite') || ($value->getProduct()->getName() == 'Rectangle_petit'&& $reduction->getProduct()->getName() == 'Rectangle_petit') || ($value->getProduct()->getName() == 'Rectangle_grand'&& $reduction->getProduct()->getName() == 'Rectangle_grand')){
-                                if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                                    $total_commande = $total_commande + (($value->getProduct()->getPrice() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                            } else {
-                                   $total_commande = $total_commande + (($value->getProductSource()->getDiscount() * $value->getQuantity() * (100 - $reduction->getreduction()) / 100) );
-                                }
-
-                            }
-                        }
-                      }
-                    }
-
-                } else {
-
-
-                    if ($value->getProduct()->getName() == 'Noeud') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + ($value->getCollection()->getPriceNoeud() * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-
-                    } else if ($value->getProduct()->getName() == 'Pochette') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + ($value->getCollection()->getPricePochette() * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-                    } else if ($value->getProduct()->getName() == 'Boutons') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + ($value->getCollection()->getPriceBouton() * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-                    } else if ($value->getProduct()->getName() == 'Coffret1') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + ($value->getCollection()->getPriceCoffret1() * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-                    } else if ($value->getProduct()->getName() == 'Coffret2') {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + (($value->getCollection()->getPriceCoffret2() + $value->getCollection()->getPriceCoffret1()) * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-                    } else {
-                        if ($value->getProductSource() === null or $value->getProductSource()->getDiscount() == 0) {
-                            $total_commande = $total_commande + ($value->getProduct()->getPrice() * $value->getQuantity());
-                        } else {
-                            $total_commande = $total_commande + ($value->getProductSource()->getDiscount() * $value->getQuantity());
-                        }
-
-                    }
-
-
+                foreach ($listePanier as $value) {
+                    $total_commande = $total_commande + ($value->getQuantity() * $value->getPriceTemp());
                 }
-
+            if(isset($user) && $user->getIsPro() == 2){
+                $total_commande = ($total_commande * (1+$tva/100));
+            }
+                    
             $newcommande->setClient($user);
             $newcommande->setIsValid(false);
             $newcommande->setIsPanier(true);
@@ -2905,7 +2738,7 @@ class CommerceController extends Controller
       $z = 0;
       foreach ($listeAddedProduct as $item) {
         if($item->getProductSource() == null or $item->getProductSource()->getDiscount() == 0){
-          if($user->getIsPro() == 2){
+          if(isset($user) && $user->getIsPro() == 2){
             foreach ($allreduction as $reductionPro) {
 
               if($item->getCollection() != null){
@@ -2935,9 +2768,19 @@ class CommerceController extends Controller
             }
 
           else{
-            $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
-            $priceTemp = $priceitem ;
-            $priceRemise = 0;
+            if($item->getCollection() == null){
+                $priceitem = $this->getPriceItemGeneric($item->getProduct());
+                $priceTemp = $priceitem ;
+                $priceRemise = 0;
+
+            }
+            else
+            {
+                $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                $priceTemp = $priceitem ;
+                $priceRemise = 0;
+            }
+           
           }
         }
         else{
@@ -2948,9 +2791,12 @@ class CommerceController extends Controller
 
         $item->setPriceTemp($priceTemp);
         $item->setPriceRemise($priceRemise);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($item);
-        $em->flush();
+        if(TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($item);
+            $em->flush();
+        }
+        
         $z = 0;
 
           }

@@ -39,6 +39,9 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    globals:
+        stripe_public_key: "%stripe_public_key%"
+        stripe_private_key: "%stripe_private_key%" 
 
 # Doctrine Configuration
 doctrine:
@@ -58,7 +61,7 @@ doctrine:
         #     path:     "%database_path%"
 
     orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_generate_proxy_classes: false
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
 

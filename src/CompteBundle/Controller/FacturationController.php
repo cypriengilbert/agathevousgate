@@ -62,12 +62,14 @@ class FacturationController extends Controller
           $listeAddedProduct = $repository->findBy(array('commande' => $id));
           $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
           $commande = $repository->findOneBy(array('id' => $id));
+          $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+          $tva = $repository->findOneBy(array('name' => 'tva'))->getMontant();
         }
           else{
         $listeAddedProduct = null;
           }
         if($commande->getClient() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-          $content = $this->renderView('CommerceBundle:Default:test.html.twig', array('user'=>$commande->getClient(), 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande));
+          $content = $this->renderView('CommerceBundle:Default:test.html.twig', array('user'=>$commande->getClient(),'tva' => $tva, 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande));
           $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
           $html2pdf->pdf->SetDisplayMode('real');
           $html2pdf->writeHTML($content);

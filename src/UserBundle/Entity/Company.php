@@ -38,7 +38,7 @@ class Company
     /**
      * @var float
      *
-     * @ORM\Column(name="reduction_generic", type="float")
+     * @ORM\Column(name="reduction_generic", type="float", nullable=true)
      */
     private $reductionGeneric;
 

@@ -167,6 +167,11 @@ if ($formAdress->handleRequest($request)->isValid()) {
           'name' => 'Livraison'
 
       ));
+      $tva     = $repository->findOneBy(array(
+          'name' => 'tva'
+
+      ))->getMontant();
+
       $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
       if ($Commandeencours->getTransportMethod() != null){
   $coutLivraison    = $Commandeencours->getTransportMethod()->getPrice();
@@ -176,6 +181,7 @@ if ($formAdress->handleRequest($request)->isValid()) {
           'commande' => $Commandeencours,
       'minLivraison' => $minLivraison,
       'coutLivraison' => $coutLivraison,
+      'tva' => $tva
       ));
     }
 

@@ -17,12 +17,12 @@
                   {% set remise = 0 %}
                   {% for listepanier in listePanier %}
 
-                {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
+                {% set totalsum = (totalsum + listepanier.price * listepanier.quantity)|round(2, 'common') %}
 
                 <h2>{{ listepanier.quantity}} {{ listepanier.product.name }} -
-                {{ listepanier.price * listepanier.quantity }}
+                {{ (listepanier.price * listepanier.quantity)|round(2,'common') }}
                 € </h2>
-                  <p>Collection {{ listepanier.collection.title }}</p>
+                  {% if listepanier.collection %}<p>Collection {{ listepanier.collection.title }}</p>{% endif %}
                   <p>
                      {% if listepanier.Color1 %}
                      <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; margin-bottom:10px; width:30px; border-radius:10px">
@@ -107,6 +107,7 @@
 
                            <p> Remise</p>
                             <p>Livraison</p>
+                            <p>TVA</p>
                            <p>Total</p>
                         </div>
                         <div class="col-xs-6" >
@@ -121,11 +122,23 @@
 
                                  {% set livraison = 0 %}
                                {% else %}
+                                  {% if app.user and app.user.isPro == 2 %}
+                                   {% set livraison = coutLivraison / (1+tva/100) %}
+
+                                  {% else %}
                                  {% set livraison = coutLivraison %}
+                                 {% endif %}
+                                  
 
                                {% endif %}
                            <p ><strong> + {{ livraison }} €</strong></p>
-                           <p><strong>  {{ commande.price }} €</strong></p>
+                           {% if app.user and app.user.isPro == 2 %} <p><strong> 
+                            {{ (((totalsum + livraison) * (1+tva/100)) - totalsum - livraison)|round(2, 'common') }} €
+
+                            </strong></p>
+                            {% else %}
+                            <p ><strong>  {{ ((totalsum + livraison))|round(2, 'common') }} €</strong></p> {% endif %}
+                           <p><strong>  {{ commande.price  }} €</strong></p>
                         </div>
                      </div>
 </div>

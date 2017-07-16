@@ -163,13 +163,13 @@
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
             {% if collection is defined %}
-        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tissus<span class="caret"></span></a>
+        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Boutique<span class="caret"></span></a>
           <ul class="dropdown-menu">
 
               {% for col in collection %}
 
                     <li class="">
-                        <a class="page-scroll border_menu" href="{{ path('listeFranchise', {'id': col.id }) }}">{{ col.title }}</a>
+                        <a class="page-scroll border_menu" href="{{ path('boutique_collection', {'name': col.title }) }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
