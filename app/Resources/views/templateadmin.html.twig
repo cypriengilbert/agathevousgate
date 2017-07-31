@@ -1,164 +1,240 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="{{ asset('admin/assets/img/favicon.ico')}}">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Material Design Lite</title>
-
-    <!-- Add to homescreen for Chrome on Android -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
-
-    <!-- Add to homescreen for Safari on iOS -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
-    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
-
-    <!-- Tile icon for Win8 (144x144 + tile color) -->
-    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
-    <meta name="msapplication-TileColor" content="#3372DF">
-
-    <link rel="shortcut icon" href="images/favicon.png">
-
-    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-    <!--
-    <link rel="canonical" href="http://www.example.com/">
+	<title>Agathe vous gâte - Back-Office</title>
+<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
 
 
-    -->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" type="text/css">
-<link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css" />
+    <!-- Bootstrap core CSS     -->
+    <link href="{{ asset('admin/assets/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{ asset('admin/assets/css/light-bootstrap-dashboard.css')}}" rel="stylesheet" />
+
+  <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
+    <script src="{{ asset('admin/assets/js/jquery.min.js')}}"></script>
 
 
-    <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <style>
-    #view-source {
-      position: fixed;
-      display: block;
-      right: 0;
-      bottom: 0;
-      margin-right: 40px;
-      margin-bottom: 40px;
-      z-index: 900;
-    }
-    </style>
-    <script>
-    function displayCommande(){
-    var x = document.getElementsByClassName('commande');
-    var i;
+   <!-- <script src="{{ asset('admin/assets/js/moment.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/jquery-ui.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/jquery-jvectormap.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/jquery.datatables.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/fullcalendar.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/chartist.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-table.js')}}"></script>
+       <script src="{{ asset('admin/assets/js/bootstrap-checkbox-radio-switch-tags.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-selectpicker.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-notify.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/demo.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/sweetalert2.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/light-bootstrap-dashboard.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-datetimepicker.js')}}"></script> --!>
+    <!-- Animation library for notifications   -->
+   <!--  <link href="{{ asset('admin/assets/css/animate.min.css')}}" rel="stylesheet"/>
 
-     for (i = 0; i < x.length; i++) {
-      if (x[i].style.display == "none"){
-         x[i].style.display = "";
+     Light Bootstrap Table core CSS    -->
 
-
-      }
-
-    }
-    }
+    <!--  CSS for Demo Purpose, don't include it in your project    
+    <link href="{{ asset('admin/assets/css/demo.css')}}" rel="stylesheet" /> -->
 
 
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="{{ asset('admin/assets/css/pe-icon-7-stroke.css')}}" rel="stylesheet" />
 
+</head>
+<body>
 
-    function displayDefinedProduct(){
-    var x = document.getElementsByClassName('definedproduct');
-    var i;
+<div class="wrapper">
+    <div class="sidebar" data-color="orange" data-image="../assets/img/full-screen-image-3.jpg">
+        <!--
 
-     for (i = 0; i < x.length; i++) {
-      if (x[i].style.display == "none"){
-         x[i].style.display = "";
-      }
+            Tip 1: you can change the color of the sidebar using: data-color="blue | azure | green | orange | red | purple"
+            Tip 2: you can also add an image using data-image tag
 
-      }
+        -->
 
-    }
-    </script>
-  </head>
-  <body>
+        <div class="logo">
+            <a href="{{path('accueil') }}" class="logo-text">
+                Agathe Vous Gâte
+            </a>
+        </div>
+        <div class="logo logo-mini">
+            <a href="{{path('accueil') }}" class="logo-text">
+                AVG
+            </a>
+        </div>
 
-  {% block script_calcul %}
-  {% endblock %}
-
-    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-
-      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-      <!-- Title -->
-      <span class="mdl-layout-title">Agathe Vous Gâte - Back Office</span>
-      <span id="lien_logout" style="position:absolute; right:10px;" class="mdl-layout-title"><a href="{{ path('fos_user_security_logout') }}"><i class="material-icons" style="color:white; font-size:40px">exit_to_app</i></a></span>
-      <div class="mdl-tooltip" for="lien_logout" style="will-change:unset">
-      Se déconnecter
-      </div>
-      <span id="lien_accueil" class="mdl-layout-title" style="position:absolute; right:50px;" ><a href="{{ path('accueil') }}"><i class="material-icons" style="color:white;font-size:40px">store</i></a></span>
-      <div class="mdl-tooltip" for="lien_accueil" style="will-change:unset">
-      Aller sur le site AgatheVousGâte
-      </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li {% if page == 'dashboard' %}class="active"{% endif %}">
+                    <a href="{{ path('dashboard') }}">
+                        <i class="pe-7s-graph"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                
+                <li {% if page == 'commande' %}class="active"{% endif %}>
+                    <a href="{{ path('encours') }}">
+                        <i class="pe-7s-rocket"></i>
+                        <p>Commandes</p>
+                    </a>
+                </li>
+                <li {% if page == 'users' %}class="active"{% endif %}>
+                    <a href="{{ path('users') }}">
+                        <i class="pe-7s-users"></i>
+                        <p>Users</p>
+                    </a>
+                </li>
+                <li {% if page == 'collection' %}class="active"{% endif %}>
+                    <a href="{{ path('listeCollection') }}">
+                        <i class="pe-7s-news-paper"></i>
+                        <p>Collection</p>
+                    </a>
+                </li>
+                <li {% if page == 'definedProduct' %}class="active"{% endif %}>
+                    <a href="{{ path('definedProduct') }}">
+                        <i class="pe-7s-science"></i>
+                        <p>Produits définis</p>
+                    </a>
+                </li>
+                <li {% if page == 'codePromo' %}class="active"{% endif %}>
+                    <a href="{{ path('listeCodePromo') }}">
+                        <i class="pe-7s-wallet"></i>
+                        <p>Codes promos</p>
+                    </a>
+                </li>
+                <li {% if page == 'color' %}class="active"{% endif %}>
+                    <a href="{{ path('listecolor') }}">
+                        <i class="pe-7s-paint-bucket"></i>
+                        <p>Couleurs</p>
+                    </a>
+                </li>
+                <li {% if page == 'image' %}class="active"{% endif %}>
+                    <a href="{{ path('imageSite') }}">
+                        <i class="pe-7s-photo"></i>
+                        <p>Images</p>
+                    </a>
+                </li>
+                <li {% if page == 'text' %}class="active"{% endif %}>
+                    <a href="{{ path('listeTexte') }}">
+                        <i class="pe-7s-bell"></i>
+                        <p>Textes</p>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
     </div>
-    <!-- Tabs -->
-    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
 
-    {% if is_granted('ROLE_SUPER_ADMIN') == false %}
-    <a href="{{ path('encours') }}" class="mdl-layout__tab">Commandes</a>
-  {% else %}
-      <a href="{{ path('dashboard') }}" class="mdl-layout__tab {% if page == 'dashboard' %} is-active {% endif %}">Dashboard</a>
-      <a href="{{ path('encours') }}" class="mdl-layout__tab {% if page == 'commande' %} is-active {% endif %}">Commandes</a>
-      <a href="{{ path('listeAtelier') }}" class="mdl-layout__tab {% if page == 'atelier' %} is-active {% endif %}">Ateliers</a>
-      <a href="{{ path('users') }}" class="mdl-layout__tab {% if page == 'users' %} is-active {% endif %}">Utilisateurs</a>
-      <a href="{{ path('listeCollection') }}" class="mdl-layout__tab {% if page == 'collection' %} is-active {% endif %}">Collection</a>
-      <a href="{{ path('definedProduct') }}" class="mdl-layout__tab {% if page == 'definedProduct' %} is-active {% endif %}">Produits définis</a>
-      <a href="{{ path('listeCodePromo') }}" class="mdl-layout__tab {% if page == 'codePromo' %} is-active {% endif %}">Codes Promos</a>
-      <a href="{{ path('listecolor') }}" class="mdl-layout__tab {% if page == 'color' %} is-active {% endif %}">Couleurs</a>
-      <a href="{{ path('imageSite') }}" class="mdl-layout__tab {% if page == 'image' %} is-active {% endif %}">Images</a>
-      <a href="{{ path('listeTexte') }}" class="mdl-layout__tab {% if page == 'text' %} is-active {% endif %}">Textes</a>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-minimize">
+                    <button id="minimizeSidebar" class="btn btn-warning btn-fill btn-round btn-icon">
+                        <i class="fa fa-ellipsis-v visible-on-sidebar-regular"></i>
+                        <i class="fa fa-navicon visible-on-sidebar-mini"></i>
+                    </button>
+                </div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Back-Office</a>
+                </div>
+                <div class="collapse navbar-collapse">
 
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{{ path('dashboard') }}">
+                                <i class="fa fa-line-chart"></i>
+                                <p>Stats</p>
+                            </a>
+                        </li>
+                        <li class="dropdown dropdown-with-icons">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-list"></i>
+                                <p class="hidden-md hidden-lg">
+                                    More
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                            <ul class="dropdown-menu dropdown-with-icons">
+                                <li>
+                                    <a href="{{path('accueil')}}">
+                                        <i class="pe-7s-mail"></i> Accès au site
+                                    </a>
+                                </li>
+                                
+                                <li>
+                                    <a href="{{ path('fos_user_security_logout') }}" class="text-danger">
+                                        <i class="pe-7s-close-circle"></i>
+                                        Déconnexion
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-{% endif %}
-    </div>
-  </header>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
-</div>
-      <main class="mdl-layout__content mdl-color--grey-100" style="margin-top:120; margin-left:0px;">
-
-
-        {% block body %}
+        <div class="content">
+            
+ {% block body %}
 
 
         {% endblock %}
 
 
-
-      <a href="https://github.com/google/material-design-lite/blob/master/templates/dashboard/" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-color--accent mdl-color-text--accent-contrast">View Source</a>
-    <script src="{{ asset('js/material.min.js') }}"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+        </div>
 
 
+        <footer class="footer">
+            <div class="container-fluid">
+                
+                <p class="copyright pull-right">
+                    &copy; 2017 <a href="http://cypriengilbert.com">Cyprien Gilbert</a>, made with ❤ between Lille & Paris
+                </p>
+            </div>
+        </footer>
+
+    </div>
+</div>
+
+
+</body>
+
+    <!--   Core JS Files   -->
+    <script src="asrcssets/js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="{{ asset('admin/assets/js/bootstrap.min.js')}}" type="text/javascript"></script>
+
+	<!--  Checkbox, Radio & Switch Plugins -->
+	<script src="{{ asset('admin/assets/js/bootstrap-checkbox-radio-switch.js')}}"></script>
+
+	<!--  Charts Plugin -->
+
+    <!--  Notifications Plugin    -->
+    <script src="{{ asset('admin/assets/js/bootstrap-notify.js')}}"></script>
+
+    <!--  Google Maps Plugin    -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+  
 
 
 
+   
 
-    {% block script_chart %}
-    {% endblock %}
-
-
-    <script>
-
-    $(document).ready(function() {
-        $('#commande_en_cours').DataTable();
-    } );
-    </script>
-<script>
-document.getElementById('view-source').style.display = 'none';
-</script>
-  </body>
 </html>

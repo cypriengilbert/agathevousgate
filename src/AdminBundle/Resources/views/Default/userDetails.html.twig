@@ -1,0 +1,145 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+
+                     
+                         <div class="card">
+                            <div class="header">
+                                <h4 class="title">User n°{{user.id}}</h4>
+                            </div>
+                            <div class="content">
+                                <form>
+                                     <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Prénom</label>
+                                                <input type="text" class="form-control" placeholder="First name" disabled value="{{user.prenom}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Nom</label>
+                                                <input type="text" class="form-control" placeholder="Last Name" disabled  value="{{user.nom}}">
+                                            </div>
+                                        </div>
+                                         <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Téléphone</label>
+                                                <input type="text" class="form-control" placeholder="phone" disabled  value="{{user.phone}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Adress</label>
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{user.adress.adress}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if user.adress.adressMore %}
+                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Adresse (suite)</label>
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{ user.adress.adressMore }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ville</label>
+                                                <input type="text" class="form-control" placeholder="City"  disabled value="{{user.adress.city}}">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Code postal</label>
+                                                <input type="number" class="form-control"  disabled value="{{user.adress.zipcode}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                  {% if user.isPro == 2 %}
+                                  <a href="{{path('settouser', {'id': user.id })}}">
+
+                                   <button type="submit" class="btn btn-danger btn-fill pull-left">Supprimer le statut pro</button></a>
+                                   {% else %}
+                                    <a href="{{path('settopro', {'id': user.id })}}">
+
+                                    <button type="submit" class="btn btn-warning  btn-fill pull-left">Valider le statut pro</button>
+                                     </a>
+
+                                   {% endif %}
+                                   <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}<button type="submit" style="margin-left:10px;" class="btn btn-primary  btn-fill pull-left">Désactiver l'utilisateur</button> {% else %} <button type="submit" style="margin-left:10px;" class="btn btn-primary  btn-fill pull-left">Activer l'utilisateur</button> {% endif %}</a>
+
+
+                                    <button type="submit" class="btn btn-info btn-fill pull-right">Mettre à jour</button>
+
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Historique</h4>
+                                <p class="category">de commandes</p>
+                            </div>
+                            <div class="content">
+                                <div class="table-full-width">
+                                    <table class="table">
+                                        <tbody>
+                                          {% for commande in commandes %}
+                                            <tr>
+                                                
+                                                <td>Commande n°{{commande.id}} du {{commande.date|date("d-m-Y") }}</td>
+                                                <td class="td-actions text-right">
+                                                    <a href="{{ path('commande', {'id': commande.id })}}"><button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Voir la commnde">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

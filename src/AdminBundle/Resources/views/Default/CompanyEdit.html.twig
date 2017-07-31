@@ -1,0 +1,46 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="mdl-grid demo-content">
+<div><h4>Boutique {{user.company.name}}{%if user.company.reductionGeneric %} - {{ user.company.reductionGeneric }}{% endif %}</h4></div>
+<div><a  href="{{ path('companyValidation', { 'id' : user.id }) }}"><button  style="position:relative; top:20px;left:350%" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+{% if user.isPro == 3 %}Valider la demande{% elseif user.isPro == 2 %}Désactiver la boutique {% endif %}
+</button></a></div>
+
+  <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
+
+ {{ form_start(form, {'method': 'post'}) }}
+   {{ form_errors(form) }}
+
+   <div class="form-group">
+       {{ form_label(form.reductionGeneric, "Réduction par défaut", {'label_attr': {'class': ''}}) }}
+       {{ form_errors(form.reductionGeneric) }}
+       {{ form_widget(form.reductionGeneric, {'attr': {'class': 'form-control'}}) }}
+   </div>
+
+      <div>
+          <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Modifier</button>
+      </div>
+  {{ form_end(form) }}
+
+
+  </div>
+
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

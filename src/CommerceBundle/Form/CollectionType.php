@@ -31,7 +31,9 @@ class CollectionType extends AbstractType
             ->add('priceBouton')
             ->add('priceCoffret1')
             ->add('priceCoffret2')
-
+            ->add('priceMilieu')
+            ->add('priceRectanglePetit')
+            ->add('priceRectangleGrand')
             ->add('isPerso', 'checkbox', array('required'=>false))
             ->add('firstColor', EntityType::class, array(
                                      'class' => 'CommerceBundle:Color',

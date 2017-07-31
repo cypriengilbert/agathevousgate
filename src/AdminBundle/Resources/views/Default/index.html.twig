@@ -2,7 +2,234 @@
 {% block script_calcul %}
 {% endblock %}
 {% block body %}
+{% set totalFemme = 0 %}
+{% for commande in listeCommande %}
+{% if commande.client.genre == "madame" or commande.client.genre == "mademoiselle"  %}
+{% set totalFemme = totalFemme + commande.price %}
+{% endif %}
+{% endfor %}
+{% set totalHomme = 0 %}
+{% for commande in listeCommande %}
+{% if (commande.client.genre == "monsieur") %}
+{% set totalHomme = totalHomme + commande.price %}
+{% endif %}
+{% endfor %}
+{% set total_2030 = 0 %}
+{% set total_020 = 0 %}
+{% set total_3040 = 0 %}
+{% set total_4050 = 0 %}
+{% set total_5060 = 0 %}
+{% set total_60 = 0 %}
+{% set totalPro = 0 %}
+{% set totalParticulier = 0 %}
+{% for commande in listeCommande %}
+{% if commande.client.isPro == true %}
+{% set totalPro = totalPro + commande.price %}
+{% else %}
+{% set totalParticulier = totalParticulier + commande.price %}
+{% endif %}
+{% endfor %}
+{% set now = 'now'|date("Y") %}
+{% for commande in listeCommande %}
+{% if now - commande.client.naissance|date("Y") <= 20 %}
+{% set total_020 = total_020 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 20 and now - commande.client.naissance|date("Y") <= 30 %}
+{% set total_2030 = total_2030 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 30 and now - commande.client.naissance|date("Y") <= 40 %}
+{% set total_3040 = total_3040 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 40 and now - commande.client.naissance|date("Y") <= 50 %}
+{% set total_4050 = total_4050 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 50 and now - commande.client.naissance|date("Y") <= 60 %}
+{% set total_5060 = total_5060 + commande.price %}
+{% elseif now - commande.client.naissance|date("Y") > 60 %}
+{% set total_60 = total_60 + commande.price %}
+{% endif %}
+{% endfor %}
+  <script src="{{ asset('admin/assets/js/chartist.min.js')}}"></script>
 <div class="mdl-grid demo-content">
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Ventes</h4>
+                                <p class="category">Total par jour</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartHours" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> Tesla Model S
+                                        <i class="fa fa-circle text-danger"></i> BMW 5 Series
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</div>
+<script>
+    var dataSales = {
+          labels: [{% set total=0 %}{% for ca in listeCommande %}{{ ca.date|date("d-m") }},{% endfor %}],
+          series: [{% set total=0 %}{% for ca in listeCommande %}{% set total = total + ca.price %}{{ total }},{% endfor %}]
+        };
+        
+
+        var optionsSales = {
+          lineSmooth: false,
+          low: 0,
+          high: 800,
+          showArea: true,
+          height: "245px",
+          axisX: {
+            showGrid: false,
+          },
+          lineSmooth: Chartist.Interpolation.simple({
+            divisor: 3
+          }),
+          showLine: false,
+          showPoint: false,
+        };
+        
+        var responsiveSales = [
+          ['screen and (max-width: 640px)', {
+            axisX: {
+              labelInterpolationFnc: function (value) {
+                return value[0];
+              }
+            }
+          }]
+        ];
+    
+        Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
+         
+    </script>
+
+
+<div class="row">
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Ventes</h4>
+                                <p class="category">Par sexe</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartSex" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> Homme
+                                        <i class="fa fa-circle text-danger"></i> Femme
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                     Chartist.Pie('#chartSex', {
+          labels: ['{{(totalFemme/(totalFemme + totalHomme)*100)|round(2, 'common')}} %','{{(totalHomme/(totalFemme + totalHomme)*100)|round(2, 'common')}} %'],
+          series: [{{ totalFemme }}, {{ totalHomme }}]
+        }); 
+                    </script>
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Ventes</h4>
+                                <p class="category">par âges
+                            <div class="content">
+                                <div id="chartAge" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> 0 à 20 ans
+                                        <i class="fa fa-circle text-danger"></i> 20 à 30 ans
+                                        <i class="fa fa-circle text-danger"></i> 20 à 30 ans
+                                        <i class="fa fa-circle text-danger"></i> 30 à 40 ans
+                                        <i class="fa fa-circle text-danger"></i> 40 à 50 ans
+                                        <i class="fa fa-circle text-danger"></i> 50 à 60 ans
+                                        <i class="fa fa-circle text-danger"></i> + de 60 ans
+
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <script>
+                     Chartist.Pie('#chartAge', {
+          labels: ['0-20','20-30','30-40', '40-50', '50-60', '+60'],
+          series: [{{ total_020 }}, {{ total_2030 }},{{ total_3040 }},{{ total_4050 }},{{ total_5060 }},{{ total_60 }}]
+        }); 
+                    </script>
+
+
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Ventes</h4>
+                                <p class="category">par catégorie</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartCategory" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="legend">
+                                        <i class="fa fa-circle text-info"></i> Pro
+                                        <i class="fa fa-circle text-danger"></i> Particulier
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="fa fa-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <script>
+                     Chartist.Pie('#chartCategory', {
+          labels: ['{{(totalPro/(totalPro + totalParticulier)*100)|round(2, 'common')}} %','{{(totalParticulier/(totalPro + totalParticulier)*100)|round(2, 'common')}} %'],
+          series: [{{ totalPro }}, {{ totalParticulier }}]
+        }); 
+                    </script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+
 <div class="mdl-cell mdl-cell--12-col mdl-grid">
 <h4>Chiffres d'affaires</h4>
 </div>
@@ -105,49 +332,8 @@ CA Total
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-{% set totalFemme = 0 %}
-{% for commande in listeCommande %}
-{% if commande.client.genre == "madame" or commande.client.genre == "mademoiselle"  %}
-{% set totalFemme = totalFemme + commande.price %}
-{% endif %}
-{% endfor %}
-{% set totalHomme = 0 %}
-{% for commande in listeCommande %}
-{% if (commande.client.genre == "monsieur") %}
-{% set totalHomme = totalHomme + commande.price %}
-{% endif %}
-{% endfor %}
-{% set total_2030 = 0 %}
-{% set total_020 = 0 %}
-{% set total_3040 = 0 %}
-{% set total_4050 = 0 %}
-{% set total_5060 = 0 %}
-{% set total_60 = 0 %}
-{% set totalPro = 0 %}
-{% set totalParticulier = 0 %}
-{% for commande in listeCommande %}
-{% if commande.client.isPro == true %}
-{% set totalPro = totalPro + commande.price %}
-{% else %}
-{% set totalParticulier = totalParticulier + commande.price %}
-{% endif %}
-{% endfor %}
-{% set now = 'now'|date("Y") %}
-{% for commande in listeCommande %}
-{% if now - commande.client.naissance|date("Y") <= 20 %}
-{% set total_020 = total_020 + commande.price %}
-{% elseif now - commande.client.naissance|date("Y") > 20 and now - commande.client.naissance|date("Y") <= 30 %}
-{% set total_2030 = total_2030 + commande.price %}
-{% elseif now - commande.client.naissance|date("Y") > 30 and now - commande.client.naissance|date("Y") <= 40 %}
-{% set total_3040 = total_3040 + commande.price %}
-{% elseif now - commande.client.naissance|date("Y") > 40 and now - commande.client.naissance|date("Y") <= 50 %}
-{% set total_4050 = total_4050 + commande.price %}
-{% elseif now - commande.client.naissance|date("Y") > 50 and now - commande.client.naissance|date("Y") <= 60 %}
-{% set total_5060 = total_5060 + commande.price %}
-{% elseif now - commande.client.naissance|date("Y") > 60 %}
-{% set total_60 = total_60 + commande.price %}
-{% endif %}
-{% endfor %}
+
+</div>
 <script>
    new Morris.Line({
    // ID of the element in which to draw the chart.
@@ -228,6 +414,7 @@ CA Total
 
    });
 </script>
+ 
 {% endblock %}
 {% block script_chart %}
 {% endblock %}

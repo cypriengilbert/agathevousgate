@@ -11,8 +11,11 @@ use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
+use CommerceBundle\Entity\ProDiscount;
 use UserBundle\Entity\User;
 use UserBundle\Form\RegistrationType;
+use UserBundle\Form\CompanyAllType;
+
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -582,12 +585,40 @@ class DefaultController extends Controller
         ));
         $newCollection = new Collection();
         $newCollection->setActive(true);
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $users  = $repository->findBy(array('isPro' => 2));
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $products  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CollectionType', $newCollection);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($newCollection);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+
+                foreach ($products as $product) {
+                    foreach($users as $user){
+                    $reduction = new ProDiscount();
+                    $reduction->setAccount($user);
+                    $reduction->setProduct($product);
+                    $reduction->setCollection($newCollection);
+                    if($user->getCompany() != null and $user->getCompany()->getReductionGeneric() != null){
+                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                    }
+                    else{
+                    
+                $reduction->setReduction(0);}
+                        $em->persist($reduction);
+                        $em->flush();
+                    }
+                    
+                    }
+            
+
             return $this->redirect($this->generateUrl(
             'newcollection', array('validate' => 'Collection bien ajouté','listeCommande' => $listeCommande)));
         }
@@ -1034,10 +1065,178 @@ class DefaultController extends Controller
 
         }
 
+
+        /**
+         * @Route("/s/users/companies/reduc/{id}/{montant}", name="editReducCompany")
+         */
+        public function editReducCompanyAction($id, $montant)
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+            $discount  = $repository->findOneBy(array(
+            'id' => $id));
+
+            $discount->setReduction($montant);
+            $em = $this->getDoctrine()->getManager();
+             $em->persist($discount);
+            $em->flush();
+
+            $url      = $this->generateUrl('companiesView',  array('id' => $discount->getAccount()->getId()));
+            $response = new RedirectResponse($url);
+
+            return $response;
+            
+
+        }
+
         /**
          * @Route("/s/users/companies/view/{id}", name="companiesView")
          */
-        public function usersCompaniesViewAction($id)
+        public function usersCompaniesViewAction($id, Request $request)
+        {
+
+            $page = 'users';
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+            $commande  = $repository->findBy(array(
+            'client' => $user));
+
+            $company = $user->getCompany();
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $collections  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $products  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+            $proReduc  = $repository->findBy(array(
+            'account' => $user));
+            $erasedReduc = $company->getReductionGeneric();
+       
+
+            $formCompany = $this->get('form.factory')->create('UserBundle\Form\CompanyAllType', $company);
+            if ($formCompany->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+             $em->persist($company);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'modification bien enregistrée.');
+
+            $y = 0;
+            if($proReduc == null){
+            foreach ($collections as $collection ) {
+                foreach ($products as $product) {
+                    $reduction = new ProDiscount();
+                    $reduction->setAccount($user);
+                    $reduction->setProduct($product);
+                    $reduction->setCollection($collection);
+                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                        $em->persist($reduction);
+                        $em->flush();
+                    }
+                }
+            }
+            else{
+                foreach ($collections as $collection ) {
+                foreach ($products as $product) {
+                    foreach ($proReduc as $oldReduc) {
+                        if($oldReduc->getProduct() == $product and $oldReduc->getCollection() == $collection and $oldReduc->getReduction() == $erasedReduc){
+                            $oldReduc->setReduction($user->getCompany()->getReductionGeneric());
+                             $em->persist($oldReduc);
+                        $em->flush();
+                        $y = 1;
+                        }
+                    }
+                    if($y == 0){
+                        $reduction = new ProDiscount();
+                    $reduction->setAccount($user);
+                    $reduction->setProduct($product);
+                    $reduction->setCollection($collection);
+                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                        $em->persist($reduction);
+                        $em->flush();
+                        $y=1;
+                    }
+                    
+                    }
+                }
+
+            }
+
+
+
+
+
+
+
+
+
+            return $this->render('AdminBundle:Default:Company.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+                'formCompany' => $formCompany->createView(),
+                'commandes' => $commande,
+                'products' => $products,
+                'collections' => $collections,
+                'reductions' => $proReduc,
+                ));
+}
+
+
+
+            return $this->render('AdminBundle:Default:Company.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+                'products' => $products,
+                'collections' => $collections,
+                  'formCompany' => $formCompany->createView(),
+                                  'commandes' => $commande,
+                                                  'reductions' => $proReduc,
+
+
+
+
+            ));
+
+        }
+
+
+         /**
+         * @Route("/s/users/view/{id}", name="userView")
+         */
+        public function usersViewAction($id, Request $request)
+        {
+
+            $page = 'users';
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+            $commande  = $repository->findBy(array(
+            'client' => $user));
+       
+  
+
+
+            return $this->render('AdminBundle:Default:userDetails.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+                'commandes' => $commande,
+
+
+
+            ));
+
+        }
+
+         /**
+         * @Route("/s/users/companies/edit/{id}", name="companiesEdit")
+         */
+        public function usersCompaniesEditAction($id, Request $request)
         {
 
           $page = 'users';
@@ -1045,13 +1244,31 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $user  = $repository->findOneBy(array(
             'id' => $id));
+            $company = $user->getCompany();
+
+        $form = $this->get('form.factory')->create('UserBundle\Form\CompanyReducType', $company);
+        if ($form->handleRequest($request)->isValid()) {
+            $user->setIsPro('2');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($company);
+             $em->persist($user);
+
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Reduction bien enregistrée.');
+
+            return $this->redirect($this->generateUrl('companiesView', array(
+                'user' => $user,
+                'page' => $page, 
+                'id' => $id
 
 
-            return $this->render('AdminBundle:Default:Company.html.twig', array(
+            )));
+        }
+
+            return $this->render('AdminBundle:Default:CompanyEdit.html.twig', array(
                 'user' => $user,
                 'page' => $page,
-
-
+                'form' => $form->createView(),
 
             ));
 
@@ -1069,22 +1286,146 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $user  = $repository->findOneBy(array(
             'id' => $id));
+            $company = $user->getCompany();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $collections  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $products  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+            $proReduc  = $repository->findBy(array(
+            'account' => $user));
+            $erasedReduc = $company->getReductionGeneric();
 
-
-          if($user->getIsPro() == 2){
-            $user->setIsPro('3');
-          }
-          elseif($user->getIsPro() == 3){
+            $form = $this->get('form.factory')->create('UserBundle\Form\CompanyReducType', $company);
+            if ($form->handleRequest($request)->isValid()) {
             $user->setIsPro('2');
-          }
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($user);
-          $em->flush();
-          $request->getSession()->getFlashBag()->add('notice', 'Boutique bien activée.');
+            $em = $this->getDoctrine()->getManager();
+            $y = 0;
+            if($proReduc == null){
+            foreach ($collections as $collection ) {
+                foreach ($products as $product) {
+                    $reduction = new ProDiscount();
+                    $reduction->setAccount($user);
+                    $reduction->setProduct($product);
+                    $reduction->setCollection($collection);
+                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                        $em->persist($reduction);
+                        $em->flush();
+                    }
+                }
+            }
+            else{
+                foreach ($collections as $collection ) {
+                foreach ($products as $product) {
+                    foreach ($proReduc as $oldReduc) {
+                        if($oldReduc->getProduct() == $product and $oldReduc->getCollection() == $collection and $oldReduc->getReduction() == $erasedReduc){
+                            $oldReduc->setReduction($user->getCompany()->getReductionGeneric());
+                             $em->persist($oldReduc);
+                        $em->flush();
+                        $y = 1;
+                        }
+                    }
+                    if($y == 0){
+                        $reduction = new ProDiscount();
+                    $reduction->setAccount($user);
+                    $reduction->setProduct($product);
+                    $reduction->setCollection($collection);
+                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                        $em->persist($reduction);
+                        $em->flush();
+                        $y=1;
+                    }
+                    
+                    }
+                }
 
-            return $this->render('AdminBundle:Default:Company.html.twig', array(
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($company);
+                        $em->flush();
+
+             $em->persist($user);
+
+            $em->flush();
+
+
+            $request->getSession()->getFlashBag()->add('notice', 'Reduction bien enregistrée.');
+
+             $url      = $this->generateUrl('companiesView',  array('id' => $id));
+             $response = new RedirectResponse($url);
+
+            return $response;
+
+           
+          }
+        
+            return $this->render('AdminBundle:Default:editReducCompany.html.twig', array(
                 'user' => $user,
                 'page' => $page,
+                'form' => $form->createView(),
+
+            ));
+
+        }
+
+         /**
+         * @Route("/s/users/companies/deactivate/{id}", name="companyDeactivate")
+         */
+        public function usersCompanyDeactivateAction($id, Request $request)
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+            $company = $user->getCompany();
+           
+           $user->setIsPro(0);
+            $em = $this->getDoctrine()->getManager();
+
+
+             $em->persist($user);
+
+            $em->flush();
+           
+
+            $request->getSession()->getFlashBag()->add('notice', 'Reduction bien enregistrée.');
+
+             $url      = $this->generateUrl('companiesView',  array('id' => $id));
+             $response = new RedirectResponse($url);
+
+            return $response;
+
+           
+          }
+        
+
+
+                /**
+         * @Route("/s/users/companies/discount/{id}", name="companyDiscount")
+         */
+        public function usersCompanyDiscountAction($id, Request $request)
+        {
+
+          $page = 'users';
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+            $user  = $repository->findOneBy(array(
+            'id' => $id));
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+            $allreduction  = $repository->findBy(array(
+            'account' => $user));
+            
+
+          
+
+            return $this->render('AdminBundle:Default:CompanyReduction.html.twig', array(
+                'user' => $user,
+                'page' => $page,
+                'discounts' => $allreduction,
 
 
 
@@ -1112,13 +1453,20 @@ class DefaultController extends Controller
 
         if ($User->isEnabled(true)) {
             $User->setEnabled(false);
-            $atelier->setActive(false);
+            if ($atelier != null){
+                $atelier->setActive(false);
+                        }
         } else {
             $User->setEnabled(true);
+            if ($atelier != null){
             $atelier->setActive(true);
         }
+        }
         $em = $this->getDoctrine()->getManager();
+                    if ($atelier != null){
+
         $em->persist($atelier);
+    }
         $em->persist($User);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
@@ -1150,22 +1498,19 @@ class DefaultController extends Controller
         ));
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
         $atelier = $repository->findOneBy(array('franchise' => $id));
-        $atelier->setActive(false);
-        $em = $this->getDoctrine()->getManager();
+         $em = $this->getDoctrine()->getManager();
+
+        if ($atelier != null){
+            $atelier->setActive(false);
+            $em->persist($atelier);
+
+        }
         $em->persist($User);
-        $em->persist($atelier);
         $em->flush();
         $request->getSession()->getFlashBag()->add('notice', 'User bien désactivé.');
-
-
-
-
         return $this->render('AdminBundle:Default:users.html.twig', array(
             'listeUser' => $listeUser,
             'page' => $page,
-
-
-
         ));
 
     }

@@ -80,9 +80,14 @@ public function setToUserAction($id, Request $request)
         'ROLE_USER'
     ));
     $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-    $atelier = $repository->findOneBy(array('franchise' => $id));
-    $atelier->setActive(false);
+    $atelier = $repository->findOneBy(array('franchise' => $id));  
     $em = $this->getDoctrine()->getManager();
+
+    if ($atelier != null){
+          $atelier->setActive(false);
+          $em->persist($atelier);
+
+    }
     $em->persist($User);
     $em->flush();
     $request->getSession()->getFlashBag()->add('notice', 'Atelier bien supprimer.');

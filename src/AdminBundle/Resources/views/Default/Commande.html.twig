@@ -65,7 +65,12 @@
 <td>
 {% if product.Color1 %}
 {% set color1 = color1 +1 %}
-  <div id="color1_{{ color1 }}"><img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"><div>
+  <div id="color1_{{ color1 }}">
+
+  <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+  <div>
+
+
   <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
   {{ product.Color1.name }}
   </div>
