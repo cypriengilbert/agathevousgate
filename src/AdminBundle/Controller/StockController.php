@@ -9,6 +9,8 @@ use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\Stock;
+
 use CommerceBundle\Entity\Producer;
 use CommerceBundle\Entity\Atelier;
 use CommerceBundle\Entity\CodePromo;
