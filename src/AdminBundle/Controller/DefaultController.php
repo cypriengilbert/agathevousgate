@@ -36,14 +36,18 @@ class DefaultController extends Controller
         $page = 'dashboard';
         $session = $request->getSession();
         $dateout = $session->get('dateout');
+        $filtre = $session->get('filtre');
+
         if ($session->get('datein') === null) {
-            $datein = new \Datetime('2016-01-01');
+            $referenceDate = date('01-01-Y');
+            $datein = new \DateTime($referenceDate);
         } else {
             $datein = $session->get('datein');
+
         }
 
         if ($session->get('dateout') === null) {
-            $dateout = new \Datetime('2056-12-31');
+            $dateout = new \Datetime('now');
         } else {
 
             $dateout = $session->get('dateout');
@@ -51,11 +55,111 @@ class DefaultController extends Controller
         }
 
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
+       
 
-        // createQueryBuilder automatically selects FROM AppBundle:Product
-        // and aliases it to "p"
-        $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+       if($filtre == 'all' or $filtre == null){
+            $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+       } 
+       elseif($filtre == 'pro'){
+            $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro = 2')->orderBy('a.date', 'ASC');
+       }
+
+       elseif($filtre == 'part'){
+            $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro != 2')->orderBy('a.date', 'ASC');
+       }
+
+        
         $listeCommande = $query->getQuery()->getResult();
+
+
+        $totalCommande = 0;
+        $nbCommande = count($listeCommande);
+        $nb_commande_M = 0;
+        $nb_commande_Mme = 0;
+        $nb_commande_Mlle = 0;
+        $nbCommande_pro = 0;
+        $nbCommande_part = 0;
+        $nbCommande_Age['020'] = 0;
+        $nbCommande_Age['2030'] = 0;
+        $nbCommande_Age['3040'] = 0;
+        $nbCommande_Age['4050'] = 0;
+        $nbCommande_Age['5060'] = 0;
+        $nbCommande_Age['60'] = 0;
+        $delaiEnvoi = 0;
+        $nbEnvoi = 0;
+
+
+        foreach
+         ($listeCommande as $commande) {
+            $totalCommande = $totalCommande + $commande->getPrice();
+            $customer = $commande->getClient();
+            $yearCustomer = $customer->getNaissance()->format("Y");
+
+            $age = date("Y") - $yearCustomer;
+            if($age < 20 ){
+                $nbCommande_Age['020'] = $nbCommande_Age['020'] + 1;
+            }
+            elseif ($age >= 20 and $age < 30) {
+                $nbCommande_Age['2030'] = $nbCommande_Age['2030'] +1;
+            }
+            elseif ($age >= 30 and $age < 40) {
+                $nbCommande_Age['3040'] = $nbCommande_Age['3040'] +1;
+            }
+            elseif ($age >= 40 and $age < 50) {
+                $nbCommande_Age['4050'] = $nbCommande_Age['4050'] + 1;
+            }
+            elseif ($age >= 50 and $age < 60) {
+                $nbCommande_Age['5060'] =  $nbCommande_Age['5060'] +1;
+            }
+            elseif ($age >= 60) {
+                $nbCommande_Age['60'] = $nbCommande_Age['60'] +1;
+            }
+            if($customer->getGenre() == "monsieur"){
+                $nb_commande_M = $nb_commande_M + 1;
+            }
+            elseif ($customer->getGenre() == "madame") {
+                $nb_commande_Mme = $nb_commande_Mme + 1;
+            }
+            elseif ($customer->getGenre() == "mademoiselle") {
+                $nb_commande_Mlle = $nb_commande_Mlle + 1;
+
+            }
+            if($customer->getIsPro() == 2){
+                $nbCommande_pro = $nbCommande_pro + 1;
+            }
+
+            if($commande->getDateEnvoi() != null){
+                $delaiEnvoi = $delaiEnvoi + $commande->getDate()->diff($commande->getDateEnvoi())->format('%R%a days');
+                $nbEnvoi = $nbEnvoi +1;
+            }
+
+            
+        }
+
+        if($nbCommande != 0){
+            $nbCommande_part = (($nbCommande-$nbCommande_pro)/$nbCommande)*100;
+            $nbCommande_pro = ($nbCommande_pro/$nbCommande)*100;
+            $nb_commande_Mlle = ($nb_commande_Mlle/$nbCommande)*100;
+            $nb_commande_M = ($nb_commande_M/$nbCommande)*100;
+            $nb_commande_Mme = ($nb_commande_Mme/$nbCommande)*100;
+            $nbCommande_Age['020'] = ($nbCommande_Age['020']/$nbCommande)*100;
+            $nbCommande_Age['2030'] = ($nbCommande_Age['2030']/$nbCommande)*100;
+            $nbCommande_Age['3040'] = ($nbCommande_Age['3040']/$nbCommande)*100;
+            $nbCommande_Age['4050'] = ($nbCommande_Age['4050']/$nbCommande)*100;
+            $nbCommande_Age['5060'] = ($nbCommande_Age['5060']/$nbCommande)*100;
+            $nbCommande_Age['60'] = ($nbCommande_Age['60']/$nbCommande)*100;
+        }
+        else{
+            $nbCommande_part = 0;
+            $nbCommande_pro = 0;
+            $nb_commande_Mlle = 0;
+            $nb_commande_M = 0;
+            $nb_commande_Mme = 0;
+        }
+       
+       $delaiEnvoi = $delaiEnvoi / $nbEnvoi;
+
+
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
         $listeAddedProduct = $repository->findAll();
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
@@ -72,11 +176,7 @@ class DefaultController extends Controller
         $tableau_produit = array();
         $null            = null;
         foreach ($listeProduct as $valueProduct) {
-
             $repository = $this->getDoctrine()->getRepository('CommerceBundle:AddedProduct');
-
-            // createQueryBuilder automatically selects FROM AppBundle:Product
-            // and aliases it to "p"
             $query = $repository->createQueryBuilder('a')->select('count(a.id)')->join('a.commande', 'u')->where('u.date >= :datein')->setParameter('datein', $datein)->andWhere('u.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('u.isPanier = false')->andWhere('a.product = :id')->setParameter('id', $valueProduct->getId());
             $quantity_product = $query->getQuery()->getSingleScalarResult();
             $ligne_tableau_produit = array(
@@ -84,14 +184,14 @@ class DefaultController extends Controller
                 $quantity_product
             );
             array_push($tableau_produit, $ligne_tableau_produit);
-
-
         }
 
 
 
-        return $this->render('AdminBundle:Default:index.html.twig', array(
-            'listeAddedProduct' => $listeAddedProduct,
+
+
+        return $this->render('AdminBundle:Default:indexTest.html.twig', array(
+            'listeAddedProducts' => $listeAddedProduct,
             'listeCollection' => $listeCollection,
             'listeColor' => $listeColor,
             'listeProduct' => $listeProduct,
@@ -100,25 +200,32 @@ class DefaultController extends Controller
             'listeUser' => $listeUser,
             'tableau_produit' => $tableau_produit,
             'page' => $page,
-
+            'totalCommande' => $totalCommande,
+            'nbCommande' => $nbCommande,
+            'nb_commande_Mlle' => $nb_commande_Mlle,
+            'nb_commande_Mme' => $nb_commande_Mme,
+            'nb_commande_M' => $nb_commande_M,
+            'nbCommande_pro' => $nbCommande_pro,
+            'nbCommande_part' => $nbCommande_part,
+            'datein' => $datein,
+            'dateout' => $dateout,
+            'delaiEnvoi'=> $delaiEnvoi,
+            'nbCommande_Age' => $nbCommande_Age,
 
         ));
 
     }
 
     /**
-     * @Route("/s/setDate/{in}/{out}", name="setDate")
+     * @Route("/s/setFiltre/{in}/{out}/{filtre}", name="setFiltre")
      */
-    public function setDateAction(Request $request, $in, $out)
+    public function setDateAction(Request $request, $in, $out, $filtre)
     {
-
-      $page = 'dashboard';
-
+        $page = 'dashboard';
         $session = $request->getSession();
-
-        // store an attribute for reuse during a later user request
         $session->set('datein', $in);
         $session->set('dateout', $out);
+        $session->set('filtre', $filtre);
 
         $url      = $this->generateUrl('dashboard');
         $response = new RedirectResponse($url);
@@ -1654,5 +1761,7 @@ $user->setParrainage(0);
 
         ));
     }
+
+  
 
 }

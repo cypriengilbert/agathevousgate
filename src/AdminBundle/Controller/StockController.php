@@ -1,0 +1,125 @@
+<?php
+
+namespace AdminBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use CommerceBundle\Entity\Commande;
+use CommerceBundle\Entity\AddedProduct;
+use CommerceBundle\Entity\Collection;
+use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\Producer;
+use CommerceBundle\Entity\Atelier;
+use CommerceBundle\Entity\CodePromo;
+use CommerceBundle\Entity\defined_product;
+use UserBundle\Entity\User;
+use UserBundle\Form\RegistrationType;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+
+
+class StockController extends Controller
+{
+  /**
+   * @Route("/s/newProducer/{id}", name="newProducer")
+   */
+  public function newProducerAction(Request $request, $id)
+  {
+    $page = 'producer';
+
+      $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+      $user = $repository->findOneBy(array('id' => $id));
+      $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Producer');
+      $producer = $repository->findOneBy(array('user' => $id));
+      if ($producer == null){
+        $producer = new Producer();
+      }
+      $producer->setActive(true);
+      $user->setRoles(array(
+          'ROLE_ADMIN'
+      ));
+      $user->setIsPro(4);
+      $producer->setUser($user);
+      $form = $this->get('form.factory')->create('CommerceBundle\Form\ProducerType', $producer);
+      if ($form->handleRequest($request)->isValid()) {
+          $em = $this->getDoctrine()->getManager();
+          $producer->setUser($user);
+          $em->persist($producer);
+          $em->persist($user);
+          $em->flush();
+          $request->getSession()->getFlashBag()->add('notice', 'Producteur bien enregistrée.');
+
+          return $this->redirect($this->generateUrl('users', array(
+              'validate' => 'Producteur bien ajouté'
+          )));
+      }
+      return $this->render('AdminBundle:Default:addProducer.html.twig', array(
+          'form' => $form->createView(),
+          'page' => $page,
+          'user' => $user,
+          'producer' => $producer
+      ));
+}
+
+
+
+/**
+ * @Route("/s/setToUser/{id}", name="settouser")
+ */
+public function setToUserAction($id, Request $request)
+{
+  $page = 'atelier';
+
+    $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+    $User       = $repository->findOneBy(array(
+        'id' => $id
+    ));
+
+    $User->setIsPro(0);
+    $User->setRoles(array(
+        'ROLE_USER'
+    ));
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+    $atelier = $repository->findOneBy(array('franchise' => $id));  
+    $em = $this->getDoctrine()->getManager();
+
+    if ($atelier != null){
+          $atelier->setActive(false);
+          $em->persist($atelier);
+
+    }
+    $em->persist($User);
+    $em->flush();
+    $request->getSession()->getFlashBag()->add('notice', 'Atelier bien supprimer.');
+    return $this->redirect($this->generateUrl('users', array(
+        'validate' => 'Atelier bien supprimé'
+    )));
+
+
+}
+
+
+/**
+ * @Route("/s/listeAtelier", name="listeAtelier")
+ */
+public function listeAtelierAction()
+{
+  $page = 'atelier';
+
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
+    $ateliers = $repository->findAll();
+
+    return $this->render('AdminBundle:Default:listeAtelier.html.twig', array(
+      'ateliers' => $ateliers,
+      'page' => $page,
+
+    ));
+
+
+}
+
+
+
+}

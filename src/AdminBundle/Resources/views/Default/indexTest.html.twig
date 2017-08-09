@@ -1,133 +1,569 @@
 {% extends 'templateadmin.html.twig' %}
-
-
-
-{% block script_calcul %}
-
-{% endblock %}
-
 {% block body %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-5">
+           Date de début
+          </div>
+          <div class="col-md-5">
+           Date de fin 
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control datepicker" id="date_in" placeholder="Date de début">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control datepicker" id="date_out" placeholder="Date de fin">
+                </div> 
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary btn-fill" onclick="selectdate()">Valider</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+          <div class="content">
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-info {% if app.session.get('filtre') != 'pro' %}btn-fill{% endif %}" style="width:100%; margin-bottom:5px" onclick="selectfiltre('pro')">Filtre Pro</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn {% if app.session.get('filtre') != 'part' %}btn-fill{% endif %} btn-danger" style="width:100%" onclick="selectfiltre('part')">Filtre Particulier</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-success {% if app.session.get('filtre') != 'all' %}btn-fill{% endif %}"style="width:100%; margin-top:5px" onclick="selectfiltre('all')" >Aucun Filtre</button>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Montant de commande</h4>
+            <p class="category">
+              Total
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-size:35px; text-align:center">{{totalCommande}}€</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Nombre de commande</h4>
+            <p class="category">
+              Total
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-size:35px; text-align:center">{{nbCommande}}</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Panier moyen</h4>
+            <p class="category">
+              Total
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                {% if nbCommande != 0 %}
+                <p style="font-size:35px; text-align:center">{{(totalCommande/nbCommande)|round(2,'common')}}€</p>
+                {% else %}
+                <p style="font-size:35px; text-align:center">-- €</p>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Délai d'envoi</h4>
+            <p class="category">
+              En jours
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <p style="font-size:35px; text-align:center">{{delaiEnvoi}} J</p>
+                
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+ <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Commandes par jour</h4>
+            <p class="category">
+              Montant
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="chart_by_day" class="ct-chart "></div>
+            </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="row">
+            <div class="col-md-12">
+                <h6>Légende</h6>
+                <span class="label label-info">Pro</span>
+                <span class="label label-danger">Particulier</span>
+                <span class="label label-warning">Cumulé</span>
 
-<!-- the code for the display of the table -->
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+          <div class="header">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="title">Répartition</h4>
+                <p class="category">
+                 par âge
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="chartPie_age" class="ct-chart "></div>
+                </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Légende</h6>
+                    <span class="label label-info">Moins de 20 ans</span>
+                    <span class="label label-danger">20 à 30 ans</span>
+                    <span class="label label-warning">30 à 40 ans</span>
+                    <span class="label" style="background-color:#9368E9">40 à 50 ans</span>
+                    <span class="label label-success">50 à 60 ans</span>
+                    <span class="label label-primary">+ de 60 ans</span>
+                   
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+          <div class="header">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="title">Répartition</h4>
+                <p class="category">
+                 par genre
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="chartPie_gender" class="ct-chart "></div>
+                </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Légende</h6>
+                    <span class="label label-info">Madame</span>
+                    <span class="label label-danger">Mademoiselle</span>
+                    <span class="label label-warning">Monsieur</span>
 
-<div class="toolbar">
-    <!--        Here you can write extra buttons/actions for the toolbar              -->
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+          <div class="header">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="title">Répartition</h4>
+                <p class="category">
+                 par catégorie
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="chartPie_category" class="ct-chart "></div>
+                </div>
+            </div>
+          </div>
+          <div class="footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Légende</h6>
+                    <span class="label label-info">Pro</span>
+                    <span class="label label-danger">Particulier</span>
+                </div>
+            </div>
+        </div>
+    </div>
+   </div>
+
+</div>
+<div class="row">
+ <div class="col-md-12">
+    <ul role="tablist" class="nav nav-tabs">
+    {% for collection in listeCollection %}
+    <li role="presentation" class="">
+        <a href="#{{collection.title}}" data-toggle="tab">{{collection.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+    <div class="tab-content">
+    {% for collection in listeCollection %}
+    <div id="{{collection.title}}" class="tab-pane">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Collection</th>
+                        <th>Montant des ventes</th>
+                        <th>Nombre de ventes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set totalproduit = 0 %}
+                    {% set nb_total = 0 %}
+                    {% for listeProduct in listeProduct %}
+                        {% if listeProduct.nbColor > 0 %}
+                        {% for listeAddedProduct in listeAddedProducts %}
+                            {% if listeAddedProduct.commande and listeAddedProduct.commande.isPanier == 0  %}
+                                {% if date(listeAddedProduct.commande.date) >= date(datein) and date(listeAddedProduct.commande.date) <= date(dateout) %}
+                                {% if listeAddedProduct.product == listeProduct %}
+                                    {% if listeAddedProduct.collection == collection %}
+                                        {% set totalproduit = totalproduit + listeAddedProduct.priceRemise %}
+                                        {% set nb_total = nb_total + 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    <tr>
+                        <td>{{ listeProduct.cartname }}</td>
+                        <td>{{collection.title}}</td>
+                        <td>{{ totalproduit|round(2, 'common') }}€</td>
+                         <td>{{ nb_total }}</td>
+
+                    </tr>
+                        {% set totalproduit = 0 %}
+                         {% set nb_total = 0 %}
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+</div>
 </div>
 
-<table id="bootstrap-table" class="table">
-    <thead>
-        <th data-field="state" data-checkbox="true"></th>
-        <th data-field="id" class="text-center">ID</th>
-      <th data-field="name" data-sortable="true">Name</th>
-      <th data-field="salary" data-sortable="true">Salary</th>
-      <th data-field="country" data-sortable="true">Country</th>
-      <th data-field="city">City</th>
-      <th data-field="actions" class="td-actions text-right" data-events="operateEvents" data-formatter="operateFormatter">Actions</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td></td>
-          <td>1</td>
-          <td>Dakota Rice</td>
-          <td>$36,738</td>
-          <td>Niger</td>
-          <td>Oud-Turnhout</td>
-          <td></td>
-        </tr>
-        <tr>
-            <td></td>
-          <td>2</td>
-          <td>Minerva Hooper</td>
-          <td>$23,789</td>
-          <td>Curaçao</td>
-          <td>Sinaai-Waas</td>
-          <td></td>
-        </tr>
-    </tbody>
-</table>
-
-<!-- the javascript for the datatables -->
-<script type="text/javascript">
-    var $table = $('#bootstrap-table');
-
-    $().ready(function(){
-        $table.bootstrapTable({
-            toolbar: ".toolbar",
-            clickToSelect: true,
-            showRefresh: true,
-            search: true,
-            showToggle: true,
-            showColumns: true,
-            pagination: true,
-            searchAlign: 'left',
-            pageSize: 8,
-            clickToSelect: false,
-            pageList: [8,10,25,50,100],
-
-            formatShowingRows: function(pageFrom, pageTo, totalRows){
-                //do nothing here, we don't want to show the text "showing x of y from..."
-            },
-            formatRecordsPerPage: function(pageNumber){
-                return pageNumber + " rows visible";
-            },
-            icons: {
-                refresh: 'fa fa-refresh',
-                toggle: 'fa fa-th-list',
-                columns: 'fa fa-columns',
-                detailOpen: 'fa fa-plus-circle',
-                detailClose: 'fa fa-minus-circle'
-            }
-        });
-
-        //activate the tooltips after the data table is initialized
-        $('[rel="tooltip"]').tooltip();
-
-        $(window).resize(function () {
-            $table.bootstrapTable('resetView');
-        });
-
-        window.operateEvents = {
-            'click .view': function (e, value, row, index) {
-                info = JSON.stringify(row);
-
-                swal('You click view icon, row: ', info);
-                console.log(info);
-            },
-            'click .edit': function (e, value, row, index) {
-                info = JSON.stringify(row);
-
-                swal('You click edit icon, row: ', info);
-                console.log(info);
-            },
-            'click .remove': function (e, value, row, index) {
-                console.log(row);
-                $table.bootstrapTable('remove', {
-                    field: 'id',
-                    values: [row.id]
-                });
-            }
-        };
-    });
-
-    function operateFormatter(value, row, index) {
-        return [
-            '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
-                '<i class="fa fa-image"></i>',
-            '</a>',
-            '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
-                '<i class="fa fa-edit"></i>',
-            '</a>',
-            '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
-                '<i class="fa fa-remove"></i>',
-            '</a>'
-        ].join('');
-    }
 
 
+{# <div class="row">
+ <div class="col-md-12">
+ <div class="card">
+          <div class="header">
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="title">Répartition</h4>
+                <p class="category">
+                 par couleur
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    
+    <ul role="tablist" class="nav nav-tabs">
+    {% for product in listeProduct %}
+    {%  if product.nbColor > 0 %}
+    <li role="presentation" class="">
+        <a href="#{{product.name}}" data-toggle="tab">{{product.cartname}}</a>
+    </li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    <div class="tab-content">
+    {% for product in listeProduct %}
+   {% if product.nbColor > 0 %}
+
+    <div id="{{product.name}}" class="tab-pane">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Couleur</th>
+                        <th>Nombre de ventes (Couleur 1)</th>
+                        <th>Nombre de ventes (Couleur 2)</th>
+                        <th>Nombre de ventes (Couleur 3)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set nb_total1 = 0 %}
+                    {% set nb_total2 = 0 %}
+                    {% set nb_total3 = 0 %}
+                    {% for color in listeColor %}
+                        {% for listeAddedProduct in listeAddedProducts %}
+                            {% if listeAddedProduct.commande and listeAddedProduct.commande.isPanier == 0  %}
+                                {% if date(listeAddedProduct.commande.date) >= date(datein) and date(listeAddedProduct.commande.date) <= date(dateout) %}
+                                {% if listeAddedProduct.product == product %}
+                                    {% if listeAddedProduct.color1 == color  %}
+                                        {% set nb_total1 = nb_total1 + 1 %}
+                                    {% elseif listeAddedProduct.color2 == color %}
+                                        {% set nb_total2 = nb_total2 + 1 %}
+                                    {% elseif listeAddedProduct.color3 == color %}
+                                        {% set nb_total3 = nb_total3 + 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    <tr>
+                        <td>{{color.namePublic}}</td>
+                         <td>{{ nb_total1 }}</td>
+                         <td>{{ nb_total2 }}</td>
+                         <td>{{ nb_total3 }}</td>
+                    </tr>
+                         {% set nb_total1 = 0 %}
+                         {% set nb_total2 = 0 %}
+                         {% set nb_total3 = 0 %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+    
+</div>
+</div>
+</div>
+            </div> #}
+          </div>
+    <script src="{{ asset('admin/assets/js/moment.min.js')}}"></script>
+
+    <script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/fullcalendar.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/chartist.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-table.js')}}"></script>
+       <script src="{{ asset('admin/assets/js/bootstrap-checkbox-radio-switch-tags.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-selectpicker.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-notify.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/demo.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/sweetalert2.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/light-bootstrap-dashboard.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-datetimepicker.js')}}"></script>
+<script>
+
+$('#date_in').datetimepicker({
+    icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+    },
+    format: 'Do MMMM YYYY',
+    defaultDate: '{{datein|date("Y-m-d")}}',
+
+});
+
+$('#date_out').datetimepicker({
+    icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+    },
+    format: 'Do MMMM YYYY',
+    defaultDate: '{{dateout|date("Y-m-d")}}',
+
+});
+</script>
+<script>
+
+var dataSales = {
+
+  labels: [{% set total=0 %}{% for ca in listeCommande %}'{{ ca.date|date("d-m") }}'{% if loop.last == false %},{% endif %}{% endfor %}],
+
+  series: [
+
+            [{% set totalPro=0 %}{% for ca in listeCommande %}{% if ca.client.isPro >= 2 %}{% set totalPro = totalPro + ca.price %}{{ totalPro }}{% else %}{{ totalPro }}{% endif %}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% set totalPart=0 %}{% for ca in listeCommande %}{% if ca.client.isPro < 2 %}{% set totalPart = totalPart + ca.price %}{{ totalPart }}{% else %}{{ totalPart }}{% endif %}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% set total=0 %}{% for ca in listeCommande %}{% set total = total + ca.price %}{{ total }}{% if loop.last == false %},{% endif %}{% endfor %}]
+            
+            
+        ]
+
+};
+
+
+
+var optionsSales = {
+
+  lineSmooth: false,
+
+  axisY: {
+
+    offset: 40
+
+  },
+
+  low: 0
+
+};
+
+
+
+Chartist.Line('#chart_by_day', dataSales, optionsSales);
+
+
+
+Chartist.Pie('#chartPie_gender', {
+
+  labels: ['{{nb_commande_Mme|round(2,'common')}}%','{{nb_commande_Mlle|round(2,'common')}}%','{{nb_commande_M|round(2,'common')}}%'],
+
+  series: [{{nb_commande_Mme}}, {{nb_commande_Mlle}}, {{nb_commande_M}}]
+
+});
+Chartist.Pie('#chartPie_age', {
+
+  labels: ['{{nbCommande_Age['020']|round(2,'common')}}%','{{nbCommande_Age['2030']|round(2,'common')}}%','{{nbCommande_Age['3040']|round(2,'common')}}%','{{nbCommande_Age['4050']|round(2,'common')}}%','{{nbCommande_Age['5060']|round(2,'common')}}%','{{nbCommande_Age['60']|round(2,'common')}}%'],
+
+  series: [{{nbCommande_Age['020']}}, {{nbCommande_Age['2030']}}, {{nbCommande_Age['3040']}}, {{nbCommande_Age['4050']}},{{nbCommande_Age['5060']}},{{nbCommande_Age['60']}}]
+
+});
+Chartist.Pie('#chartPie_category', {
+
+  labels: ['{{nbCommande_pro|round(2,'common')}}%','{{nbCommande_part|round(2,'common')}}%','15%','11%'],
+
+  series: [{{nbCommande_pro}}, {{nbCommande_part}}]
+
+});
 </script>
 
+<script>
+            function selectdate(){
+            datein = document.getElementById('date_in').value;
+            dateout = document.getElementById('date_out').value;
+            filtre = {% if app.session.get('filtre') is null %}'all'{% else %}'{{ app.session.get('filtre')}}'{% endif%};
+            var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE'}) }}";
+            route = route.replace("DATEIN", datein);
+            route = route.replace("DATEOUT", dateout);
+            route = route.replace("FILTRE", filtre);
+            window.location.href = route;
+            }
+
+            function selectfiltre(x){
+            datein = document.getElementById('date_in').value;
+            dateout = document.getElementById('date_out').value;
+            filtre = x;
+            var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE'}) }}";
+            route = route.replace("DATEIN", datein);
+            route = route.replace("DATEOUT", dateout);
+            route = route.replace("FILTRE", filtre);
+            window.location.href = route;
+            }
+         </script>
 {% endblock %}
 
-{% block script_chart %}
-
-{% endblock %}

@@ -114,6 +114,13 @@ class Commande
          */
           private $atelier_livraison;
 
+              /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEnvoi", type="datetime")
+     */
+    private $dateEnvoi;
+
     /**
      * Get id
      *
@@ -415,5 +422,29 @@ class Commande
     public function getTransportCost()
     {
         return $this->transportCost;
+    }
+
+    /**
+     * Set numerosuivi
+     *
+     * @param string $numerosuivi
+     *
+     * @return Commande
+     */
+    public function setNumerosuivi($numerosuivi)
+    {
+        $this->numerosuivi = $numerosuivi;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosuivi
+     *
+     * @return string
+     */
+    public function getNumerosuivi()
+    {
+        return $this->numerosuivi;
     }
 }

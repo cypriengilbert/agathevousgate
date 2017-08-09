@@ -114,6 +114,13 @@ class Commande
          */
           private $atelier_livraison;
 
+              /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateEnvoi", type="datetime", nullable=true)
+     */
+    private $dateEnvoi;
+
     /**
      * Get id
      *
@@ -439,5 +446,29 @@ class Commande
     public function getNumerosuivi()
     {
         return $this->numerosuivi;
+    }
+
+    /**
+     * Set dateEnvoi
+     *
+     * @param \DateTime $dateEnvoi
+     *
+     * @return Commande
+     */
+    public function setDateEnvoi($dateEnvoi)
+    {
+        $this->dateEnvoi = $dateEnvoi;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEnvoi
+     *
+     * @return \DateTime
+     */
+    public function getDateEnvoi()
+    {
+        return $this->dateEnvoi;
     }
 }
