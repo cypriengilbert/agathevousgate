@@ -121,5 +121,84 @@ public function listeAtelierAction()
 }
 
 
+  /**
+   * @Route("/s/stock", name="stock")
+   */
+  public function StockAction(Request $request)
+  {
+    $page  = 'stock';
+    $products = $this->getAll('Product');
+    $colors = $this->getAll('Color');
+    $stocks = $this->getAll('Stock');
+
+    return $this->render('AdminBundle:Default:stock.html.twig', array(
+      'page' => $page,
+      'products' => $products,
+      'colors' => $colors,
+      'stocks' => $stocks,
+    ));
+
+
+  }
+
+  /**
+   * @Route("/s/stock/{product}", name="addstock")
+   */
+  public function addStockAction(Request $request, $product)
+  {
+    $page  = 'stock';
+    $product_selected = $this->getOneBy('Product', array('name' => $product));
+    $colors = $this->getAll('Color');
+    $stocks = $this->getBy('Stock', array('product' => $product_selected));
+    $i = 0;
+    $stockList = new StockList(); // This is our model, what Francesco called 'TaskList'
+
+    foreach ($stocks as $stock) {
+    $stockList->addStock($stock);
+    }
+
+      $form = $this->get('form.factory')->create('CommerceBundle\Form\StockListType', $stockList);
+      if ($form->handleRequest($request)->isValid()) {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist( $stockList);
+        $em->flush();
+        return $this->redirect($this->generateUrl('addstock'));
+
+    }
+
+
+
+    return $this->render('AdminBundle:Default:addstock.html.twig', array(
+      'page' => $page,
+      'product' => $product_selected,
+      'colors' => $colors,
+      'stocks' => $stocks,
+      'forms' => $form->createView(),
+    ));
+
+
+  }
+
+
+  public function getAll($entity){
+    $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
+    $entities   = $repository->findAll();
+    return $entities;
+  }
+
+  public function getBy($entity, $arrayParam){
+    $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
+    $entities= $repository->findBy($arrayParam);
+    return $entities;
+  }
+
+  public function getOneBy($entity, $arrayParam){
+    $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:'.$entity);
+    $entities = $repository->findOneBy($arrayParam);
+    return $entities;
+  }
+
+
+
 
 }
