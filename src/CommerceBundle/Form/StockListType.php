@@ -35,7 +35,7 @@ class StockListType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'AdminBundle\Model\StockList'
+                'data_class' => 'CommerceBundle\Model\StockList'
             )
         );
     }

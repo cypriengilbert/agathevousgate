@@ -12,7 +12,7 @@ use CommerceBundle\Entity\Color;
 use CommerceBundle\Entity\Stock;
 use CommerceBundle\Entity\Producer;
 use CommerceBundle\Entity\Atelier;
-use AdminBundle\Model\StockList;
+use CommerceBundle\Model\StockList;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use UserBundle\Entity\User;

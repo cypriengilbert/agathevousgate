@@ -1,13 +1,13 @@
 <?php
 
-namespace AdminBundle\Model;
+namespace CommerceBundle\Model;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class StockList
- * @package AdminBundle\Model
+ * @package CommerceBundle\Model
  *
  * @ORM\Entity()
  */

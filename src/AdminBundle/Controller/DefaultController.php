@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
+use CommerceBundle\Entity\Stock;
 use CommerceBundle\Entity\Color;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
@@ -24,10 +25,13 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 
+   
+
 
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/s", name="dashboard")
      */
@@ -910,7 +914,8 @@ class DefaultController extends Controller
             'date' => 'ASC'
         ));
 
-
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+        $listeProduct = $repository->findAll();
 
         $newColor = new Color();
         $newColor->setIsActive(true);
@@ -923,6 +928,17 @@ class DefaultController extends Controller
             $nomsansespace = str_replace(' ','_',$newColor->getName());
             $nomsansespace = str_replace("'","-",$nomsansespace);
             $newColor->setName($nomsansespace);
+            foreach ($listeProduct as $product) {
+                if($product->getNbColor() > 0){
+                    $newStock = new Stock();
+                    $newStock->setQuantity(0);
+                    $newStock->setProduct($product);
+                    $newStock->setColor($newColor);
+                    $em->persist($newStock);
+                    $em->flush();
+                }
+            }
+
             $em->persist($newColor);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');

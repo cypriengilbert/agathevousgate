@@ -2463,6 +2463,43 @@ class CommerceController extends Controller
         $product           = $this->getOneBy('defined_product', array(
             'id' => $id
         ));
+        $stock_faible           = $this->getOneBy('Variable', array(
+            'name' => 'stock_faible'
+        ))->getMontant();
+
+        $rectangle  = $this->getOneBy('Product', array(
+         'name' => 'Rectangle_grand'
+        ));
+
+        $stock_color1 = $this->getOneBy('Stock', array(
+            'product' => $rectangle, 'color' => $product->getColor1()
+        ))->getQuantity();
+        $stock_color2 = $this->getOneBy('Stock', array(
+            'product' => $rectangle, 'color' => $product->getColor2()
+        ))->getQuantity();
+        $stock_color3 = $this->getOneBy('Stock', array(
+            'product' => $rectangle, 'color' => $product->getColor3()
+        ))->getQuantity();
+
+        if($stock_color1 > $stock_faible && $stock_color2 > $stock_faible && $stock_color3 > $stock_faible){
+            $stock_noeud = '3';
+        }
+        if($stock_color1 <= $stock_faible or $stock_color2 <= $stock_faible or $stock_color3 <= $stock_faible)
+        {
+            $stock_noeud = '2';
+        }
+
+        if($stock_color1 <= $stock_faible and $stock_color2 <= $stock_faible and $stock_color3 <= $stock_faible)
+        {
+            $stock_noeud = '1' ;
+        }
+
+        if($stock_color1 == 0 or $stock_color2 == 0 or $stock_color3 == 0)
+        {
+            $stock_noeud = '0';
+        }
+        
+
         $allproduct        = $this->getAll('product');
         $nbarticlepanier   = $this->countArticleCart();
         $idCollection      = $product->getCollection()->getId();
@@ -2488,7 +2525,8 @@ class CommerceController extends Controller
             'allproduct' => $allproduct,
             'tva' => $tva,
             'collection_on' => $collectionOngoing,
-            'reductions' => $allreduction
+            'reductions' => $allreduction,
+            'stock_noeud' => $stock_noeud,
         ));
     }
 
