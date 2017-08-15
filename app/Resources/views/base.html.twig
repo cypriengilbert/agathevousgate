@@ -163,26 +163,25 @@
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
             {% if collection is defined %}
-        <li class="dropdown {% if page == 'tissu' %}active{% endif%}"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Boutique<span class="caret"></span></a>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Boutique<span class="caret"></span></a>
           <ul class="dropdown-menu">
-
+                    <li>
+                    <a href="{{path ('generic')}}"> Produits génériques</a>
+                    </li>
+                    <li>
+                    <a href="{{path ('boutique_collection', {'name': 'Basic' })}}"> Couleurs unies</a>
+                    </li>
               {% for col in collection %}
 
-                    <li class="">
-                        <a class="page-scroll border_menu" href="{{ path('boutique_collection', {'name': col.title }) }}">{{ col.title }}</a>
+                    <li>
+                        <a href="{{ path('boutique_collection', {'name': col.title }) }}">{{ col.title }}</a>
                     </li>
 
                     {% endfor %}
+
           </ul>
         </li>
           {% endif %}
-          {% endif %}
-
-
-
-
-          {% if app.user.isPro == 1 %}
-          <li class="{% if page == 'rectangle' %}active{% endif%}"><a href="{{ path('listeProRectangle') }}">Pro</a></li>
           {% endif %}
         {% endif %}
 
@@ -215,8 +214,6 @@
     </div>
   </div>
 </nav>
-
-
 
 
     <body style="/*margin-top:150px; margin-bottom:150px*/">

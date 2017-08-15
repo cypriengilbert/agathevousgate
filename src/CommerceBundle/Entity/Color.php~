@@ -39,7 +39,7 @@ class Color
     /**
      * @var string
      *
-     * @ORM\Column(name="codehexa", type="string")
+     * @ORM\Column(name="codehexa", type="string", nullable=true)
      */
     private $codehexa;
 
@@ -111,6 +111,8 @@ class Color
      * @var File
      */
     private $tissuMilieuColorFile;
+
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -222,6 +224,11 @@ class Color
      * @var \DateTime
      */
     private $noeud3updatedAt;
+
+         /**
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Collection", cascade={"persist"}, inversedBy="colors")
+     */
+     private $colors;
 
 
 
@@ -641,12 +648,10 @@ class Color
 
     public function removeCollection(Collection $collection)
     {
-        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
         $this->collections->removeElement($collection);
     }
 
-    // Notez le pluriel, on récupère une liste de catégories ici !
-    public function getCollection()
+    public function getCollections()
     {
         return $this->collections;
     }

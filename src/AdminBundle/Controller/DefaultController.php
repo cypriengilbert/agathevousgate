@@ -161,7 +161,12 @@ class DefaultController extends Controller
             $nb_commande_Mme = 0;
         }
        
-       $delaiEnvoi = $delaiEnvoi / $nbEnvoi;
+       if($nbEnvoi != 0){
+        $delaiEnvoi = $delaiEnvoi / $nbEnvoi;
+       }
+       else {
+        $delaiEnvoi = 0;
+       }
 
 
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -1375,7 +1380,6 @@ class DefaultController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($company);
              $em->persist($user);
-
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Reduction bien enregistrée.');
 
@@ -1383,7 +1387,6 @@ class DefaultController extends Controller
                 'user' => $user,
                 'page' => $page, 
                 'id' => $id
-
 
             )));
         }
@@ -1403,9 +1406,8 @@ class DefaultController extends Controller
          */
         public function usersCompanyValidationAction($id, Request $request)
         {
-
           $page = 'users';
-
+          
             $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $user  = $repository->findOneBy(array(
             'id' => $id));
@@ -1418,10 +1420,10 @@ class DefaultController extends Controller
             $proReduc  = $repository->findBy(array(
             'account' => $user));
             $erasedReduc = $company->getReductionGeneric();
+            $em = $this->getDoctrine()->getManager();
 
-            $form = $this->get('form.factory')->create('UserBundle\Form\CompanyReducType', $company);
+           $form = $this->get('form.factory')->create('UserBundle\Form\CompanyReducType', $company);
             if ($form->handleRequest($request)->isValid()) {
-            $user->setIsPro('2');
             $em = $this->getDoctrine()->getManager();
             $y = 0;
             if($proReduc == null){
@@ -1464,12 +1466,10 @@ class DefaultController extends Controller
 
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($company);
-                        $em->flush();
-
-             $em->persist($user);
-
+            
+        $em->persist($company);
+            $user->setIsPro(2);
+            $em->persist($user);
             $em->flush();
 
 
@@ -1483,10 +1483,14 @@ class DefaultController extends Controller
            
           }
         
+        $em->persist($company);
+            $user->setIsPro(2);
+            $em->persist($user);
+            $em->flush();
             return $this->render('AdminBundle:Default:editReducCompany.html.twig', array(
                 'user' => $user,
                 'page' => $page,
-                'form' => $form->createView(),
+               // 'form' => $form->createView(),
 
             ));
 
@@ -1498,19 +1502,16 @@ class DefaultController extends Controller
         public function usersCompanyDeactivateAction($id, Request $request)
         {
 
-          $page = 'users';
+            $page = 'users';
 
             $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
             $user  = $repository->findOneBy(array(
             'id' => $id));
             $company = $user->getCompany();
            
-           $user->setIsPro(0);
+            $user->setIsPro(0);
             $em = $this->getDoctrine()->getManager();
-
-
-             $em->persist($user);
-
+            $em->persist($user);
             $em->flush();
            
 

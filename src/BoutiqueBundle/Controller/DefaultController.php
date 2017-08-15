@@ -65,21 +65,36 @@ class DefaultController extends Controller
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER') and $user->getIsPro() == 2) {
             $page = 'boutique';
+
+            
+
+
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette'")->getQuery();
             $products = $query->getResult();
-
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-            $collection   = $repository->findOneBy(array('title' => $name));
             $allCollection = $repository->findAll();
-            $sortedColors        = $collection->getColors();
 
+            if($name != 'Basic'){
+            $collection   = $repository->findOneBy(array('title' => $name));
+            $sortedColors        = $collection->getColors();
+          }else
+          {
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+            $sortedColors = $repository->findBy(array(
+                'isBasic' => 1,
+            ));
+            $collection = null;
+
+
+          }
             return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
                 'products' => $products,
                 'page' => $page,
                 'colors' => $sortedColors,
-                'collection' => $collection,
-                'allCollection' => $allCollection
+                'collection1' => $collection,
+                'allCollection' => $allCollection,
+                'collection' => $allCollection
             ));
 
         }
@@ -171,7 +186,27 @@ class DefaultController extends Controller
 
 
               $added_product->setProduct($product);
-              $added_product->setCollection($collection);
+              if($collection == null){
+                 $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                  $allcollection   = $repository->findAll();
+                 foreach ($allcollection as $allcollection) {
+                 $collection_color = $allcollection->getColors();
+                  foreach ($collection_color as $collection_color) {
+                    if($collection_color == $color){
+                      $collection_by_default = $allcollection;
+                      break;
+                    }
+                  }
+                  if($collection_by_default != null){
+                    break;
+                  }
+
+                 }
+                $added_product->setCollection($collection_by_default);
+              }
+              else{
+                $added_product->setCollection($collection);
+                }
               $added_product->setColor1($color);
               $added_product->setCommande(null);
               $added_product->setQuantity($line[2]);
@@ -207,24 +242,17 @@ class DefaultController extends Controller
           else{$cartArray = [];}
 
 
+              if($collection == null){
+             $url      = $this->generateUrl('boutique_collection', array('name' => 'Basic' ));
 
-          $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-          $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette'")->getQuery();
-          $products = $query->getResult();
+              }
+              else{
+                 $url      = $this->generateUrl('boutique_collection', array('name' => $collection->getTitle() ));
+                }
+          
+            $response = new RedirectResponse($url);
 
-          $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-
-          $allCollection = $repository->findAll();
-          $sortedColors        = $collection->getColors();
-
-          return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
-              'products' => $products,
-              'page' => $page,
-              'colors' => $sortedColors,
-              'collection' => $collection,
-              'allCollection' => $allCollection,
-              'cartArray' => $cartArray,
-          ));
+            return $response;
         }
 
 

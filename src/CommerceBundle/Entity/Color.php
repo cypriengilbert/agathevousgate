@@ -641,12 +641,10 @@ class Color
 
     public function removeCollection(Collection $collection)
     {
-        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
         $this->collections->removeElement($collection);
     }
 
-    // Notez le pluriel, on récupère une liste de catégories ici !
-    public function getCollection()
+    public function getCollections()
     {
         return $this->collections;
     }
