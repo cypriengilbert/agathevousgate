@@ -1,6 +1,114 @@
 {% extends 'base.html.twig' %} {% block body %}
 <style>
 
+/* CodePen demo */
+
+
+.big {
+  font-size: 1.2em;
+}
+
+#link_generic{
+  position:absolute;
+  right:0px;
+  height:100%;
+  top:35%;
+}
+
+.bouton_generic{
+  color:white;
+   background-color: white;
+   color: #25225b;
+   padding:10px;
+    border:1px solid #25225b;
+     border-radius:20px;
+}
+
+.bouton_generic:hover{
+  color:white;
+   background-color:  #25225b;
+   color:white;
+   padding:10px;
+    border:1px solid white;
+     border-radius:20px;
+     text-decoration:none;
+}
+
+
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px; /* demo only */
+}
+
+.custom-dropdown select {
+  background-color: #FFF;
+  color: #242258;
+  font-size: 2.4rem;
+  padding: .5em;
+  padding-right: 2.5em; 
+  font-weight:bold;
+  font-family: Courier New, Courier, Lucida Sans Typewriter, Lucida Typewriter, monospace;
+  border: 0;
+  margin: 0;
+  border-radius: 3px;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button; /* hide default arrow in chrome OSX */
+  -moz-appearance: none;
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.custom-dropdown::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: 2.4rem;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.custom-dropdown::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 3px 3px 0;
+    display:none;
+
+}
+
+.custom-dropdown select[disabled] {
+  color: rgba(0,0,0,.3);
+
+}
+
+.custom-dropdown select[disabled]::after {
+  color: rgba(0,0,0,.1);
+      display:none;
+
+}
+
+.custom-dropdown::before {
+  background-color: rgba(0,0,0,.15);
+      display:none;
+
+}
+
+.custom-dropdown::after {
+  color: rgba(0,0,0,.4);
+
+}
+
   @media (min-width: 768px) {
   .validate_cart_button{
     background-color:#242258;
@@ -36,6 +144,9 @@
   }
   }
   @media (max-width: 768px) {
+  #link_generic{
+  display:none;
+  }
   .see_generic{
 
   width:50%;
@@ -74,13 +185,39 @@
 </style>
 <body>
     <div class="container">
-    <h1 class="text-center">
-    {% if collection1 is null %}
-    Couleurs unies
-    {% else %}
-    Collection {{ collection1.title}}
-    {% endif %}
-    </h1>
+<div class="row">
+<div class="col-sm-2 no_padding">
+    </div>
+  <div class="col-sm-8 no-padding text-left" style="margin-bottom:30px;">
+  <span class="custom-dropdown big">
+      <select id="select_collection" onchange="change_collection(this);">
+          {% if collection1 is null %}
+         <option> Couleurs unies</option>
+         {% for collectionList in allCollection %}
+          <option>{{ collectionList.title }}</option>  
+          {% endfor %}
+          {% else %}
+          <option>Collection {{ collection1.title }} </option>
+          {% for collectionList in allCollection %}
+          <option>{{ collectionList.title }}</option>  
+          {% endfor %}
+          <option>Couleurs unies</option>
+           {% endif %}
+
+      </select>
+  </span>
+  <span id="link_generic">    <a class="bouton_generic" style="" href="{{ path('generic')}}">Produits génériques</a>
+</span>
+  </div>
+    
+    <div class="col-sm-2 no_padding">
+    </div>
+</div>
+
+
+
+
+
     <div class="row">
    {# <div class="col-sm-2 no_padding">
     <a  style="position:fixed" href="{{path('boutique_collection', {'name': 'Basic' })}}">Couleurs unies</a>
@@ -91,6 +228,8 @@
 
 
     </div> #}
+
+
     <div class="col-sm-2 no_padding">
     </div>
     <div class="col-sm-8 no_padding">
@@ -128,6 +267,9 @@
                             <div class="col-sm-1">
                             </div>
                           {% for product in products %}
+                          {% for accepted_product in accepted_products %}
+
+                          {% if product.name == accepted_product %}
                             <div class="col-sm-2">
                               <div class="row">
                                 <div class="col-sm-12 text-center" style="min-height: 50px; " >
@@ -146,6 +288,8 @@
                                 </div>
                               </div>
                             </div>
+                            {% endif %}
+                            {% endfor %}
 
                             {% endfor %}
                             <div class="col-sm-1">
@@ -199,10 +343,14 @@ var finalCart = [];
   {% for color in colors %}
    {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
     {% for product in products %}
+      {% for accepted_product in accepted_products %}
+        {% if accepted_product == product.name %}
         value = document.getElementById('quantity_{{product.id}}_{{color.id}}').value;
-
         finalCart.push([{{product.id}},{{color.id}},value ]);
+        {% endif %}
+      {% endfor %}
     {% endfor %}
+
     {% endif %}
   {% endfor %}
   var finalJsonCart = JSON.stringify(finalCart);
@@ -235,7 +383,11 @@ document.getElementById("buttonValidateCart").click();
   var id = 'nb-item-'+color_id;
   var value = 0;
    {% for product in products %}
-   value += parseInt(document.getElementById('quantity_{{product.id}}_'+color_id).value);
+      {% for accepted_product in accepted_products %}
+        {% if accepted_product == product.name %} 
+             value += parseInt(document.getElementById('quantity_{{product.id}}_'+color_id).value);
+        {% endif %}
+      {% endfor %}
   {% endfor %}
   if (value == 0) {
   document.getElementById(id).innerHTML = '';
@@ -250,7 +402,11 @@ var value_total = 0;
 {% for color in colors %}
    {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
     {% for product in products %}
+      {% for accepted_product in accepted_products %}
+        {% if accepted_product == product.name %} 
         value_total += parseInt(document.getElementById('quantity_{{product.id}}_{{color.id}}').value);
+          {% endif %}
+       {% endfor %} 
     {% endfor %}
     {% endif %}
 {% endfor %}
@@ -265,5 +421,16 @@ if (value == 0) {
   document.getElementById('nb_item_pending').innerHTML = value_total+' articles';
   }
   }
+</script>
+
+<script>
+function change_collection(dropdown){
+  var route = "{{path('addBoutiqueToCart', {'name': 'TITLE'} )}}";
+  route = route.replace("TITLE", dropdown.value);
+    window.location = route;
+
+
+}
+
 </script>
 {% endblock %}

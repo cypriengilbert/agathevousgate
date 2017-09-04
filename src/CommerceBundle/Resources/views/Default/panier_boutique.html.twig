@@ -1,0 +1,355 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<style>
+  table.one {                  
+  margin-bottom: 3em; 
+  border-collapse:collapse;
+  display: inline-block;
+  margin-right: 3em;    } 
+
+  
+  table.one td {                
+  text-align: center;     
+  width: 13em;          
+  padding: 1em;     }   
+
+
+  table.one th {                
+  text-align: center;         
+  padding: 1em;
+  background-color: #242258;      
+  color: white;   }           
+
+  table.one tr {  
+  height: 1em;  }
+
+  table.one tr:nth-child(even) {      
+    background-color: #fff;   }
+
+  table.one tr:nth-child(odd) {     
+  background-color:#eee;    }
+    table caption {
+    padding-bottom: 1em;    }
+
+    @media (max-width: 768px) {
+    .color_name_mobile{
+    display:block;
+    }
+    }
+
+    @media (min-width: 768px) {
+    .color_name_mobile{
+    display:none;
+    }
+    }
+
+</style>
+
+{% set totalsum = null %}{% set numero_ligne = 0 %}
+               {% set remise = 0 %}
+               {% for listepanier in listePanier %}
+                  {% set totalsum = totalsum + (listepanier.priceTemp * listepanier.quantity) %}
+               {% endfor %}
+               {% for key, listepanier in listePanierParent %}
+               
+                        {% set is_alone = 1 %}
+                        {% set price_line = 0 %}
+                          {% for listepanierenfant in listePanierEnfant %}
+                            {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
+                              {% set is_alone = 0 %}
+                              {% set price_line = listepanier.priceTemp %}
+                            {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
+                              {% set is_alone = 0 %}
+                              {% set price_line = listepanier.priceTemp %}
+                            {% endif  %}
+                          {% endfor %}
+                          {% if is_alone == 1 %}
+                            {% if listepanier.product.name == 'Noeud' %}
+                              {% set price_line =  listepanier.priceTemp %}
+                            {% endif %}
+
+                          {% for listepanierenfant in listePanierEnfant %}
+                              {% if (listepanierenfant.product.name == 'Coffret1') and (listepanierenfant.parent == listepanier) %}
+                                  {% set price_line = price_line + listepanierenfant.priceTemp %}
+                              {% elseif (listepanierenfant.product.name == 'Coffret2') and (listepanierenfant.parent == listepanier) %}
+                                  {% set price_line = price_line + listepanierenfant.priceTemp %}
+                              {% endif %}
+                          {% endfor %}
+                          {% for listepanierenfant in listePanierEnfant %}
+                              {% if (listepanierenfant.product.name == 'Pochette') and (listepanierenfant.parent == listepanier) %} 
+                                  {% set price_line = price_line + listepanierenfant.priceTemp %}
+                              {% elseif (listepanierenfant.product.name == 'Boutons') and (listepanierenfant.parent == listepanier) %}
+                                  {% set price_line = price_line + listepanierenfant.priceTemp %}
+                              {% endif %}
+                          {% endfor %}
+                          {% if price_line != 0 %}
+                           
+                          {%  endif %}
+                        {% endif %}
+                  {% endfor %}
+<body>
+   <section>
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-12 text-center">
+               <h2 class="section-heading">Votre panier {% if not listePanier %} est vide {% endif %}
+               </h2>
+               <hr class="primary">
+               <br/>
+            </div>
+         </div>
+      </div>
+
+      {% if listePanier %}
+      <div class="container">
+          <div class="row">
+              <div class="col-md-9">
+                <div class="row">
+                  <div class="col-md-12">
+
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                  {% for key, AddedProductByProduct in AddedProductByProduct %}
+                      {% if AddedProductByProduct %}
+                      
+                         <h2> {{ key }}</h2><br>
+                          <table class="one">
+                            <thead>
+                              <tr>
+                                <th>Couleur</th>
+                                <th>Quantité</th>
+                                <th>Prix unitaire</th>
+                                <th>Total</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for items in AddedProductByProduct %}
+                              <tr>
+                                <td>
+                                   {% if items.Color1 %}
+                                      <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color1.namePublic }}">
+                                      <span class="color_name_mobile">{{ items.Color1.namePublic }}</span>
+                                    {% endif %}
+                                    {% if items.Color2 %}
+                                      <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color2.namePublic }}">
+                                      <span class="color_name_mobile">{{ items.Color2.namePublic }}</span>
+                                     {% endif %}
+                                    {% if items.Color3 %}
+                                      <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color3.namePublic }}">
+                                      <span class="color_name_mobile">{{ items.Color3.namePublic }}</span>
+                                    {% endif %}
+                                    <br>
+                                    
+                                </td>
+                                <td>
+                                  {% if items.id %}
+                                  <a href="{{ path('plusproduct',{'id':items.id} ) }}">
+                                    <div style="position:relative; top:20px; left:40px">
+                                      <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                    </div>
+                                  </a>
+                                  <div>
+                                    <input style="width:50px; display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ items.quantity }}" disabled>
+                                  </div>
+                                  <a href="{{ path('minusproduct',{'id':items.id} ) }}">
+                                    <div>
+                                      <i style="position:relative; bottom:18px; left:40px" class="fa fa-minus fa-1" aria-hidden="true"></i>
+                                    </div>
+                                  </a>
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {{ items.priceTemp|round(2, 'common') }}€<br>
+                                </td>
+                                <td>
+                                 {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
+                                </td>
+                              </tr>
+                              {% for items_child in listePanierEnfant %}
+                                {% if items_child and items_child.Parent == items %}
+                                  <tr style="border-left:3px solid #242258">
+                                    <td>
+                                      + {{items_child.product.cartName}}<br>
+                                        {% if items_child.Color1 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ items_child.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items_child.Color1.namePublic }}">
+                                        <span class="color_name_mobile">{{ items_child.Color1.namePublic }}</span>
+                                      {% endif %}
+                                      {% if items_child.Color2 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ items_child.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items_child.Color2.namePublic }}">
+                                        <span class="color_name_mobile">{{ items_child.Color2.namePublic }}</span>
+                                       {% endif %}
+                                      {% if items_child.Color3 %}
+                                        <img src="{{ asset('/upload/color/thumbnail/' ~ items_child.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items_child.Color3.namePublic }}">
+                                        <span class="color_name_mobile">{{ items_child.Color3.namePublic }}</span>
+                                      {% endif %}
+                                      <br>
+                                    </td>
+                                     <td>
+                                       {% if items_child.id %}
+                                    <a href="{{ path('plusproduct',{'id':items_child.id} ) }}">
+                                      <div style="position:relative; top:20px; left:40px">
+                                        <i class="fa fa-plus fa-1" aria-hidden="true"></i>
+                                      </div>
+                                    </a>
+                                    <div>
+                                      <input style="width:50px;display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ items_child.quantity }}" disabled>
+                                    </div>
+                                    <a href="{{ path('minusproduct',{'id':items_child.id} ) }}">
+                                      <div>
+                                        <i style="position:relative; bottom:18px; left:40px" class="fa fa-minus fa-1" aria-hidden="true"></i>
+                                      </div>
+                                    </a>
+                                    {% endif %}
+                                    </td>
+                                     <td> 
+                                      {{ items_child.priceTemp|round(2, 'common') }}€<br>
+
+                                    </td>
+                                     <td>
+                                     {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
+
+                                    </td>
+                                  </tr>
+                                {% endif %}
+                              {% endfor %}
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                      
+                      {% endif %}
+                        {% endfor %}
+                        </div>
+                </div>
+                </div>
+                <div class="col-md-3">
+                     <div class="col-md-12"  style="border:1px solid #A94141">
+                        <div class="row">
+                           <div class="col-xs-7 " style="">
+                              <p></p>
+                              <p>Sous-total</p>
+                              {% if is_granted('ROLE_USER') %}
+                              <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
+                              {% else %}
+                              <p> Remise </p>
+                              {% endif %}
+                              <p>Total</p>
+                           </div>
+                           <div class="col-xs-5" >
+                              <p></p>
+                              <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
+                              {% set codePromo = app.session.get('codePromo') %}
+                              {% if codePromo %}
+                              {% if codePromo.minimumCommande <= totalsum %}
+                              {% if codePromo.genre == 'pourcentage' %}
+                              {% set remise = totalsum * codePromo.montant / 100 %}
+                              {% elseif codePromo.genre  == 'remise' %}
+                              {% set remise = codePromo.montant %}
+                              {% elseif codePromo.genre  == 'fdp' %}
+                              {% elseif codePromo.genre  == 'fdp-remise' %}
+                              {% set remise = codePromo.montant %}
+                              {% endif %}
+                              <p class="text-right"><strong> - {{ remise|round(2, 'common') }} €</strong></p>
+                              {% set totalsum = totalsum - remise|round(2, 'common') %}
+                              {% else %}
+                              <p class="text-right">0 €</p>
+                              {% endif %}
+                              {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
+                              {% if app.user.parrainEmail is not null %}
+                              {% set remise = totalsum * (parrainage.montant / 100) %}
+                              <p class="text-right"><strong > - {{ remise|round(2, 'common') }} €</strong></p>
+                              {% set totalsum = totalsum - remise|round(2, 'common') %}
+                              {% else %}
+                              <p class="text-right"><strong > 0 €</strong></p>
+                              {% endif %}
+                              {% else %}
+                              <p class="text-right">0 € </p>
+                              {% endif %}
+                              {% if codePromo %}
+                              {% if codePromo.minimumCommande <= totalsum %}
+                              {% if codePromo.genre == 'fdp' %}
+                              {% elseif codePromo.genre  == 'fdp-remise' %}
+                              {% set remise = codePromo.montant %}
+                              {% endif %}
+                              {% endif %}
+                              {% endif %}
+                              <p class="text-right"> <strong>  {{ totalsum|round(2,'common') }} €</strong></p>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-12" style="position:relative">
+                        <div class="col-md-4" style="">
+                           <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if is_granted('ROLE_USER') %}
+                           {% if nbcommande == 0 and app.user.parrainEmail is not null %} disabled {% endif %}{% endif %}>
+                        </div>
+                        <a onclick="verifCode()">
+                           <div class="col-md-8" style="background-color:#A94141;cursor:pointer; height:31px;position:absolute;width:75%; right:0px; top:-1px; {% if is_granted('ROLE_USER') %}{% if nbcommande == 0 and app.user.parrainEmail is not null %} opacity:0.5; cursor:auto;{% endif %} {% endif %}">
+                              <div class="col-md-12">
+                                 <center>
+                                    <p style="color:white; position:absolute; top:5px; font-size:15px; left:5px"> Valider le coupon </p>
+                                 </center>
+                              </div>
+                           </div>
+                        </a>
+                     </div>
+                     <div class="col-md-12" style="position:relative; top:29px;height:30px; background-color:#242258" >
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                           <a href="{{ path('choixlivraison') }}">
+                              <p style="color:white; position:absolute; top:5px; "><span class="glyphicon glyphicon-shopping-cart"></span> Payer </p>
+                           </a>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      {% endif %}
+   </section>
+   <script>
+      function verifCode(){
+      var codepromo = document.getElementById("input_promo").value;
+      {% set codepromo_twig %}codepromo{% endset %}
+
+      var url = "{{ path('panier', { 'code': 'twig' }) }}";
+      url = url.replace("twig", codepromo);
+      window.location.replace(url);
+
+
+      }
+
+   </script>
+   <script>
+      function open_details(i){
+      if(document.getElementById(i).style.display == "block"){
+      document.getElementById(i).style.display = "none";
+
+      }
+      else {
+      document.getElementById(i).style.display = "block";
+
+      }
+      }
+      function change_text(i){
+
+      if(document.getElementById(i).innerHTML == "Afficher les détails"){
+      document.getElementById(i).innerHTML = "Cacher les détails";
+
+      }
+      else {
+      document.getElementById(i).innerHTML = "Afficher les détails";
+
+      }
+      }
+   </script>
+   <script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+   {% endblock %}

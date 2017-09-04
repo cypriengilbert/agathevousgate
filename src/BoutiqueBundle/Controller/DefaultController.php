@@ -40,6 +40,8 @@ class DefaultController extends Controller
         $user = $this->container->get('security.context')->getToken()->getUser();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER') and $user->getIsPro() == 2) {
             $page = 'boutique';
+            $nbarticlepanier = $this->countArticleCart();
+
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $products   = $repository->FindBy(array(
                 'nb_color' => 0
@@ -47,6 +49,7 @@ class DefaultController extends Controller
             return $this->render('BoutiqueBundle:Default:genericProduct.html.twig', array(
                 'products' => $products,
                 'page' => $page,
+                'nbarticlepanier' => $nbarticlepanier,
             ));
 
         }
@@ -67,6 +70,7 @@ class DefaultController extends Controller
             $page = 'boutique';
 
             
+            $nbarticlepanier = $this->countArticleCart();
 
 
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -74,10 +78,30 @@ class DefaultController extends Controller
             $products = $query->getResult();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
             $allCollection = $repository->findAll();
+            $accepted_products = array();
 
+            
             if($name != 'Basic'){
             $collection   = $repository->findOneBy(array('title' => $name));
             $sortedColors        = $collection->getColors();
+
+              if($collection->getPricePochette() != null ){
+                array_push($accepted_products,"Pochette");
+              }
+              if($collection->getPriceMilieu() != null){
+                array_push($accepted_products,"Milieu");
+              }
+              if($collection->getPriceRectangleGrand() != null){
+                array_push($accepted_products,"Rectangle_grand");
+              }
+              if($collection->getPriceRectanglePetit() != null){
+                array_push($accepted_products,"Rectangle_petit");
+              }
+              if($collection->getPriceBouton() != null){
+                array_push($accepted_products,"Boutons");
+              }
+            
+            
           }else
           {
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
@@ -85,16 +109,19 @@ class DefaultController extends Controller
                 'isBasic' => 1,
             ));
             $collection = null;
+            $accepted_products = array("Boutons","Rectangle_petit","Rectangle_grand","Milieu", "Pochette");
+            }
+          
 
-
-          }
             return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
                 'products' => $products,
                 'page' => $page,
                 'colors' => $sortedColors,
                 'collection1' => $collection,
                 'allCollection' => $allCollection,
-                'collection' => $allCollection
+                'collection' => $allCollection,
+                'nbarticlepanier' => $nbarticlepanier,
+                'accepted_products'=> $accepted_products
             ));
 
         }
@@ -255,5 +282,20 @@ class DefaultController extends Controller
             return $response;
         }
 
+
+    public function countArticleCart()
+    {
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $id_user         = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $nbarticlepanier = count($repository->findBy(array(
+                'commande' => null,
+                'client' => $id_user
+            )));
+        } else {
+            $nbarticlepanier = null;
+        }
+        return $nbarticlepanier;
+    }
 
 }

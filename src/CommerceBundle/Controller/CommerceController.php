@@ -16,6 +16,16 @@ use Stripe\HttpClient;
 
 class CommerceController extends Controller
 {
+
+    private function getProductAdded($allProducts, $product){
+        $listeProduct = [];
+        foreach ($allProducts as $item) {
+            if($item->getProduct() == $product){
+                array_push($listeProduct, $item);
+            }
+        }
+        return $listeProduct;
+    }
     /**
      * @Route("/", name="accueil")
      */
@@ -215,6 +225,7 @@ class CommerceController extends Controller
         $session   = $this->createSession();
         $request   = Request::createFromGlobals();
         $codePromo = $request->query->get('code');
+
         if ($codePromo) {
             $EntiteCode = $this->getOneBy('CodePromo', array(
                 'code' => $codePromo
@@ -262,6 +273,19 @@ class CommerceController extends Controller
             $allreduction             = $this->getBy('ProDiscount', array(
                 'account' => $user
             ));
+            $allProduct          = $this->getAll('Product');
+            
+            
+            $AddedProductByProduct = [];
+            $AddedProductByProduct_Child = [];
+
+            foreach ($allProduct as $product) {
+                $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                
+            }
+          
+
+
 
 
         } else {
@@ -295,8 +319,9 @@ class CommerceController extends Controller
         $this->setTemporaryPrice();
 
 
-
-        return $this->render('CommerceBundle:Default:panier.html.twig', array(
+        if($this->get('security.authorization_checker')->isGranted('ROLE_USER') and $this->container->get('security.context')->getToken()->getUser()->getIsPro() == 2){
+            
+            return $this->render('CommerceBundle:Default:panier_boutique.html.twig', array(
             'iduser' => $id_user,
             'listePanier' => $listeAddedProduct,
             'listePanierEnfant' => $listeAddedProductEnfants,
@@ -310,9 +335,33 @@ class CommerceController extends Controller
             'coutLivraison' => $coutLivraison,
             'parrainage' => $remiseParrainage,
             'reductions' => $allreduction,
-            'tva' => $tva
+            'tva' => $tva,
+            'AddedProductByProduct' => $AddedProductByProduct,
+            'AddedProductByProduct_Child' => $AddedProductByProduct_Child,
 
         ));
+        }
+        else{
+            return $this->render('CommerceBundle:Default:panier.html.twig', array(
+            'iduser' => $id_user,
+            'listePanier' => $listeAddedProduct,
+            'listePanierEnfant' => $listeAddedProductEnfants,
+            'listePanierParent' => $listeAddedProductParents,
+            'nbarticlepanier' => $nbarticlepanier,
+            'collection' => $collectionActive,
+            'page' => $page,
+            'codePromo' => $EntiteCode,
+            'nbcommande' => $nbcommande,
+            'minLivraison' => $minLivraison,
+            'coutLivraison' => $coutLivraison,
+            'parrainage' => $remiseParrainage,
+            'reductions' => $allreduction,
+            'tva' => $tva,
+            
+
+        ));
+        }
+        
     }
 
 

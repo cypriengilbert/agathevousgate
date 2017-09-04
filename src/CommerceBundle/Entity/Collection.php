@@ -54,7 +54,7 @@ class Collection
       /**
        * @var float
        *
-       * @ORM\Column(name="priceMilieu", type="float")
+       * @ORM\Column(name="priceMilieu", type="float", nullable=true)
        */
        private $priceMilieu;
 
@@ -76,26 +76,26 @@ class Collection
      /**
       * @var float
       *
-      * @ORM\Column(name="pricePochette", type="float")
+      * @ORM\Column(name="pricePochette", type="float", nullable=true)
       */
       private $pricePochette;
       /**
        * @var float
        *
-       * @ORM\Column(name="priceBouton", type="float")
+       * @ORM\Column(name="priceBouton", type="float", nullable=true)
        */
        private $priceBouton;
 
        /**
         * @var float
         *
-        * @ORM\Column(name="priceCoffret1", type="float")
+        * @ORM\Column(name="priceCoffret1", type="float", nullable=true)
         */
         private $priceCoffret1;
         /**
          * @var float
          *
-         * @ORM\Column(name="priceCoffret2", type="float")
+         * @ORM\Column(name="priceCoffret2", type="float", nullable=true)
          */
          private $priceCoffret2;
 

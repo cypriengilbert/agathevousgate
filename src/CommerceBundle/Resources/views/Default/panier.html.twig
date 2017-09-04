@@ -1,5 +1,49 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+<style>
+  table.one {                  
+  margin-bottom: 3em; 
+  border-collapse:collapse;
+  display: inline-block;
+  margin-right: 3em;    } 
+
+  
+  table.one td {                
+  text-align: center;     
+  width: 13em;          
+  padding: 1em;     }   
+
+
+  table.one th {                
+  text-align: center;         
+  padding: 1em;
+  background-color: #242258;      
+  color: white;   }           
+
+  table.one tr {  
+  height: 1em;  }
+
+  table.one tr:nth-child(even) {      
+    background-color: #fff;   }
+
+  table.one tr:nth-child(odd) {     
+  background-color:#eee;    }
+    table caption {
+    padding-bottom: 1em;    }
+
+    @media (max-width: 768px) {
+    .color_name_mobile{
+    display:block;
+    }
+    }
+
+    @media (min-width: 768px) {
+    .color_name_mobile{
+    display:none;
+    }
+    }
+
+</style>
 <body>
    <section>
       <div class="container">
@@ -167,10 +211,15 @@
                            </div>
                         </div>
                         {% endif %}
+
+
+                        {# 1 Tableau par produit #}
+
+
                         <div class="row" id="details_{{ loop.index }}" {% if listepanier.product.name == "Noeud" %}style="display:none"{% else %}style="display:block"{% endif %}>
                            <div class="col-sm-12 col-md-12" >
                               <div class="table-responsive">
-                                 <table class="table table-bordered">
+                                 <table class="one">
                                     <thead>
                                        <tr>
                                           <th>Produit</th>
@@ -183,13 +232,16 @@
                                        <tr>
                                           <td>{{ listepanier.product.cartname }} {{ listepanier.size }} {% if listepanier.accessoire %} avec tour de cou {{ listepanier.accessoire.name }}{% endif %}<br>
                                              {% if listepanier.Color1 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color1.namePublic }}">
+                                      
                                              {% endif %}
                                              {% if listepanier.Color2 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color3.namePublic }}">
+                                     
                                              {% endif %}
                                              {% if listepanier.Color3 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color3.namePublic }}">
+                                      
                                              {% endif %}
                                           </td>
                                           <td>
@@ -200,7 +252,7 @@
                                                     </div>
                                                  </a>
                                                  <div>
-                                                    <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                                    <input style="width:50px; display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
                                                  </div>
                                                  <a href="{{ path('minusproduct',{'id':listepanier.id} ) }}">
                                                     <div>
@@ -216,7 +268,7 @@
                                                 </div>
                                              </a>
                                              <div>
-                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
+                                                <input style="width:50px; display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanier.quantity }}" disabled>
                                              </div>
                                              <a href="{{ path('minusproduct',{'id':key } ) }}">
                                                 <div>
@@ -238,44 +290,47 @@
                                        <tr>
                                           <td>{{ listepanierenfant.product.cartname }}<br>
                                              {% if listepanierenfant.Color1 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color1.namePublic }}">
+                                      
                                              {% endif %}
                                              {% if listepanierenfant.Color2 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color2.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color2.namePublic }}">
+                                    
                                              {% endif %}
                                              {% if listepanierenfant.Color3 %}
-                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px">
+                                             <img src="{{ asset('/upload/color/thumbnail/' ~ listepanierenfant.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px"  data-toggle="tooltip" data-placement="top" title="{{ listepanier.Color3.namePublic }}">
+                                      
                                              {% endif %}
                                           </td>
                                           <td>
                                              {% if listepanierenfant.id %}
                                              <a href="{{ path('plusproduct',{'id':listepanierenfant.id} ) }}">
-                                                <div style="position:relative; top:20px; left:35px">
+                                                <div style="position:relative; top:20px; left:40px">
                                                    <i class="fa fa-plus fa-1" aria-hidden="true"></i>
                                                 </div>
                                              </a>
                                              <div>
-                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanierenfant.quantity }}" disabled>
+                                                <input style="width:50px;  display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanierenfant.quantity }}" disabled>
                                              </div>
                                              <a href="{{ path('minusproduct',{'id':listepanierenfant.id} ) }}">
                                                 <div>
-                                                   <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                                   <i style="position:relative; bottom:18px; left:40px" class="fa fa-minus fa-1" aria-hidden="true">
                                                    </i>
                                                 </div>
                                              </a>
                                              {% else %}
                                              <a href="{{ path('plusproduct',{'id':keyEnfant } ) }}">
-                                                <div style="position:relative; top:20px; left:35px">
+                                                <div style="position:relative; top:20px; left:40px">
                                                    <i class="fa fa-plus fa-1" aria-hidden="true">
                                                    </i>
                                                 </div>
                                              </a>
                                              <div>
-                                                <input style="width:50px" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanierenfant.quantity }}" disabled>
+                                                <input style="width:50px;  display:inline" type="number" class="form-control" id="exampleInputEmail1" name="" value="{{ listepanierenfant.quantity }}" disabled>
                                              </div>
                                              <a href="{{ path('minusproduct',{'id':keyEnfant } ) }}">
                                                 <div>
-                                                   <i style="position:relative; bottom:18px; left:35px" class="fa fa-minus fa-1" aria-hidden="true">
+                                                   <i style="position:relative; bottom:18px; left:40px" class="fa fa-minus fa-1" aria-hidden="true">
                                                    </i>
                                                 </div>
                                              </a>
@@ -432,4 +487,9 @@
       }
       }
    </script>
+    <script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
    {% endblock %}
