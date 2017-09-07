@@ -9,10 +9,71 @@
 }
 
 #link_generic{
+  
+}
+
+.temporary_cart{
+  width:300px;
+  border:1px solid #A94141;
   position:absolute;
-  right:0px;
-  height:100%;
-  top:35%;
+  top:0px;
+  left:70%;
+  display:none;
+  z-index:100;
+  background-color:white;
+}
+
+
+
+.collection_link{
+  padding-right:15px;
+  border-radius:20px;
+  background-color:#ffffff;
+  border:1px solid #25225b;
+  margin:5px 0px;
+  overflow:hidden;
+  color:#25225b;
+  cursor:pointer;
+  font-size:15px;
+  font-family:'Roboto' ;
+  width:70%;
+}
+
+.collection_link:hover{
+ 
+  background-color:#25225b;
+  border:1px solid #25225b;
+  overflow:hidden;
+  color:#ffffff;
+
+}
+
+.collection_link > img{
+  height:36px;
+  border-radius:20px;
+  margin-bottom:0px;
+}
+
+.collection_link_selected{
+  padding-right:15px;
+  border-radius:20px;
+  background-color:#25225b;
+  border:1px solid #25225b;
+  margin:5px 0px;
+  overflow:hidden;
+  color:#ffffff;
+  cursor:pointer;
+  font-size:15px;
+  font-family:'Roboto' ;
+  width:70%;
+}
+
+
+
+.collection_link_selected > img{
+  height:36px;
+  border-radius:20px;
+  margin-bottom:0px;
 }
 
 .bouton_generic{
@@ -117,6 +178,13 @@
     border-radius:20px;
     margin-top:30px;
   }
+  #select_collection{
+    display:none;
+  }
+.custom-dropdown {
+  display:none;
+}
+
 
   .see_generic p{
 
@@ -181,10 +249,53 @@
      padding-top:5px;
      padding-left:10px 
   }
+
+.collection_link{
+  display:none;
+}
+
+  #select_collection{
+    display:block;
+  }
+  .thumb_link{
+    min-width:60px;
+  }
 }
 </style>
 <body>
-    <div class="container">
+    <div class="container" style="position:relative">
+      <div class="temporary_cart" >
+          <div class="row" >
+          <div class="col-md-12 text-center">
+          <a href="">Modifier le panier</a>
+                                
+                                </div>
+                                </div>
+        {% for key, AddedProductByProduct in AddedProductByProduct %}
+                      {% if AddedProductByProduct %}
+                      <div class="row" style="padding:10px;">
+                                <div class="col-md-12 text-left">
+
+                         <h2> {{ key }}</h2><br></div>
+                          {% for items in AddedProductByProduct %}
+                          <div class="col-md-8 text-left">
+            {% if items.Color1 %}
+                                      <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color1.namePublic }}">
+                                      <span class="color_name_mobile">{{ items.Color1.namePublic }}</span>
+                                    {% endif %}
+          </div>
+          <div class="col-md-4 text-center">
+            {{ items.quantity }}
+          </div>
+                          {% endfor %}
+                                  </div>
+
+                     
+                      {% endif %}
+                      {% endfor %}
+        
+          
+    </div>
 <div class="row">
 <div class="col-sm-2 no_padding">
     </div>
@@ -206,7 +317,6 @@
 
       </select>
   </span>
-  <span id="link_generic">    <a class="bouton_generic" style="" href="{{ path('generic')}}">Produits génériques</a>
 </span>
   </div>
     
@@ -214,7 +324,15 @@
     </div>
 </div>
 
-
+<div class="row">
+<div class="col-sm-2 no_padding">
+    </div>
+    <div class="col-sm-8 no_padding" style="text-align:center">
+      
+    </div>
+    <div class="col-sm-2 no_padding">
+    </div>
+</div>
 
 
 
@@ -231,6 +349,32 @@
 
 
     <div class="col-sm-2 no_padding">
+
+    <div class="row">
+  <a class="" style="text-align:center" href="{{ path('generic')}}"> <div class="collection_link" style="font-size:15px;text-align:center">Accessoires</div></a>
+
+          {% if collection1 is null %}
+            <div class="col-sm-12 no_padding">
+        <a class=""  href="{{path('boutique_collection', {'name': 'Basic' })}}"> <div class="collection_link" > <img class="thumb_link" style="min-width:58px;" src="{{ asset('/upload/color/thumbnail/58331c66c34d2.png')}}"  />  Unies</div></a>
+         </div>
+         {% for collectionList in allCollection %}
+             <div class="col-sm-12 no_padding">
+
+         <a class=""  href="{{path('boutique_collection', {'name': collectionList.title })}}"> <div class="collection_link"><img class="thumb_link" src="{{ asset('/upload/image_collection/' ~ collectionList.imageName)}}"  /> {{ collectionList.title }}</div></a>  
+          </div>
+          {% endfor %}
+
+          {% else %}
+              
+          {% for collectionList in allCollection %}
+              <div class="col-sm-12 no_padding">
+<a class=""  href="{{path('boutique_collection', {'name': collectionList.title })}}"><div {% if collectionList != collection1 %}class="collection_link"{% else %}class="collection_link_selected"{% endif %}><img class="thumb_link" src="{{ asset('/upload/image_collection/' ~ collectionList.imageName)}}"  /> {{ collectionList.title }}</div>  </div></a>
+          {% endfor %}
+              <div class="col-sm-12 no_padding">
+
+        <a class=""  href="{{path('boutique_collection', {'name': 'Basic' })}}">   <div class="collection_link"> <img class="thumb_link" style="min-width:58px;" src="{{ asset('/upload/color/thumbnail/58331c66c34d2.png')}}"  />   Unies</div></div></a>
+           {% endif %}
+           </div>
     </div>
     <div class="col-sm-8 no_padding">
         {% for color in colors %}
@@ -325,6 +469,7 @@
         </div>
             <div class="col-sm-2 no_padding">
     </div>
+    
     </div>
 
 </div>
@@ -376,7 +521,11 @@ document.getElementById("buttonValidateCart").click();
   <input type="text" name="finalCart" id="finalCartField" >
   <button type="submit" id="buttonValidateCart">Valider</button>
 </form>
+
+
 </div>
+
+
 
 <script>
   function refresh_items(color_id){
@@ -421,6 +570,7 @@ if (value == 0) {
   document.getElementById('nb_item_pending').innerHTML = value_total+' articles';
   }
   }
+  alert(value_total);
 </script>
 
 <script>
@@ -433,4 +583,33 @@ function change_collection(dropdown){
 }
 
 </script>
+<script>
+  
+  window.onbeforeunload = function (e){
+  e = e || window.event;
+  if (e){
+    e.returnValue = "Des articles n'ont pas été ajoutés au panier. Etes-vous sur de vouloir quitter ?";
+  }
+  return "Des articles n'ont pas été ajoutés au panier. Etes-vous sur de vouloir quitter ?";
+  };
+</script>
+
+<script>
+$(document).ready(function(){
+  $('.menu-panier').mouseover(function(){
+    $(".temporary_cart").css('display','block');
+  });
+  $('.menu-panier').mouseout(function(){
+    $(".temporary_cart").css('display','none');
+  });
+  $('.temporary_cart').mouseover(function(){
+    $(".temporary_cart").css('display','block');
+  });
+  $('.temporary_cart').mouseout(function(){
+    $(".temporary_cart").css('display','none');
+  });
+  alert(value_total);
+});
+</script>
+
 {% endblock %}

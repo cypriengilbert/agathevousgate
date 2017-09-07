@@ -80,6 +80,20 @@ class DefaultController extends Controller
             $allCollection = $repository->findAll();
             $accepted_products = array();
 
+            $allProduct          = $this->getAll('Product');  
+            $listeAddedProductParents = $this->getBy('AddedProduct', array(
+                'client' => $user->getId(),
+                'commande' => null,
+                'parent' => null
+            ));          
+            $AddedProductByProduct = [];
+            $AddedProductByProduct_Child = [];
+
+            foreach ($allProduct as $product) {
+                $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                
+            }
+            
             
             if($name != 'Basic'){
             $collection   = $repository->findOneBy(array('title' => $name));
@@ -121,7 +135,8 @@ class DefaultController extends Controller
                 'allCollection' => $allCollection,
                 'collection' => $allCollection,
                 'nbarticlepanier' => $nbarticlepanier,
-                'accepted_products'=> $accepted_products
+                'accepted_products'=> $accepted_products,
+                'AddedProductByProduct' => $AddedProductByProduct
             ));
 
         }
@@ -296,6 +311,29 @@ class DefaultController extends Controller
             $nbarticlepanier = null;
         }
         return $nbarticlepanier;
+    }
+
+    public function getAll($entity)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+        $entities   = $repository->findAll();
+        return $entities;
+    }
+    private function getProductAdded($allProducts, $product){
+        $listeProduct = [];
+        foreach ($allProducts as $item) {
+            if($item->getProduct() == $product){
+                array_push($listeProduct, $item);
+            }
+        }
+        return $listeProduct;
+    }
+
+    public function getBy($entity, $arrayParam)
+    {
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+        $entities   = $repository->findBy($arrayParam);
+        return $entities;
     }
 
 }

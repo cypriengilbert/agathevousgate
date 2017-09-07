@@ -1,18 +1,63 @@
 {% extends 'base.html.twig' %} {% block body %}
+<style>
+  table.one {                  
+  margin-bottom: 3em; 
+  border-collapse:collapse;
+  display: inline-block;
+  margin-right: 3em;   
+  width:100% } 
 
+  
+  table.one td {                
+  text-align: center;     
+  width: 13em;          
+  padding: 1em;     }   
+
+
+.panel-title {                
+  text-align: center;         
+  padding: 1em;
+  background-color: #242258;      
+  color: white;   }           
+
+  table.one tr {  
+  height: 1em;  }
+
+  table.one tr:nth-child(even) {      
+    background-color: #fff;   }
+
+  table.one tr:nth-child(odd) {     
+  background-color:#eee;    }
+    table caption {
+    padding-bottom: 1em;    }
+
+    @media (max-width: 768px) {
+    .color_name_mobile{
+    display:block;
+    }
+    }
+
+    @media (min-width: 768px) {
+    .color_name_mobile{
+    display:none;
+    }
+    }
+
+</style>
 <body>
     <div class="container">
     <h1 class="text-center">
     Produits génériques
     </h1>
+            <div class="row">
+
     {% for product in products %}
-        <div class="row">
-           <div class="col-sm-12 no_padding">
+           <div class="col-sm-6 " style="height:380px">
               <div class="panel-group" id="accordion">
                  <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                    <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background-color:#eae9e9!important">
+                    <div>
                        <div class="row">
-                          <div class="col-sm-11">
+                          <div class="col-sm-12">
                              <h3 class="panel-title" >
                                 {{ product.cartname }}
                              </h3>
@@ -21,13 +66,15 @@
                           </div>
                        </div>
                     </div>
-                    <div id="collapse1" class="panel-collapse collapse in" style="background-color:white;">
+                    <div id="collapse1" class="panel-collapse collapse in" style="background-color:#eee;">
                        <div class="panel-body">
                           <div class="row">
-                             <div class="col-sm-6 no_padding text-center">
+                             <div class="col-sm-12 no_padding text-center">
                                 <img style="max-height:350px;height:auto" src="">
                              </div>
-                             <div class="col-sm-6 no_padding">
+                            </div>
+                            <div class="row">
+                             <div class="col-sm-12 no_padding">
                                 <div class="row">
                                    <div class="col-sm-12 center">
                                       <center>
@@ -60,8 +107,8 @@
                  </div>
               </div>
            </div>
-        </div>
       {% endfor %}
+        </div>
 
     </div>
 </body>
