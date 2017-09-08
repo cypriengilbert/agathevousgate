@@ -14,13 +14,16 @@
 
 .temporary_cart{
   width:300px;
-  border:1px solid #A94141;
+  border-left:1px solid #A94141;
+    border-right:1px solid #A94141;
+  border-bottom:1px solid #A94141;
+
+background-color:#EEEEEE;
   position:absolute;
   top:0px;
   left:70%;
-  display:none;
+  display:block;
   z-index:100;
-  background-color:white;
 }
 
 
@@ -267,16 +270,16 @@
       <div class="temporary_cart" >
           <div class="row" >
           <div class="col-md-12 text-center">
-          <a href="">Modifier le panier</a>
+          <a href="{{path('panier')}}">Modifier le panier</a>
                                 
                                 </div>
                                 </div>
         {% for key, AddedProductByProduct in AddedProductByProduct %}
                       {% if AddedProductByProduct %}
-                      <div class="row" style="padding:10px;">
-                                <div class="col-md-12 text-left">
+                      <div class="row" style="padding:0px 15px;">
+                                <div class="col-md-12 text-left" style="background-color:#242258; color:white;font-size:1em" >
 
-                         <h2> {{ key }}</h2><br></div>
+                         <h4 style="padding-bottom:0px;">{{ key }}</h4><br></div>
                           {% for items in AddedProductByProduct %}
                           <div class="col-md-8 text-left">
             {% if items.Color1 %}
@@ -302,6 +305,7 @@
   <div class="col-sm-8 no-padding text-left" style="margin-bottom:30px;">
   <span class="custom-dropdown big">
       <select id="select_collection" onchange="change_collection(this);">
+      
           {% if collection1 is null %}
          <option> Couleurs unies</option>
          {% for collectionList in allCollection %}
@@ -317,6 +321,8 @@
 
       </select>
   </span>
+        <a href="{{path('generic')}}">Accessoires</a>
+
 </span>
   </div>
     
@@ -570,7 +576,6 @@ if (value == 0) {
   document.getElementById('nb_item_pending').innerHTML = value_total+' articles';
   }
   }
-  alert(value_total);
 </script>
 
 <script>
@@ -583,18 +588,9 @@ function change_collection(dropdown){
 }
 
 </script>
-<script>
-  
-  window.onbeforeunload = function (e){
-  e = e || window.event;
-  if (e){
-    e.returnValue = "Des articles n'ont pas été ajoutés au panier. Etes-vous sur de vouloir quitter ?";
-  }
-  return "Des articles n'ont pas été ajoutés au panier. Etes-vous sur de vouloir quitter ?";
-  };
-</script>
 
-<script>
+
+{#<script>
 $(document).ready(function(){
   $('.menu-panier').mouseover(function(){
     $(".temporary_cart").css('display','block');
@@ -608,8 +604,7 @@ $(document).ready(function(){
   $('.temporary_cart').mouseout(function(){
     $(".temporary_cart").css('display','none');
   });
-  alert(value_total);
 });
-</script>
+</script>#}
 
 {% endblock %}

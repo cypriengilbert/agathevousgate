@@ -47,12 +47,12 @@
 <body>
     <div class="container">
     <h1 class="text-center">
-    Produits génériques
+Accessoires
     </h1>
             <div class="row">
 
     {% for product in products %}
-           <div class="col-sm-6 " style="height:380px">
+           <div class="col-sm-6 " style="">
               <div class="panel-group" id="accordion">
                  <div class="panel panel-default" style="margin-top:20px; background-color:white;">
                     <div>
@@ -69,39 +69,46 @@
                     <div id="collapse1" class="panel-collapse collapse in" style="background-color:#eee;">
                        <div class="panel-body">
                           <div class="row">
-                             <div class="col-sm-12 no_padding text-center">
-                                <img style="max-height:350px;height:auto" src="">
+                             <div class="col-sm-6 no_padding text-center">
+                                <img style="max-height:200px;width:auto; max-width:90%" src="{{ asset('upload/product/'~ product.imageProductName ) }}">
                              </div>
+                             <div class="col-sm-6 text-center">
+                              <div class="row">
+                              <div class="col-sm-12 text-center" style="min-height:100px;">
+                                        {{product.description}}
+                                        </div>
+                              <div class="col-sm-12 text-center">
+                               
+                              <h2>{{product.price}}€ </h2>
+
+                              </diV>
+                              </div>
+                              <div class="row">
+                              <div class="col-sm-4 text-center">
+
+                              <select class="form-control text-center" id="sel1" style="margin-left:10%;width:80%; margin-bottom:10px;">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+
+                              </select>
+                              </div>
+                                                            <div class="col-sm-8 text-center">
+
+
+                                 <a href="{{path('addGenericToCart', {'id': product.id, 'quantity': 2} )}}"><button  type="submit" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:0px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button></a>
+</div>
+                                   </div>
+                                   </div>
                             </div>
-                            <div class="row">
-                             <div class="col-sm-12 no_padding">
-                                <div class="row">
-                                   <div class="col-sm-12 center">
-                                      <center>
-                                         <h2>{{product.description}}</h2>
-                                      </center>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-sm-12" style="padding:50px;">
-                                      <center>
-                                         <h4>{{product.price}}€ </h4>
-                                      </center>
-                                   </div>
-                                </div>
-                                <div class="row">
-                                   <div class="col-sm-3" >
-                                      <center>
-<input style="width:70px" type="number" class="form-control" id="exampleInputEmail1" name="" value="1" >                                      </center>
-                                   </div>
-                                   <div class="col-sm-9" >
-                                      <center>
-                                         <a href="{{path('addGenericToCart', {'id': product.id, 'quantity': 2} )}}"><button  type="submit" style="margin-top:-5px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button></a>
-                                      </center>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
+                            
                        </div>
                     </div>
                  </div>

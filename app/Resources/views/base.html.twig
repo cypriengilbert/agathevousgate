@@ -163,23 +163,8 @@
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
             {% if collection is defined %}
-        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Boutique<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-                    <li>
-                    <a href="{{path ('generic')}}"> Produits génériques</a>
-                    </li>
-                    <li>
-                    <a href="{{path ('boutique_collection', {'name': 'Basic' })}}"> Couleurs unies</a>
-                    </li>
-              {% for col in collection %}
-
-                    <li>
-                        <a href="{{ path('boutique_collection', {'name': col.title }) }}">{{ col.title }}</a>
-                    </li>
-
-                    {% endfor %}
-
-          </ul>
+        <li class="{% if page == 'boutique' %}active{% endif%}"><a  href="{{path ('boutique_collection', {'name': 'Basic' })}}" >Boutique</a>
+         
         </li>
           {% endif %}
           {% endif %}
