@@ -14,16 +14,14 @@
 
 .temporary_cart{
   width:300px;
-  border-left:1px solid #A94141;
-    border-right:1px solid #A94141;
-  border-bottom:1px solid #A94141;
+
 
 background-color:#EEEEEE;
   position:absolute;
   top:0px;
   left:70%;
-  display:block;
-  z-index:100;
+  display:none;
+  z-index:1;
 }
 
 
@@ -188,6 +186,10 @@ background-color:#EEEEEE;
   display:none;
 }
 
+#link_generic_mobile{
+  display:none;
+}
+
 
   .see_generic p{
 
@@ -218,6 +220,9 @@ background-color:#EEEEEE;
   #link_generic{
   display:none;
   }
+  #link_generic_mobile{
+  display:block;
+}
   .see_generic{
 
   width:50%;
@@ -277,17 +282,17 @@ background-color:#EEEEEE;
         {% for key, AddedProductByProduct in AddedProductByProduct %}
                       {% if AddedProductByProduct %}
                       <div class="row" style="padding:0px 15px;">
-                                <div class="col-md-12 text-left" style="background-color:#242258; color:white;font-size:1em" >
+                                <div class="col-md-12 text-left" style="background-color:#242258; color:white;font-size:1em; padding:5px 5px" >
 
-                         <h4 style="padding-bottom:0px;">{{ key }}</h4><br></div>
+                         {{ key }}</div>
                           {% for items in AddedProductByProduct %}
-                          <div class="col-md-8 text-left">
+                          <div class="col-md-8 text-left" style="margin:10px 0px;">
             {% if items.Color1 %}
                                       <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color1.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color1.namePublic }}">
                                       <span class="color_name_mobile">{{ items.Color1.namePublic }}</span>
                                     {% endif %}
           </div>
-          <div class="col-md-4 text-center">
+          <div class="col-md-4 text-center" style="margin:15px 0px;">
             {{ items.quantity }}
           </div>
                           {% endfor %}
@@ -321,7 +326,7 @@ background-color:#EEEEEE;
 
       </select>
   </span>
-        <a href="{{path('generic')}}">Accessoires</a>
+        <a id="link_generic_mobile" href="{{path('generic')}}">Accessoires</a>
 
 </span>
   </div>
@@ -590,7 +595,7 @@ function change_collection(dropdown){
 </script>
 
 
-{#<script>
+<script>
 $(document).ready(function(){
   $('.menu-panier').mouseover(function(){
     $(".temporary_cart").css('display','block');
@@ -605,6 +610,6 @@ $(document).ready(function(){
     $(".temporary_cart").css('display','none');
   });
 });
-</script>#}
+</script>
 
 {% endblock %}
