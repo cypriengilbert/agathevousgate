@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\Photo;
+use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Controller\SessionController;
 use Symfony\Component\HttpFoundation\Request;
@@ -241,9 +242,7 @@ class CommerceController extends Controller
             $EntiteCode = null;
         }
 
-        $auto_discounts = $this->getBy('CodePromo', array(
-            'isAutomatic' => true,
-        ));
+        
 
        
 
@@ -325,45 +324,8 @@ class CommerceController extends Controller
         ));
 
         $this->setTemporaryPrice();
-        $is_product1_cart = false;
-        $is_product2_cart = false;
-        $discount_valid = 0;
-        foreach ($auto_discounts as $discount) {
-            foreach ($listeAddedProduct as $addedProduct) {
-                if ($is_product2_cart != true){
-                    if ($discount->getProduct1() == $addedProduct->getProduct()) {
-                        if ($discount->getCollection1() && $discount->getCollection1() == $addedProduct->getCollection()) {
-                            if($discount->getquantityMin1() <= $addedProduct->getQuantity()){
-                                $is_product1_cart = true;
-                            } 
-                        }
-                        elseif ($discount->getCollection1() == null) {
-                            if($discount->getquantityMin1() <= $addedProduct->getQuantity()){
-                                $is_product1_cart = true;
-                            } 
-                        }
-                    }
-                }
-                    if ($is_product1_cart != true){
-                        if ($discount->getProduct2() == $addedProduct->getProduct()) {
-                            if ($discount->getCollection2() && $discount->getCollection2() == $addedProduct->getCollection()) {
-                                if($discount->getquantityMin2() <= $addedProduct->getQuantity()){
-                                    $is_product2_cart = true;
-                                } 
-                            }
-                            elseif ($discount->getCollection2() == null) {
-                                if($discount->getquantityMin2() <= $addedProduct->getQuantity()){
-                                    $is_product2_cart = true;
-                                } 
-                            }
-                        }
-                    }
-            }
-
-            if ($is_product1_cart == true && $is_product2_cart == true) {
-                $discount_valid = $discount;
-            }
-        }
+        $discount_valid = $this->getVoucherAuto($listeAddedProduct);
+        
 
         if($this->get('security.authorization_checker')->isGranted('ROLE_USER') and $this->container->get('security.context')->getToken()->getUser()->getIsPro() == 2){
             
@@ -2343,6 +2305,7 @@ class CommerceController extends Controller
             $codePromo = $session->get('codePromo');
 
             $remise = 0;
+            $discount_auto = $this->getVoucherAuto($listePanier);
             if ($codePromo) {
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
                     if ($codePromo->getGenre() == 'pourcentage') {
@@ -2363,6 +2326,15 @@ class CommerceController extends Controller
                 $remise = round($total_commande * ($remiseParrainage->getMontant()) / 100, 2);
 
             }
+            elseif ($discount_auto){
+                if ($discount_auto->getGenre() == 'pourcentage') {
+                    $remise = round($total_commande * $discount_auto->getMontant() / 100, 2);
+                } elseif ($discount_auto->getGenre() == 'remise') {
+                    $remise = $discount_auto->getMontant();
+                } elseif ($discount_auto->getGenre() == 'fdp-remise') {
+                    $remise = $discount_auto->getMontant();
+                }
+            }
 
             if ($total_commande < $minLivraison->getMontant()) {
 
@@ -2378,6 +2350,13 @@ class CommerceController extends Controller
                             $total_commande = $total_commande - $coutLivraison;
                         }
 
+                    }
+                }
+                elseif($discount_auto){
+                    if ($discount_auto->getGenre() == 'fdp') {
+                        $total_commande = $total_commande - $coutLivraison;
+                    } else if ($discount_auto->getGenre() == 'fdp-remise') {
+                        $total_commande = $total_commande - $coutLivraison;
                     }
                 }
             }
@@ -2405,7 +2384,8 @@ class CommerceController extends Controller
                 'price' => $total_commande,
                 'reductions' => $allreduction,
                 'tva'=> $tva,
-                'rem' => $newcommande->getRemise()
+                'rem' => $newcommande->getRemise(),
+                'autoVoucher'=> $discount_auto,
 
             ));
 
@@ -2981,6 +2961,53 @@ public function getPriceItemGeneric($product){
 
 
 
+}
+
+private function getVoucherAuto($listeAddedProduct){
+    $auto_discounts = $this->getBy('CodePromo', array(
+        'isAutomatic' => true,
+    ));
+    $is_product1_cart = false;
+    $is_product2_cart = false;
+    $discount_valid = new CodePromo();
+    foreach ($auto_discounts as $discount) {
+        foreach ($listeAddedProduct as $addedProduct) {
+                if ($discount->getProductAuto1() == $addedProduct->getProduct()) {
+                    if ($discount->getCollectionAuto1() && $discount->getCollectionAuto1() == $addedProduct->getCollection()) {
+                        if($discount->getquantityMin1() <= $addedProduct->getQuantity()){
+                            $is_product1_cart = true;
+                        } 
+                    }
+                    elseif ($discount->getCollectionAuto1() == null) {
+                        if($discount->getquantityMin1() <= $addedProduct->getQuantity()){
+                            $is_product1_cart = true;
+                        } 
+                    }
+                }
+            
+                    if ($discount->getProductAuto2() == $addedProduct->getProduct()) {
+                        if ($discount->getCollectionAuto2() && $discount->getCollectionAuto2() == $addedProduct->getCollection()) {
+                            if($discount->getquantityMin2() <= $addedProduct->getQuantity()){
+                                $is_product2_cart = true;
+                            } 
+                        }
+                        elseif ($discount->getCollectionAuto2() == null) {
+                            if($discount->getquantityMin2() <= $addedProduct->getQuantity()){
+                                $is_product2_cart = true;
+                            } 
+                        }
+                    
+                }
+                elseif($discount->getProductAuto2() == null){
+                    $is_product2_cart = true;
+                }
+        }
+
+        if ($is_product1_cart == true && $is_product2_cart == true) {
+            $discount_valid = $discount;
+        }
+    }
+    return $discount_valid;
 }
 
 }

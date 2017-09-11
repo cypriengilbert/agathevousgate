@@ -232,6 +232,9 @@ background-color:#EEEEEE;
     cursor:pointer;
 
   }
+.collection_link_selected{
+  display:none;
+}
   .see_generic p{
 
   color:white;
@@ -307,6 +310,17 @@ background-color:#EEEEEE;
         
           
     </div>
+<div class="row">
+  <div class="col-sm-12 no_padding text-center" style="margin-top:50px;">
+     {% if collection1 is null %}
+         
+         
+          {% else %}
+          <img style="max-height:300px;" src="{{ asset('/upload/image_collection/' ~ collection1.imageName)}} ">
+          
+           {% endif %}
+  </div>
+<div>
 <div class="row">
 <div class="col-sm-2 no_padding">
     </div>
@@ -399,20 +413,31 @@ background-color:#EEEEEE;
         function open_div_{{color.id}}(){
           if(document.getElementById('collapse{{color.id}}').className == 'panel-collapse collapse in'){
           document.getElementById('collapse{{color.id}}').className='panel-collapse collapse';
+          document.getElementById('panel-heading-coffret_{{color.id}}').style.boxShadow = 'box-shadow: 0px 15px 25px black';
         }
         else{
         document.getElementById('collapse{{color.id}}').className='panel-collapse collapse in';
+        document.getElementById('panel-heading-coffret_{{color.id}}').style.boxShadow = 'box-shadow: 0px';
+
         }
         }
         </script>
+          <div class="row">
+                     <div class="col-sm-12 no_padding text-center" >
+                     <h2>{{color.name_public}} <span id="nb-item-{{color.id}}"></span></h2>
+                    </div>
+          </div>
+           
+           <div class="row">
+
            <div class="col-sm-12 no_padding">
               <div class="panel-group" id="accordion">
                  <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                    <div id="panel-heading-coffret" class="panel-heading panel-heading-plugin" style="background:url({{ asset('/upload/color/thumbnail/' ~ color.imageColorName)}});" onclick="open_div_{{color.id}}();">
+                    <div id="panel-heading-coffret_{{color.id}}" class="panel-heading panel-heading-plugin" style="box-shadow: 0px 15px 25px #666666 ;background:url({{ asset('/upload/color/thumbnail/' ~ color.imageColorName)}});height:60px;" onclick="open_div_{{color.id}}();">
                        <div class="row">
                           <div class="col-sm-11">
                              <h3 class="panel-title" >
-                             <span style="background-color:white">{{color.name_public}} <span id="nb-item-{{color.id}}"></span></span>
+                             <span style="background-color:white"></span>
                              </h3>
                           </div>
                           <div class="col-sm-1 text-right">
@@ -459,6 +484,7 @@ background-color:#EEEEEE;
                  </div>
               </div>
            </div>
+           </div>
 
         </div>
         {% endif %}
@@ -469,10 +495,11 @@ background-color:#EEEEEE;
 
    
     </div>
-    <div class="row">
+    <div class="row" style="position:relative; margin-top:50px; ">
         <div class="col-sm-2 no_padding">
         </div>
-        <div class="col-sm-8 no_padding">
+        
+        <div class="col-sm-8 no_padding" id="addCartFixed" style="position:fixed; bottom:30px;">
 
           <div class="validate_cart_button  text-center" onclick="addtocart()"  >
                <p style=""><span class="glyphicon glyphicon-shopping-cart"></span> Ajouter <span id='nb_item_pending'></span> au panier </p>
@@ -488,11 +515,24 @@ background-color:#EEEEEE;
 
 </div>
 
-      
+</div>
+</div>
 
        
 </body>
+<script>
+$(document).scroll(function() {
+    checkOffset();
+});
 
+function checkOffset() {
+    if($('#addCartFixed').offset().top + $('#addCartFixed').height() 
+                                           >= $('.general-footer').offset().top - 10)
+        $('#addCartFixed').css('position', '');
+    if($(document).scrollTop() + window.innerHeight < $('.general-footer').offset().top)
+        $('#addCartFixed').css('position', 'fixed'); // restore when you scroll up
+}
+</script>
 
 
 

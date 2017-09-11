@@ -29,9 +29,7 @@ class addAddedProductType extends AbstractType
       ->add('color1', EntityType::class , array(
    		'class' => 'CommerceBundle:Color',
    		'choice_label' => 'name',
-
-
-   	))
+		))
       ->add('color2', EntityType::class , array(
    		'class' => 'CommerceBundle:Color',
    		'choice_label' => 'name',

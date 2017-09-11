@@ -3,9 +3,14 @@
 namespace CommerceBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use CommerceBundle\Entity\Product;
+use CommerceBundle\Entity\Collection;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 
 class CodePromoType extends AbstractType
@@ -32,6 +37,43 @@ class CodePromoType extends AbstractType
     ),))
             ->add('montant')
             ->add('minimum_commande')
+            ->add('isAutomatic')
+            ->add('productAuto1', EntityType::class, array(
+                'class' => 'CommerceBundle:Product',
+                'choice_label' => 'name',
+               'multiple' => false,
+               'expanded' => false,
+                'required' => false,
+         ))
+         ->add('productAuto2', EntityType::class, array(
+            'class' => 'CommerceBundle:Product',
+            'choice_label' => 'name',
+           'multiple' => false,
+           'expanded' => false,
+            'required' => false,
+     ))
+     ->add('collectionAuto1', EntityType::class, array(
+        'class' => 'CommerceBundle:Collection',
+        'choice_label' => 'title',
+       'multiple' => false,
+       'expanded' => false,
+        'required' => false,
+ ))
+ ->add('collectionAuto2', EntityType::class, array(
+    'class' => 'CommerceBundle:Collection',
+    'choice_label' => 'title',
+
+   'multiple' => false,
+   'expanded' => false,
+
+    'required' => false,
+))
+
+
+            ->add('quantityMin1')
+            ->add('quantityMin2')
+            
+
         ;
     }
 
