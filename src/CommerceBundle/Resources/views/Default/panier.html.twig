@@ -380,6 +380,15 @@
                               <p></p>
                               <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
                               {% set codePromo = app.session.get('codePromo') %}
+                              {% if discountAuto %}
+                                {% if discountAuto.genre == 'pourcentage' %}
+                                {% set remise = totalsum * discountAuto.montant / 100 %}
+                                {% elseif discountAuto.genre  == 'remise' %}
+                                {% set remise = discountAuto.montant %}
+                                {% elseif discountAuto.genre  == 'fdp' %}
+                                {% elseif discountAuto.genre  == 'fdp-remise' %}
+                                {% set remise = discountAuto.montant %}
+                              {% endif %}
                               {% if codePromo %}
                               {% if codePromo.minimumCommande <= totalsum %}
                               {% if codePromo.genre == 'pourcentage' %}
@@ -389,7 +398,8 @@
                               {% elseif codePromo.genre  == 'fdp' %}
                               {% elseif codePromo.genre  == 'fdp-remise' %}
                               {% set remise = codePromo.montant %}
-                              {% endif %}
+                               {% endif %}
+
                               <p class="text-right"><strong> - {{ remise|round(2, 'common') }} €</strong></p>
                               {% set totalsum = totalsum - remise|round(2, 'common') %}
                               {% else %}
@@ -406,12 +416,14 @@
                               {% else %}
                               <p class="text-right">0 € </p>
                               {% endif %}
+                              
                               {% if codePromo %}
                               {% if codePromo.minimumCommande <= totalsum %}
                               {% if codePromo.genre == 'fdp' %}
                               {% elseif codePromo.genre  == 'fdp-remise' %}
                               {% set remise = codePromo.montant %}
                               {% endif %}
+                              
                               {% endif %}
                               {% endif %}
                               <p class="text-right"> <strong>  {{ totalsum|round(2,'common') }} €</strong></p>

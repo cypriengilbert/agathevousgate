@@ -275,8 +275,11 @@ background-color:#EEEEEE;
       <div class="temporary_cart" >
           <div class="row" >
           <div class="col-md-12 text-center">
+          {% if AddedProductByProduct|length == 0 %}
+              Votre panier est vide
+          {% else %}
           <a href="{{path('panier')}}">Modifier le panier</a>
-                                
+                                {% endif %}
                                 </div>
                                 </div>
         {% for key, AddedProductByProduct in AddedProductByProduct %}
