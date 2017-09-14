@@ -43,6 +43,8 @@ class Stock
     */
     public $product;
 
+    
+
 
 
 

@@ -13,6 +13,7 @@ use CommerceBundle\Entity\Stock;
 use CommerceBundle\Entity\Producer;
 use CommerceBundle\Entity\Atelier;
 use CommerceBundle\Model\StockList;
+use CommerceBundle\Model;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use UserBundle\Entity\User;
@@ -144,42 +145,74 @@ public function listeAtelierAction()
   }
 
   /**
-   * @Route("/s/stock/{product}", name="addstock")
+   * @Route("/s/stock/{product}", name="stockProduct")
    */
-  public function addStockAction(Request $request, $product)
+  public function StockProductAction(Request $request, $product)
   {
     $page  = 'stock';
     $product_selected = $this->getOneBy('Product', array('name' => $product));
     $colors = $this->getAll('Color');
     $stocks = $this->getBy('Stock', array('product' => $product_selected));
     $i = 0;
-    $stockList = new StockList(); // This is our model, what Francesco called 'TaskList'
+   // $stockList = new StockList(); // This is our model, what Francesco called 'TaskList'
 
-    foreach ($stocks as $stock) {
-    $stockList->addStock($stock);
-    }
-
-      $form = $this->get('form.factory')->create('CommerceBundle\Form\StockListType', $stockList);
-      if ($form->handleRequest($request)->isValid()) {
-        $em = $this->getDoctrine()->getManager();
-        $em->persist( $stockList);
-        $em->flush();
-        return $this->redirect($this->generateUrl('addstock'));
-
-    }
-
-
-
+    
+      
     return $this->render('AdminBundle:Default:addstock.html.twig', array(
       'page' => $page,
       'product' => $product_selected,
       'colors' => $colors,
       'stocks' => $stocks,
-      'forms' => $form->createView(),
     ));
 
 
   }
+
+  /**
+   * @Route("/s/stock/{product}/add", name="addStock")
+   */
+   public function addStockAction(Request $request, $product)
+   {
+     $page  = 'stock';
+     $product_selected = $this->getOneBy('Product', array('name' => $product));
+     $colors = $this->getAll('Color');
+     $stocks = $this->getBy('Stock', array('product' => $product_selected));
+    // $stockList = new StockList(); // This is our model, what Francesco called 'TaskList'
+    if(null !== $request->request->get('finalCart') ){
+      
+    
+                $stockJson = $request->request->get('finalCart');
+                $stockArray = json_decode($stockJson);
+                foreach ($stockArray as $line) {
+                  if($line[1] == 0){
+      
+                  }
+                  else{
+                    $stock = $this->getOneBy('Stock', array('id' => $line[0]));
+                    $stock->setQuantity($stock->getQuantity()+$line[1]);  
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stock);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Stock bien modifié');
+      
+                   
+      
+                  }
+                }
+                }
+               
+      
+     
+       
+     return $this->render('AdminBundle:Default:addstock.html.twig', array(
+       'page' => $page,
+       'product' => $product_selected,
+       'colors' => $colors,
+       'stocks' => $stocks,
+     ));
+ 
+ 
+   }
 
 
   public function getAll($entity){

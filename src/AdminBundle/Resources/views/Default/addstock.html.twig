@@ -25,11 +25,10 @@
             </p>
 
           </div>  
-               {{ form_start(forms) }}
 
           <div class="col-md-6">
              
-              <button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right"><i class="material-icons" type="submit">Enregistrer</i></button>
+              <button onclick="addstock()" style="text-transform:uppercase" class="btn btn-info btn-fill pull-right"><i class="material-icons" type="submit">Enregistrer</i></button>
           </div>          
         </div>
       </div>
@@ -43,25 +42,27 @@
     <thead>
      <tr>
          <th>Couleur</th>
+         <th>Quantité en stock</th>
              <th>{{ product.cartname }}</th>
+
          </tr>
      </thead>
      <tbody>
      {% set done = 0 %}
 
 
-     {% for form in forms.stocks %}
+     {% for stock in stocks %}
 
             <tr>
 
-             <td data-toggle="tooltip" title="{{ form.vars.value.color.namePublic }}" style="background:url({{ asset('/upload/color/thumbnail/' ~ form.vars.value.color.imageColorName ) }})"></td>
+             <td data-toggle="tooltip" title="{{ stock.color.namePublic }}" style="background:url({{ asset('/upload/color/thumbnail/' ~ stock.color.imageColorName ) }})"></td>
+                  <td>{{stock.quantity}}</td>
                   <td  style="text-align:center">
-                  {{ form_widget(form.quantity, {'attr': {'class': ''}}) }}
+                      <input type="number" class="form-control" id="stock_{{ stock.id }}" value="0">
 
                   </td>
 
 {% endfor %}
-{{ form_end(forms) }}
 
      </tbody>
 </table>
@@ -131,6 +132,36 @@
         
     });
 </script>
+
+<script>
+function addstock(){
+var finalStock = [];
+{% for stock in stocks %}
+     value = document.getElementById('stock_{{stock.id}}').value;
+    finalStock.push([{{stock.id}},value ]);
+{% endfor %}
+  var finalJsonStock = JSON.stringify(finalStock);
+  alert(finalJsonStock);
+
+  var frm = document.getElementById('finalCartField') || null;
+  if(frm) {
+   frm.value = finalJsonStock;
+}
+document.getElementById("buttonValidateCart").click();
+
+}
+
+</script>
+
+<div style="display:none">
+<form action="{{path('addStock', {'product': product.name} )}}"  method="post" id="redirect-form" name="redirect-form">    
+
+  <input type="text" name="finalCart" id="finalCartField" >
+  <button type="submit" id="buttonValidateCart">Valider</button>
+</form>
+
+</div>
+
 {% endblock %}
 
 {% block script_chart %}

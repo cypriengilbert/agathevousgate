@@ -9,13 +9,13 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Class StockList
  * @package CommerceBundle\Model
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="CommerceBundle\Repository\StockRepository")
  */
 class StockList
 {
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Stock")
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Stock")
      */
     private $stocks;
 
