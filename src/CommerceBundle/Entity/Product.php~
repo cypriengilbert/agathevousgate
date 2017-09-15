@@ -83,6 +83,15 @@ class Product
          */
         private $updatedAt;
 
+           /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_stock", type="boolean")
+     */
+
+     private $isStock;
+     
+
 
 
 
@@ -211,5 +220,53 @@ class Product
     public function getCartName()
     {
         return $this->cartName;
+    }
+
+    /**
+     * Set imageProductName
+     *
+     * @param string $imageProductName
+     *
+     * @return Product
+     */
+    public function setImageProductName($imageProductName)
+    {
+        $this->imageProductName = $imageProductName;
+
+        return $this;
+    }
+
+    /**
+     * Get imageProductName
+     *
+     * @return string
+     */
+    public function getImageProductName()
+    {
+        return $this->imageProductName;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Product
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

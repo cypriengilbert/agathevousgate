@@ -44,8 +44,7 @@ class Stock
     public $product;
 
     
-
-
+ 
 
 
     /**

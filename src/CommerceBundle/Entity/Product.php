@@ -83,6 +83,15 @@ class Product
          */
         private $updatedAt;
 
+           /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_stock", type="boolean")
+     */
+
+     private $isStock;
+     
+
 
 
 
@@ -259,5 +268,29 @@ class Product
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set isStock
+     *
+     * @param boolean $isStock
+     *
+     * @return Product
+     */
+    public function setIsStock($isStock)
+    {
+        $this->isStock = $isStock;
+
+        return $this;
+    }
+
+    /**
+     * Get isStock
+     *
+     * @return boolean
+     */
+    public function getIsStock()
+    {
+        return $this->isStock;
     }
 }

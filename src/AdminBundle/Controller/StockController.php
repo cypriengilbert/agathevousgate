@@ -25,6 +25,38 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class StockController extends Controller
 {
+
+ 
+  /**
+   * @Route("/s/createAllStock", name="createAllStock")
+   */
+   public function createAllStockAction(Request $request)
+   {
+    $stocks = $this->getAll('Stock');
+    $products = $this->getAll('Product');
+    $colors = $this->getAll('Color');
+    
+    foreach ($products as $product) {
+      foreach ($colors as $color) {
+        $stock = $this->getOneBy('Stock', array('product' => $product, 'color' => $color));
+        if($stock){
+
+        }
+        else{
+        $newStock = new Stock();
+        $newStock->setProduct($product);
+        $newStock->setColor($color);
+        $newStock->setQuantity(0);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($newStock);
+        $em->flush();
+      }
+      }
+    }
+    return $this->redirect($this->generateUrl('stock'));
+
+   }
+
   /**
    * @Route("/s/newProducer/{id}", name="newProducer")
    */
@@ -130,7 +162,7 @@ public function listeAtelierAction()
   public function StockAction(Request $request)
   {
     $page  = 'stock';
-    $products = $this->getAll('Product');
+    $products = $this->getBy('Product', array('isStock' => true));
     $colors = $this->getAll('Color');
     $stocks = $this->getAll('Stock');
 

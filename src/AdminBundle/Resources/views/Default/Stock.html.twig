@@ -24,7 +24,7 @@
          <tr>
          <th>Couleur</th>
             {% for product in products %}
-             <th>{{ product.name }}</th>
+             <th><a href="{{path("stockProduct", {'product': product.name})}}">{{ product.name }}</a></th>
              {% endfor %}
          </tr>
      </thead>
@@ -39,7 +39,7 @@
 
                 {% for stock in stocks %}
                   {% if product == stock.product and color == stock.color %}
-                    <td  style="text-align:center">
+                    <td  style="text-align:center;{% if stock.quantity < 2 %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 %}background-color:orange;{% else %}{% endif %}">
                     
                       {{ stock.quantity }}
                        </td>
