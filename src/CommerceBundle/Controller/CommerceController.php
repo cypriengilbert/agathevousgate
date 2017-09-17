@@ -401,6 +401,34 @@ class CommerceController extends Controller
     }
 
     /**
+     * @Route("/deleteAll", name="deleteallproduct")
+     */
+     public function deleteAllProductAction()
+     {
+         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+             $em             = $this->getDoctrine()->getManager();
+             $user        = $this->container->get('security.context')->getToken()->getUser();
+             $id_user        = $this->container->get('security.context')->getToken()->getUser()->getId();
+             $enfanttodelete = $this->getBy('AddedProduct', array(
+                 'client' => $user, 
+                 'commande'  => null,
+             ));
+             foreach ($enfanttodelete as $value) {
+                 $em->remove($value);
+             }
+             
+             $em->flush();
+         } else {
+             $nbarticlepanier   = 0;
+             $listeAddedProduct = null;
+         }
+         $response = new RedirectResponse($this->generateUrl('panier'));
+         return $response;
+     }
+
+     
+
+    /**
      * @Route("/plus_product/{id}", name="plusproduct")
      */
     public function plusProductAction($id, Request $request)
@@ -2545,6 +2573,9 @@ class CommerceController extends Controller
         $rectangle  = $this->getOneBy('Product', array(
          'name' => 'Rectangle_grand'
         ));
+        $milieu  = $this->getOneBy('Product', array(
+            'name' => 'Milieu'
+           ));
 
         $stock_color1 = $this->getOneBy('Stock', array(
             'product' => $rectangle, 'color' => $product->getColor1()
@@ -2553,7 +2584,7 @@ class CommerceController extends Controller
             'product' => $rectangle, 'color' => $product->getColor2()
         ))->getQuantity();
         $stock_color3 = $this->getOneBy('Stock', array(
-            'product' => $rectangle, 'color' => $product->getColor3()
+            'product' => $milieu, 'color' => $product->getColor3()
         ))->getQuantity();
 
         if($stock_color1 > $stock_faible && $stock_color2 > $stock_faible && $stock_color3 > $stock_faible){

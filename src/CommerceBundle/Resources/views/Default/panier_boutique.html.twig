@@ -103,7 +103,7 @@
       {% if listePanier %}
       <div class="container">
           <div class="row">
-              <div class="col-md-9">
+              <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-12">
 
@@ -122,6 +122,7 @@
                                 <th>Quantité</th>
                                 <th>Prix unitaire</th>
                                 <th>Total</th>
+                                <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -166,6 +167,9 @@
                                 <td>
                                  {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
                                 </td>
+                                <td>
+                                      <a href="{{path('deleteproduct',{'id': items.id})}}"><span class="glyphicon glyphicon-trash"></span></a>
+                                    </td> 
                               </tr>
                               {% for items_child in listePanierEnfant %}
                                 {% if items_child and items_child.Parent == items %}
@@ -211,6 +215,7 @@
                                      {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
 
                                     </td>
+                                    
                                   </tr>
                                 {% endif %}
                               {% endfor %}
@@ -223,7 +228,7 @@
                         </div>
                 </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                      <div class="col-md-12"  style="border:1px solid #A94141">
                         <div class="row">
                            <div class="col-xs-7 " style="">

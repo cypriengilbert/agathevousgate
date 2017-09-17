@@ -179,6 +179,14 @@ background-color:#EEEEEE;
     border-radius:20px;
     margin-top:30px;
   }
+  .productName{
+    min-height:50px;
+  }
+
+  .input_color{
+  width:100%;
+  
+}
   #select_collection{
     display:none;
   }
@@ -222,6 +230,19 @@ background-color:#EEEEEE;
   }
   #link_generic_mobile{
   display:block;
+}
+
+.allAcceptedProduct{
+  margin-top:20px;
+}
+
+.productName{
+    min-height:0px;
+  }
+
+.input_color{
+  width:30%;
+
 }
   .see_generic{
 
@@ -307,7 +328,15 @@ background-color:#EEEEEE;
                      
                       {% endif %}
                       {% endfor %}
-        
+        <div class="row" >
+          <div class="col-md-12 text-center">
+          {% if AddedProductByProduct|length > 0 %}
+ <a href="{{path('deleteallproduct')}}"><div class="col-md-12 text-left" style="background-color:#A94141; color:white;font-size:1em; padding:5px 5px" >
+
+                         <span class="glyphicon glyphicon-trash"></span>  Vider le panier
+                         </div>       </a>       {% endif %}
+                                </div>
+                                </div>
           
     </div>
 <div class="row">
@@ -376,7 +405,7 @@ background-color:#EEEEEE;
     </div> #}
 
 
-    <div class="col-sm-2 no_padding">
+    <div class="col-sm-3 no_padding">
 
     <div class="row">
   <a class="" style="text-align:center" href="{{ path('generic')}}"> <div class="collection_link" style="font-size:15px;text-align:center">Accessoires</div></a>
@@ -404,7 +433,7 @@ background-color:#EEEEEE;
            {% endif %}
            </div>
     </div>
-    <div class="col-sm-8 no_padding">
+    <div class="col-sm-7 no_padding">
         {% for color in colors %}
 
           {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
@@ -423,17 +452,20 @@ background-color:#EEEEEE;
         }
         </script>
           <div class="row">
-                     <div class="col-sm-12 no_padding text-center" >
+          <div class="col-sm-11 no_padding">
+          </div>
+                     <div class="col-sm-11 no_padding text-center" >
                      <h2>{{color.name_public}} <span id="nb-item-{{color.id}}"></span></h2>
                     </div>
           </div>
            
            <div class="row">
-
-           <div class="col-sm-12 no_padding">
+          <div class="col-sm-11 no_padding">
+          </div>
+          <div class="col-sm-11 no_padding">
               <div class="panel-group" id="accordion">
                  <div class="panel panel-default" style="margin-top:20px; background-color:white;">
-                    <div id="panel-heading-coffret_{{color.id}}" class="panel-heading panel-heading-plugin" style="box-shadow: 0px 15px 25px #666666 ;background:url({{ asset('/upload/color/thumbnail/' ~ color.imageColorName)}});height:60px;" onclick="open_div_{{color.id}}();">
+                    <div id="panel-heading-coffret_{{color.id}}" class="panel-heading panel-heading-plugin" style="box-shadow: 0px 15px 25px #666666 ;background:url({{ asset('/upload/color/thumbnail/' ~ color.imageColorName)}});height:40px;" onclick="open_div_{{color.id}}();">
                        <div class="row">
                           <div class="col-sm-11">
                              <h3 class="panel-title" >
@@ -453,9 +485,9 @@ background-color:#EEEEEE;
                           {% for accepted_product in accepted_products %}
 
                           {% if product.name == accepted_product %}
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 allAcceptedProduct">
                               <div class="row">
-                                <div class="col-sm-12 text-center" style="min-height: 50px; " >
+                                <div class="col-sm-12 text-center" class="productName"  >
                                 {{product.cartname}}
                                 </div>
                               </div>
@@ -465,8 +497,9 @@ background-color:#EEEEEE;
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-sm-12 text-center" style="margin-top:10px; text-align:center">
-                                <input style="width:100%;"  type="number" class="form-control" id="quantity_{{product.id}}_{{color.id}}" name="" value="0" min="0" onchange="refresh_items('{{color.id}}');">                                      </center>
+
+                                <div class="col-sm-12 text-center" style="margin-top:10px; text-align:center;display: flex;flex-flow: column wrap;align-items: center;">
+                                <input  type="number" class="form-control input_color" id="quantity_{{product.id}}_{{color.id}}" name="" value="0" min="0" onchange="refresh_items('{{color.id}}');">                                      </center>
 
                                 </div>
                               </div>
@@ -491,27 +524,30 @@ background-color:#EEEEEE;
     {% endfor %}
     </div>
     <div class="col-sm-2 no_padding">
+    <div class="validate_cart_button  text-center" onclick="addtocart()" style="position:fixed; width:200px" >
+               <p style=""><span class="glyphicon glyphicon-shopping-cart"></span> Ajouter <span id='nb_item_pending'></span> </p>
+          </div>
     </div>
 
    
     </div>
-    <div class="row" style="position:relative; margin-top:50px; ">
-        <div class="col-sm-2 no_padding">
+   {# <div class="row" style="position:relative; margin-top:50px; ">
+        <div class="col-sm-3 no_padding">
         </div>
         
-        <div class="col-sm-8 no_padding" id="addCartFixed" style="position:fixed; bottom:30px;">
+        <div class="col-sm-7 no_padding" id="addCartFixed" style="position:fixed; bottom:30px;">
 
           <div class="validate_cart_button  text-center" onclick="addtocart()"  >
                <p style=""><span class="glyphicon glyphicon-shopping-cart"></span> Ajouter <span id='nb_item_pending'></span> au panier </p>
           </div>
-             {#<a href="{{ path('generic')}}"><div class="see_generic text-center" style=" background-color:#A94141;" >
+             <a href="{{ path('generic')}}"><div class="see_generic text-center" style=" background-color:#A94141;" >
                      <p style=""> Voir les produits génériques </p>
-             </a>#}
+             </a>
         </div>
             <div class="col-sm-2 no_padding">
     </div>
     
-    </div>
+    </div>#}
 
 </div>
 
@@ -529,8 +565,9 @@ function checkOffset() {
     if($('#addCartFixed').offset().top + $('#addCartFixed').height() 
                                            >= $('.general-footer').offset().top - 10)
         $('#addCartFixed').css('position', '');
+
     if($(document).scrollTop() + window.innerHeight < $('.general-footer').offset().top)
-        $('#addCartFixed').css('position', 'fixed'); // restore when you scroll up
+        $('#addCartFixed').css('position', 'fixed'); 
 }
 </script>
 

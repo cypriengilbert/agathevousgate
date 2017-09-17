@@ -93,7 +93,7 @@ class DefaultController extends Controller
                 $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
                 
             }
-            
+            $AddedProductByProduct = $this->natkrsort($AddedProductByProduct);
             
             if($name != 'Basic'){
             $collection   = $repository->findOneBy(array('title' => $name));
@@ -334,6 +334,22 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
         $entities   = $repository->findBy($arrayParam);
         return $entities;
+    }
+
+
+   public function natkrsort($array) 
+    {
+        $keys = array_keys($array);
+        natsort($keys);
+    
+        foreach ($keys as $k)
+        {
+            $new_array[$k] = $array[$k];
+        }
+       
+        $new_array = array_reverse($new_array, true);
+    
+        return $new_array;
     }
 
 }
