@@ -32,29 +32,36 @@ class StockController extends Controller
    */
    public function createAllStockAction(Request $request)
    {
-    $stocks = $this->getAll('Stock');
-    $products = $this->getAll('Product');
-    $colors = $this->getAll('Color');
+    $user  = $this->container->get('security.context')->getToken()->getUser();
     
-    foreach ($products as $product) {
-      foreach ($colors as $color) {
-        $stock = $this->getOneBy('Stock', array('product' => $product, 'color' => $color));
-        if($stock){
-
+    if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
+      
+      $stocks = $this->getAll('Stock');
+      $products = $this->getAll('Product');
+      $colors = $this->getAll('Color');
+      
+      foreach ($products as $product) {
+        foreach ($colors as $color) {
+          $stock = $this->getOneBy('Stock', array('product' => $product, 'color' => $color));
+          if($stock){
+  
+          }
+          else{
+          $newStock = new Stock();
+          $newStock->setProduct($product);
+          $newStock->setColor($color);
+          $newStock->setQuantity(0);
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($newStock);
+          $em->flush();
         }
-        else{
-        $newStock = new Stock();
-        $newStock->setProduct($product);
-        $newStock->setColor($color);
-        $newStock->setQuantity(0);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($newStock);
-        $em->flush();
+        }
       }
+      return $this->redirect($this->generateUrl('stock'));
+  
       }
-    }
-    return $this->redirect($this->generateUrl('stock'));
-
+    
+    
    }
 
   /**
@@ -72,11 +79,11 @@ class StockController extends Controller
         $producer = new Producer();
       }
       $producer->setActive(true);
-      $user->setRoles(array(
-          'ROLE_ADMIN'
-      ));
+     
       $user->setIsPro(4);
       $producer->setUser($user);
+      $em->persist($user);
+      $em->flush();
       $form = $this->get('form.factory')->create('CommerceBundle\Form\ProducerType', $producer);
       if ($form->handleRequest($request)->isValid()) {
           $em = $this->getDoctrine()->getManager();
@@ -116,17 +123,20 @@ public function setToUserAction($id, Request $request)
     $User->setRoles(array(
         'ROLE_USER'
     ));
+    $em = $this->getDoctrine()->getManager();
+    $em->persist($User);
+    $em->flush();
     $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
     $atelier = $repository->findOneBy(array('franchise' => $id));  
-    $em = $this->getDoctrine()->getManager();
+    
 
     if ($atelier != null){
           $atelier->setActive(false);
           $em->persist($atelier);
+          $em->flush();
+          
 
     }
-    $em->persist($User);
-    $em->flush();
     $request->getSession()->getFlashBag()->add('notice', 'Atelier bien supprimer.');
     return $this->redirect($this->generateUrl('users', array(
         'validate' => 'Atelier bien supprimé'
@@ -137,17 +147,17 @@ public function setToUserAction($id, Request $request)
 
 
 /**
- * @Route("/s/listeAtelier", name="listeAtelier")
+ * @Route("/s/listeProducer", name="listeProducer")
  */
-public function listeAtelierAction()
+public function listeProducerAction()
 {
-  $page = 'atelier';
+  $page = 'user';
 
-    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Atelier');
-    $ateliers = $repository->findAll();
+    $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+    $producers = $repository->findBy(array('isPro' => 4));
 
-    return $this->render('AdminBundle:Default:listeAtelier.html.twig', array(
-      'ateliers' => $ateliers,
+    return $this->render('AdminBundle:Default:listeProducer.html.twig', array(
+      'listeUser' => $producers,
       'page' => $page,
 
     ));
@@ -157,10 +167,13 @@ public function listeAtelierAction()
 
 
   /**
-   * @Route("/s/stock", name="stock")
+   * @Route("/stock", name="stock")
    */
   public function StockAction(Request $request)
-  {
+  {    
+    $user  = $this->container->get('security.context')->getToken()->getUser();
+    
+    if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
     $page  = 'stock';
     $products = $this->getBy('Product', array('isStock' => true));
     $colors = $this->getAll('Color');
@@ -172,15 +185,44 @@ public function listeAtelierAction()
       'colors' => $colors,
       'stocks' => $stocks,
     ));
-
+  }
+  else throw $this->createAccessDeniedException('You cannot access this page!');
+  
 
   }
 
+    /**
+   * @Route("/stock/generic", name="stock_generic")
+   */
+   public function stockGenericAction(Request $request)
+   {
+    $user  = $this->container->get('security.context')->getToken()->getUser();
+    
+    if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
+     $page  = 'stock';
+     $products = $this->getBy('Product', array('isStock' => true, 'nb_color'=>0));
+     $colors = $this->getAll('Color');
+     $stocks = $this->getAll('Stock');
+ 
+     return $this->render('AdminBundle:Default:StockGeneric.html.twig', array(
+       'page' => $page,
+       'products' => $products,
+       'colors' => $colors,
+       'stocks' => $stocks,
+     ));
+    }
+    else throw $this->createAccessDeniedException('You cannot access this page!');
+ 
+   }
+
   /**
-   * @Route("/s/stock/{product}", name="stockProduct")
+   * @Route("/stock/{product}", name="stockProduct")
    */
   public function StockProductAction(Request $request, $product)
   {
+    $user  = $this->container->get('security.context')->getToken()->getUser();
+    
+    if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
     $page  = 'stock';
     $product_selected = $this->getOneBy('Product', array('name' => $product));
     $colors = $this->getAll('Color');
@@ -197,14 +239,21 @@ public function listeAtelierAction()
       'stocks' => $stocks,
     ));
 
+  }
+  else throw $this->createAccessDeniedException('You cannot access this page!');
+  
 
   }
 
   /**
-   * @Route("/s/stock/{product}/add", name="addStock")
+   * @Route("/stock/{product}/add", name="addStock")
    */
    public function addStockAction(Request $request, $product)
    {
+
+    $user  = $this->container->get('security.context')->getToken()->getUser();
+    
+    if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
      $page  = 'stock';
      $product_selected = $this->getOneBy('Product', array('name' => $product));
      $colors = $this->getAll('Color');
@@ -242,7 +291,9 @@ public function listeAtelierAction()
        'colors' => $colors,
        'stocks' => $stocks,
      ));
- 
+    }
+    else throw $this->createAccessDeniedException('You cannot access this page!');
+    
  
    }
 

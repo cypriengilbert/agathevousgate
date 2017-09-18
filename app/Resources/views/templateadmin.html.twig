@@ -74,6 +74,7 @@
 
         <div class="sidebar-wrapper">
             <ul class="nav">
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
                 <li {% if page == 'dashboard' %}class="active"{% endif %}">
                     <a href="{{ path('dashboard') }}">
                         <i class="pe-7s-graph"></i>
@@ -105,6 +106,15 @@
                         <p>Produits définis</p>
                     </a>
                 </li>
+                {% endif %}
+                <li {% if page == 'stock' %}class="active"{% endif %}>
+                    <a href="{{ path('stock') }}">
+                        <i class="pe-7s-plugin"></i>
+                        <p>Stocks</p>
+                    </a>
+                </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+
                 <li {% if page == 'codePromo' %}class="active"{% endif %}>
                     <a href="{{ path('listeCodePromo') }}">
                         <i class="pe-7s-wallet"></i>
@@ -129,6 +139,7 @@
                         <p>Textes</p>
                     </a>
                 </li>
+                {% endif %}
                 
             </ul>
         </div>
