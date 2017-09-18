@@ -102,6 +102,13 @@ class Commande
        */
        private $remise;
 
+         /**
+       * @var float
+       *
+       * @ORM\Column(name="remisePro", type="float", nullable=true)
+       */
+       private $remisePro;
+
 
       /**
       * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
@@ -470,5 +477,29 @@ class Commande
     public function getDateEnvoi()
     {
         return $this->dateEnvoi;
+    }
+
+    /**
+     * Set remisePro
+     *
+     * @param float $remisePro
+     *
+     * @return Commande
+     */
+    public function setRemisePro($remisePro)
+    {
+        $this->remisePro = $remisePro;
+
+        return $this;
+    }
+
+    /**
+     * Get remisePro
+     *
+     * @return float
+     */
+    public function getRemisePro()
+    {
+        return $this->remisePro;
     }
 }

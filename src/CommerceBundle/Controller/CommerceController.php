@@ -1280,6 +1280,8 @@ class CommerceController extends Controller
         // Get the credit card details submitted by the form
         $token           = $_POST['stripeToken'];
         $user            = $this->container->get('security.context')->getToken()->getUser();
+        $id_user            = $this->container->get('security.context')->getToken()->getUser()->getId();
+        
         $UserEmail       = $user->getEmail();
         $repository      = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
         $commandeEnCours = $repository->findOneBy(array(
@@ -1290,7 +1292,7 @@ class CommerceController extends Controller
             $price = $commandeEnCours->getPrice() * 100;
             try {
                 $charge = \Stripe\Charge::create(array(
-                    "amount" => $price, // amount in cents, again
+                    "amount" => round($price), // amount in cents, again
                     "currency" => "eur",
                     "source" => $token,
                     "description" => "Commande n°".$commandeEnCours->getId()
@@ -1333,7 +1335,7 @@ class CommerceController extends Controller
                     
                     $value->setCommande($commandeEnCours);
                 $value->setPrice($value->getPriceTemp());
-                $pricebeforeremise = $value;
+                $pricebeforeremise = $value->getPrice();
 
                     if ($commandeEnCours->getRemise() == 0) {
                         $value->setPriceRemise($value->getPrice());
@@ -1349,6 +1351,27 @@ class CommerceController extends Controller
                     $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
 
+                $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
+                $listeAddedProductEnfants = $query->getResult();
+                $listeAddedProductParents = $this->getBy('AddedProduct', array(
+                    'client' => $id_user,
+                    'commande' => null,
+                    'parent' => null
+                ));
+               
+                $allProduct          = $this->getAll('Product');
+                $tva          = $this->getBy('Variable', array('name' => 'tva'));
+                
+                
+                $AddedProductByProduct = [];
+                $AddedProductByProduct_Child = [];
+    
+                foreach ($allProduct as $product) {
+                    $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                    
+                }
+
                 if ($commandeEnCours->getAtelierLivraison()) {
                     $atelier = $commandeEnCours->getAtelierLivraison();
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('commande@agathevousgate.fr')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
@@ -1361,7 +1384,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                  //  $this->get('mailer')->send($message);
+                    $this->get('mailer')->send($message);
 
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
@@ -1375,7 +1398,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                   // $this->get('mailer')->send($message);
+                    $this->get('mailer')->send($message);
 
                 } else {
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1390,9 +1413,32 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                  //  $this->get('mailer')->send($message);
+                    $this->get('mailer')->send($message);
                 }
 
+
+
+                if($user->getIsPro() == 2){
+                    $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'emails/confirmation_commande_boutique.html.twig', array(
+                            'user' => $user,
+                            'franchise' => null,
+                            'date' => new \DateTime("now"),
+                            'listePanier' => $listePanier,
+                            'minLivraison' => $minLivraison,
+                            'coutLivraison' => $coutLivraison,
+                            'parrainage' => $remiseParrainage,
+                            'commande' => $commandeEnCours,
+                            'reductions' => $allreduction,
+                            'tva' => $tva,
+                            'AddedProductByProduct' => $AddedProductByProduct,
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                    
+                }else{
+                    
+                
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
@@ -1405,7 +1451,8 @@ class CommerceController extends Controller
                     'parrainage' => $remiseParrainage,
                     'commande' => $commandeEnCours
                 )), 'text/html');
-              //  $this->get('mailer')->send($message);
+                $this->get('mailer')->send($message);
+            }
 
                 if ($user->getParrainEmail() != null) {
                     $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -1435,14 +1482,14 @@ class CommerceController extends Controller
                             'nb' => $minParrainage->getMontant()
 
                         )), 'text/html');
-                     //   $this->get('mailer')->send($message);
+                        $this->get('mailer')->send($message);
                         $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
                             'user' => $parrain,
                             'nb' => $minParrainage->getMontant()
                         )), 'text/html');
-                      //  $this->get('mailer')->send($message);
+                       $this->get('mailer')->send($message);
 
 
                     } else {
@@ -1463,7 +1510,7 @@ class CommerceController extends Controller
                             'nb' => $nbparrainage
 
                         )), 'text/html');
-                      //  $this->get('mailer')->send($message);
+                        $this->get('mailer')->send($message);
                     }
                 }
 
@@ -1552,6 +1599,26 @@ class CommerceController extends Controller
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
             }
+            $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
+            $listeAddedProductEnfants = $query->getResult();
+            $listeAddedProductParents = $this->getBy('AddedProduct', array(
+                'client' => $id_user,
+                'commande' => null,
+                'parent' => null
+            ));
+           
+            $allProduct          = $this->getAll('Product');
+            $tva          = $this->getBy('Varibale', array('name' => 'tva'));
+            
+            
+            $AddedProductByProduct = [];
+            $AddedProductByProduct_Child = [];
+
+            foreach ($allProduct as $product) {
+                $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                
+            }
 
             if ($commandeEnCours->getAtelierLivraison()) {
                 $atelier = $commandeEnCours->getAtelierLivraison();
@@ -1597,6 +1664,27 @@ class CommerceController extends Controller
                 $this->get('mailer')->send($message);
             }
 
+            if($user->getIsPro() == 2){
+                $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'emails/confirmation_commande.html.twig', array(
+                        'user' => $user,
+                        'franchise' => null,
+                        'date' => new \DateTime("now"),
+                        'listePanier' => $listePanier,
+                        'minLivraison' => $minLivraison,
+                        'coutLivraison' => $coutLivraison,
+                        'parrainage' => $remiseParrainage,
+                        'commande' => $commandeEnCours,
+                        'reductions' => $allreduction,
+                        'tva' => $tva,
+                        'AddedProductByProduct' => $AddedProductByProduct,
+                    )), 'text/html');
+                    $this->get('mailer')->send($message);
+                
+            }else{
+                
+            
             $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
             // app/Resources/views/Emails/registration.html.twig
                 'emails/confirmation_commande.html.twig', array(
@@ -1610,7 +1698,7 @@ class CommerceController extends Controller
                 'commande' => $commandeEnCours
             )), 'text/html');
             $this->get('mailer')->send($message);
-
+        }
             if ($user->getParrainEmail() != null) {
                 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 $minParrainage = $repository->findOneBy(array(
@@ -2320,9 +2408,7 @@ class CommerceController extends Controller
                 foreach ($listePanier as $value) {
                     $total_commande = $total_commande + ($value->getQuantity() * $value->getPriceTemp());
                 }
-            if(isset($user) && $user->getIsPro() == 2){
-                $total_commande = ($total_commande * (1+$tva/100));
-            }
+            
                     
             $newcommande->setClient($user);
             $newcommande->setIsValid(false);
@@ -2388,8 +2474,16 @@ class CommerceController extends Controller
                     }
                 }
             }
-
+            
             $total_commande = $total_commande - $remise;
+            if(isset($user) && $user->getIsPro() == 2){
+                $total_commande = ($total_commande * (1+$tva/100));
+                $remisePro=0;
+                foreach ($listePanier as $item) {
+                    $remisePro = $remisePro + $item->getpriceRemise() * $item->getQuantity();
+                }
+                $newcommande->setRemisePro($remisePro);
+            }
             $newcommande->setRemise($remise);
             $total_commande_100 = $total_commande * 100;
             $newcommande->setPrice($total_commande);

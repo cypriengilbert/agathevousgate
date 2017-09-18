@@ -124,28 +124,33 @@
                                                                                                       <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="m_2691187929940511126normalFare" style="display:table;border-spacing:0;border-collapse:collapse;width:100%;border:none">
                                                                                                          <tbody>
                                                                                                           <! - for each element --!>
-																																																					{% for listepanier in listePanier %}
-																																																					{% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
+                                                                                                          {% for key, AddedProductByProduct in AddedProductByProduct %}
+                                                                                                             {% if AddedProductByProduct %}
+																																																				         {% for items in AddedProductByProduct %}
+																																																					
                                                                                                             <tr>
-                                                                                                               <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> {{ listepanier.product.name }} </td>
-                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ listepanier.price * listepanier.quantity }}€ </td>
+                                                                                                               <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> {{ key }} </td>
                                                                                                             </tr>
 																																																						<tr>
 																																																							 <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">
-																																																								  {% if listepanier.Color1 %}
-																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
+																																																								  {% if items.Color1 %}
+																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{items.Color1.imageColorName }}">
 																																																								{% endif %}
-																																																								{% if listepanier.Color2 %}
-																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
+																																																								{% if items.Color2 %}
+																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{items.Color2.imageColorName }}">
 																																																								{% endif %}
-																																																								{% if listepanier.Color3 %}
-																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
+																																																								{% if items.Color3 %}
+																																																								<img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{items.Color3.imageColorName }}">
 																																																								{% endif %}
 																																																								 </td>
-																																																							 <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> </td>
+																																																							 <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> {{ items.quantity }} * {{ items.price }}</td>
 																																																						</tr>
                                                                                                             <! - endfor --!>
 																																																						{% endfor %}
+                                                                                                            {% endif %}
+                                                                                                            			
+																																																						{% endfor %}
+
 
                                                                                                          </tbody>
                                                                                                       </table>
@@ -168,7 +173,7 @@
                                                                                                          <tbody>
                                                                                                             <tr >
                                                                                                                <td align="left"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">Sous-total </td>
-                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ totalsum }}€ </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ commande.price + commande.remisePro }}€ </td>
                                                                                                             </tr>
                                                                                                          </tbody>
                                                                                                       </table>
@@ -193,7 +198,7 @@
                                                                                                          <tbody class="gmail_msg">
                                                                                                             <tr class="gmail_msg">
                                                                                                                <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">Dont TVA </td>
-                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{{ totalsum * 0.2 }}€</td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{% set tvaFinal = (commande.price +commande.transportCost) * tva  %}{{ tvaFinal }}€</td>
                                                                                                             </tr>
                                                                                                          </tbody>
                                                                                                       </table>
@@ -217,7 +222,7 @@
                                                                                                       <tbody>
                                                                                                          <tr>
                                                                                                             <td align="left"style="font-size:16px;line-height:20px;font-family:'ClanPro-News','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;text-transform:uppercase;color:#898989">TOTAL RÉGLÉ</td>
-                                                                                                            <td rowspan="2" align="right"  style="font-size:32px;line-height:40px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:10px"> {{ totalsum + commande.transportCost - commande.remise }}€ </td>
+                                                                                                            <td rowspan="2" align="right"  style="font-size:32px;line-height:40px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:10px"> {{ (commande.price + commande.transportCost - commande.remise) + tvaFinal }}€ </td>
                                                                                                          </tr>
                                                                                                       </tbody>
                                                                                                    </table>

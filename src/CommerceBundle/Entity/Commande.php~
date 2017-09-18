@@ -102,6 +102,13 @@ class Commande
        */
        private $remise;
 
+         /**
+       * @var float
+       *
+       * @ORM\Column(name="remisePro", type="float", nullable=true)
+       */
+       private $remisePro;
+
 
       /**
       * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
@@ -117,7 +124,7 @@ class Commande
               /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateEnvoi", type="datetime")
+     * @ORM\Column(name="dateEnvoi", type="datetime", nullable=true)
      */
     private $dateEnvoi;
 
@@ -446,5 +453,29 @@ class Commande
     public function getNumerosuivi()
     {
         return $this->numerosuivi;
+    }
+
+    /**
+     * Set dateEnvoi
+     *
+     * @param \DateTime $dateEnvoi
+     *
+     * @return Commande
+     */
+    public function setDateEnvoi($dateEnvoi)
+    {
+        $this->dateEnvoi = $dateEnvoi;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEnvoi
+     *
+     * @return \DateTime
+     */
+    public function getDateEnvoi()
+    {
+        return $this->dateEnvoi;
     }
 }

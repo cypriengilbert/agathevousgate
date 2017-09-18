@@ -26,7 +26,7 @@
                                  <table bgcolor="#F5F5F5" style="width: 100%;">
                                     <tbody>
                                        <tr>
-                                          <td><img style="width:auto; height:22px;" alt="logo_AGV" src="{{ asset('images/home_menu_1.png') }}"/> <img src="{{ asset('images/home_menu_2.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:22px"></td>
+                                         <td><img style="width:auto; height:22px;" alt="logo_AGV" src="http://agathevousgate.fr/web/images/home_menu_1.png"/> <img src="http://agathevousgate.fr/web/images/home_menu_2.png" alt="logo_agathevousgate" style="height: auto; max-height:22px"></td>
                                        </tr>
                                     </tbody>
                                  </table>
@@ -44,7 +44,7 @@
                                     <tr>
                                        <td cellpadding="0" style="padding:0px;width:100%; background-color:#252259; height:239px;max-height:239px;color:white;" valigne="middle" height="239px" >
                                           <div  align="center"   border="0"  >
-                                             <p style=" font-family: 'Montserrat Light', 'Helvetica', Helvetica, Arial, sans-serif;vertical-align:middle;margin:0px;font-size:28px; width:100%; height:100%;">Un parrainage validé !<br> </p>
+                                             <p style=" font-family: 'Montserrat Light', 'Helvetica', Helvetica, Arial, sans-serif;vertical-align:middle;margin:0px;font-size:28px; width:100%; height:100%;">Commande prête !<br> </p>
                                              <!-- /hero -->
                                           </div>
                                        </td>
@@ -60,9 +60,17 @@
 
 																								Bonjour {{ user.prenom }} {{ user.nom }}<br><br>
 
-																								Votre 10ème filleul ({{ filleul.prenom }} {{ filleul.nom }}) vient de commander sa commande !<br><br>
-
-																								Nous sommes heureux de vous annoncer que vous recevrez votre cadeau très bientôt !<br><br>
+																								Votre commande numéro {{ commande.id }} est prête et disponible.<br><br>
+                                                Vous pouvez prendre contact avec l'atelier ci-dessous afin de prendre rendez-vous.
+                                                <br><br>
+                                                {{ atelier.name }}<br>
+                                                {{ atelier.adresse1 }}<br>
+                                       {% if atelier.adresse2 %}
+                                                {{ atelier.adresse2 }}<br>
+                                                {% endif %}
+                                                {{ atelier.zipcode }} {{ atelier.city }}<br>
+                                                 Contact : {{ atelier.email }} ou {{ atelier.phone }}<br>
+																							<br><br>
 
 																								N'hésitez pas à nous joindre si besoin. <br><br> A bientôt, <br><br> L'équipe AgatheVousGâte
                                              </div>
@@ -85,13 +93,13 @@
                                        <tr>
                                           <td align="center">
                                              <p style="height:100%; margin:0px;font-size:25px; width:100%">
-                                                <img style="width:auto; height:22px;" alt="logo_AGV" src="{{ asset('images/home_menu_1.png') }}"/> <img src="{{ asset('images/home_menu_2.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:22px">                                             </p>
+                                                <img style="width:auto; height:22px;" alt="logo_AGV" src="http://agathevousgate.fr/web/images/home_menu_1.png"/> <img src="http://agathevousgate.fr/web/images/home_menu_2.png" alt="logo_agathevousgate" style="height: auto; max-height:22px">                                             </p>
                                              <p style="height:100%; margin:0px;font-size:25px;width:100%; margin-top:10px;">
-                                                <a target="_blank" href="https://www.facebook.com/agathevousgate/"><img style="margin-right:20px" src="{{ asset('img/icones/facebook.png') }}"></a>
-                                                <a target="_blank" href="https://www.instagram.com/agathevousgate/"><img src="{{ asset('img/icones/instagram.png') }}"></a>
+                                                <a target="_blank" href="https://www.facebook.com/agathevousgate/"><img style="margin-right:20px; max-height:20px;" src="http://agathevousgate.fr/web/img/facebook.png"></a>
+                                                <a target="_blank" href="https://www.instagram.com/agathevousgate/"><img style="max-height:20px;" src="http://agathevousgate.fr/web/img/instagram.png"></a>
                                              </p>
                                              <p style="height:100%;color:#696f6f;margin:0px;font-size:10px;width:100%; margin-top:20px;">
-                                                2016 <a  target="_blank" href="https://agathevousgate.fr">AgatheVousGâte</a> - Tous droits réservés | CGU
+                                                2016 <a  target="_blank" href="https://agathevousgate.fr">AgatheVousGâte</a> - Tous droits réservés
                                              </p>
                                           </td>
                                        </tr>
