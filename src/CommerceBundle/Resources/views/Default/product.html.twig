@@ -183,6 +183,9 @@
          <!-- Choix des couleurs -->
          <div class="no_padding" >
             <div class="panel-group"  >
+              {% if stock_noeud == false %}<div class="col-sm-12">
+                  ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+               </div>{% endif %}
                <div class="col-sm-12">
                   <h3>  Taille</h3>
                </div>
@@ -286,6 +289,9 @@
                         </div>
                         <div class="col-sm-6 no_padding">
                            <div class="row">
+                           {% if stock_coffret == false %}<div class="col-sm-12">
+                  ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+               </div>{% endif %}
                               <div class="col-sm-12 center">
                                  <center>
                                     <h2>{{ product.name }}</h2>
@@ -312,6 +318,9 @@
                         </div>
                         <div class="col-sm-6 no_padding">
                            <div class="row">
+                           {% if stock_coffret == false %}<div class="col-sm-12">
+                  ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+               </div>{% endif %}
                               <div class="col-sm-12 center">
                                  <center>
                                     <h2>{{ product.name }}</h2>
@@ -362,10 +371,14 @@
                         <img style="max-height:350px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
 
                      </div>
+                     {% if stock_pochette == false %}<div class="col-sm-12">
+                  ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+               </div>{% endif %}
                   </div>
                   {% endif %}
                   {% endfor %}
                </div>
+               
 
       </div>
       <div class="col-sm-6 no_padding">
@@ -390,10 +403,15 @@
                   <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}"></br>
                   <img style="max-height:175px" src="{{ asset('/upload/image_produit_predefini/' ~ enfants.imageName) }}">
                </div>
+               {% if stock_boutons == false %}<div class="col-sm-12">
+                  ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+               </div>{% endif %}
             </div>
             {% endif %}
             {% endfor %}
+            
          </div>
+         
       </div>
    </div>
    <div class="row">

@@ -8,7 +8,19 @@ window.onbeforeunload = function () {
    };
 
 </SCRIPT>
+
 <body id="page-top">
+<script>
+var stocks = new Array();
+{% for stock in stocks %}
+stocks[{{loop.index - 1}}] = new Array();
+stocks[{{loop.index - 1}}]['produit'] = '{{stock.product.name}}';
+stocks[{{loop.index - 1 }}]['color'] = {{stock.color.id}};
+stocks[{{loop.index -1 }}]['quantity'] = {{stock.quantity}};
+
+{% endfor %}
+</script>
+
     <!-- Partie 1: Customisation du noeud DEBUT-->
     <section>
         <div class="container">
@@ -141,7 +153,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');" class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');" class="radio_colors" value="{{ colors.id }}" />
                                             <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
@@ -159,7 +171,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}',{{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
                                             <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -168,7 +180,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                     {% set X1 = 1 %} {% endif %} {% endif %}  {% endif %}{% endfor %} {% endif %} {% endfor %}
                                 </ul>
                               </div>
-
+                                <div class="row" id="stock_faible_info_noeudderriere" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -197,7 +213,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 1 );" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }}); color_selected('{{ colors.imageColorName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic'); setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 1 );" class="radio_colors" value="{{ colors.id }}" />
 
                                               <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
@@ -220,7 +236,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_2 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_2" name="color2" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-2', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeuddevant','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }}); color_selected('{{ colors.imageColorName }}', 1);setLibertyAttache('{{ colors.name }}', '{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}', '{{ colors.imageColorName }}_3', '{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 1-nobasic')" class="radio_colors" value="{{ colors.id }}" />
                                               <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_2" for="{{ colors.imageColorName }}_2"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -234,8 +250,13 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                       {% endfor %} {% endif %} {% endfor %}
                                   </ul>
                               </div>
-
+                                <div class="row" id="stock_faible_info_noeuddevant" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                             </div>
+                            
                         </div>
 
                         <div class="panel panel-default">
@@ -263,7 +284,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
 
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }});" class="radio_colors" value="{{ colors.id }}" />
                                               <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_3_nobasic" for="{{ colors.imageColorName }}_3" ></label></a>
 
                                           </div>
@@ -281,7 +302,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                               <style>
                                                   input[type="radio"] + .{{ colors.name }}_3 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                               </style>
-                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');" class="radio_colors" value="{{ colors.id }}" />
+                                              <input type="radio" id="{{ colors.imageColorName }}_3" name="color3" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-3', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudpetit','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }});" class="radio_colors" value="{{ colors.id }}" />
                                               <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_3" for="{{ colors.imageColorName }}_3"></label></a>
                                           </div>
                                           <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -289,6 +310,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                       </div>
                                       {% set X1 = 1 %} {% endif %}{% endif %}{% endif %} {% endfor %} {% endif %} {% endfor %}
                                   </ul></div>
+                                  <div class="row" id="stock_faible_info_milieu" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -382,7 +408,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                           <style>
                                                               input[type="radio"] + .{{ colors.name }}_4 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                           </style>
-                                                          <input type="radio" id="{{ colors.imageColorName }}_4" name="color4" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-4', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_1','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}');  color_selected('{{ colors.imageColorName }}', 3)" class="radio_colors" value="{{ colors.id }}" />
+                                                          <input type="radio" id="{{ colors.imageColorName }}_4" name="color4" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-4', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_1','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}',{{ colors.id }});  color_selected('{{ colors.imageColorName }}', 3)" class="radio_colors" value="{{ colors.id }}" />
                                                           <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_4" for="{{ colors.imageColorName }}_4"></label></a>
                                                       </div>
                                                       <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -391,6 +417,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                   {% set X1 = 1 %} {% endif %}{% endif %} {% endif %} {% endfor %} {% endif %} {% endfor %}
                                               </ul>
                                           </div>
+                                          <div class="row" id="stock_faible_info_coffret1" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                                       </div>
                                   </div>
 
@@ -428,7 +459,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                         <style>
                                                             input[type="radio"] + .{{ colors.name }}_5 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                         </style>
-                                                        <input type="radio" id="{{ colors.imageColorName }}_5" name="color5" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-5', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}'); color_selected('{{ colors.imageColorName }}', 4) " class="radio_colors" value="{{ colors.id }}" />
+                                                        <input type="radio" id="{{ colors.imageColorName }}_5" name="color5" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-5', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','coffret_2','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}',{{ colors.id }}); color_selected('{{ colors.imageColorName }}', 4) " class="radio_colors" value="{{ colors.id }}" />
                                                         <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_5" for="{{ colors.imageColorName }}_5"></label></a>
                                                     </div>
                                                     <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -436,6 +467,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                 </div>
                                                 {% set X1 = 1 %} {% endif %} {% endif %}{% endif %} {% endfor %} {% endif %} {% endfor %}
                                             </ul></div>
+                                            <div class="row" id="stock_faible_info_coffret2" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                                       </div>
                                   </div>
 
@@ -491,7 +527,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_6 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="changePochette('{{ colors.CouleurPochetteName }}')" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_6" name="color6" onclick="changePochette('{{ colors.CouleurPochetteName }}', {{ colors.id}})" class="radio_colors" value="{{ colors.id }}" />
                                                 <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_6" for="{{ colors.imageColorName }}_6"></label></a>
                                             </div>
 
@@ -500,6 +536,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                          {% endfor %} {% endif %} {% endfor %}
                                     </ul>
 
+                                </div>
+                                <div class="row" id="stock_faible_info_Pochette" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px; margin-top:10px;">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
                                 </div>
                             </div>
                             <!--</div>-->
@@ -544,7 +585,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                                 <style>
                                                     input[type="radio"] + .{{ colors.name }}_7 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                                 </style>
-                                                <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="changeBoutons('{{ colors.couleurBoutonsName }}')" class="radio_colors" value="{{ colors.id }}" />
+                                                <input type="radio" id="{{ colors.imageColorName }}_7" name="color7" onclick="changeBoutons('{{ colors.couleurBoutonsName }}', {{colors.id}})" class="radio_colors" value="{{ colors.id }}" />
                                                 <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_7" for="{{ colors.imageColorName }}_7"></label></a>
                                             </div>
 
@@ -553,6 +594,11 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                          {% endfor %} {% endif %} {% endfor %}
                                     </ul>
                                     </div>
+                                    <div class="row" id="stock_faible_info_Boutons" style="display:none;">
+                                    <div class="col-md-12 text-center" style="display:block; margin-bottom:10px; margin-top:10px;">
+                                       ⚠️ Cette couleur a un stock faible, le délai de livraison pourrait être allongé.
+                                    </div>
+                                </div>
                                 </div>
                             <!--</div> Nope ?-->
                         </div>
@@ -1075,7 +1121,7 @@ if (document.getElementById(imageColorName + '_boutons').style.display == 'block
 }
 else{document.getElementById(imageColorName + '_boutons').style.display = 'block';
 if(t==1){
-changeBoutons(couleurBoutonsName);}
+changeBoutons(couleurBoutonsName, 1);}
 document.getElementById(imageColorName + '_boutons').correspondance = y;
 
 
@@ -1084,7 +1130,7 @@ if(document.getElementById(imageColorName + '_pochette').style.display == 'block
 }else{
 document.getElementById(imageColorName + '_pochette').style.display = 'block';
 if(t==1){
-changePochette(couleurPochetteName);}
+changePochette(couleurPochetteName,1);}
 document.getElementById(imageColorName + '_pochette').correspondance = y;
 }
 
@@ -1092,20 +1138,47 @@ document.getElementById(imageColorName + '_pochette').correspondance = y;
 
 
 }
-function changePochette(url){
+function changePochette(url,id){
 blnBlocage = true;
 var route = '<img style="height: auto;max-height: 300px;" src="{{ asset('/upload/color/pochette/' ~ 'URL' )}}">'
 route = route.replace("URL", url);
 document.getElementById('pochette_img').innerHTML = route;
 
+for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Pochette' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_Pochette').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_Pochette').style.display = 'none';
+                            }
+                        }
+                    }
+                }
+
 
 }
-function changeBoutons(url){
+function changeBoutons(url, id){
 blnBlocage = true;
 var route = '<img style="max-height: 75px;margin-top: 7.5rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL' )}}"></br><img style="max-height: 75px;margin-top: 2.5rem; margin-bottom:5rem;" src="{{ asset('/upload/color/boutons/' ~ 'URL2' )}}">'
 route = route.replace("URL", url);
 route = route.replace("URL2", url);
 document.getElementById('boutons_img').innerHTML = route;
+for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Boutons' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_Boutons').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_Boutons').style.display = 'none';
+                            }
+                        }
+                    }
+                }
 
 }
 
@@ -1114,34 +1187,98 @@ document.getElementById('boutons_img').innerHTML = route;
     /*Script changement background url pour panelheading*/
 
 
-    function get_data(i,panelheading, n1, n2, n3,noeud_place, c1, c2) {
+    function get_data(i,panelheading, n1, n2, n3,noeud_place, c1, c2, id) {
     blnBlocage = true;
       document.getElementById(panelheading).style.backgroundImage = "linear-gradient( rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.05) ),url("+i+")";
       if (noeud_place == 'noeuddevant'){
       document.getElementById(noeud_place).style.backgroundImage = "url("+n1+")";
       document.getElementById('coffret_big_1').style.backgroundImage = "url("+c1+")";
       document.getElementById('Coffret_petit_1').style.backgroundImage = "url("+c2+")";
+            
+                for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Rectangle_grand' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_noeuddevant').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_noeuddevant').style.display = 'none';
+                            }
+                        }
+                    }
+                }
 
         }
       else if (noeud_place == 'noeudderriere') {
       document.getElementById(noeud_place).style.backgroundImage = "url("+n2+")";
       document.getElementById('coffret_big_2').style.backgroundImage = "url("+c1+")";
       document.getElementById('Coffret_petit_2').style.backgroundImage = "url("+c2+")";
-
+        for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Rectangle_grand' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_noeudderriere').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_noeudderriere').style.display = 'none';
+                            }
+                        }
+                    }
+                }
       }
       else if (noeud_place == 'noeudpetit') {
       document.getElementById(noeud_place).style.backgroundImage = "url("+n3+")";
+      for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Milieu' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_milieu').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_milieu').style.display = 'none';
+                            }
+                        }
+                    }
+                }
 
       }
       else if (noeud_place == 'coffret_1') {
         document.getElementById('coffret_big_3').style.backgroundImage = "url("+c1+")";
         document.getElementById('Coffret_petit_3').style.backgroundImage = "url("+c2+")";
 
+for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Rectangle_grand' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_coffret1').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_coffret1').style.display = 'none';
+                            }
+                        }
+                    }
+                }
       }
       else if (noeud_place == 'coffret_2') {
         document.getElementById('coffret_big_4').style.backgroundImage = "url("+c1+")";
         document.getElementById('Coffret_petit_4').style.backgroundImage = "url("+c2+")";
-
+        for(var i= 0; i < stocks.length; i++)
+                {
+                    if(stocks[i]['produit'] == 'Rectangle_grand' ){
+                        if(stocks[i]['color'] == id){
+                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                document.getElementById('stock_faible_info_coffret2').style.display = 'block';
+                            }
+                            else{
+                                document.getElementById('stock_faible_info_coffret2').style.display = 'none';
+                            }
+                        }
+                    }
+                }
       }
 
       else {}
@@ -1150,6 +1287,9 @@ document.getElementById('boutons_img').innerHTML = route;
       document.getElementById('noeudderriere').style.backgroundImage = "url("+n2+")";
       document.getElementById('noeudpetit').style.backgroundImage = "url("+n3+")";*/
 
+    
+        
+        
 
 
 
