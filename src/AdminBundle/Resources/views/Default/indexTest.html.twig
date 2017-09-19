@@ -145,6 +145,98 @@
   </div>
 </div>
 <div class="row">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Inscriptions</h4>
+            <p class="category">
+              Total
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-size:35px; text-align:center">{{nb_signup}}</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Nombre d'inscrits actifs</h4>
+            <p class="category">
+              Total
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <p style="font-size:35px; text-align:center">{{nb_user_active}}</p>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Commandes</h4>
+            <p class="category">
+              Par utilisateur inscrit
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                {% if nbCommande != 0 %}
+                <p style="font-size:35px; text-align:center">{{averageOrder|round(2,'common')}}</p>
+                {% else %}
+                <p style="font-size:35px; text-align:center">-- €</p>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="col-md-3">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Délai d'envoi</h4>
+            <p class="category">
+              En jours
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                
+                <p style="font-size:35px; text-align:center"></p>
+                
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
  <div class="col-md-12">
     <div class="card">
       <div class="header">

@@ -121,6 +121,13 @@ class Commande
          */
           private $atelier_livraison;
 
+
+         /**
+         * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\CodePromo")
+         * @ORM\JoinColumn(nullable=true)
+         */
+         private $codePromo;
+
               /**
      * @var \DateTime
      *
@@ -501,5 +508,29 @@ class Commande
     public function getRemisePro()
     {
         return $this->remisePro;
+    }
+
+    /**
+     * Set codePromo
+     *
+     * @param \CommerceBundle\Entity\CodePromo $codePromo
+     *
+     * @return Commande
+     */
+    public function setCodePromo(\CommerceBundle\Entity\CodePromo $codePromo = null)
+    {
+        $this->codePromo = $codePromo;
+
+        return $this;
+    }
+
+    /**
+     * Get codePromo
+     *
+     * @return \CommerceBundle\Entity\CodePromo
+     */
+    public function getCodePromo()
+    {
+        return $this->codePromo;
     }
 }

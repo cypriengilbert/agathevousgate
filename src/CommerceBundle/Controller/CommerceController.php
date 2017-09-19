@@ -1566,7 +1566,7 @@ class CommerceController extends Controller
                     
                     
                     if($item->getProduct()->getName() == 'Noeud'){
-                        $stock = $this->getOneBy('Stock', array('Product' => $rectangle_grand, 'Color'=>$item->getColor1()));
+                        $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1578,7 +1578,7 @@ class CommerceController extends Controller
                                 )), 'text/html');
                               //  $this->get('mailer')->send($message);
                         }
-                        $stock = $this->getOneBy('Stock', array('Product' => $rectangle_grand, 'Color'=>$item->getColor2()));
+                        $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1590,7 +1590,7 @@ class CommerceController extends Controller
                                 )), 'text/html');
                               //  $this->get('mailer')->send($message);
                         }
-                        $stock = $this->getOneBy('Stock', array('Product' => $milieu, 'Color'=>$item->getColor3()));
+                        $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1604,7 +1604,7 @@ class CommerceController extends Controller
                         }
                     }
                     elseif ($item->getProduct()->getName() == 'Coffret1') {
-                        $stock = $this->getOneBy('Stock', array('Product' => $rectangle_grand, 'Color'=>$item->getColor1()));
+                        $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1618,7 +1618,7 @@ class CommerceController extends Controller
                         }
                     }
                     elseif ($item->getProduct()->getName() == "Coffret2") {
-                        $stock = $this->getOneBy('Stock', array('Product' => $rectangle_grand, 'Color'=>$item->getColor1()));
+                        $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1630,7 +1630,7 @@ class CommerceController extends Controller
                                 )), 'text/html');
                               //  $this->get('mailer')->send($message);
                         }
-                        $stock = $this->getOneBy('Stock', array('Product' => $rectangle_grand, 'Color'=>$item->getColor2()));
+                        $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
@@ -1645,7 +1645,7 @@ class CommerceController extends Controller
                     }
                     else{
                         if($item->getProduct()->getNbColor() == 0){
-                            $stock = $this->getOneBy('Stock', array('Product' => $item->getProduct(), 'Color'=>null));
+                            $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>null));
                             $stock->setQuantity($stock->getQuantity()-1);
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
@@ -1659,7 +1659,7 @@ class CommerceController extends Controller
                             }
                         }
                         else{
-                            $stock = $this->getOneBy('Stock', array('Product' => $item->getProduct(), 'Color'=>$item->getColor1()));
+                            $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>$item->getColor1()));
                             $stock->setQuantity($stock->getQuantity()-1);
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
@@ -2410,6 +2410,7 @@ class CommerceController extends Controller
                         }
                         $total_commande = $total_commande - $remise;
                         $newcommande->setRemise($remise);
+                       // $newcommande->setCodePromo($codePromo);
 
                     }
 
@@ -2587,10 +2588,14 @@ class CommerceController extends Controller
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
                     if ($codePromo->getGenre() == 'pourcentage') {
                         $remise = round($total_commande * $codePromo->getMontant() / 100, 2);
+                        //$newcommande->setCodePromo($codePromo);                        
                     } elseif ($codePromo->getGenre() == 'remise') {
                         $remise = $codePromo->getMontant();
+                       // $newcommande->setCodePromo($codePromo);                        
                     } elseif ($codePromo->getGenre() == 'fdp-remise') {
                         $remise = $codePromo->getMontant();
+                     //   $newcommande->setCodePromo($codePromo);
+                        
                     }
 
 
@@ -2606,10 +2611,15 @@ class CommerceController extends Controller
             elseif ($discount_auto){
                 if ($discount_auto->getGenre() == 'pourcentage') {
                     $remise = round($total_commande * $discount_auto->getMontant() / 100, 2);
+                   // $newcommande->setCodePromo($discount_auto);
+                    
                 } elseif ($discount_auto->getGenre() == 'remise') {
                     $remise = $discount_auto->getMontant();
+                  //  $newcommande->setCodePromo($discount_auto);                    
                 } elseif ($discount_auto->getGenre() == 'fdp-remise') {
                     $remise = $discount_auto->getMontant();
+                //    $newcommande->setCodePromo($discount_auto);
+                    
                 }
             }
 
@@ -2623,8 +2633,12 @@ class CommerceController extends Controller
                     if ($total_commande >= $codePromo->getMinimumCommande()) {
                         if ($codePromo->getGenre() == 'fdp') {
                             $total_commande = $total_commande - $coutLivraison;
+                            //$newcommande->setCodePromo($codePromo);
+                            
                         } else if ($codePromo->getGenre() == 'fdp-remise') {
                             $total_commande = $total_commande - $coutLivraison;
+                           // $newcommande->setCodePromo($codePromo);
+                            
                         }
 
                     }
@@ -2632,8 +2646,12 @@ class CommerceController extends Controller
                 elseif($discount_auto){
                     if ($discount_auto->getGenre() == 'fdp') {
                         $total_commande = $total_commande - $coutLivraison;
+                     //   $newcommande->setCodePromo($discount_auto);
+                        
                     } else if ($discount_auto->getGenre() == 'fdp-remise') {
                         $total_commande = $total_commande - $coutLivraison;
+                      //  $newcommande->setCodePromo($discount_auto);
+                        
                     }
                 }
             }
@@ -3192,13 +3210,16 @@ class CommerceController extends Controller
           }
       }
       $z = 0;
+      
       foreach ($listeAddedProduct as $item) {
         if($item->getProductSource() == null or $item->getProductSource()->getDiscount() == 0){
           if(isset($user) && $user->getIsPro() == 2){
+            
             foreach ($allreduction as $reductionPro) {
 
               if($item->getCollection() != null){
               if($reductionPro->getCollection() == $item->getCollection() || $reductionPro->getCollection() == null){
+                  
                 if($item->getProduct() == $reductionPro->getProduct()){
                   $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
                   $priceitemReduc = ($priceitem * (100 - $reductionPro->getreduction())/100);
@@ -3220,6 +3241,11 @@ class CommerceController extends Controller
                $priceRemise = ($priceitem - $priceitemReduc) / (1+$tva/100);
 
               }
+            }
+            if($priceTemp == null){
+                $priceitem = $this->getPriceItemGeneric($item->getProduct());
+                $priceitemReduc = ($priceitem * (100 - $user->getCompany()->getReductionGeneric()) /100);
+               $priceTemp = $priceitemReduc / (1+$tva/100);
             }
             }
 

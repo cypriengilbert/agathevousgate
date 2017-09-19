@@ -74,10 +74,17 @@ class DefaultController extends Controller
 
         
         $listeCommande = $query->getQuery()->getResult();
+        $repository = $this->getDoctrine()->getRepository('UserBundle:User');
+        $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout);
+        $nb_signup = count($query->getQuery()->getResult());
+        $query         = $repository->createQueryBuilder('a')->where('a.lastLogin >= :datein')->setParameter('datein', $datein)->andWhere('a.lastLogin <= :dateout')->setParameter('dateout', $dateout);
+        $nb_user_active = count($query->getQuery()->getResult());
 
-
+        $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser      = $repository->findAll();
         $totalCommande = 0;
         $nbCommande = count($listeCommande);
+       
         $nb_commande_M = 0;
         $nb_commande_Mme = 0;
         $nb_commande_Mlle = 0;
@@ -179,8 +186,8 @@ class DefaultController extends Controller
         $listeProduct   = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
         $listePromoCode = $repository->findAll();
-        $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $listeUser      = $repository->findAll();
+        $averageOrder = $nbCommande/count($listeUser);
+        
 
         $tableau_produit = array();
         $null            = null;
@@ -220,6 +227,10 @@ class DefaultController extends Controller
             'dateout' => $dateout,
             'delaiEnvoi'=> $delaiEnvoi,
             'nbCommande_Age' => $nbCommande_Age,
+            'nb_signup' => $nb_signup,
+            'nb_user_active' => $nb_user_active,
+            'averageOrder' => $averageOrder
+
 
         ));
 
@@ -560,11 +571,26 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
         $listeCode  = $repository->findAll();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande  = $repository->findAll();
+        $nb_code = [];
+        foreach ($listeCode as $code) {
+            
+                $nb_code[$code->getId()] = 0;
+            
+        }
+        foreach ($listeCommande as $commande) {
+            foreach ($listeCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code[$code->getId()] == $nb_code[$code->getId()] + 1;
+                }
+            }
+        }
 
         return $this->render('AdminBundle:Default:listeCode.html.twig', array(
             'codes' => $listeCode,
             'page' => $page,
-
+            'nb_code' => $nb_code,
 
 
         ));

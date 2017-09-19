@@ -94,6 +94,13 @@ class User extends BaseUser
       */
      private $naissance;
 
+      /**
+      * @var datetime
+      *
+      * @ORM\Column(name="signup", type="datetime", nullable=false)
+      */
+      private $signup;
+
      /**
       * @var bool
       *
@@ -378,5 +385,29 @@ class User extends BaseUser
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * Set signup
+     *
+     * @param \DateTime $signup
+     *
+     * @return User
+     */
+    public function setSignup($signup)
+    {
+        $this->signup = $signup;
+
+        return $this;
+    }
+
+    /**
+     * Get signup
+     *
+     * @return \DateTime
+     */
+    public function getSignup()
+    {
+        return $this->signup;
     }
 }

@@ -48,7 +48,7 @@
        <tbody>
 {% for code in codes %}
                 <tr>
-                  <td>{{ code.id }}</td>
+                  <td>{% for key, i in nb_code %}{% if key == code.id %}{{ i }}{% endif %}{% endfor %}</td>
                   <td>{{ code.code }}</td>
                   <td>  {{ code.dateDebut|date("d-m-Y") }}</td>
                   <td>
