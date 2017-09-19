@@ -101,6 +101,18 @@
       </div>
 
       {% if listePanier %}
+      <script>
+      function deleteline(key){
+if (confirm('Supprimer tous les '+key+' ?')){
+var route = "{{ path('deleteLine', {'product': 'PRODUCT'})}}";
+route = route.replace("PRODUCT", key);
+window.location = route;
+}else{
+
+}
+      }
+        
+      </script>
       <div class="container">
           <div class="row">
               <div class="col-md-8">
@@ -113,8 +125,14 @@
                   <div class="col-md-12">
                   {% for key, AddedProductByProduct in AddedProductByProduct %}
                       {% if AddedProductByProduct %}
-                      
-                         <h2> {{ key }}</h2><br>
+                      <div class="row">
+                        <div class="col-md-12">
+                              <h2> {{ key }} <span onclick="deleteline('{{key}}')" style="margin-left:30px;cursor:pointer;"class="glyphicon glyphicon-trash"></span></h2><br>
+                          </div>
+                          <div class="col-md-6 text-right" style="padding-right:100px;">
+                              <h2> </h2><br>
+                          </div>
+                         </div>
                           <table class="one">
                             <thead>
                               <tr>
@@ -213,6 +231,10 @@
                                     </td>
                                      <td>
                                      {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
+
+                                    </td>
+                                    <td>
+                                     <a href="{{path('deleteproduct',{'id': items_child.id})}}"><span class="glyphicon glyphicon-trash"></span></a>
 
                                     </td>
                                     

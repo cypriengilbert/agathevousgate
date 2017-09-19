@@ -290,7 +290,7 @@ class CommerceController extends Controller
             $AddedProductByProduct_Child = [];
 
             foreach ($allProduct as $product) {
-                $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                $AddedProductByProduct[$product->getCartName()] = $this->getProductAdded($listeAddedProductParents, $product);
                 
             }
           
@@ -402,6 +402,43 @@ class CommerceController extends Controller
         $response = new RedirectResponse($this->generateUrl('panier'));
         return $response;
     }
+
+    /**
+     * @Route("/deleteLine/{product}", name="deleteLine")
+     */
+     public function deleteLineAction($product)
+     {
+         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+             $em             = $this->getDoctrine()->getManager();
+             $id_user        = $this->container->get('security.context')->getToken()->getUser()->getId();
+             $user        = $this->container->get('security.context')->getToken()->getUser();
+             
+             
+             $product_entity = $this->getOneBy('Product', array('cartName' => $product));
+           
+             $articletodelete = $this->getBy('AddedProduct', array(
+                 'product' => $product_entity,
+                 'client' => $user, 
+                 'commande'  => null,
+             ));
+             foreach ($articletodelete as $value) {
+                $enfanttodelete = $this->getBy('AddedProduct', array(
+                    'parent' => $value
+                ));
+                foreach ($enfanttodelete as $valueEnfant) {
+                    $em->remove($valueEnfant);
+                    $em->flush();      
+                }
+                $em->remove($value);
+                $em->flush();             }
+             
+         } else {
+             $nbarticlepanier   = 0;
+             $listeAddedProduct = null;
+         }
+         $response = new RedirectResponse($this->generateUrl('panier'));
+         return $response;
+     }
 
     /**
      * @Route("/deleteAll", name="deleteallproduct")

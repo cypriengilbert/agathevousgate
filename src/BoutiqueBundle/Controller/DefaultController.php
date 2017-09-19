@@ -203,7 +203,8 @@ class DefaultController extends Controller
         public function addedBoutiquetoCartAction($name, Request $request)
         {
           $page = 'boutique';
-
+          $user = $this->container->get('security.context')->getToken()->getUser();
+          
           $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
           $collection   = $repository->findOneBy(array('title' => $name));
           if(null !== $request->request->get('finalCart') ){
@@ -216,7 +217,28 @@ class DefaultController extends Controller
 
             }
             else{
-              $added_product = new AddedProduct();
+                $oldProduct = null;
+                $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+                $oldProduct    = $repository->findOneBy(array(
+                    'product' => $line[0],
+                    'color1' => $line[1],
+                    'client' => $user,
+                    'commande' => null
+                ));
+
+            if($oldProduct != null){
+                $newQuantity = $oldProduct->getQuantity() + $line[2];
+                
+                    $oldProduct->setQuantity($newQuantity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($oldProduct);
+                    $em->flush();
+                    
+                    
+            }
+            if($oldProduct == null){
+                
+            $added_product = new AddedProduct();
               $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
               $product    = $repository->findOneBy(array(
                   'id' => $line[0]
@@ -277,7 +299,7 @@ class DefaultController extends Controller
                   $session->set('nb_article', count($listeAddedProduct));
                   $nbarticlepanier = $session->get('nb_article');
               }
-
+            }
             }
           }
           }

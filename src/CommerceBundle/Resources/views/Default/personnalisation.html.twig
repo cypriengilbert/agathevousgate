@@ -13,11 +13,12 @@ window.onbeforeunload = function () {
 <script>
 var stocks = new Array();
 {% for stock in stocks %}
+{% if stock.color %}
 stocks[{{loop.index - 1}}] = new Array();
 stocks[{{loop.index - 1}}]['produit'] = '{{stock.product.name}}';
 stocks[{{loop.index - 1 }}]['color'] = {{stock.color.id}};
 stocks[{{loop.index -1 }}]['quantity'] = {{stock.quantity}};
-
+{% endif %}
 {% endfor %}
 </script>
 
