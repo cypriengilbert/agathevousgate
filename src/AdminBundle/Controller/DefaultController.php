@@ -42,11 +42,13 @@ class DefaultController extends Controller
         $dateout = $session->get('dateout');
         $filtre = $session->get('filtre');
 
+
         if ($session->get('datein') === null) {
             $referenceDate = date('01-01-Y');
             $datein = new \DateTime($referenceDate);
         } else {
             $datein = $session->get('datein');
+            
 
         }
 
@@ -57,23 +59,39 @@ class DefaultController extends Controller
             $dateout = $session->get('dateout');
 
         }
-
+        $dateoutN1 = date('Y-m-d', strtotime($dateout. "- 1 year"));
+        $dateinN1 = date('Y-m-d', strtotime($datein. "- 1 year"));
+        $dateoutM1 = date('Y-m-d', strtotime($dateout. "- 1 month"));
+        $dateinM1 = date('Y-m-d', strtotime($datein. "- 1 month"));
+                
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
        
 
        if($filtre == 'all' or $filtre == null){
             $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            
        } 
        elseif($filtre == 'pro'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro = 2')->orderBy('a.date', 'ASC');
-       }
+            $queryN1          = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            
+        }
 
        elseif($filtre == 'part'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro != 2')->orderBy('a.date', 'ASC');
-       }
+            $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            
+        }
 
         
         $listeCommande = $query->getQuery()->getResult();
+        $listeCommandeN1 = $queryN1->getQuery()->getResult();
+        $listeCommandeM1 = $queryM1->getQuery()->getResult();
+        
         $repository = $this->getDoctrine()->getRepository('UserBundle:User');
         $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout);
         $nb_signup = count($query->getQuery()->getResult());
@@ -83,6 +101,8 @@ class DefaultController extends Controller
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
         $totalCommande = 0;
+        $totalCommandeM1 = 0;
+        $totalCommandeN1 = 0;
         $nbCommande = count($listeCommande);
        
         $nb_commande_M = 0;
@@ -99,6 +119,14 @@ class DefaultController extends Controller
         $delaiEnvoi = 0;
         $nbEnvoi = 0;
 
+        foreach
+        ($listeCommandeN1 as $commande) {
+           $totalCommandeN1 = $totalCommandeN1 + $commande->getPrice();
+        }
+        foreach
+        ($listeCommandeM1 as $commande) {
+           $totalCommandeM1 = $totalCommandeM1 + $commande->getPrice();
+        }
 
         foreach
          ($listeCommande as $commande) {
@@ -184,7 +212,7 @@ class DefaultController extends Controller
         $listeColor        = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct   = $repository->findAll();
-        $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
+        $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
         $listePromoCode = $repository->findAll();
         $averageOrder = $nbCommande/count($listeUser);
         
@@ -202,6 +230,21 @@ class DefaultController extends Controller
             array_push($tableau_produit, $ligne_tableau_produit);
         }
 
+       
+        $nb_code = [];
+        foreach ($listePromoCode as $code) {
+            
+                $nb_code[$code->getId()] = 0;
+            
+        }
+        foreach ($listeCommande as $commande) {
+            foreach ($listePromoCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code[$code->getId()]++;
+                }
+            }
+        }
+
 
 
 
@@ -217,7 +260,10 @@ class DefaultController extends Controller
             'tableau_produit' => $tableau_produit,
             'page' => $page,
             'totalCommande' => $totalCommande,
+            'totalCommandeN1' => $totalCommandeN1,
+            'totalCommandeM1' => $totalCommandeM1,
             'nbCommande' => $nbCommande,
+          
             'nb_commande_Mlle' => $nb_commande_Mlle,
             'nb_commande_Mme' => $nb_commande_Mme,
             'nb_commande_M' => $nb_commande_M,
@@ -229,7 +275,8 @@ class DefaultController extends Controller
             'nbCommande_Age' => $nbCommande_Age,
             'nb_signup' => $nb_signup,
             'nb_user_active' => $nb_user_active,
-            'averageOrder' => $averageOrder
+            'averageOrder' => $averageOrder,
+            'nb_code' => $nb_code
 
 
         ));
@@ -582,7 +629,7 @@ class DefaultController extends Controller
         foreach ($listeCommande as $commande) {
             foreach ($listeCode as $code) {
                 if($code == $commande->getCodePromo()){
-                    $nb_code[$code->getId()] == $nb_code[$code->getId()] + 1;
+                    $nb_code[$code->getId()]++;
                 }
             }
         }
@@ -599,10 +646,10 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/s/deleteCode/{id}", name="deleteCode")
+     * @Route("/s/editCode/{id}", name="editCode")
      */
 
-    public function deleteCodeAction(Request $request, $id)
+    public function editCodeAction(Request $request, $id)
     {
       $page = 'codePromo';
 
@@ -612,16 +659,27 @@ class DefaultController extends Controller
         $Code       = $repository->findOneBy(array(
             'id' => $id
         ));
-        $em->remove($Code);
-        $em->flush();
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\CodePromoType', $Code);
+        if ($form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($Code);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Code Promo bien enregistrée.');
 
-        return $this->redirect($this->generateUrl('listeCodePromo', array(
-            'validate' => 'Code Promo supprimé',
+            return $this->redirect($this->generateUrl('addCodePromo', array(
+                'validate' => 'Code Promo ajoutée'
+
+
+            )));
+        }
+        return $this->render('AdminBundle:Default:addCodePromo.html.twig', array(
+            'form' => $form->createView(),
             'page' => $page,
 
 
+        ));
 
-        )));
+       
 
 
     }

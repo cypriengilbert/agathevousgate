@@ -70,6 +70,12 @@
             <div class="col-md-12">
                 <p style="font-size:35px; text-align:center">{{totalCommande}}€</p>
             </div>
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total M-1 </p><p style="text-align:center" class="category">{{totalCommandeM1}}€</p>
+            </div>
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total N-1 </p><p style="text-align:center" class="category">{{totalCommandeN1}}€</p>
+            </div>
         </div>
       </div>
     </div>
@@ -370,6 +376,63 @@
    </div>
 
 </div>
+<div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                                                <div class="header">
+
+                                        <div class="row">
+                    <div class="col-md-6">        
+
+                                <h4 class="title">Codes promos</h4>
+                                <p class="category"></p>
+                                </div>
+                                <div class="col-md-6">        
+
+                                <a href="{{ path('addCodePromo') }}"><button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right">
+  <i class="material-icons">nouveau</i>
+</button></a>
+                                </div>
+                                </div>
+                            </div>
+
+
+  <div class="content table-responsive table-full-width">
+  {% if nb_code is not null %}
+  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+  <thead>
+           <tr>
+           <th width=5%>ID</th>
+          <th width=20%>Code</th>
+           <th width=15%>Type</th>
+           <th width=20%>Utilisation</th>
+
+           </tr>
+       </thead>
+
+       <tbody>
+{% for code in listePromoCode %}
+                <tr>
+                  <td>  <a href="{{ path('editCode', {'id' : code.id })}}">{{ code.id }}</a></td>
+                  <td><a href="{{ path('editCode', {'id' : code.id })}}">{{ code.code }}</a></td>
+                  <td>{{ code.genre }} </td>
+<td>{% for key, i in nb_code %}{% if key == code.id %}{{ i }}{% endif %}{% endfor %}</td>
+                </tr>
+      {% endfor %}
+
+       </tbody>
+  </table>
+{% else %} <div class="content">Aucun code promo utilisé à cette période</div>
+     {% endif %} 
+
+  </div>
+
+
+</div>
+</div>
+</div>
+
+
 <div class="row">
  <div class="col-md-12">
     <ul role="tablist" class="nav nav-tabs">
