@@ -1475,7 +1475,6 @@ class CommerceController extends Controller
                             'coutLivraison' => $coutLivraison,
                             'parrainage' => $remiseParrainage,
                             'commande' => $commandeEnCours,
-                            'reductions' => $allreduction,
                             'tva' => $tva,
                             'AddedProductByProduct' => $AddedProductByProduct,
                         )), 'text/html');
@@ -2408,6 +2407,7 @@ class CommerceController extends Controller
                             $remise = $codePromo->getMontant();
 
                         }
+                        else{$remise = 0;}
                         $total_commande = $total_commande - $remise;
                         $newcommande->setRemise($remise);
 
