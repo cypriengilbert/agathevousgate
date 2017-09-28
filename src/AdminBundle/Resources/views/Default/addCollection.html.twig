@@ -103,155 +103,249 @@ margin-top:5px
 
 
 
-<div class="mdl-grid demo-content">
-
-<div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
-<div class="mdl-cell mdl-cell--2-col">
-</div>
-<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--6-col">
-
-<div style="padding-bottom:20px;"><h5>Créer une nouvelle collection</h5></div>
-{{ form_start(form, {'attr': { 'class': '' } }) }}
-
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Nouvelle collection</h4>
+            <p class="category">
+              Création
+            </p>
+          </div>          
+        </div>
+    </div>
+	<div class="content">
 <div class="mdl-cell mdl-cell--12-col">
-<div class="form-group">
-    {{ form_label(form.title, "Nom", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.title) }}
-    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.title, "Nom", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.title) }}
+				{{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.isPerso, "Personnalisable ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.isPerso) }}
+				{{ form_widget(form.isPerso, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
 
-</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				{{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.description) }}
+				{{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+				<div class="row">
+					<div class="col-md-12">
+						<h5 class="title" style="color:#23CCEF">Prix Particuliers</h5>
+					</div>          
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:20px">
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.priceNoeud, "Prix du Noeud ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceNoeud) }}
+				{{ form_widget(form.priceNoeud, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.pricePochette, "Prix de la Pochette ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.pricePochette) }}
+				{{ form_widget(form.pricePochette, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.priceBouton, "Prix des boutons ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceBouton) }}
+				{{ form_widget(form.priceBouton, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.priceCoffret1, "Prix du coffret Trio ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceCoffret1) }}
+				{{ form_widget(form.priceCoffret1, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.priceCoffret2, "Prix du coffret Prestige ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceCoffret2) }}
+				{{ form_widget(form.priceCoffret2, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+				<div class="row">
+					<div class="col-md-12">
+						<h5 class="title" style="color:#23CCEF">Prix Pro</h5>
+					</div>          
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-3">
+			<div class="form-group">
+				{{ form_label(form.priceMilieu, "Prix du milieu (boutique) motif ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceMilieu) }}
+				{{ form_widget(form.priceMilieu, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+				{{ form_label(form.priceMilieuBasic, "Prix du milieu (boutique) uni ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceMilieuBasic) }}
+				{{ form_widget(form.priceMilieuBasic, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+				{{ form_label(form.priceRectanglePetit, "Prix du petit rectangle (boutique) ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceRectanglePetit) }}
+				{{ form_widget(form.priceRectanglePetit, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+				{{ form_label(form.priceRectangleGrand, "Prix du grand rectangle (boutique) ?", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.priceRectangleGrand) }}
+				{{ form_widget(form.priceRectangleGrand, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+				<div class="row">
+					<div class="col-md-12">
+						<h5 class="title" style="color:#23CCEF">Définition couleurs de base</h5>
+					</div>          
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.firstColor, "Couleur de base - Extérieur", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.firstColor) }}
+				{{ form_widget(form.firstColor, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.secondColor, "Couleur de base - Intérieur ", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.secondColor) }}
+				{{ form_widget(form.secondColor, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.thirdColor, "Couleur de base - Attache Centrale", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.thirdColor) }}
+				{{ form_widget(form.thirdColor, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.colorCoffret1, "Couleur de base - Coffret 1", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.colorCoffret1) }}
+				{{ form_widget(form.colorCoffret1, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				{{ form_label(form.colorCoffret2, "Couleur de base - Coffret 2", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.colorCoffret2) }}
+				{{ form_widget(form.colorCoffret2, {'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="header">
+				<div class="row">
+					<div class="col-md-12">
+						<h5 class="title" style="color:#23CCEF">Images</h5>
+					</div>          
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.imageCollection, "Image slider", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.imageCollection) }}
+				{{ form_widget(form.imageCollection, {'attr': {'class': ''}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.imageCollectionCarre, "Image Collection", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.imageCollectionCarre) }}
+				{{ form_widget(form.imageCollectionCarre, {'attr': {'class': ''}}) }}
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				{{ form_label(form.imageCollectionIcone, "Image Icone", {'label_attr': {'class': ''}}) }}
+				{{ form_errors(form.imageCollectionIcone) }}
+				{{ form_widget(form.imageCollectionIcone, {'attr': {'class': ''}}) }}
+			</div>
+		</div>
+	</div>
 
-<div class="form-group">
-    {{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.description) }}
-    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
 
-</div>
-
-<div class="form-group">
-    {{ form_label(form.isPerso, "Personnalisable ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.isPerso) }}
-    {{ form_widget(form.isPerso, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-<div class="form-group">
-    {{ form_label(form.priceNoeud, "Prix du Noeud ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceNoeud) }}
-    {{ form_widget(form.priceNoeud, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.pricePochette, "Prix de la Pochette ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.pricePochette) }}
-    {{ form_widget(form.pricePochette, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceBouton, "Prix des boutons ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceBouton) }}
-    {{ form_widget(form.priceBouton, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceCoffret1, "Prix du coffret Trio ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceCoffret1) }}
-    {{ form_widget(form.priceCoffret1, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceCoffret2, "Prix du coffret Prestige ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceCoffret2) }}
-    {{ form_widget(form.priceCoffret2, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceMilieu, "Prix du milieu (boutique) ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceMilieu) }}
-    {{ form_widget(form.priceMilieu, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceRectanglePetit, "Prix du petit rectangle (boutique) ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceRectanglePetit) }}
-    {{ form_widget(form.priceRectanglePetit, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.priceRectangleGrand, "Prix du grand rectangle (boutique) ?", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.priceRectangleGrand) }}
-    {{ form_widget(form.priceRectangleGrand, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-
-<div class="form-group">
-    {{ form_label(form.firstColor, "Couleur de base - Extérieur", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.firstColor) }}
-    {{ form_widget(form.firstColor, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.secondColor, "Couleur de base - Intérieur ", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.secondColor) }}
-    {{ form_widget(form.secondColor, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.thirdColor, "Couleur de base - Attache Centrale", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.thirdColor) }}
-    {{ form_widget(form.thirdColor, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.colorCoffret1, "Couleur de base - Coffret 1", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.colorCoffret1) }}
-    {{ form_widget(form.colorCoffret1, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-<div class="form-group">
-    {{ form_label(form.colorCoffret2, "Couleur de base - Coffret 2", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.colorCoffret2) }}
-    {{ form_widget(form.colorCoffret2, {'attr': {'class': 'form-control'}}) }}
-
-</div>
 </div>
 <div class="mdl-cell mdl-cell--4-col">
 <div class="form-group">
     {{ form_row(form.colors) }}
 </div>
 
-<div class="form-group">
-    {{ form_label(form.imageCollection, "Image slider", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.imageCollection) }}
-    {{ form_widget(form.imageCollection, {'attr': {'class': ''}}) }}
 
-</div>
-<div class="form-group">
-    {{ form_label(form.imageCollectionCarre, "Image Collection", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.imageCollectionCarre) }}
-    {{ form_widget(form.imageCollectionCarre, {'attr': {'class': ''}}) }}
 
-</div>
-<div class="form-group">
-    {{ form_label(form.imageCollectionIcone, "Image Icone", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.imageCollectionIcone) }}
-    {{ form_widget(form.imageCollectionIcone, {'attr': {'class': ''}}) }}
 
-</div>
 
 
 </div>
 
 <div>
-        <input type="submit" value="Suivant" class="btn btn-primary" />
+        <button type="submit" class="btn btn-info btn-fill pull-right">Valider</button>
 </div>
 {{ form_end(form) }}
 </div>
-<div class=" mdl-cell mdl-cell--2-col">
+	</div> 
+</div>
+
 </div>
 </div>
+
+
 
 
 

@@ -57,6 +57,12 @@ class Collection
        * @ORM\Column(name="priceMilieu", type="float", nullable=true)
        */
        private $priceMilieu;
+        /**
+       * @var float
+       *
+       * @ORM\Column(name="priceMilieuBasic", type="float", nullable=true)
+       */
+       private $priceMilieuBasic;
 
        /**
         * @var float

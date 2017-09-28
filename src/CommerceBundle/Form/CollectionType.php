@@ -32,6 +32,7 @@ class CollectionType extends AbstractType
             ->add('priceCoffret1')
             ->add('priceCoffret2')
             ->add('priceMilieu')
+            ->add('priceMilieuBasic')
             ->add('priceRectanglePetit')
             ->add('priceRectangleGrand')
             ->add('isPerso', 'checkbox', array('required'=>false))

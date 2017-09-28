@@ -57,6 +57,12 @@ class Collection
        * @ORM\Column(name="priceMilieu", type="float", nullable=true)
        */
        private $priceMilieu;
+        /**
+       * @var float
+       *
+       * @ORM\Column(name="priceMilieuBasic", type="float", nullable=true)
+       */
+       private $priceMilieuBasic;
 
        /**
         * @var float
@@ -782,5 +788,29 @@ class Collection
     public function getPriceRectangleGrand()
     {
         return $this->priceRectangle_grand;
+    }
+
+    /**
+     * Set priceMilieuBasic
+     *
+     * @param float $priceMilieuBasic
+     *
+     * @return Collection
+     */
+    public function setPriceMilieuBasic($priceMilieuBasic)
+    {
+        $this->priceMilieuBasic = $priceMilieuBasic;
+
+        return $this;
+    }
+
+    /**
+     * Get priceMilieuBasic
+     *
+     * @return float
+     */
+    public function getPriceMilieuBasic()
+    {
+        return $this->priceMilieuBasic;
     }
 }

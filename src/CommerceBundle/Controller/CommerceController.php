@@ -3200,14 +3200,14 @@ class CommerceController extends Controller
               if($item->getCollection() != null){
               if($reductionPro->getCollection() == $item->getCollection() || $reductionPro->getCollection() == null){
                 if($item->getProduct() == $reductionPro->getProduct()){
-                  $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                  $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),$item->getColor1()->getIsBasic());
                   $priceitemReduc = ($priceitem * (100 - $reductionPro->getreduction())/100);
                   $priceRemise = ($priceitem - $priceitemReduc) / (1+$tva/100);
                   $priceTemp = $priceitemReduc / (1+$tva/100);
                   $z = 1;
                 }
                 elseif ($z == 0){
-                    $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                    $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),$item->getColor1()->getIsBasic());
                     $priceTemp =  $priceitem / (1+$tva/100);
                     $priceRemise = 0;
                 }
@@ -3232,7 +3232,7 @@ class CommerceController extends Controller
             }
             else
             {
-                $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection());
+                $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),$item->getColor1()->getIsBasic());
                 $priceTemp = $priceitem ;
                 $priceRemise = 0;
             }
@@ -3261,7 +3261,7 @@ class CommerceController extends Controller
 
 
 
-public function getPriceItem($product, $collection){
+public function getPriceItem($product, $collection, $isBasic){
 
   if($product->getName() == 'Noeud'){
     return $collection->getPriceNoeud();
@@ -3285,7 +3285,16 @@ public function getPriceItem($product, $collection){
     return $collection->getPriceRectangleGrand();
   }
   elseif($product->getName()  == 'Milieu'){
-    return $collection->getPriceMilieu();
+      if($isBasic == true){
+        if($collection->getPriceMilieuBasic() != 0 or $collection->getPriceMilieuBasic() != null){
+            return $collection->getPriceMilieuBasic();
+        }
+       else{
+            return $collection->getPriceMilieu();
+          }
+      }else{
+        return $collection->getPriceMilieu();
+      }
   }
   elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
     return $product->getPrice();
