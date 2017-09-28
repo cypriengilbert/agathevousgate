@@ -1,5 +1,6 @@
 {% extends 'templateadmin.html.twig' %}
 {% block body %}
+
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -26,7 +27,25 @@
                 </div> 
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary btn-fill" onclick="selectdate()">Valider</button>
+                <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="selectdate()">Valider</button>
+                <button class="btn btn-primary btn-fill"id="compare_date_button"  onclick="open_comparedate()">Comparer</button>
+            </div>
+        </div>
+        
+        <div class="row" id="compare_date" style="display:{% if dateout_compare == 'null' %}none;{% else %}block;{% endif %}">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control datepicker_compare" id="date_in_compare" placeholder="Date de début">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+                    <input type="text" class="form-control datepicker_compare" id="date_out_compare" placeholder="Date de fin">
+                </div> 
+            </div>
+            <div class="col-md-2">
+              <i class="fa fa-times" aria-hidden="true" style="color:red; font-size:35px;cursor:poiter;" onclick="document.getElementById('date_out_compare').value = null;document.getElementById('date_in_compare').value = null;"></i>
+
             </div>
         </div>
       </div>
@@ -70,12 +89,19 @@
             <div class="col-md-12">
                 <p style="font-size:35px; text-align:center">{{totalCommande}}€</p>
             </div>
+            
+            {% if dateout_compare == 'null' %}
              <div class="col-md-12">
                 <p style="text-align:left" class="category">Total M-1 </p><p style="text-align:center" class="category">{{totalCommandeM1}}€</p>
             </div>
              <div class="col-md-12">
                 <p style="text-align:left" class="category">Total N-1 </p><p style="text-align:center" class="category">{{totalCommandeN1}}€</p>
             </div>
+            {% else %}
+            <div class="col-md-12">
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{totalCommande_compare}}€</p>
+            </div>
+            {% endif %}
         </div>
       </div>
     </div>
@@ -97,6 +123,12 @@
             <div class="col-md-12">
                 <p style="font-size:35px; text-align:center">{{nbCommande}}</p>
             </div>
+            {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{nbCommande_compare}}</p>
+            </div>
+          {% endif %}
+
         </div>
       </div>
     </div>
@@ -122,6 +154,15 @@
                 <p style="font-size:35px; text-align:center">-- €</p>
                 {% endif %}
             </div>
+
+            {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                {% if nbCommande_compare != 0 %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{(totalCommande_compare/nbCommande_compare)|round(2,'common')}}€</p>
+                {% else %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">--€</p>
+                {% endif %}            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -145,6 +186,11 @@
                 <p style="font-size:35px; text-align:center">{{delaiEnvoi}} J</p>
                 
             </div>
+            {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{delaiEnvoi_compare}}J</p>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -168,6 +214,11 @@
             <div class="col-md-12">
                 <p style="font-size:35px; text-align:center">{{nb_signup}}</p>
             </div>
+             {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{nb_signup_compare}}</p>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -189,6 +240,11 @@
             <div class="col-md-12">
                 <p style="font-size:35px; text-align:center">{{nb_user_active}}</p>
             </div>
+            {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{nb_user_active_compare}}</p>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -214,6 +270,17 @@
                 <p style="font-size:35px; text-align:center">-- €</p>
                 {% endif %}
             </div>
+
+            {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+
+             {% if nbCommande_compare != 0 %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{averageOrder_compare|round(2,'common')}}</p>
+                {% else %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">--</p>
+                {% endif %}
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -628,6 +695,41 @@ $('#date_out').datetimepicker({
     defaultDate: '{{dateout|date("Y-m-d")}}',
 
 });
+
+$('#date_in_compare').datetimepicker({
+    icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+    },
+    format: 'Do MMMM YYYY',
+    {% if datein_compare is defined and datein_compare != 'null' %}defaultDate: '{{datein_compare|date("Y-m-d")}}',{%endif%}
+
+});
+
+$('#date_out_compare').datetimepicker({
+    icons: {
+        time: "fa fa-clock-o",
+        date: "fa fa-calendar",
+        up: "fa fa-chevron-up",
+        down: "fa fa-chevron-down",
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-remove'
+    },
+    format: 'Do MMMM YYYY',
+    {% if dateout_compare is defined and dateout_compare != 'null' %}defaultDate: '{{dateout_compare|date("Y-m-d")}}',{%endif%}
+
+
+});
 </script>
 <script>
 
@@ -697,12 +799,25 @@ Chartist.Pie('#chartPie_category', {
             function selectdate(){
             datein = document.getElementById('date_in').value;
             dateout = document.getElementById('date_out').value;
+            datein_compare = document.getElementById('date_in_compare').value;
+            dateout_compare = document.getElementById('date_out_compare').value;
+
+
             filtre = {% if app.session.get('filtre') is null %}'all'{% else %}'{{ app.session.get('filtre')}}'{% endif%};
-            var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
-            var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
-            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE'}) }}";
+            datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            datein_compare = moment(datein_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            dateout_compare = moment(dateout_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            if(datein_compare == "Invalid date" || dateout_compare == "Invalid date"){
+              datein_compare = null;
+              dateout_compare = null;
+            }
+
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE'}) }}";
             route = route.replace("DATEIN", datein);
             route = route.replace("DATEOUT", dateout);
+            route = route.replace("DATEINCOMPARE", datein_compare);
+            route = route.replace("DATEOUTCOMPARE", dateout_compare);
             route = route.replace("FILTRE", filtre);
             window.location.href = route;
             }
@@ -713,12 +828,37 @@ Chartist.Pie('#chartPie_category', {
             filtre = x;
             var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
             var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
-            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE'}) }}";
+            datein_compare = moment(datein_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            dateout_compare = moment(dateout_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            if(datein_compare == "Invalid date" || dateout_compare == "Invalid date"){
+              datein_compare = null;
+              dateout_compare = null;
+            }
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE'}) }}";
             route = route.replace("DATEIN", datein);
             route = route.replace("DATEOUT", dateout);
+            route = route.replace("DATEINCOMPARE", datein_compare);
+            route = route.replace("DATEOUTCOMPARE", dateout_compare);
             route = route.replace("FILTRE", filtre);
             window.location.href = route;
             }
          </script>
+
+         <script>
+          function open_comparedate(){
+            if(document.getElementById('compare_date').style.display == 'none'){
+                document.getElementById('compare_date').style.display = 'block';
+                document.getElementById('compare_date_button').innerHTML = "Annuler";
+
+            }
+            else{
+                document.getElementById('compare_date').style.display = 'none';
+                document.getElementById('compare_date_button').innerHTML = "Comparer à";
+
+            }
+            
+            docu
+          }
+        </script>
 {% endblock %}
 

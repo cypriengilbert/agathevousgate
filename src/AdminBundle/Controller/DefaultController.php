@@ -42,49 +42,75 @@ class DefaultController extends Controller
         $dateout = $session->get('dateout');
         $filtre = $session->get('filtre');
 
+        $datein_compare = $session->get('datein_compare');
+        $dateout_compare = $session->get('dateout_compare');
+        
 
         if ($session->get('datein') === null) {
             $referenceDate = date('01-01-Y');
             $datein = new \DateTime($referenceDate);
+           
         } else {
             $datein = $session->get('datein');
+            $dateinN1 = date('Y-m-d', strtotime($datein. "- 1 year"));
+            $dateinM1 = date('Y-m-d', strtotime($datein. "- 1 month"));
+            
             
 
         }
 
         if ($session->get('dateout') === null) {
             $dateout = new \Datetime('now');
+            $dateoutN1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 year")));
+            $dateoutM1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 month")));
+            
+            
         } else {
 
             $dateout = $session->get('dateout');
-
+            $dateoutN1 = date('Y-m-d', strtotime($dateout. "- 1 year"));
+            $dateoutM1 = date('Y-m-d', strtotime($dateout. "- 1 month"));
         }
-        $dateoutN1 = date('Y-m-d', strtotime($dateout. "- 1 year"));
-        $dateinN1 = date('Y-m-d', strtotime($datein. "- 1 year"));
-        $dateoutM1 = date('Y-m-d', strtotime($dateout. "- 1 month"));
-        $dateinM1 = date('Y-m-d', strtotime($datein. "- 1 month"));
+       
                 
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
        
-
+        $nbCommande_compare =0;
+        $averageOrder_compare=0;
        if($filtre == 'all' or $filtre == null){
             $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
-            
+            if($datein_compare != null and $dateout_compare != null){
+                $querycompare         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+                $listeCommande_compare = $querycompare->getQuery()->getResult();
+                $nbCommande_compare = count($listeCommande_compare);
+                
+            }
        } 
        elseif($filtre == 'pro'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro = 2')->orderBy('a.date', 'ASC');
             $queryN1          = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
-            
+            if($datein_compare != null and $dateout_compare != null){
+                $querycompare         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+                $listeCommande_compare = $querycompare->getQuery()->getResult();
+                $nbCommande_compare = count($listeCommande_compare);
+                
+            }
         }
 
        elseif($filtre == 'part'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro != 2')->orderBy('a.date', 'ASC');
             $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            if($datein_compare != null and $dateout_compare != null){
+            $querycompare  = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $listeCommande_compare = $querycompare->getQuery()->getResult();
+            $nbCommande_compare = count($listeCommande_compare);
             
+        }
+        
         }
 
         
@@ -92,17 +118,23 @@ class DefaultController extends Controller
         $listeCommandeN1 = $queryN1->getQuery()->getResult();
         $listeCommandeM1 = $queryM1->getQuery()->getResult();
         
+        
         $repository = $this->getDoctrine()->getRepository('UserBundle:User');
         $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout);
         $nb_signup = count($query->getQuery()->getResult());
+        $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout_compare);
+        $nb_signup_compare = count($query->getQuery()->getResult());
         $query         = $repository->createQueryBuilder('a')->where('a.lastLogin >= :datein')->setParameter('datein', $datein)->andWhere('a.lastLogin <= :dateout')->setParameter('dateout', $dateout);
         $nb_user_active = count($query->getQuery()->getResult());
-
+        $query         = $repository->createQueryBuilder('a')->where('a.lastLogin >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.lastLogin <= :dateout')->setParameter('dateout', $dateout_compare);
+        $nb_user_active_compare = count($query->getQuery()->getResult());
+        
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
         $totalCommande = 0;
         $totalCommandeM1 = 0;
         $totalCommandeN1 = 0;
+        $totalCommande_compare = 0;
         $nbCommande = count($listeCommande);
        
         $nb_commande_M = 0;
@@ -118,6 +150,8 @@ class DefaultController extends Controller
         $nbCommande_Age['60'] = 0;
         $delaiEnvoi = 0;
         $nbEnvoi = 0;
+        $delaiEnvoi_compare =0;
+        $nbEnvoi_compare = 0;
 
         foreach
         ($listeCommandeN1 as $commande) {
@@ -127,6 +161,17 @@ class DefaultController extends Controller
         ($listeCommandeM1 as $commande) {
            $totalCommandeM1 = $totalCommandeM1 + $commande->getPrice();
         }
+        if(isset($listeCommande_compare)){
+            foreach
+            ($listeCommande_compare as $commande) {
+               $totalCommande_compare = $totalCommande_compare + $commande->getPrice();
+               if($commande->getDateEnvoi() != null){
+                $delaiEnvoi_compare = $delaiEnvoi_compare + $commande->getDate()->diff($commande->getDateEnvoi())->format('%R%a days');
+                $nbEnvoi_compare = $nbEnvoi_compare +1;
+            }
+            }
+        }
+        
 
         foreach
          ($listeCommande as $commande) {
@@ -202,6 +247,12 @@ class DefaultController extends Controller
        else {
         $delaiEnvoi = 0;
        }
+       if($nbEnvoi_compare != 0){
+        $delaiEnvoi_compare = $delaiEnvoi_compare / $nbEnvoi_compare;
+       }
+       else {
+        $delaiEnvoi_compare = 0;
+       }
 
 
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -232,9 +283,12 @@ class DefaultController extends Controller
 
        
         $nb_code = [];
+        $nb_code_compare = [];
         foreach ($listePromoCode as $code) {
             
                 $nb_code[$code->getId()] = 0;
+                $nb_code_compare[$code->getId()] = 0;
+                
             
         }
         foreach ($listeCommande as $commande) {
@@ -244,6 +298,15 @@ class DefaultController extends Controller
                 }
             }
         }
+        if(isset($listeCommande_compare)){
+        foreach ($listeCommande_compare as $commande) {
+            foreach ($listePromoCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code_compare[$code->getId()]++;
+                }
+            }
+        }
+    }
 
 
 
@@ -260,10 +323,11 @@ class DefaultController extends Controller
             'tableau_produit' => $tableau_produit,
             'page' => $page,
             'totalCommande' => $totalCommande,
+            'totalCommande_compare' => $totalCommande_compare,
             'totalCommandeN1' => $totalCommandeN1,
             'totalCommandeM1' => $totalCommandeM1,
             'nbCommande' => $nbCommande,
-          
+            'nbCommande_compare' => $nbCommande_compare,
             'nb_commande_Mlle' => $nb_commande_Mlle,
             'nb_commande_Mme' => $nb_commande_Mme,
             'nb_commande_M' => $nb_commande_M,
@@ -271,11 +335,18 @@ class DefaultController extends Controller
             'nbCommande_part' => $nbCommande_part,
             'datein' => $datein,
             'dateout' => $dateout,
+            'dateout_compare' => $dateout_compare,   
+            'datein_compare' => $datein_compare,            
+            
             'delaiEnvoi'=> $delaiEnvoi,
+            'delaiEnvoi_compare'=> $delaiEnvoi_compare,
             'nbCommande_Age' => $nbCommande_Age,
             'nb_signup' => $nb_signup,
+            'nb_signup_compare' => $nb_signup_compare,
+            'nb_user_active_compare' => $nb_user_active_compare,
             'nb_user_active' => $nb_user_active,
             'averageOrder' => $averageOrder,
+            'averageOrder_compare' => $averageOrder_compare,
             'nb_code' => $nb_code
 
 
@@ -284,14 +355,16 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/s/setFiltre/{in}/{out}/{filtre}", name="setFiltre")
+     * @Route("/s/setFiltre/{in}/{out}/{filtre}/{in_compare}/{out_compare}", name="setFiltre")
      */
-    public function setDateAction(Request $request, $in, $out, $filtre)
+    public function setDateAction(Request $request, $in, $out, $filtre, $in_compare, $out_compare)
     {
         $page = 'dashboard';
         $session = $request->getSession();
         $session->set('datein', $in);
         $session->set('dateout', $out);
+        $session->set('datein_compare', $in_compare);
+        $session->set('dateout_compare', $out_compare);
         $session->set('filtre', $filtre);
 
         $url      = $this->generateUrl('dashboard');
