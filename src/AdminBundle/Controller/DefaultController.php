@@ -10,6 +10,7 @@ use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Stock;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\Refund;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use CommerceBundle\Entity\ProDiscount;
@@ -1938,6 +1939,58 @@ $user->setParrainage(0);
 
         ));
     }
+
+    /**
+     * @Route("/s/refund/{id}", name="refund")
+     */
+     public function refundAction(Request $request, $id)
+     {
+        $page = 'commande';
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $order = $repository->findOneBy(array(
+            'id' => $id
+        ));
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+        $refund = $repository->findOneBy(array(
+            'order' => $order
+        ));
+
+        if($refund == null){
+            $refund = new Refund();
+            $price_origin = $order->getPrice();
+        }
+        else{
+            $price_origin = $order->getPrice() + $refund->getMontant();
+        }
+            $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
+            if ($form->handleRequest($request)->isValid()) {
+                $refund->setOrder($order);
+                $datetime = new \Datetime('now');
+                $refund->setDate($datetime);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($refund);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
+                $order->setRefund($refund);
+                $order->setPrice($price_origin - $refund->getMontant());
+                $em->persist($order);
+                $em->flush();
+                return $this->redirect($this->generateUrl('commande', array(
+                    'id' => $id,
+                )));
+    
+            }
+            return $this->render('AdminBundle:Default:refund.html.twig', array(
+                'form' => $form->createView(),
+                'order' => $order,
+                'page' => $page,
+             ));
+
+
+
+
+     }
 
   
 

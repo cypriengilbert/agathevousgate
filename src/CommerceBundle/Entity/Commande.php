@@ -61,6 +61,11 @@ class Commande
    private $transportMethod;
 
     /**
+     * @ORM\OneToOne(targetEntity="CommerceBundle\Entity\Refund", cascade={"persist"})
+     */
+     private $refund;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_valid", type="boolean")
@@ -532,5 +537,29 @@ class Commande
     public function getCodePromo()
     {
         return $this->codePromo;
+    }
+
+    /**
+     * Set refund
+     *
+     * @param \CommerceBundle\Entity\Refund $refund
+     *
+     * @return Commande
+     */
+    public function setRefund(\CommerceBundle\Entity\Refund $refund = null)
+    {
+        $this->refund = $refund;
+
+        return $this;
+    }
+
+    /**
+     * Get refund
+     *
+     * @return \CommerceBundle\Entity\Refund
+     */
+    public function getRefund()
+    {
+        return $this->refund;
     }
 }

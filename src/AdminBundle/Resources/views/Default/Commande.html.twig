@@ -15,7 +15,7 @@
                     <div class="col-md-4">
                     <div class="card ">
                                 <div class="header">
-                                    <h4 class="title">Commande n°{{commande.id}} du {{ commande.date|date("d-m-Y") }}</h4>
+                                    <h4 class="title">Commande n°{{commande.id}} du {{ commande.date|date("d-m-Y") }} - {{commande.price}}€</h4>
                                     <p class="category">Actions & details</p>
                                 </div>
                                 <div class="content">
@@ -28,9 +28,7 @@
                                       {% endif %}
                                     </div>
                                     <div class="col-md-6 text-center">
-                                      {% if commande.isvalid == true %}traité{% else %}
-                                          <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-primary" style="margin-top:20px; margin-left:1%;">Voir la facture</button></a>
-                                      {% endif %}
+                                      {% if commande.refund %}remboursement : {{ commande.refund.montant }}€ <br> le {{ commande.refund.date|date("d-m-Y") }}{% endif %}
                                     </div>
 
                                   </div><br>
@@ -58,8 +56,17 @@
 
                                               <div>
                                                   <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Modifier le commentaire </button>
+                                                                                            {{ form_end(form) }}
+
+
                                               </div>
-                                          {{ form_end(form) }}
+                                              <div class="row">
+                                              <div class="col-md-3>
+                                            <a href="{{ path('refund', {'id':commande.id}) }}"><button class="btn btn-warning" style="margin-bottom:10px;">Remboursement</button></a>
+                                        </div>
+                                        <div class="col-md-6>
+                                          <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-primary" style="margin-top:20px; margin-left:1%;">Voir la facture</button></a>
+</div>                                        </div>
 
                                       </div>
                                    </div>
