@@ -49,6 +49,9 @@ class DefaultController extends Controller
         if ($session->get('datein') === null) {
             $referenceDate = date('01-01-Y');
             $datein = new \DateTime($referenceDate);
+            $dateinN1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 year")));
+            $dateinM1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 month")));
+            
            
         } else {
             $datein = $session->get('datein');
