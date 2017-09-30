@@ -290,9 +290,9 @@
       <div class="header">
         <div class="row">
           <div class="col-md-12">
-            <h4 class="title">Délai d'envoi</h4>
+            <h4 class="title">Nombre de noeud</h4>
             <p class="category">
-              En jours
+              Par commande
             </p>
           </div>
         </div>
@@ -300,9 +300,22 @@
       <div class="content">
         <div class="row">
             <div class="col-md-12">
-                
-                <p style="font-size:35px; text-align:center"></p>
-                
+            {% if nbCommande != 0 %}
+               <p style="font-size:35px; text-align:center">{{(total_noeud/nbCommande)|round(2,'common')}} // {{ecart_noeud}}</p>
+               {% else %}
+                <p style="font-size:35px; text-align:center">--</p>
+
+               {% endif %}
+ {% if dateout_compare != 'null' %}
+             <div class="col-md-12">
+                {% if nbCommande_compare != 0 %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{(total_noeud_compare/nbCommande_compare)|round(2,'common')}} // {{ecart_noeud_compare}}</p>
+                {% else %}
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">--</p>
+                {% endif %}
+                </div>
+            {% endif %}
+
             </div>
         </div>
       </div>

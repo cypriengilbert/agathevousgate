@@ -287,7 +287,9 @@ class DefaultController extends Controller
 
        
         $nb_code = [];
+        $nb_noeud = [];
         $nb_code_compare = [];
+        $nb_noeud_compare = [];
         foreach ($listePromoCode as $code) {
             
                 $nb_code[$code->getId()] = 0;
@@ -295,11 +297,19 @@ class DefaultController extends Controller
                 
             
         }
+        
         foreach ($listeCommande as $commande) {
             foreach ($listePromoCode as $code) {
                 if($code == $commande->getCodePromo()){
                     $nb_code[$code->getId()]++;
                 }
+            }
+            $nb_noeud[$commande->getId()] = 0;            
+            foreach ($commande->getAddedproducts() as $product) {
+                if($product->getProduct()->getName()== 'Noeud'){
+                    $nb_noeud[$commande->getId()] = $nb_noeud[$commande->getId()] + $product->getQuantity();
+                }
+               
             }
         }
         if(isset($listeCommande_compare)){
@@ -309,12 +319,29 @@ class DefaultController extends Controller
                     $nb_code_compare[$code->getId()]++;
                 }
             }
+            $nb_noeud_compare[$commande->getId()] = 0;
+            foreach ($commande->getAddedproducts() as $product) {
+                if($product->getProduct()->getName()== 'Noeud'){
+                    $nb_noeud_compare[$commande->getId()] = $nb_noeud_compare[$commande->getId()] + $product->getQuantity();
+                }
+             }
         }
     }
+    $total_noeud = 0;
+    foreach ($nb_noeud as $value) {
+        $total_noeud = $total_noeud + $value;
+    }
+    $total_noeud_compare = 0;
+    foreach ($nb_noeud as $value) {
+        $total_noeud_compare = $total_noeud_compare + $value;
+    }
+
+    $ecart_noeud = $this->ecart_type($nb_noeud);
+    $ecart_noeud_compare = $this->ecart_type($nb_noeud_compare);
+    
 
 
-
-
+      
 
         return $this->render('AdminBundle:Default:indexTest.html.twig', array(
             'listeAddedProducts' => $listeAddedProduct,
@@ -340,8 +367,13 @@ class DefaultController extends Controller
             'datein' => $datein,
             'dateout' => $dateout,
             'dateout_compare' => $dateout_compare,   
-            'datein_compare' => $datein_compare,            
-            
+            'datein_compare' => $datein_compare, 
+            'nb_noeud' => $nb_noeud,
+            'total_noeud' => $total_noeud,
+            'ecart_noeud_compare' => $ecart_noeud_compare,
+            'ecart_noeud' => $ecart_noeud,
+            'total_noeud_compare' => $total_noeud_compare,            
+            'nb_noeud_compare'=> $nb_noeud_compare,           
             'delaiEnvoi'=> $delaiEnvoi,
             'delaiEnvoi_compare'=> $delaiEnvoi_compare,
             'nbCommande_Age' => $nbCommande_Age,
@@ -1992,6 +2024,26 @@ $user->setParrainage(0);
 
      }
 
+     function ecart_type($donnees) {
+        $population = count($donnees);
+        if ($population != 0) {
+            $somme_tableau = array_sum($donnees);
+            $moyenne = $somme_tableau / $population;
+            $ecart = [];
+            foreach ($donnees as $donnees){
+                $ecart_donnee = $donnees - $moyenne;
+                $ecart_donnee_carre = bcpow($ecart_donnee, 2, 2);
+                array_push($ecart, $ecart_donnee_carre);
+            }
+            $somme_ecart = array_sum($ecart);
+            $division = $somme_ecart / $population;
+            $ecart_type = bcsqrt ($division, 2);
+        } else {
+            $ecart_type = null;
+        }
+        return $ecart_type;
+    }
+    
   
 
 }
