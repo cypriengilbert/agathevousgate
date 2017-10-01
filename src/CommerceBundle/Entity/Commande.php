@@ -25,6 +25,21 @@ class Commande
      */
     private $id;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="stripe_id", type="string", length=200, nullable=true)
+     */
+     private $stripe_id;
+     
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="paypal_id", type="string", length=200, nullable=true)
+     */
+     private $paypal_id;
+     
     /**
      * @var \DateTime
      *
@@ -60,10 +75,8 @@ class Commande
     */
    private $transportMethod;
 
-    /**
-     * @ORM\OneToOne(targetEntity="CommerceBundle\Entity\Refund", cascade={"persist"})
-     */
-     private $refund;
+ 
+     
 
     /**
      * @var bool
@@ -149,6 +162,8 @@ class Commande
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set date
@@ -561,5 +576,53 @@ class Commande
     public function getRefund()
     {
         return $this->refund;
+    }
+
+    /**
+     * Set stripeId
+     *
+     * @param string $stripeId
+     *
+     * @return Commande
+     */
+    public function setStripeId($stripeId)
+    {
+        $this->stripe_id = $stripeId;
+
+        return $this;
+    }
+
+    /**
+     * Get stripeId
+     *
+     * @return string
+     */
+    public function getStripeId()
+    {
+        return $this->stripe_id;
+    }
+
+    /**
+     * Set paypalId
+     *
+     * @param string $paypalId
+     *
+     * @return Commande
+     */
+    public function setPaypalId($paypalId)
+    {
+        $this->paypal_id = $paypalId;
+
+        return $this;
+    }
+
+    /**
+     * Get paypalId
+     *
+     * @return string
+     */
+    public function getPaypalId()
+    {
+        return $this->paypal_id;
     }
 }

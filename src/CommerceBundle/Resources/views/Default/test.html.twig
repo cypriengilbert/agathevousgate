@@ -1,141 +1,20 @@
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01 Transitional//EN' 'http://www.w3.org/TR/html4/loose.dtd'>
-<html>
-    <head>
-        <title>Restitution HTML</title>
-        <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' >
-    </head>
-    <body style='padding: 10px; font-size: 10pt;'>
-<style type='text/css'>
-<!--
-table { vertical-align: top; }
-tr    { vertical-align: top; }
-td    { vertical-align: top; }
-}
--->
-</style>
-{% set totalsum = null %}{% set numero_ligne = 0 %}
-
-<div backcolor='#FEFEFE' backimg='./res/bas_page.png' backimgx='center' backimgy='bottom' backimgw='100%' backtop='0' backbottom='30mm' footer='date;heure;page' style='font-size: 12pt'>
-
-    <table cellspacing='0' style='width: 100%; text-align: center; font-size: 14px'>
-        <tr>
-
-            <td style='width: 25%; color: #444444;'>
-                <img src='http://agathevousgate.fr/images/logo_test.jpg' style='margin-right:-150px'>
-            </td>
-            <td style='width: 75%;'>
-            </td>
-        </tr>
-    </table>
-    <br>
-    <br>
-    <table cellspacing='0' style='width: 100%; text-align: left; font-size: 11pt;'>
-        <tr>
-            <td style='width:50%;'></td>
-            <td style='width:14%; '>Client :</td>
-            <td style='width:36%'>{{user.nom}} {{user.prenom}}</td>
-        </tr>
-        <tr>
-            <td style='width:50%;'></td>
-            <td style='width:14%; '>Adresse :</td>
-            <td style='width:36%'>
-                {{user.adress.adress}}<br>
-                {{user.adress.zipcode}} {{user.adress.city}}<br>
-
-            </td>
-        </tr>
-        <tr>
-            <td style='width:50%;'></td>
-            <td style='width:14%; '>Email :</td>
-            <td style='width:36%'>{{user.email}}</td>
-        </tr>
-
-    </table>
-    <br>
-    <br>
-    <table cellspacing='0' style='width: 100%; text-align: left;font-size: 10pt'>
-        <tr>
-            <td style='width:50%;'></td>
-            <td style='width:50%; '>Reims, le {{ "now"|date("d/m/Y") }}</td>
-        </tr>
-    </table>
-    <br>
-    <i>
-        <b><u>Facture N°{{commande.id}} du {{commande.date|date("d/m/Y")}}</u></b><br>
-    </i>
-    <br>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 32%'>Produit</th>
-            <th style='width: 32%'>Couleur</th>
-            <th style='width: 13%'>Prix Unitaire</th>
-            <th style='width: 10%'>Quantité</th>
-            <th style='width: 13%'>Prix</th>
-        </tr>
-    </table>
-
-    {% for listepanier in listePanier %}
-    {% set totalsum = (totalsum + listepanier.price * listepanier.quantity)|round(2, 'common') %}
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <td style='width: 12%; text-align: center'>{{ listepanier.product.cartname }}</td>
-            <td style='width: 52%; text-align: center'>
-            {% if listepanier.Color1 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
-            {% endif %}
-            {% if listepanier.Color2 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
-            {% endif %}
-            {% if listepanier.Color3 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
-            {% endif %}
-            </td>
-            <td style='width: 13%; text-align: right'>{{ listepanier.price|round(2, 'common') }}</td>
-            <td style='width: 10%'>{{ listepanier.quantity }}</td>
-            <td style='width: 13%; text-align: right;'>{{ (listepanier.price * listepanier.quantity)|round(2, 'common')  }}€</td>
-        </tr>
-    </table>
-    {% endfor %}
+{% extends 'base.html.twig' %}
 
 
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 87%; text-align: right;'>Sous-Total : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum }}€</th>
-        </tr>
-    </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 87%; text-align: right;'>Livraison : </th>
-            <th style='width: 13%; text-align: right;'>{% if user.isPro == 2 %}{% set transport =  commande.transportCost / (1+ tva/100) %}{{ transport }}€{% else %}{{ commande.transportCost }}€{% endif %}</th>
-        </tr>
-    </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 87%; text-align: right;'>Remise : </th>
-            <th style='width: 13%; text-align: right;'>- {{ commande.remise }}€</th>
-        </tr>
-    </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 87%; text-align: right;'>{% if user.isPro != 2  %}Dont{% endif %} TVA : </th>
-            <th style='width: 13%; text-align: right;'>
-            {% if user.isPro == 2  %}
-            {% set taxe = ((totalsum + transport) * (1+tva/100) - totalsum - transport)|round(2, 'common') %}+ {{ taxe }}€
-            {% else %}
-            {% set taxe = (totalsum + commande.transportCost - ((totalsum + commande.transportCost) / (1+tva/100)))|round(2, 'common') %} {{ taxe }}€
-            {% endif %}
-            </th>
-        </tr>
-    </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
-        <tr>
-            <th style='width: 87%; text-align: right;'>Total réglé : </th>
-            <th style='width: 13%; text-align: right;'>{% if user.isPro == 2  %}{{ totalsum + taxe + transport - commande.remise }}{% else %}{{ totalsum + commande.transportCost - commande.remise }}{% endif %}€</th>
-        </tr>
-    </table>
+{% block body %}
 
-</div>
 
-    </body>
-</html>
+<body>
+<section>
+    <div class="container">
+      <div class="alert alert-success" role="success" style="margin-top:20px;">
+        {{charge}}
+        
+    </div>
+  </section>
+</body>
+
+
+
+
+{% endblock %}

@@ -66,12 +66,10 @@
 function verif_type(){
     if(document.getElementById("commercebundle_refund_type").value == "partiel"){
         document.getElementById("commercebundle_refund_montant").value = null;
-        document.getElementById("commercebundle_refund_montant").disabled = '';
 
     }
     else{
         document.getElementById("commercebundle_refund_montant").value = {{order.price}};
-        document.getElementById("commercebundle_refund_montant").disabled = 'disabled';
 
     }
 }

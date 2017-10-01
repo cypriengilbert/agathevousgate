@@ -1337,13 +1337,16 @@ class CommerceController extends Controller
             $price = $commandeEnCours->getPrice() * 100;
             try {
                 $charge = \Stripe\Charge::create(array(
-                    "amount" => round($price), // amount in cents, again
+                    "amount" => round($price), 
                     "currency" => "eur",
                     "source" => $token,
                     "description" => "Commande n°".$commandeEnCours->getId()
                 ));
+                $object_charge = json_decode($charge, true);
+
                 $commandeEnCours->setIsPanier(false);
                 $commandeEnCours->setPaiementMethod('Stripe');
+                $commandeEnCours->setStripeId($charge["id"]);
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($commandeEnCours);
@@ -1395,6 +1398,18 @@ class CommerceController extends Controller
                     $em->flush();
                     $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
                 }
+
+            }
+            catch (\Stripe\Error\Card $e) {
+                $url      = $this->generateUrl('paiementechec');
+                $response = new RedirectResponse($url);
+
+                return $response;
+            }
+
+            try{
+
+           
 
                 $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $id_user)->getQuery();
@@ -1475,11 +1490,11 @@ class CommerceController extends Controller
                             'coutLivraison' => $coutLivraison,
                             'parrainage' => $remiseParrainage,
                             'commande' => $commandeEnCours,
-                            'reductions' => $allreduction,
+                         //   'reductions' => $allreduction,
                             'tva' => $tva,
                             'AddedProductByProduct' => $AddedProductByProduct,
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                       $this->get('mailer')->send($message);
                     
                 }else{
                     
@@ -1527,7 +1542,7 @@ class CommerceController extends Controller
                             'nb' => $minParrainage->getMontant()
 
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                       $this->get('mailer')->send($message);
                         $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
@@ -1576,7 +1591,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1600,7 +1615,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == 'Coffret1') {
@@ -1614,7 +1629,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                               $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == "Coffret2") {
@@ -1628,7 +1643,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1640,7 +1655,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                     }
                     else{
@@ -1655,7 +1670,7 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                  //  $this->get('mailer')->send($message);
+                                    $this->get('mailer')->send($message);
                             }
                         }
                         else{
@@ -1669,28 +1684,28 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                  //  $this->get('mailer')->send($message);
+                                  $this->get('mailer')->send($message);
                             }
                         }
                         
                     }
                     }
 
-
+                }
+                catch(Exception $e){
+                    $url      = $this->generateUrl('paiement_whitout_mail');
+                    $response = new RedirectResponse($url);
+                    return $response;
+                }
                 $url      = $this->generateUrl('paiementconfirmation');
                 $response = new RedirectResponse($url);
 
                 return $response;
+                
 
 
 
-            }
-            catch (\Stripe\Error\Card $e) {
-                $url      = $this->generateUrl('paiementechec');
-                $response = new RedirectResponse($url);
-
-                return $response;
-            }
+            
         }
 
         $url      = $this->generateUrl('paiementechec');
@@ -1714,7 +1729,8 @@ class CommerceController extends Controller
         ));
         if ($commandeEnCours) {
             $price = $commandeEnCours->getPrice() * 100;
-
+            $em = $this->getDoctrine()->getManager();
+            
             $commandeEnCours->setIsPanier(false);
             $commandeEnCours->setPaiementMethod('Paypal');
             $em = $this->getDoctrine()->getManager();
@@ -1995,6 +2011,8 @@ class CommerceController extends Controller
             return $response;
         } else {
             if ($responseArray['ACK'] == 'Success') {
+                
+
             } else {
                 exit($responseArray['ACK']);
                 $url      = $this->generateUrl('paiementechec');
@@ -2114,6 +2132,10 @@ class CommerceController extends Controller
         } else {
             if ($responseArray['ACK'] == 'Success') {
                 var_dump($responseArray);
+                $commandeEnCours->setPaypalId($responseArray['TRANSACTIONID']);
+                $em = $this->getDoctrine()->getManager();                
+                $em->persist($commandeEnCours);
+                $em->flush();
                 $url      = $this->generateUrl('confirmationpaypal');
                 $response = new RedirectResponse($url);
                 return $response;
@@ -3090,6 +3112,20 @@ class CommerceController extends Controller
         ));
     }
 
+    /**
+     * @Route("/paiement/confirmation/mail", name="paiement_whitout_mail")
+     */
+     public function paiementWithoutMailAction()
+     {
+         $session         = $this->createSession();
+         $nbarticlepanier = $this->countArticleCart();
+         $collection      = $this->getAll('Collection');
+         return $this->render('CommerceBundle:Default:paiement_whitout_mail.html.twig', array(
+             'nbarticlepanier' => $nbarticlepanier,
+             'collection' => $collection
+         ));
+     }
+ 
     /**
      * @Route("/paiement/confirmation", name="paiementconfirmation")
      */

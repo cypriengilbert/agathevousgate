@@ -1,0 +1,20 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+{% block body %}
+
+<body>
+<section>
+    <div class="container">
+      <div class="alert alert-danger" role="alert" style="margin-top:20px;">
+        Oups, une erreur s'est produite lors du remboursement.<br>
+        Détails de l'erreur : <br>
+        {{e}}
+      </div>
+    </div>
+  </section>
+</body>
+
+
+
+{% endblock %}

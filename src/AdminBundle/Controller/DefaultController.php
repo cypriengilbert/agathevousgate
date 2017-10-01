@@ -17,7 +17,7 @@ use CommerceBundle\Entity\ProDiscount;
 use UserBundle\Entity\User;
 use UserBundle\Form\RegistrationType;
 use UserBundle\Form\CompanyAllType;
-
+use Stripe\HttpClient;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -445,6 +445,10 @@ class DefaultController extends Controller
         $Commande   = $repository->findOneBy(array(
             'id' => $id
         ));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');        
+        $refunds   = $repository->findBy(array(
+            'order' => $Commande
+        ));
 
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CommandeModifyType', $Commande);
@@ -466,6 +470,7 @@ class DefaultController extends Controller
             'commande' => $Commande,
             'form' => $form->createView(),
             'page' => $page,
+            'refunds' => $refunds
         ));
     }
 
@@ -1973,9 +1978,9 @@ $user->setParrainage(0);
     }
 
     /**
-     * @Route("/s/refund/{id}", name="refund")
+     * @Route("/s/refund/manual/{id}", name="refund_manual")
      */
-     public function refundAction(Request $request, $id)
+     public function refundManualAction(Request $request, $id)
      {
         $page = 'commande';
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
@@ -1983,21 +1988,14 @@ $user->setParrainage(0);
             'id' => $id
         ));
 
-        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
-        $refund = $repository->findOneBy(array(
-            'order' => $order
-        ));
+      
 
-        if($refund == null){
             $refund = new Refund();
-            $price_origin = $order->getPrice();
-        }
-        else{
-            $price_origin = $order->getPrice() + $refund->getMontant();
-        }
+         
             $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
             if ($form->handleRequest($request)->isValid()) {
                 $refund->setOrder($order);
+                $refund->setMethod('manual');
                 $datetime = new \Datetime('now');
                 $refund->setDate($datetime);
                 $em = $this->getDoctrine()->getManager();
@@ -2005,7 +2003,82 @@ $user->setParrainage(0);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
                 $order->setRefund($refund);
-                $order->setPrice($price_origin - $refund->getMontant());
+                $order->setPrice($order->getPrice() - $refund->getMontant());
+                $em->persist($order);
+                $em->flush();
+                return $this->redirect($this->generateUrl('commande', array(
+                    'id' => $id,
+                )));
+    
+            }
+            return $this->render('AdminBundle:Default:refund.html.twig', array(
+                'form' => $form->createView(),
+                'order' => $order,
+                'page' => $page,
+             ));
+
+
+
+
+     }
+
+
+     /**
+     * @Route("/s/refund/stripe/{id}", name="refund")
+     */
+     public function refundStripeAction(Request $request, $id)
+     {
+        $page = 'commande';
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $order = $repository->findOneBy(array(
+            'id' => $id
+        ));
+
+   
+        $refund = new Refund();
+        
+      
+            $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
+            if ($form->handleRequest($request)->isValid()) {
+
+                \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+                if($refund->getType() == 'integral'){
+                   
+                   try{
+                    $re = \Stripe\Refund::create(array(
+                        "charge" => $order->getStripeId(),
+                      ));
+                   } 
+                   catch (\Stripe\Error\Card $e) {
+                    $url      = $this->generateUrl('echecRefund');
+                    $response = new RedirectResponse($url);
+                    return $response;
+                    }
+                }
+                else{
+                    try{
+                        $re = \Stripe\Refund::create(array(
+                            "charge" => $order->getStripeId(),
+                            "amount" => $refund->getMontant()*100,
+                          ));
+                       } 
+                       catch (\Stripe\Error\Card $e) {
+                        $url      = $this->generateUrl('echecRefund');
+                        $response = new RedirectResponse($url, array('erreur', $e));
+                        return $response;
+                        }
+                }
+
+                $refund->setOrder($order);
+                $refund->setMethod('stripe');
+                $datetime = new \Datetime('now');
+                $refund->setDate($datetime);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($refund);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
+                $order->setRefund($refund);
+                $order->setPrice($order->getPrice() - $refund->getMontant());
                 $em->persist($order);
                 $em->flush();
                 return $this->redirect($this->generateUrl('commande', array(
@@ -2043,6 +2116,44 @@ $user->setParrainage(0);
         }
         return $ecart_type;
     }
+
+
+     /**
+     * @Route("/s/refund/echec", name="echecRefund")
+     */
+     public function echecRefundAction()
+     {
+        
+         return $this->render('Admin:Default:echecRefund.html.twig', array(
+             'page' => 'commande'
+         ));
+     }
+
+
+     /**
+     * @Route("/s/refund/delete/{id}", name="deleteRefund")
+     */
+     public function deleteRefundAction(Request $request, $id)
+     {
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+        $refund = $repository->findOneBy(array(
+            'id' => $id
+        ));
+        $order = $refund->getOrder();
+
+        if($refund->getMethod() == 'manual'){
+            $em             = $this->getDoctrine()->getManager();    
+            $order->setPrice($order->getPrice()+$refund->getMontant());
+            $em->persist($order);
+            $em->flush();            
+            $em->remove($refund);
+            $em->flush();
+        }
+
+        $url      = $this->generateUrl('commande', array('id'=>$order->getId()));
+        $response = new RedirectResponse($url);
+        return $response;
+     }
     
   
 

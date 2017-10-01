@@ -41,10 +41,19 @@ class Refund
      */
     private $type;
 
-    /**
-     * @ORM\OneToOne(targetEntity="CommerceBundle\Entity\Commande", cascade={"persist"})
+     /**
+     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Commande")
+    * @ORM\JoinColumn(nullable=false)
      */
      private $order;
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=255)
+     */
+     private $method;
+
      
 
 
@@ -152,5 +161,29 @@ class Refund
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * Set method
+     *
+     * @param string $method
+     *
+     * @return Refund
+     */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get method
+     *
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 }
