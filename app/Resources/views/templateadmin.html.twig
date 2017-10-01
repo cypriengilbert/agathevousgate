@@ -139,6 +139,12 @@
                         <p>Textes</p>
                     </a>
                 </li>
+                <li {% if page == 'survey' %}class="active"{% endif %}>
+                    <a href="{{ path('SurveyResponse') }}">
+                        <i class="pe-7s-note2"></i>
+                        <p>Survey</p>
+                    </a>
+                </li>
                 {% endif %}
                 
             </ul>

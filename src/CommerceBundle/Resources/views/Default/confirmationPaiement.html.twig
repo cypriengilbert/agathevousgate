@@ -1,23 +1,37 @@
-{% extends 'base.html.twig' %}
-
-
-{% block body %}
-
-
+{% extends 'base.html.twig' %}{% block body %}
 <body>
-<section>
-    <div class="container">
-      <div class="alert alert-success" role="success" style="margin-top:20px;">
-        Merci! <br>
-        Votre commande est en cours de préparation et sera bientôt prête!<br>
-        Vous en serez informé par mail.<br>
-        <a href="{{ path('compte') }}">Accéder à mon compte</a>
-      </div>
-    </div>
-  </section>
+	<section>
+		<div class="container">
+			<div class="alert alert-success" role="success" style="margin-top:20px;">
+				Merci! 
+				<br>
+				Votre commande est en cours de préparation et sera bientôt prête!
+				<br>
+				Vous en serez informé par mail.
+				<br>
+				<a href="{{ path('compte') }}">Accéder à mon compte</a>
+				{{ form_start(form, {'method': 'post', 'attr': {'class': 'formulaire'} }) }}{{ form_errors(form) }}
+          <div class="form-group">
+            {{ form_label(form.response1, "Comment avez-vous connu Agathe Vous Gâte ?", {'label_attr': {'class': ''}}) }}
+            {{ form_errors(form.response1) }}
+            {{ form_widget(form.response1, {'attr': {'class': 'form-control'}}) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.response2, "Pourquoi nous avoir choisi ?", {'label_attr': {'class': ''}}) }}
+            {{ form_errors(form.response2) }}
+            {{ form_widget(form.response2, {'attr': {'class': 'form-control'}}) }}
+          </div>
+          <div class="form-group">
+            {{ form_label(form.response3, "Globalement, comment jugez-vous votre commande sur le site AgatheVousGate.fr ?", {'label_attr': {'class': ''}}) }}
+            {{ form_errors(form.response3) }}
+            {{ form_widget(form.response3, {'attr': {'class': 'form-control'}}) }}
+          </div>
+          
+          <div>
+            <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Modifier le commentaire </button>
+          </div>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</section>
 </body>
-
-
-
-
-{% endblock %}

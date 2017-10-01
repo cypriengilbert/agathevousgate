@@ -1,0 +1,186 @@
+<?php
+
+namespace CommerceBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * SurveyResponse
+ *
+ * @ORM\Table(name="survey_response")
+ * @ORM\Entity(repositoryClass="CommerceBundle\Repository\SurveyResponseRepository")
+ */
+class SurveyResponse
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="question1", type="string", length=255)
+     */
+    private $question1;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="response1", type="string", length=255)
+     */
+    private $response1;
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="question2", type="string", length=255)
+     */
+     private $question2;
+     
+         /**
+          * @var string
+          *
+          * @ORM\Column(name="response2", type="string", length=255)
+          */
+         private $response2;
+
+             /**
+     * @var string
+     *
+     * @ORM\Column(name="question3", type="string", length=255)
+     */
+     private $question3;
+     
+         /**
+          * @var string
+          *
+          * @ORM\Column(name="response3", type="string", length=255)
+          */
+         private $response3;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user", type="string", length=255)
+     */
+    private $user;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set question
+     *
+     * @param string $question
+     *
+     * @return SurveyResponse
+     */
+    public function setQuestion($question)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return string
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set response
+     *
+     * @param string $response
+     *
+     * @return SurveyResponse
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
+
+    /**
+     * Get response
+     *
+     * @return string
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * Set user
+     *
+     * @param string $user
+     *
+     * @return SurveyResponse
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return SurveyResponse
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+}
+

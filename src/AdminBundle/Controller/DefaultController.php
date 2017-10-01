@@ -1779,6 +1779,23 @@ $user->setParrainage(0);
         ));
     }
 
+     /**
+     * @Route("/responses", name="SurveyResponse")
+     */
+     public function responseAction()
+     {
+         $page            = 'survey';
+         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:SurveyResponse');
+         $listeResponse = $repository->findBy(array(), array(
+             'date' => 'DESC'
+         ));
+ 
+         return $this->render('AdminBundle:Default:listeResponse.html.twig', array(
+             
+             'responses' => $listeResponse,
+             'page' => $page
+         ));
+     }
   
 
 }

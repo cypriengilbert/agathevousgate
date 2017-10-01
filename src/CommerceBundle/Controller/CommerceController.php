@@ -9,6 +9,8 @@ use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\Photo;
 use CommerceBundle\Entity\CodePromo;
+
+use CommerceBundle\Entity\SurveyResponse;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Controller\SessionController;
 use Symfony\Component\HttpFoundation\Request;
@@ -3078,14 +3080,68 @@ class CommerceController extends Controller
     public function confirmationPaiementAction()
     {
         $session         = $this->createSession();
-        $nbarticlepanier = $this->countArticleCart();
         $collection      = $this->getAll('Collection');
-        return $this->render('CommerceBundle:Default:confirmationPaiement.html.twig', array(
+        $nbarticlepanier = $this->countArticleCart();
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $user         = $this->container->get('security.context')->getToken()->getUser();
+        }
+        $newResponse = new SurveyResponse();
+        $form     = $this->get('form.factory')->create('CommerceBundle\Form\SurveyResponseType', $newResponse);
+        if ($form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $datetime   = new \Datetime('now');
+            $newResponse->setUser($user);
+            $newResponse->setDate($datetime);
+            $newResponse->setQuestion1('Comment avez-vous connu Agathe Vous Gâte ?');
+            $newResponse->setQuestion2('Pour nous avoir choisi ?');
+            $newResponse->setQuestion3('Globalement, comment jugez-vous votre commande sur le site AgatheVousGate.fr ?');
+            $em->persist($newResponse);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Réponse bien enregistrée.');
+            return $this->redirect($this->generateUrl('accueil'));
+        }
+
+        return $this->render('CommerceBundle:Default:test.html.twig', array(
+            'form' => $form->createView(),
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection
         ));
     }
 
+       /**
+     * @Route("/test", name="test")
+     */
+     public function testAction(Request $request)
+     {
+         $session         = $this->createSession();
+         $collection      = $this->getAll('Collection');
+         $nbarticlepanier = $this->countArticleCart();
+         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+             $user         = $this->container->get('security.context')->getToken()->getUser();
+         }
+         $newResponse = new SurveyResponse();
+         $form     = $this->get('form.factory')->create('CommerceBundle\Form\SurveyResponseType', $newResponse);
+         if ($form->handleRequest($request)->isValid()) {
+             $em = $this->getDoctrine()->getManager();
+             $datetime   = new \Datetime('now');
+             $newResponse->setUser($user);
+             $newResponse->setDate($datetime);
+             $newResponse->setQuestion1('Comment avez-vous connu Agathe Vous Gâte ?');
+             $newResponse->setQuestion2('Pour nous avoir choisi ?');
+             $newResponse->setQuestion3('Globalement, comment jugez-vous votre commande sur le site AgatheVousGate.fr ?');
+             $em->persist($newResponse);
+             $em->flush();
+             $request->getSession()->getFlashBag()->add('notice', 'Réponse bien enregistrée.');
+             return $this->redirect($this->generateUrl('accueil'));
+         }
+ 
+         return $this->render('CommerceBundle:Default:test.html.twig', array(
+             'form' => $form->createView(),
+             'nbarticlepanier' => $nbarticlepanier,
+             'collection' => $collection
+         ));
+     }
+ 
 
     /**
      * @Route("/collections", name="collections")
@@ -3105,6 +3161,8 @@ class CommerceController extends Controller
         ));
     }
 
+    
+ 
 
     // ---------------------Simplification code ----------------//
     public function createSession()
