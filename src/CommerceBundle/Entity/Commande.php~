@@ -25,6 +25,21 @@ class Commande
      */
     private $id;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="stripe_id", type="string", length=200, nullable=true)
+     */
+     private $stripe_id;
+     
+
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="paypal_id", type="string", length=200, nullable=true)
+     */
+     private $paypal_id;
+     
     /**
      * @var \DateTime
      *
@@ -59,6 +74,9 @@ class Commande
     * @ORM\JoinColumn(nullable=true)
     */
    private $transportMethod;
+
+ 
+     
 
     /**
      * @var bool
@@ -121,6 +139,13 @@ class Commande
          */
           private $atelier_livraison;
 
+
+         /**
+         * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\CodePromo")
+         * @ORM\JoinColumn(nullable=true)
+         */
+         private $codePromo;
+
               /**
      * @var \DateTime
      *
@@ -137,6 +162,8 @@ class Commande
     {
         return $this->id;
     }
+
+    
 
     /**
      * Set date
@@ -477,5 +504,101 @@ class Commande
     public function getDateEnvoi()
     {
         return $this->dateEnvoi;
+    }
+
+    /**
+     * Set remisePro
+     *
+     * @param float $remisePro
+     *
+     * @return Commande
+     */
+    public function setRemisePro($remisePro)
+    {
+        $this->remisePro = $remisePro;
+
+        return $this;
+    }
+
+    /**
+     * Get remisePro
+     *
+     * @return float
+     */
+    public function getRemisePro()
+    {
+        return $this->remisePro;
+    }
+
+    /**
+     * Set codePromo
+     *
+     * @param \CommerceBundle\Entity\CodePromo $codePromo
+     *
+     * @return Commande
+     */
+    public function setCodePromo(\CommerceBundle\Entity\CodePromo $codePromo = null)
+    {
+        $this->codePromo = $codePromo;
+
+        return $this;
+    }
+
+    /**
+     * Get codePromo
+     *
+     * @return \CommerceBundle\Entity\CodePromo
+     */
+    public function getCodePromo()
+    {
+        return $this->codePromo;
+    }
+
+    /**
+     * Set refund
+     *
+     * @param \CommerceBundle\Entity\Refund $refund
+     *
+     * @return Commande
+     */
+    public function setRefund(\CommerceBundle\Entity\Refund $refund = null)
+    {
+        $this->refund = $refund;
+
+        return $this;
+    }
+
+    /**
+     * Get refund
+     *
+     * @return \CommerceBundle\Entity\Refund
+     */
+    public function getRefund()
+    {
+        return $this->refund;
+    }
+
+    /**
+     * Set stripeId
+     *
+     * @param string $stripeId
+     *
+     * @return Commande
+     */
+    public function setStripeId($stripeId)
+    {
+        $this->stripe_id = $stripeId;
+
+        return $this;
+    }
+
+    /**
+     * Get stripeId
+     *
+     * @return string
+     */
+    public function getStripeId()
+    {
+        return $this->stripe_id;
     }
 }

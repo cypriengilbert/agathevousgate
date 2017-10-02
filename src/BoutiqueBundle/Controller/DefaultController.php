@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use CommerceBundle\Entity\AddedProduct;
+use Stripe\HttpClient;
+use Stripe\Source;
+use CommerceBundle\Controller\SessionController;
 
 
 
@@ -31,6 +34,32 @@ class DefaultController extends Controller
 
     }
 
+    /**
+     * @Route("/paiement/newIban")
+     */
+     public function newIbanAction()
+     {
+         $user = $this->container->get('security.context')->getToken()->getUser();
+         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER') and $user->getIsPro() == 2) {
+             \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_private_key'));
+            
+             $source = \Stripe\Source::create(array(
+                 "type" => "sepa_debit",
+                 "sepa_debit" => array("iban" => "DE89370400440532013000"),
+                 "currency" => "eur",
+                 "owner" => array(
+                 "name" => $user->getNom().$user->getPrenom(),
+                 ),
+             ));
+             return new RedirectResponse($this->generateUrl('accueil'));
+             
+         }
+         else {
+           return new RedirectResponse($this->generateUrl('accueil'));
+         }
+ 
+ 
+     }
 
     /**
      * @Route("/boutique/generic", name="generic")

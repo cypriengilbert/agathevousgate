@@ -1,56 +1,21 @@
 {% extends 'base.html.twig' %}
+
+
+
 {% block body %}
+
+
 <body>
-	<section>
-		<div class="container">
-			<div class="alert alert-success" role="success" style="margin-top:20px;">
-				Merci! 
-				<br>
-				Votre commande est en cours de préparation et sera bientôt prête!
-				<br>
-				Vous en serez informé par mail.
-				<br>
-				<a href="{{ path('compte') }}">Accéder à mon compte</a>
-			
-		</div>
-	</section>
-    <section>
-    <class="container">
-    
-      <div class="row">
-       <div class="col-md-3 no_padding">
-       </div>
-
-        <div class="col-md-6 no_padding">
-
-    	{{ form_start(form) }}
-          <div class="form-group">
-            {{ form_label(form.response1, "Comment avez-vous connu Agathe Vous Gâte ?", {'label_attr': {'class': ''}}) }}
-            {{ form_errors(form.response1) }}
-            {{ form_widget(form.response1, {'attr': {'class': 'form-control'}}) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.response2, "Pourquoi nous avoir choisi ?", {'label_attr': {'class': ''}}) }}
-            {{ form_errors(form.response2) }}
-            {{ form_widget(form.response2, {'attr': {'class': 'form-control'}}) }}
-          </div>
-          <div class="form-group">
-            {{ form_label(form.response3, "Globalement, comment jugez-vous votre commande sur le site AgatheVousGate.fr ? (5 = parfait, 1 = difficile)", {'label_attr': {'class': ''}}) }}
-            {{ form_errors(form.response3) }}
-            {{ form_widget(form.response3, {'attr': {'class': 'form-control'}}) }}
-          </div>
-          
-          <div class="text-center">
-            <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Valider </button>
-          </div>
-				{{ form_end(form) }}
-			</div>
-            </div>
-            <div class="col-md-3 no_padding">
-       </div>
-            </div>
-            </div>
-            </section>
-
+<section>
+    <div class="container">
+      <div class="alert alert-success" role="success" style="margin-top:20px;">
+        {{charge}}
+        
+    </div>
+  </section>
 </body>
+
+
+
+
 {% endblock %}

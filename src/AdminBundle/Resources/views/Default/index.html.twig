@@ -2,6 +2,10 @@
 {% block script_calcul %}
 {% endblock %}
 {% block body %}
+<script>
+alert('{{dateoutN1}}');
+</script>
+
 {% set totalFemme = 0 %}
 {% for commande in listeCommande %}
 {% if commande.client.genre == "madame" or commande.client.genre == "mademoiselle"  %}

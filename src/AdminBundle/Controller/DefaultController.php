@@ -10,13 +10,14 @@ use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Collection;
 use CommerceBundle\Entity\Stock;
 use CommerceBundle\Entity\Color;
+use CommerceBundle\Entity\Refund;
 use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use CommerceBundle\Entity\ProDiscount;
 use UserBundle\Entity\User;
 use UserBundle\Form\RegistrationType;
 use UserBundle\Form\CompanyAllType;
-
+use Stripe\HttpClient;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -42,42 +43,104 @@ class DefaultController extends Controller
         $dateout = $session->get('dateout');
         $filtre = $session->get('filtre');
 
+        $datein_compare = $session->get('datein_compare');
+        $dateout_compare = $session->get('dateout_compare');
+        
+
         if ($session->get('datein') === null) {
             $referenceDate = date('01-01-Y');
             $datein = new \DateTime($referenceDate);
+            $dateinN1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 year")));
+            $dateinM1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 month")));
+            
+           
         } else {
             $datein = $session->get('datein');
+            $dateinN1 = date('Y-m-d', strtotime($datein. "- 1 year"));
+            $dateinM1 = date('Y-m-d', strtotime($datein. "- 1 month"));
+            
+            
 
         }
 
         if ($session->get('dateout') === null) {
             $dateout = new \Datetime('now');
+            $dateoutN1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 year")));
+            $dateoutM1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 month")));
+            
+            
         } else {
 
             $dateout = $session->get('dateout');
-
+            $dateoutN1 = date('Y-m-d', strtotime($dateout. "- 1 year"));
+            $dateoutM1 = date('Y-m-d', strtotime($dateout. "- 1 month"));
         }
-
+       
+                
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
        
-
+        $nbCommande_compare =0;
+        $averageOrder_compare=0;
        if($filtre == 'all' or $filtre == null){
             $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            if($datein_compare != null and $dateout_compare != null){
+                $querycompare         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+                $listeCommande_compare = $querycompare->getQuery()->getResult();
+                $nbCommande_compare = count($listeCommande_compare);
+                
+            }
        } 
        elseif($filtre == 'pro'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro = 2')->orderBy('a.date', 'ASC');
-       }
+            $queryN1          = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            if($datein_compare != null and $dateout_compare != null){
+                $querycompare         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+                $listeCommande_compare = $querycompare->getQuery()->getResult();
+                $nbCommande_compare = count($listeCommande_compare);
+                
+            }
+        }
 
        elseif($filtre == 'part'){
             $query         = $repository->createQueryBuilder('a')->join('a.client', 'c')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('c.isPro != 2')->orderBy('a.date', 'ASC');
-       }
+            $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            if($datein_compare != null and $dateout_compare != null){
+            $querycompare  = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
+            $listeCommande_compare = $querycompare->getQuery()->getResult();
+            $nbCommande_compare = count($listeCommande_compare);
+            
+        }
+        
+        }
 
         
         $listeCommande = $query->getQuery()->getResult();
-
-
+        $listeCommandeN1 = $queryN1->getQuery()->getResult();
+        $listeCommandeM1 = $queryM1->getQuery()->getResult();
+        
+        
+        $repository = $this->getDoctrine()->getRepository('UserBundle:User');
+        $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout);
+        $nb_signup = count($query->getQuery()->getResult());
+        $query         = $repository->createQueryBuilder('a')->where('a.signup >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.signup <= :dateout')->setParameter('dateout', $dateout_compare);
+        $nb_signup_compare = count($query->getQuery()->getResult());
+        $query         = $repository->createQueryBuilder('a')->where('a.lastLogin >= :datein')->setParameter('datein', $datein)->andWhere('a.lastLogin <= :dateout')->setParameter('dateout', $dateout);
+        $nb_user_active = count($query->getQuery()->getResult());
+        $query         = $repository->createQueryBuilder('a')->where('a.lastLogin >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.lastLogin <= :dateout')->setParameter('dateout', $dateout_compare);
+        $nb_user_active_compare = count($query->getQuery()->getResult());
+        
+        $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+        $listeUser      = $repository->findAll();
         $totalCommande = 0;
+        $totalCommandeM1 = 0;
+        $totalCommandeN1 = 0;
+        $totalCommande_compare = 0;
         $nbCommande = count($listeCommande);
+       
         $nb_commande_M = 0;
         $nb_commande_Mme = 0;
         $nb_commande_Mlle = 0;
@@ -91,7 +154,28 @@ class DefaultController extends Controller
         $nbCommande_Age['60'] = 0;
         $delaiEnvoi = 0;
         $nbEnvoi = 0;
+        $delaiEnvoi_compare =0;
+        $nbEnvoi_compare = 0;
 
+        foreach
+        ($listeCommandeN1 as $commande) {
+           $totalCommandeN1 = $totalCommandeN1 + $commande->getPrice();
+        }
+        foreach
+        ($listeCommandeM1 as $commande) {
+           $totalCommandeM1 = $totalCommandeM1 + $commande->getPrice();
+        }
+        if(isset($listeCommande_compare)){
+            foreach
+            ($listeCommande_compare as $commande) {
+               $totalCommande_compare = $totalCommande_compare + $commande->getPrice();
+               if($commande->getDateEnvoi() != null){
+                $delaiEnvoi_compare = $delaiEnvoi_compare + $commande->getDate()->diff($commande->getDateEnvoi())->format('%R%a days');
+                $nbEnvoi_compare = $nbEnvoi_compare +1;
+            }
+            }
+        }
+        
 
         foreach
          ($listeCommande as $commande) {
@@ -167,6 +251,12 @@ class DefaultController extends Controller
        else {
         $delaiEnvoi = 0;
        }
+       if($nbEnvoi_compare != 0){
+        $delaiEnvoi_compare = $delaiEnvoi_compare / $nbEnvoi_compare;
+       }
+       else {
+        $delaiEnvoi_compare = 0;
+       }
 
 
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
@@ -177,10 +267,10 @@ class DefaultController extends Controller
         $listeColor        = $repository->findAll();
         $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct   = $repository->findAll();
-        $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:PromoCode');
+        $repository     = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
         $listePromoCode = $repository->findAll();
-        $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
-        $listeUser      = $repository->findAll();
+        $averageOrder = $nbCommande/count($listeUser);
+        
 
         $tableau_produit = array();
         $null            = null;
@@ -195,9 +285,63 @@ class DefaultController extends Controller
             array_push($tableau_produit, $ligne_tableau_produit);
         }
 
+       
+        $nb_code = [];
+        $nb_noeud = [];
+        $nb_code_compare = [];
+        $nb_noeud_compare = [];
+        foreach ($listePromoCode as $code) {
+            
+                $nb_code[$code->getId()] = 0;
+                $nb_code_compare[$code->getId()] = 0;
+                
+            
+        }
+        
+        foreach ($listeCommande as $commande) {
+            foreach ($listePromoCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code[$code->getId()]++;
+                }
+            }
+            $nb_noeud[$commande->getId()] = 0;            
+            foreach ($commande->getAddedproducts() as $product) {
+                if($product->getProduct()->getName()== 'Noeud'){
+                    $nb_noeud[$commande->getId()] = $nb_noeud[$commande->getId()] + $product->getQuantity();
+                }
+               
+            }
+        }
+        if(isset($listeCommande_compare)){
+        foreach ($listeCommande_compare as $commande) {
+            foreach ($listePromoCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code_compare[$code->getId()]++;
+                }
+            }
+            $nb_noeud_compare[$commande->getId()] = 0;
+            foreach ($commande->getAddedproducts() as $product) {
+                if($product->getProduct()->getName()== 'Noeud'){
+                    $nb_noeud_compare[$commande->getId()] = $nb_noeud_compare[$commande->getId()] + $product->getQuantity();
+                }
+             }
+        }
+    }
+    $total_noeud = 0;
+    foreach ($nb_noeud as $value) {
+        $total_noeud = $total_noeud + $value;
+    }
+    $total_noeud_compare = 0;
+    foreach ($nb_noeud as $value) {
+        $total_noeud_compare = $total_noeud_compare + $value;
+    }
+
+    $ecart_noeud = $this->ecart_type($nb_noeud);
+    $ecart_noeud_compare = $this->ecart_type($nb_noeud_compare);
+    
 
 
-
+      
 
         return $this->render('AdminBundle:Default:indexTest.html.twig', array(
             'listeAddedProducts' => $listeAddedProduct,
@@ -210,7 +354,11 @@ class DefaultController extends Controller
             'tableau_produit' => $tableau_produit,
             'page' => $page,
             'totalCommande' => $totalCommande,
+            'totalCommande_compare' => $totalCommande_compare,
+            'totalCommandeN1' => $totalCommandeN1,
+            'totalCommandeM1' => $totalCommandeM1,
             'nbCommande' => $nbCommande,
+            'nbCommande_compare' => $nbCommande_compare,
             'nb_commande_Mlle' => $nb_commande_Mlle,
             'nb_commande_Mme' => $nb_commande_Mme,
             'nb_commande_M' => $nb_commande_M,
@@ -218,22 +366,41 @@ class DefaultController extends Controller
             'nbCommande_part' => $nbCommande_part,
             'datein' => $datein,
             'dateout' => $dateout,
+            'dateout_compare' => $dateout_compare,   
+            'datein_compare' => $datein_compare, 
+            'nb_noeud' => $nb_noeud,
+            'total_noeud' => $total_noeud,
+            'ecart_noeud_compare' => $ecart_noeud_compare,
+            'ecart_noeud' => $ecart_noeud,
+            'total_noeud_compare' => $total_noeud_compare,            
+            'nb_noeud_compare'=> $nb_noeud_compare,           
             'delaiEnvoi'=> $delaiEnvoi,
+            'delaiEnvoi_compare'=> $delaiEnvoi_compare,
             'nbCommande_Age' => $nbCommande_Age,
+            'nb_signup' => $nb_signup,
+            'nb_signup_compare' => $nb_signup_compare,
+            'nb_user_active_compare' => $nb_user_active_compare,
+            'nb_user_active' => $nb_user_active,
+            'averageOrder' => $averageOrder,
+            'averageOrder_compare' => $averageOrder_compare,
+            'nb_code' => $nb_code
+
 
         ));
 
     }
 
     /**
-     * @Route("/s/setFiltre/{in}/{out}/{filtre}", name="setFiltre")
+     * @Route("/s/setFiltre/{in}/{out}/{filtre}/{in_compare}/{out_compare}", name="setFiltre")
      */
-    public function setDateAction(Request $request, $in, $out, $filtre)
+    public function setDateAction(Request $request, $in, $out, $filtre, $in_compare, $out_compare)
     {
         $page = 'dashboard';
         $session = $request->getSession();
         $session->set('datein', $in);
         $session->set('dateout', $out);
+        $session->set('datein_compare', $in_compare);
+        $session->set('dateout_compare', $out_compare);
         $session->set('filtre', $filtre);
 
         $url      = $this->generateUrl('dashboard');
@@ -278,6 +445,10 @@ class DefaultController extends Controller
         $Commande   = $repository->findOneBy(array(
             'id' => $id
         ));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');        
+        $refunds   = $repository->findBy(array(
+            'order' => $Commande
+        ));
 
 
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CommandeModifyType', $Commande);
@@ -299,6 +470,7 @@ class DefaultController extends Controller
             'commande' => $Commande,
             'form' => $form->createView(),
             'page' => $page,
+            'refunds' => $refunds
         ));
     }
 
@@ -560,11 +732,26 @@ class DefaultController extends Controller
 
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
         $listeCode  = $repository->findAll();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande  = $repository->findAll();
+        $nb_code = [];
+        foreach ($listeCode as $code) {
+            
+                $nb_code[$code->getId()] = 0;
+            
+        }
+        foreach ($listeCommande as $commande) {
+            foreach ($listeCode as $code) {
+                if($code == $commande->getCodePromo()){
+                    $nb_code[$code->getId()]++;
+                }
+            }
+        }
 
         return $this->render('AdminBundle:Default:listeCode.html.twig', array(
             'codes' => $listeCode,
             'page' => $page,
-
+            'nb_code' => $nb_code,
 
 
         ));
@@ -573,10 +760,10 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/s/deleteCode/{id}", name="deleteCode")
+     * @Route("/s/editCode/{id}", name="editCode")
      */
 
-    public function deleteCodeAction(Request $request, $id)
+    public function editCodeAction(Request $request, $id)
     {
       $page = 'codePromo';
 
@@ -586,16 +773,27 @@ class DefaultController extends Controller
         $Code       = $repository->findOneBy(array(
             'id' => $id
         ));
-        $em->remove($Code);
-        $em->flush();
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\CodePromoType', $Code);
+        if ($form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($Code);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Code Promo bien enregistrée.');
 
-        return $this->redirect($this->generateUrl('listeCodePromo', array(
-            'validate' => 'Code Promo supprimé',
+            return $this->redirect($this->generateUrl('addCodePromo', array(
+                'validate' => 'Code Promo ajoutée'
+
+
+            )));
+        }
+        return $this->render('AdminBundle:Default:addCodePromo.html.twig', array(
+            'form' => $form->createView(),
             'page' => $page,
 
 
+        ));
 
-        )));
+       
 
 
     }
@@ -1796,6 +1994,184 @@ $user->setParrainage(0);
              'page' => $page
          ));
      }
+    /**
+     * @Route("/s/refund/manual/{id}", name="refund_manual")
+     */
+     public function refundManualAction(Request $request, $id)
+     {
+        $page = 'commande';
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $order = $repository->findOneBy(array(
+            'id' => $id
+        ));
+
+      
+
+            $refund = new Refund();
+         
+            $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
+            if ($form->handleRequest($request)->isValid()) {
+                $refund->setOrder($order);
+                $refund->setMethod('manual');
+                $datetime = new \Datetime('now');
+                $refund->setDate($datetime);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($refund);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
+                $order->setRefund($refund);
+                $order->setPrice($order->getPrice() - $refund->getMontant());
+                $em->persist($order);
+                $em->flush();
+                return $this->redirect($this->generateUrl('commande', array(
+                    'id' => $id,
+                )));
+    
+            }
+            return $this->render('AdminBundle:Default:refund.html.twig', array(
+                'form' => $form->createView(),
+                'order' => $order,
+                'page' => $page,
+             ));
+
+
+
+
+     }
+
+
+     /**
+     * @Route("/s/refund/stripe/{id}", name="refund")
+     */
+     public function refundStripeAction(Request $request, $id)
+     {
+        $page = 'commande';
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $order = $repository->findOneBy(array(
+            'id' => $id
+        ));
+
+   
+        $refund = new Refund();
+        
+      
+            $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
+            if ($form->handleRequest($request)->isValid()) {
+
+                \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+                if($refund->getType() == 'integral'){
+                   
+                   try{
+                    $re = \Stripe\Refund::create(array(
+                        "charge" => $order->getStripeId(),
+                      ));
+                   } 
+                   catch (\Stripe\Error\Card $e) {
+                    $url      = $this->generateUrl('echecRefund');
+                    $response = new RedirectResponse($url);
+                    return $response;
+                    }
+                }
+                else{
+                    try{
+                        $re = \Stripe\Refund::create(array(
+                            "charge" => $order->getStripeId(),
+                            "amount" => $refund->getMontant()*100,
+                          ));
+                       } 
+                       catch (\Stripe\Error\Card $e) {
+                        $url      = $this->generateUrl('echecRefund');
+                        $response = new RedirectResponse($url, array('erreur', $e));
+                        return $response;
+                        }
+                }
+
+                $refund->setOrder($order);
+                $refund->setMethod('stripe');
+                $datetime = new \Datetime('now');
+                $refund->setDate($datetime);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($refund);
+                $em->flush();
+                $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
+                $order->setRefund($refund);
+                $order->setPrice($order->getPrice() - $refund->getMontant());
+                $em->persist($order);
+                $em->flush();
+                return $this->redirect($this->generateUrl('commande', array(
+                    'id' => $id,
+                )));
+    
+            }
+            return $this->render('AdminBundle:Default:refund.html.twig', array(
+                'form' => $form->createView(),
+                'order' => $order,
+                'page' => $page,
+             ));
+
+
+
+
+     }
+
+     function ecart_type($donnees) {
+        $population = count($donnees);
+        if ($population != 0) {
+            $somme_tableau = array_sum($donnees);
+            $moyenne = $somme_tableau / $population;
+            $ecart = [];
+            foreach ($donnees as $donnees){
+                $ecart_donnee = $donnees - $moyenne;
+                $ecart_donnee_carre = bcpow($ecart_donnee, 2, 2);
+                array_push($ecart, $ecart_donnee_carre);
+            }
+            $somme_ecart = array_sum($ecart);
+            $division = $somme_ecart / $population;
+            $ecart_type = bcsqrt ($division, 2);
+        } else {
+            $ecart_type = null;
+        }
+        return $ecart_type;
+    }
+
+
+     /**
+     * @Route("/s/refund/echec", name="echecRefund")
+     */
+     public function echecRefundAction()
+     {
+        
+         return $this->render('Admin:Default:echecRefund.html.twig', array(
+             'page' => 'commande'
+         ));
+     }
+
+
+     /**
+     * @Route("/s/refund/delete/{id}", name="deleteRefund")
+     */
+     public function deleteRefundAction(Request $request, $id)
+     {
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+        $refund = $repository->findOneBy(array(
+            'id' => $id
+        ));
+        $order = $refund->getOrder();
+
+        if($refund->getMethod() == 'manual'){
+            $em             = $this->getDoctrine()->getManager();    
+            $order->setPrice($order->getPrice()+$refund->getMontant());
+            $em->persist($order);
+            $em->flush();            
+            $em->remove($refund);
+            $em->flush();
+        }
+
+        $url      = $this->generateUrl('commande', array('id'=>$order->getId()));
+        $response = new RedirectResponse($url);
+        return $response;
+     }
+    
   
 
 }

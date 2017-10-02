@@ -94,6 +94,13 @@ class User extends BaseUser
       */
      private $naissance;
 
+      /**
+      * @var datetime
+      *
+      * @ORM\Column(name="signup", type="datetime", nullable=false)
+      */
+      private $signup;
+
      /**
       * @var bool
       *

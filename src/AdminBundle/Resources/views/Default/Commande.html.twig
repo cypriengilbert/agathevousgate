@@ -11,26 +11,34 @@
 
 <div class="content">
             <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-right" style="margin-bottom:10px;">
+              {% if commande.price > 0 %}   <a href="{{ path("refund_manual",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement</button></a>
+                                  <a href="{{ path("refund",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement Stripe</button></a>{% endif %}
+
+                 <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-fill btn-primary" style=" margin-left:1%;">Voir la facture</button></a>
+{% if commande.isvalid == true %}{% else %}
+                                          <button type="submit" onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
+                                            window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
+                                          }" class="btn btn-success btn-fill" style=" margin-left:1%;">Valider la commande</button>
+                                      {% endif %}
+                </div>
+            </div>
                 <div class="row">
                     <div class="col-md-4">
                     <div class="card ">
                                 <div class="header">
-                                    <h4 class="title">Commande n°{{commande.id}} du {{ commande.date|date("d-m-Y") }}</h4>
+                                    <h4 class="title">Commande n°{{commande.id}} du {{ commande.date|date("d-m-Y") }} - {{commande.price}}€</h4>
                                     <p class="category">Actions & details</p>
                                 </div>
                                 <div class="content">
                                   <div class="row">
                                     <div class="col-md-6 text-center">
                                       {% if commande.isvalid == true %}traité{% else %}
-                                          <button type="submit" onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
-                                            window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
-                                          }" class="btn btn-primary" style="margin-top:20px; margin-left:1%;">Valider la commande</button>
+                                          
                                       {% endif %}
                                     </div>
                                     <div class="col-md-6 text-center">
-                                      {% if commande.isvalid == true %}traité{% else %}
-                                          <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-primary" style="margin-top:20px; margin-left:1%;">Voir la facture</button></a>
-                                      {% endif %}
                                     </div>
 
                                   </div><br>
@@ -58,8 +66,18 @@
 
                                               <div>
                                                   <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Modifier le commentaire </button>
+                                                                                            {{ form_end(form) }}
+
+
                                               </div>
-                                          {{ form_end(form) }}
+                                              <div class="row">
+                                              <div class="col-md-3>
+                                              
+                                        </div>
+                                        <div class="col-md-6>
+                                            </div>
+                                           </div>
+
 
                                       </div>
                                    </div>
@@ -74,7 +92,7 @@
                       <div class="col-md-12">
                       <div class="card">
                             <div class="header">
-                                <h4 class="title">Client </h4>
+                                <h4 class="title">Client </h4> <a href="{{path('userView', {'id': commande.client.id })}}"><button class="btn btn-primary" >Voir </button></a>
                             </div>
                             <div class="content">
                                 <form>
@@ -265,10 +283,61 @@
                         </div>
                           
                   </div>
+                  <div class="row">
+                         <div class="col-md-12">
+                            <div class="card ">
+                            <div class="header">
+
+                                <h4 class="title">Remboursements</h4>
+                                <p class="category">détails</p>
+                            </div>
+                            <div class="content">
+                                <div class="table-responsive table-full-width">
+                                    <table class="table table-hover table-striped ">
+                                      <thead>
+                                        <tr>
+                                          <th width=20% >Date</th>
+                                          <th width=20%>Montant</th>
+                                          <th width=30%>Type</th>
+                                          <th width=30%> Methode </th>
+                                          
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for refund in refunds %}
+                                        <tr>
+                                            <td>
+                                                {{ refund.date|date("d-m-Y") }}
+                                            </td>
+                                            <td>
+                                                {{ refund.montant }}€
+                                            </td>
+                                            <td>
+                                                {{ refund.type }}
+                                            </td>
+                                            <td>
+                                                {{ refund.method }}
+                                            </td>
+                                            <td>
+                                               {% if refund.method == 'manual' %} <a href="{{path('deleteRefund', {'id':refund.id})}}"><i class="fa fa-times"></i></a>{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                          </tbody>
+                                          </table>
+
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        </div>
+                        
                 </div>
             </div>
 
-
+</div>
 
 
 

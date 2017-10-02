@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+
+<body>
+<section>
+    <div class="container">
+      <div class="alert alert-success" role="success" style="margin-top:20px;">
+        Merci! <br>
+        Votre commande est en cours de préparation et sera bientôt prête!<br>
+        
+        Cependant, un soucis s'est produit lors de l'envoi du mail de confirmation. Il est possible que vous ne le receviez pas. N'hésitez pas à nous contacter. <br>
+        <a href="{{ path('compte') }}">Accéder à mon compte</a>
+      </div>
+    </div>
+  </section>
+</body>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="title">Remboursement</h4>
+            <p class="category">
+              Commande {{order.id}} du {{order.date|date("d-m-Y")}} - {{order.price}}€
+            </p>
+          </div>
+          <div class="col-md-6">
+            <a href="{{ path('commande',{'id':order.id}) }}">
+              <button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right"><i class="material-icons">Retour à la commande</i></button>
+            </a>
+          </div>
+          
+        </div>
+      </div>
+    <div class="content table-responsive table-full-width">
+        <div class="toolbar">
+          <!--Here you can write extra buttons/actions for the toolbar-->
+        </div>
+        <div class="row">
+        <div class="col-md-3">
+        </div>
+          <div class="col-md-6">
+                {{ form_start(form, {'attr': { 'class': '' } }) }}
+                <div class="form-group">
+                    {{ form_label(form.type, "Type de remboursement", {'label_attr': {'class': ''}}) }}
+                    {{ form_errors(form.type) }}
+                    {{ form_widget(form.type, {'attr': {'class': 'form-control', 'onchange':'verif_type();'}}) }}
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.montant, "Montant à rembourser", {'label_attr': {'class': ''}}) }}
+                    {{ form_errors(form.montant) }}
+                    {{ form_widget(form.montant, {'attr': {'class': 'form-control'}}) }}
+                </div>
+                
+                <div>
+                    <center><input type="submit" value="Valider le remboursement" class="btn btn-primary" /></center>
+                </div>
+                {{ form_end(form) }}
+          </div>
+          <div class="col-md-3">
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+function verif_type(){
+    if(document.getElementById("commercebundle_refund_type").value == "partiel"){
+        document.getElementById("commercebundle_refund_montant").value = null;
+
+    }
+    else{
+        document.getElementById("commercebundle_refund_montant").value = {{order.price}};
+
+    }
+}
+</script>
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

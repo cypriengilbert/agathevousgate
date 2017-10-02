@@ -48,7 +48,7 @@
        <tbody>
 {% for code in codes %}
                 <tr>
-                  <td>{{ code.id }}</td>
+                  <td>{% for key, i in nb_code %}{% if key == code.id %}{{ i }}{% endif %}{% endfor %}</td>
                   <td>{{ code.code }}</td>
                   <td>  {{ code.dateDebut|date("d-m-Y") }}</td>
                   <td>
@@ -58,7 +58,7 @@
   <td>{{ code.montant }} </td>
   <td>{{ code.minimumCommande }} </td>
 
-<td><a href="{{ path('deleteCode', {'id' : code.id })}}"> supprimer </a></td>
+<td><a href="{{ path('editCode', {'id' : code.id })}}"> <i class="fa fa-edit"></i> </a></td>
                 </tr>
       {% endfor %}
 
