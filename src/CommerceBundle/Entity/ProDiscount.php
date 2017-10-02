@@ -24,7 +24,7 @@ class ProDiscount
     /**
      * @var float
      *
-     * @ORM\Column(name="reduction", type="float")
+     * @ORM\Column(name="reduction", type="float", nullable=false)
      */
     private $reduction;
 

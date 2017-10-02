@@ -24,7 +24,7 @@ class ProDiscount
     /**
      * @var float
      *
-     * @ORM\Column(name="reduction", type="float")
+     * @ORM\Column(name="reduction", type="float", nullable=false)
      */
     private $reduction;
 
@@ -79,5 +79,77 @@ class ProDiscount
     public function getReduction()
     {
         return $this->reduction;
+    }
+
+    /**
+     * Set account
+     *
+     * @param \UserBundle\Entity\User $account
+     *
+     * @return ProDiscount
+     */
+    public function setAccount(\UserBundle\Entity\User $account)
+    {
+        $this->account = $account;
+
+        return $this;
+    }
+
+    /**
+     * Get account
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+
+    /**
+     * Set product
+     *
+     * @param \CommerceBundle\Entity\Product $product
+     *
+     * @return ProDiscount
+     */
+    public function setProduct(\CommerceBundle\Entity\Product $product)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get product
+     *
+     * @return \CommerceBundle\Entity\Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * Set collection
+     *
+     * @param \CommerceBundle\Entity\Collection $collection
+     *
+     * @return ProDiscount
+     */
+    public function setCollection(\CommerceBundle\Entity\Collection $collection = null)
+    {
+        $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Get collection
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollection()
+    {
+        return $this->collection;
     }
 }

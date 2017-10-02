@@ -102,7 +102,13 @@ margin-top:5px
 </style>
 
 
-
+<div class="row">
+  <div class="col-md-12">
+	<div class="alert alert-info" role="alert" style="font-size:20px;">
+        Attention : tous les prix doivent être rentrés TTC et sans aucune réduction ! 
+      </div>
+	</div>
+</div>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -321,25 +327,24 @@ margin-top:5px
 	</div>
 
 
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<div class="form-group">
+			{{ form_row(form.colors) }}
+		</div>
+	</div>
 </div>
-<div class="mdl-cell mdl-cell--4-col">
-<div class="form-group">
-    {{ form_row(form.colors) }}
-</div>
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<div class="form-group">
+			{{ form_row(form.save, {'attr': {'class': 'btn btn-info btn-fill pull-right'}} ) }}
 
-
-
-
-
-
-</div>
-
-<div>
-        <button type="submit" class="btn btn-info btn-fill pull-right">Valider</button>
+		</div>
+	</div>
 </div>
 {{ form_end(form) }}
 </div>
-	</div> 
+	</div> </div>
 </div>
 
 </div>

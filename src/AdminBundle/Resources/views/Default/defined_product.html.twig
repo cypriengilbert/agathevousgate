@@ -1,104 +1,98 @@
-{% extends 'templateadmin.html.twig' %}
-{% block script_calcul %}
-{% endblock %}
-{% block body %}
+{% extends 'templateadmin.html.twig' %}{% block script_calcul %}{% endblock %}{% block body %}
 <div class="row">
-   <div class="col-md-12">
-      <div class="card">
-         <div class="header">
-            <div class="row">
-               <div class="col-md-6">
-                  <h4 class="title">Produits définis</h4>
-                  <p class="category">All</p>
-               </div>
-               <div class="col-md-6">        
-                  <a href="{{ path('addDefinedProduct') }}"><button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right">
-                  <i class="material-icons">nouveau</i>
-                  </button></a>
-               </div>
+	<div class="col-md-12">
+		<div class="card">
+			<div class="header">
+				<div class="row">
+					<div class="col-md-6">
+						<h4 class="title">Produits définis</h4>
+						<p class="category">
+							All
+						</p>
+					</div>
+					<div class="col-md-6">
+						<a href="{{ path('addDefinedProduct') }}">
+							<button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right"><i class="material-icons">nouveau</i></button>
+						</a>
+					</div>
+				</div>
+			</div>
+		<div class="mdl-grid demo-content">
+			<div style="margin-top:20px;" class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid"{% for product in listeDefinedProduct %}{% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
+			<div class="row">
+				{% endif %}
+				<div class="col-md-4">
+					<div class="card card-user">
+          	<div class="row">
+            <div class="col-md-12">
+						<div class="image" style="height:400px;">
+							<img src="{{ asset('/upload/image_produit_predefini/' ~ product.imageName ) }}" alt="...">
+						</div>
             </div>
-         </div>
-       </div>
-    </div>
+            </div>
+            <div class="row">
+            <div class="col-md-12">
+						<div class="content">
+							<div class="author">
+								<h4 class="title">
+									{{product.product.cartname }} - {{ product.collection.title }} -  {% if product.isactive == false %}
+									<i class="fa fa-circle fa-3x" aria-hidden="true" style="color:red; "></i>
+									{% endif %}{% if product.isactive == true %}
+									<i class="fa fa-circle fa-3x" aria-hidden="true" style="color:green; "></i>
+									{% endif %}
+									<br>
+									<small>
+										ID : {{ product.id }}
+									</small>
+									<br>
+								</h4>
+							</div>
+							<p class="description text-center">
+								{% if product.Color1 %}{{ product.Color1.name }} 
+								<br>
+								{% endif %}{% if product.color2 %}{{ product.Color2.name }} 
+								<br>
+								{% endif %}{% if product.Color3 %}{{ product.Color3.name }} 
+								<br>
+								{% endif %}{% if product.Color4 %}{{ product.Color4.name }} 
+								<br>
+								{% endif %}{% if product.Color5 %}{{ product.Color5.name }} 
+								<br>
+								{% endif %}{% if product.Color6 %}{{ product.Color6.name }} 
+								<br>
+								{% endif %}{% if product.Color7 %}{{ product.Color7.name }} 
+								<br>
+								{% endif %}{% if product.Color8 %}{{ product.Color8.name }} 
+								<br>
+								{% endif %}{% if product.Color9 %}{{ product.Color9.name }} 
+								<br>
+								{% endif %}{% if product.Color10 %}{{ product.Color10.name }} 
+								<br>
+								{% endif %}
+							</p>
+							<hr>
+							<div class="text-center" style="min-height:50px;">
+								<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ path('changeDefinedProduct', {'id': product.id }) }}">
+									{% if product.isactive == false %}
+									<button class="btn btn-success  btn-fill pull-right">Activer</button>
+									{% endif %}{% if product.isactive == true %}
+									<button class="btn btn-danger btn-fill pull-right">Désactiver</button>
+									{% endif %}
+								</a>
+								<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ path('editDefinedProduct', {'id': product.id }) }}"><button class="btn btn-info btn-fill pull-left">Modifier</button></a>
+							</div>
+						</div>
+					</div>
+          </div>
+          </div>
+				</div>
+				{% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
+			</div>
+			{% endif %}{% endfor %}
+		</div>
+	</div>
 </div>
-         <div class="mdl-grid demo-content">
-            <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid"
-            {% for product in listeDefinedProduct %}
-            {% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
-            <div class="row">
-               {% endif %}
-               <div class="col-md-4">
-                  <div class="card card-user">
-                     <div class="image">
-                        <img src="{{ asset('/upload/image_produit_predefini/' ~ product.imageName ) }}" alt="...">
-                     </div>
-                     <div class="content">
-                        <div class="author">
-                           <h4 class="title">{{product.product.cartname }} - {{ product.collection.title }} -  {% if product.isactive == false %}
-                              <i class="fa fa-circle fa-3x" aria-hidden="true" style="color:red; "></i>
-                              {% endif %}
-                              {% if product.isactive == true %}
-                              <i class="fa fa-circle fa-3x" aria-hidden="true" style="color:green; "></i>
-                              {% endif %}<br>
-                              <small>ID : {{ product.id }}</small><br>
-                           </h4>
-                        </div>
-                        <p class="description text-center"> 
-                           {% if product.Color1 %}
-                           {{ product.Color1.name }} <br>
-                           {% endif %}
-                           {% if product.color2 %}
-                           {{ product.Color2.name }} <br>
-                           {% endif %}
-                           {% if product.Color3 %}
-                           {{ product.Color3.name }} <br>
-                           {% endif %}
-                           {% if product.Color4 %}
-                           {{ product.Color4.name }} <br>
-                           {% endif %}
-                           {% if product.Color5 %}
-                           {{ product.Color5.name }} <br>
-                           {% endif %}
-                           {% if product.Color6 %}
-                           {{ product.Color6.name }} <br>
-                           {% endif %}
-                           {% if product.Color7 %}
-                           {{ product.Color7.name }} <br>
-                           {% endif %}
-                           {% if product.Color8 %}
-                           {{ product.Color8.name }} <br>
-                           {% endif %}
-                           {% if product.Color9 %}
-                           {{ product.Color9.name }} <br>
-                           {% endif %}
-                           {% if product.Color10 %}
-                           {{ product.Color10.name }} <br>
-                           {% endif %}
-                        </p>
-                        <hr>
-                        <div class="text-center" style="min-height:50px;">
-                           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ path('changeDefinedProduct', {'id': product.id }) }}">
-                           {% if product.isactive == false %}
-                           <button class="btn btn-success  btn-fill pull-right">Activer</button>
-                           {% endif %}
-                           {% if product.isactive == true %}
-                           <button class="btn btn-danger btn-fill pull-right">Désactiver</button>
-                           {% endif %}
-                           </a>
-                           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="{{ path('editDefinedProduct', {'id': product.id }) }}">
-                           <button class="btn btn-info btn-fill pull-left">Modifier</button>
-                           </a>                      
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               {% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
-            </div>
-            {% endif %}
-            {% endfor %}
-         </div>
-      </div>
- 
-{% endblock %}
-{% block script_chart %}
+		</div>
+
+</div>
 {% endblock %}

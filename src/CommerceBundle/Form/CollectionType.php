@@ -9,6 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use CommerceBundle\Form\ColorType;
 use CommerceBundle\Entity\Color;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -125,7 +127,8 @@ class CollectionType extends AbstractType
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
-
+            ->add('save', SubmitType::class, array('label' => 'Créer la collection')); //here is the problem
+            
 
 
         ;

@@ -31,8 +31,9 @@
                 <button class="btn btn-primary btn-fill"id="compare_date_button"  onclick="open_comparedate()">Comparer</button>
             </div>
         </div>
-        
-        <div class="row" id="compare_date" style="display:{% if dateout_compare == 'null' %}none;{% else %}block;{% endif %}">
+        <script>
+        </script>
+        <div class="row" id="compare_date" style="display:{% if dateout_compare == 'null' or dateout_compare == '' %}none;{% else %}block;{% endif %}">
             <div class="col-md-5">
                 <div class="form-group">
                     <input type="text" class="form-control datepicker_compare" id="date_in_compare" placeholder="Date de début">
@@ -44,7 +45,7 @@
                 </div> 
             </div>
             <div class="col-md-2">
-              <i class="fa fa-times" aria-hidden="true" style="color:red; font-size:35px;cursor:poiter;" onclick="document.getElementById('date_out_compare').value = null;document.getElementById('date_in_compare').value = null;"></i>
+              <i class="fa fa-times" aria-hidden="true" style="color:red; font-size:35px;cursor:pointer;" onclick="document.getElementById('date_out_compare').value = null;document.getElementById('date_in_compare').value = null;"></i>
 
             </div>
         </div>
@@ -814,8 +815,6 @@ Chartist.Pie('#chartPie_category', {
             dateout = document.getElementById('date_out').value;
             datein_compare = document.getElementById('date_in_compare').value;
             dateout_compare = document.getElementById('date_out_compare').value;
-
-
             filtre = {% if app.session.get('filtre') is null %}'all'{% else %}'{{ app.session.get('filtre')}}'{% endif%};
             datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
             dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
@@ -841,6 +840,9 @@ Chartist.Pie('#chartPie_category', {
             filtre = x;
             var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
             var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            datein_compare = document.getElementById('date_in_compare').value;
+            dateout_compare = document.getElementById('date_out_compare').value;
+
             datein_compare = moment(datein_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
             dateout_compare = moment(dateout_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
             if(datein_compare == "Invalid date" || dateout_compare == "Invalid date"){

@@ -40,7 +40,7 @@
 
 
   <div class="content table-responsive table-full-width" >
-  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+  <table id="bootstrap-table" class="table table-hover table-striped" cellspacing="0">
   <thead>
            <tr>
                <th width=5%>ID</th>
@@ -132,12 +132,12 @@
                     {% endfor %}
                 </td>
                 <td>
-              {{ commande.price }}
+              {{ commande.price|round(2, 'common') }}
                 </td>
 
                 <td>
 
-<a onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
+<a style="cursor:pointer;" onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
   window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
 }"><i class="fa fa-check-square-o fa-2" aria-hidden="true"></i> </a> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
               </tr>
@@ -156,6 +156,66 @@ function validate_done(commandeId){
 
 }
 </script>
+
+<script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/fullcalendar.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/chartist.min.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-table.js')}}"></script>
+       <script src="{{ asset('admin/assets/js/bootstrap-checkbox-radio-switch-tags.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-selectpicker.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-notify.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/demo.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/sweetalert2.js')}}"></script>
+         <script src="{{ asset('admin/assets/js/light-bootstrap-dashboard.js')}}"></script>
+    <script src="{{ asset('admin/assets/js/bootstrap-datetimepicker.js')}}"></script>
+
+<script type="text/javascript">
+    var $table = $('#bootstrap-table');
+
+    $().ready(function(){
+        $table.bootstrapTable({
+            toolbar: ".toolbar",
+            clickToSelect: true,
+            showRefresh: false,
+            search: true,
+            showToggle: true,
+            showColumns: true,
+            pagination: true,
+            searchAlign: 'left',
+            pageSize: 8,
+            clickToSelect: false,
+            pageList: [8,10,25,50,100],
+
+            formatShowingRows: function(pageFrom, pageTo, totalRows){
+                //do nothing here, we don't want to show the text "showing x of y from..."
+            },
+            formatRecordsPerPage: function(pageNumber){
+                return pageNumber + " rows visible";
+            },
+            icons: {
+                refresh: 'fa fa-refresh',
+                toggle: 'fa fa-th-list',
+                columns: 'fa fa-columns',
+                detailOpen: 'fa fa-plus-circle',
+                detailClose: 'fa fa-minus-circle'
+            }
+        });
+
+        //activate the tooltips after the data table is initialized
+        $('[rel="tooltip"]').tooltip();
+
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView');
+        });
+
+        
+    });
+
+    
+
+
+</script>
+
 
 {% endblock %}
 
