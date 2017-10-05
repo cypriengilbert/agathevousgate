@@ -1195,9 +1195,10 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('listecolor'));
         }
 
-        return $this->render('AdminBundle:Default:addColor.html.twig', array(
+        return $this->render('AdminBundle:Default:editColor.html.twig', array(
             'form' => $form->createView(),
             'page' => $page,
+            'color' => $color,
 
 
 

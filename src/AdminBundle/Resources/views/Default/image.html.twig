@@ -2,33 +2,31 @@
 {% block script_calcul %}
 {% endblock %}
 {% block body %}
-<div class="mdl-grid demo-content">
-   <div>
-      <h4>Image</h4>
-   </div>
-   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
-      <!-- Square card -->
-      <style>
-         .demo-card-square.mdl-card {
-         width: 320px;
-         height: 320px;
-         margin: 10px;
-         }
-         .demo-card-square > .mdl-card__title {
-         color: #fff;
-         }
-      </style>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Images</h4>
+            <p class="category">
+              Toutes
+            </p>
+          </div>          
+        </div>
+    </div>
+	<div class="content">
+          <div class="row">
+
       {% for image in images %}
-      {% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
-      <div class="row">
-      {% endif %}
          <div class="col-md-4">
             <div class="card card-user">
-               <div class="image">
+               <div class="image" style="height:200px;">
                   <img src="{{ asset('/upload/image_site/' ~ image.imageName ) }}" alt="...">
                </div>
-               <div class="content">
-                  <div class="author">
+               <div class="content" style="min-height:0px;">
+                  <div class="author" style="margin-top:0px;">
                      <h4 class="title">{{ image.id }} - {{ image.name }}<br>
                      </h4>
                   </div>
@@ -40,14 +38,10 @@
                   </div>
                </div>
             </div>
-         </div>
-              {% if loop.index0/3 == 0 or loop.index0/3 == 1 %}
-  </div>
-  {% endif %}
+        </div>
          {% endfor %}
-      </div>
-   </div>
-
+       </div>
+   
 </div>
 {% endblock %}
 {% block script_chart %}

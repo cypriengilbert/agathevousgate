@@ -38,9 +38,9 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
       <div class="header">
         <div class="row">
           <div class="col-md-12">
-            <h4 class="title">Nouvelle couleur</h4>
+            <h4 class="title">Couleur</h4>
             <p class="category">
-              Création
+              Edition
             </p>
           </div>          
         </div>
@@ -96,6 +96,17 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		</div>
 	</div>
     <div class="row" style="margin-top:20px;">
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" style="width:auto; max-height:200px;">
+		</div>
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/noeud1/' ~ color.imagecolorNoeud1Name ) }}" style="width:auto;max-height:200px;">
+		</div>
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/noeud2/' ~ color.imagecolorNoeud2Name ) }}" style="width:auto;max-height:200px;">
+		</div>
+	</div>
+    <div class="row" style="margin-top:20px;">
 		<div class="col-md-4">	
             <div class="form-group">
                 {{ form_label(form.colorNoeud3File, "Image milieu", {'label_attr': {'class': ''}}) }}
@@ -119,6 +130,17 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		</div>
 	</div>
     <div class="row" style="margin-top:20px;">
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/noeud3/' ~ color.imagecolorNoeud3Name ) }}" style="width:auto; max-height:200px;">
+		</div>
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/tissu/grand/' ~ color.tissuColorName ) }}" style="width:auto; max-height:200px;">
+		</div>
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/tissu/milieu/' ~ color.tissuMilieuColorName ) }}" style="width:auto; max-height:200px;">
+		</div>
+	</div>
+    <div class="row" style="margin-top:20px;">
 		<div class="col-md-4">	
             <div class="form-group">
                 {{ form_label(form.couleurPochette, "Pochette", {'label_attr': {'class': ''}}) }}
@@ -136,6 +158,16 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		<div class="col-md-4">
 			
         
+		</div>
+	</div>
+    <div class="row" style="margin-top:20px;">
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/pochette/' ~ color.couleurPochetteName ) }}" style="width:auto; max-height:200px;">
+		</div>
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/color/boutons/' ~ color.couleurBoutonsName ) }}" style="width:auto; max-height:200px;">
+		</div>
+		<div class="col-md-4">
 		</div>
 	</div>
 
