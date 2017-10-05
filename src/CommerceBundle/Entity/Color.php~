@@ -112,8 +112,6 @@ class Color
      */
     private $tissuMilieuColorFile;
 
-
-
     /**
      * @ORM\Column(type="string", length=255)
      *
@@ -225,11 +223,11 @@ class Color
      */
     private $noeud3updatedAt;
 
-         /**
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Collection", cascade={"persist"}, inversedBy="colors")
+    /**
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Company", cascade={"persist"})
      */
-     private $colors;
-
+     private $companies;
+     
 
 
 

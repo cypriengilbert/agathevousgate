@@ -435,8 +435,16 @@ background-color:#EEEEEE;
     </div>
     <div class="col-sm-7 no_padding">
         {% for color in colors %}
+        
+                          {% set isDisplayed = 0 %}
+                          {% for company in color.companies %}
+                            {% if company == user.company %}
+                              {% set isDisplayed = 1 %}
+                            {% endif %}
+                          {% endfor %}
 
           {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
+          {% if isDisplayed == 1 %}
         <div class="row">
         <script>
         function open_div_{{color.id}}(){
@@ -485,6 +493,7 @@ background-color:#EEEEEE;
                           {% for accepted_product in accepted_products %}
 
                           {% if product.name == accepted_product %}
+                          
                             <div class="col-sm-2 allAcceptedProduct">
                               <div class="row">
                                 <div class="col-sm-12 text-center" class="productName"  >
@@ -520,6 +529,7 @@ background-color:#EEEEEE;
            </div>
 
         </div>
+        {% endif %}
         {% endif %}
     {% endfor %}
     </div>

@@ -223,6 +223,11 @@ class Color
      */
     private $noeud3updatedAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Company", cascade={"persist"})
+     */
+     private $companies;
+     
 
 
 
@@ -851,5 +856,39 @@ class Color
     public function getCodehexa()
     {
         return $this->codehexa;
+    }
+
+    /**
+     * Add company
+     *
+     * @param \CommerceBundle\Entity\Company $company
+     *
+     * @return Color
+     */
+    public function addCompany(\CommerceBundle\Entity\Company $company)
+    {
+        $this->companies[] = $company;
+
+        return $this;
+    }
+
+    /**
+     * Remove company
+     *
+     * @param \CommerceBundle\Entity\Company $company
+     */
+    public function removeCompany(\CommerceBundle\Entity\Company $company)
+    {
+        $this->companies->removeElement($company);
+    }
+
+    /**
+     * Get companies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompanies()
+    {
+        return $this->companies;
     }
 }

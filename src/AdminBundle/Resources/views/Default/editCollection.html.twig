@@ -100,6 +100,97 @@ margin-top:5px
 		margin-top: -1px;
 	}
 </style>
+<style>
+#collection_companies checkbox, #collection_companies label{
+margin-top:5px
+
+}
+
+#collection_companies [type="checkbox"]:not(:checked),
+	#collection_companies [type="checkbox"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+	#collection_companies [type="checkbox"]:not(:checked) + label,
+	#collection_companies [type="checkbox"]:checked + label {
+		position: relative;
+    left:-px;
+		padding-left: 75px;
+		cursor: pointer;
+    padding-bottom:10px;
+
+	}
+	 #collection_companies [type="checkbox"]:not(:checked) + label:before,
+	#collection_companies [type="checkbox"]:checked + label:before,
+	#collection_companies [type="checkbox"]:not(:checked) + label:after,
+	#collection_companies [type="checkbox"]:checked + label:after {
+		content: '';
+		position: absolute;
+	}
+	#collection_companies [type="checkbox"]:not(:checked) + label:before,
+	#collection_companies [type="checkbox"]:checked + label:before {
+		left:0; top: -3px;
+		width: 65px; height: 30px;
+		background: #DDDDDD;
+		border-radius: 15px;
+		-webkit-transition: background-color .2s;
+		-moz-transition: background-color .2s;
+		-ms-transition: background-color .2s;
+		transition: background-color .2s;
+	}
+	#collection_companies [type="checkbox"]:not(:checked) + label:after,
+	#collection_companies [type="checkbox"]:checked + label:after {
+		width: 20px; height: 20px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+		border-radius: 50%;
+		background: #7F8C9A;
+		top: 2px; left: 5px;
+	}
+
+	/* on checked */
+	#collection_companies [type="checkbox"]:checked + label:before {
+		background:#34495E;
+	}
+	#collection_companies [type="checkbox"]:checked + label:after {
+		background: #39D2B4;
+		top: 2px; left: 40px;
+	}
+
+	#collection_companies [type="checkbox"]:checked + label .ui,
+	 #collection_companies [type="checkbox"]:not(:checked) + label .ui:before,
+	#collection_companies [type="checkbox"]:checked + label .ui:after {
+		position: absolute;
+		left: 6px;
+		width: 65px;
+		border-radius: 15px;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 22px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+	}
+	#collection_companies [type="checkbox"]:not(:checked) + label .ui:before {
+		content: "no";
+		left: 32px
+	}
+	#collection_companies [type="checkbox"]:checked + label .ui:after {
+		content: "yes";
+		color: #39D2B4;
+	}
+	#collection_companies [type="checkbox"]:focus +  label:before {
+		border: 1px dashed #777;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-top: -1px;
+	}
+</style>
 
 
 <div class="row">
@@ -342,6 +433,15 @@ margin-top:5px
 	<div class="col-md-12">
 		<div class="form-group">
 			{{ form_row(form.colors) }}
+		</div>
+	</div>
+</div>
+
+
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<div class="form-group">
+			{{ form_row(form.companies) }}
 		</div>
 	</div>
 </div>

@@ -100,8 +100,8 @@ class DefaultController extends Controller
 
             
             $nbarticlepanier = $this->countArticleCart();
-
-
+            
+            
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette'")->getQuery();
             $products = $query->getResult();
@@ -153,9 +153,6 @@ class DefaultController extends Controller
             ));
             $collection = null;
             $accepted_products = array("Boutons","Rectangle_petit","Rectangle_grand","Milieu", "Pochette");
-            }
-          
-
             return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
                 'products' => $products,
                 'page' => $page,
@@ -165,9 +162,33 @@ class DefaultController extends Controller
                 'collection' => $allCollection,
                 'nbarticlepanier' => $nbarticlepanier,
                 'accepted_products'=> $accepted_products,
-                'AddedProductByProduct' => $AddedProductByProduct
+                'AddedProductByProduct' => $AddedProductByProduct,
+                'user' => $user,
             ));
+            }
 
+            $accepted_companies = $collection->getCompanies();
+            foreach ($accepted_companies as $company) {
+                if($company == $user->getCompany()){
+                    return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
+                        'products' => $products,
+                        'page' => $page,
+                        'colors' => $sortedColors,
+                        'collection1' => $collection,
+                        'allCollection' => $allCollection,
+                        'collection' => $allCollection,
+                        'nbarticlepanier' => $nbarticlepanier,
+                        'accepted_products'=> $accepted_products,
+                        'AddedProductByProduct' => $AddedProductByProduct,
+                        'user' => $user,
+                    ));
+                }
+            }
+            return new RedirectResponse($this->generateUrl('accueil'));
+            
+          
+
+            
         }
         else {
           return new RedirectResponse($this->generateUrl('accueil'));

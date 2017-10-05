@@ -30,6 +30,98 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 
 }
 </style>
+<style>
+#color_companies checkbox, #color_companies label{
+margin-top:5px
+
+}
+
+#color_companies [type="checkbox"]:not(:checked),
+	#color_companies [type="checkbox"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+	#color_companies [type="checkbox"]:not(:checked) + label,
+	#color_companies [type="checkbox"]:checked + label {
+		position: relative;
+    left:-px;
+		padding-left: 75px;
+		cursor: pointer;
+    padding-bottom:10px;
+
+	}
+	 #color_companies [type="checkbox"]:not(:checked) + label:before,
+	#color_companies [type="checkbox"]:checked + label:before,
+	#color_companies [type="checkbox"]:not(:checked) + label:after,
+	#color_companies [type="checkbox"]:checked + label:after {
+		content: '';
+		position: absolute;
+	}
+	#color_companies [type="checkbox"]:not(:checked) + label:before,
+	#color_companies [type="checkbox"]:checked + label:before {
+		left:0; top: -3px;
+		width: 65px; height: 30px;
+		background: #DDDDDD;
+		border-radius: 15px;
+		-webkit-transition: background-color .2s;
+		-moz-transition: background-color .2s;
+		-ms-transition: background-color .2s;
+		transition: background-color .2s;
+	}
+	#color_companies [type="checkbox"]:not(:checked) + label:after,
+	#color_companies [type="checkbox"]:checked + label:after {
+		width: 20px; height: 20px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+		border-radius: 50%;
+		background: #7F8C9A;
+		top: 2px; left: 5px;
+	}
+
+	/* on checked */
+	#color_companies [type="checkbox"]:checked + label:before {
+		background:#34495E;
+	}
+	#color_companies [type="checkbox"]:checked + label:after {
+		background: #39D2B4;
+		top: 2px; left: 40px;
+	}
+
+	#color_companies [type="checkbox"]:checked + label .ui,
+	 #color_companies [type="checkbox"]:not(:checked) + label .ui:before,
+	#color_companies [type="checkbox"]:checked + label .ui:after {
+		position: absolute;
+		left: 6px;
+		width: 65px;
+		border-radius: 15px;
+		font-size: 14px;
+		font-weight: bold;
+		line-height: 22px;
+		-webkit-transition: all .2s;
+		-moz-transition: all .2s;
+		-ms-transition: all .2s;
+		transition: all .2s;
+	}
+	#color_companies [type="checkbox"]:not(:checked) + label .ui:before {
+		content: "no";
+		left: 32px
+	}
+	#color_companies [type="checkbox"]:checked + label .ui:after {
+		content: "yes";
+		color: #39D2B4;
+	}
+	#color_companies [type="checkbox"]:focus +  label:before {
+		border: 1px dashed #777;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+		margin-top: -1px;
+	}
+</style>
+
 
 
 <div class="row">
@@ -170,6 +262,13 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		<div class="col-md-4">
 		</div>
 	</div>
+<div class="row" style="margin-top:20px;">
+	<div class="col-md-12">
+		<div class="form-group">
+			{{ form_row(form.companies) }}
+		</div>
+	</div>
+</div>
 
 
 <div class="row" style="margin-top:20px;">
@@ -180,6 +279,7 @@ transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 		</div>
 	</div>
 </div>
+
 {{ form_end(form) }}
 </div>
 	</div> </div>

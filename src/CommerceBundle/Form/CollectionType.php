@@ -111,6 +111,14 @@ class CollectionType extends AbstractType
                                                 ->where('u.isActive = true');
                                        }
                                ))
+                               ->add('companies', EntityType::class, array(
+                                'class' => 'UserBundle:Company',
+                                'choice_label' => 'name',
+                               'multiple' => true,
+                               'expanded' => true,
+                                'required' => true,
+                               
+                            ))                           
             ->add('description')
             ->add('imageCollection', 'vich_image', array(
               'required'      => false,

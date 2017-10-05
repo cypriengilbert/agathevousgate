@@ -129,6 +129,11 @@ class Collection
      */
      private $colors;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Company", cascade={"persist"})
+     */
+     private $companies;
+     
 
      /**
       *
@@ -812,5 +817,39 @@ class Collection
     public function getPriceMilieuBasic()
     {
         return $this->priceMilieuBasic;
+    }
+
+    /**
+     * Add company
+     *
+     * @param \UserBundle\Entity\Company $company
+     *
+     * @return Collection
+     */
+    public function addCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->companies[] = $company;
+
+        return $this;
+    }
+
+    /**
+     * Remove company
+     *
+     * @param \UserBundle\Entity\Company $company
+     */
+    public function removeCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->companies->removeElement($company);
+    }
+
+    /**
+     * Get companies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompanies()
+    {
+        return $this->companies;
     }
 }

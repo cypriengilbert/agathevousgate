@@ -7,6 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use UserBundle\Form\CompanyType;
+use UserBundle\Entity\Company;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 
 class ColorType extends AbstractType
@@ -72,7 +76,13 @@ class ColorType extends AbstractType
               'allow_delete'  => false, // not mandatory, default is true
               'download_link' => true, // not mandatory, default is true
             ))
-
+            ->add('companies', EntityType::class, array(
+              'class' => 'UserBundle:Company',
+              'choice_label' => 'name',
+             'multiple' => true,
+             'expanded' => true,
+              'required' => true,
+          ))
 
 
         ;
