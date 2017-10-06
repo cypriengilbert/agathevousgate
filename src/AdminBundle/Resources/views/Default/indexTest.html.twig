@@ -68,6 +68,22 @@
                     <button class="btn btn-success {% if app.session.get('filtre') != 'all' %}btn-fill{% endif %}"style="width:100%; margin-top:5px" onclick="selectfiltre('all')" >Aucun Filtre</button>
                 </div>
              </div>
+             <div class="row" style="margin-top:30px;">
+                <div class="col-md-4 text-right">
+                Ou filtre par boutique : 
+                </div>
+                <div class="col-md-4">
+                 
+                    <select id="filtre_boutique" class="selectpicker" data-title="{% if app.session.get('boutique') %}{{ app.session.get('boutique') }}{% else %}Choisir une boutique{% endif %}" data-style="btn-default btn-block" data-menu-style="dropdown-blue" onchange="selectfiltre_boutique()">
+                    {% for company in companies %}
+                      <option value="{{company.name}}">{{company.name}}</option>
+                    {% endfor %}
+                    </select>
+                  
+                </div>
+                <div class="col-md-4">
+                </div>
+             </div>
           </div>
         </div>
       </div>
@@ -184,12 +200,12 @@
         <div class="row">
             <div class="col-md-12">
                 
-                <p style="font-size:35px; text-align:center">{{delaiEnvoi}} J</p>
+                <p style="font-size:35px; text-align:center">{{delaiEnvoi['d']}} J & {{delaiEnvoi['h']}} H </p>
                 
             </div>
             {% if dateout_compare != 'null' %}
              <div class="col-md-12">
-                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{delaiEnvoi_compare}}J</p>
+                <p style="text-align:left" class="category">Total comparatif </p><p style="text-align:center" class="category">{{delaiEnvoi_compare['d']}}J & {{delaiEnvoi_compare['h']}}H</p>
             </div>
           {% endif %}
         </div>
@@ -573,6 +589,71 @@
 </div>
 </div>
 </div>
+<div class="row">
+   <div class="col-md-12">
+      <div class="card">
+         <div class="header">
+            <div class="row">
+               <div class="col-md-6">
+                  <h4 class="title">Délais traitement</h4>
+                  <p class="category">Par taille de commande</p>
+               </div>
+               <div class="col-md-6">        
+               </div>
+            </div>
+         </div>
+         <div class="content table-responsive table-full-width">
+            <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+               <thead>
+                  <tr>
+                     <th width="50%">Taille de la commande</th>
+                     <th width="50%">Délai </th>
+
+                  </tr>
+               </thead>
+               <tbody>
+                {% for key, delaiEnvoi_size in delaiEnvoi_size %}
+                   
+                  <tr>
+                     <td>
+                     {{key}}
+                     </td>
+                     <td>
+                     {% for key2, delaiEnvoi_size in delaiEnvoi_size|reverse %}
+                       {{delaiEnvoi_size}}{{key2}} 
+                       {% endfor %}
+                     </td>
+                     
+                     
+                  </tr> 
+                   {% endfor %}
+
+                   {% for key, delaiEnvoi_size_compare in delaiEnvoi_size_compare %}
+                   
+                  <tr>
+                     <td>
+                     {{key}} (Compare)
+                     </td>
+                     <td>
+                     {% for key2, delaiEnvoi_size_compare in delaiEnvoi_size_compare|reverse %}
+                       {{delaiEnvoi_size_compare}}{{key2}} 
+                       {% endfor %}
+                     </td>
+                     
+                     
+                  </tr> 
+                   {% endfor %}
+                                  
+
+                  
+
+                
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
 
 
 
@@ -811,6 +892,10 @@ Chartist.Pie('#chartPie_category', {
 
 <script>
             function selectdate(){
+              var boutique = document.getElementById('filtre_boutique').value;
+            if(boutique == ''){
+              boutique = 'Choisir une boutique';
+            }
             datein = document.getElementById('date_in').value;
             dateout = document.getElementById('date_out').value;
             datein_compare = document.getElementById('date_in_compare').value;
@@ -825,16 +910,22 @@ Chartist.Pie('#chartPie_category', {
               dateout_compare = null;
             }
 
-            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE'}) }}";
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE', 'boutique' : 'BOUTIQUE'}) }}";
             route = route.replace("DATEIN", datein);
             route = route.replace("DATEOUT", dateout);
             route = route.replace("DATEINCOMPARE", datein_compare);
             route = route.replace("DATEOUTCOMPARE", dateout_compare);
             route = route.replace("FILTRE", filtre);
+            route = route.replace("BOUTIQUE", boutique);
+
             window.location.href = route;
             }
 
             function selectfiltre(x){
+            var boutique = document.getElementById('filtre_boutique').value;
+            if(boutique == ''){
+              boutique = 'Choisir une boutique';
+            }
             datein = document.getElementById('date_in').value;
             dateout = document.getElementById('date_out').value;
             filtre = x;
@@ -842,6 +933,7 @@ Chartist.Pie('#chartPie_category', {
             var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
             datein_compare = document.getElementById('date_in_compare').value;
             dateout_compare = document.getElementById('date_out_compare').value;
+          
 
             datein_compare = moment(datein_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
             dateout_compare = moment(dateout_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
@@ -849,12 +941,42 @@ Chartist.Pie('#chartPie_category', {
               datein_compare = null;
               dateout_compare = null;
             }
-            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE'}) }}";
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE', 'boutique' : 'BOUTIQUE'}) }}";
             route = route.replace("DATEIN", datein);
             route = route.replace("DATEOUT", dateout);
             route = route.replace("DATEINCOMPARE", datein_compare);
             route = route.replace("DATEOUTCOMPARE", dateout_compare);
             route = route.replace("FILTRE", filtre);
+            route = route.replace("BOUTIQUE", boutique);
+
+            window.location.href = route;
+            }
+            function selectfiltre_boutique(){
+              var boutique = document.getElementById('filtre_boutique').value;
+            if(boutique == ''){
+              boutique = 'Choisir une boutique';
+            }
+            datein = document.getElementById('date_in').value;
+            dateout = document.getElementById('date_out').value;
+            filtre = 'all'
+            var datein = moment(datein, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            var dateout = moment(dateout, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            datein_compare = document.getElementById('date_in_compare').value;
+            dateout_compare = document.getElementById('date_out_compare').value;
+            datein_compare = moment(datein_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            dateout_compare = moment(dateout_compare, 'Do MMMM YYYY').format('YYYY-MM-DD');
+            if(datein_compare == "Invalid date" || dateout_compare == "Invalid date"){
+              datein_compare = null;
+              dateout_compare = null;
+            }
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE', 'boutique' : 'BOUTIQUE'}) }}";
+            route = route.replace("DATEIN", datein);
+            route = route.replace("DATEOUT", dateout);
+            route = route.replace("DATEINCOMPARE", datein_compare);
+            route = route.replace("DATEOUTCOMPARE", dateout_compare);
+            route = route.replace("FILTRE", filtre);
+            route = route.replace("BOUTIQUE", boutique);
+
             window.location.href = route;
             }
          </script>
@@ -874,6 +996,11 @@ Chartist.Pie('#chartPie_category', {
             
             docu
           }
+        </script>
+        <script>
+        if($(".selectpicker").length != 0){
+    $(".selectpicker").selectpicker();
+}
         </script>
 {% endblock %}
 

@@ -34,15 +34,30 @@ class DefaultController extends Controller
 {
 
     /**
-     * @Route("/s", name="dashboard")
+     * @Route("/s/", name="dashboard")
      */
     public function indexAction(Request $request)
     {
         $page = 'dashboard';
         $session = $request->getSession();
+       
+        
+        $repository = $this->getDoctrine()->getRepository('UserBundle:Company');
+        $boutique = $repository->findOneBy(array('name' => $session->get('boutique')));
+        
+        if(empty($boutique)){
+            
+            $filter_user = null;
+        }
+        else{
+            $repository = $this->getDoctrine()->getRepository('UserBundle:User');
+            $filter_user = $repository->findOneBy(array('company' => $boutique));      
+        }
+       
+       
         $dateout = $session->get('dateout');
         $filtre = $session->get('filtre');
-
+       
         $datein_compare = $session->get('datein_compare');
         $dateout_compare = $session->get('dateout_compare');
         
@@ -81,7 +96,21 @@ class DefaultController extends Controller
        
         $nbCommande_compare =0;
         $averageOrder_compare=0;
-       if($filtre == 'all' or $filtre == null){
+
+
+        
+        if($filter_user != null){
+            $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->andWhere('a.client = :client')->setParameter('client', $filter_user)->orderBy('a.date', 'ASC');
+            $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->andWhere('a.client = :client')->setParameter('client', $filter_user)->orderBy('a.date', 'ASC');
+            $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->andWhere('a.client = :client')->setParameter('client', $filter_user)->orderBy('a.date', 'ASC');
+            if($datein_compare != null and $dateout_compare != null){
+                $querycompare         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein_compare)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout_compare)->andWhere('a.isPanier = false')->andWhere('a.client = :client')->setParameter('client', $filter_user)->orderBy('a.date', 'ASC');
+                $listeCommande_compare = $querycompare->getQuery()->getResult();
+                $nbCommande_compare = count($listeCommande_compare);
+                
+            }
+        }
+       elseif($filtre == 'all' or $filtre == null){
             $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateout)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryN1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinN1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutN1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
             $queryM1         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $dateinM1)->andWhere('a.date <= :dateout')->setParameter('dateout', $dateoutM1)->andWhere('a.isPanier = false')->orderBy('a.date', 'ASC');
@@ -135,6 +164,8 @@ class DefaultController extends Controller
         
         $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $listeUser      = $repository->findAll();
+        $repository     = $this->getDoctrine()->getManager()->getRepository('UserBundle:Company');
+        $listeBoutique      = $repository->findAll();
         $totalCommande = 0;
         $totalCommandeM1 = 0;
         $totalCommandeN1 = 0;
@@ -152,10 +183,42 @@ class DefaultController extends Controller
         $nbCommande_Age['4050'] = 0;
         $nbCommande_Age['5060'] = 0;
         $nbCommande_Age['60'] = 0;
-        $delaiEnvoi = 0;
+        $delaiEnvoi = array();
         $nbEnvoi = 0;
-        $delaiEnvoi_compare =0;
+
+        $delaiEnvoi_size = array();
+        $nbEnvoi_size = array();
+ 
+        $delaiEnvoi_size['100'] = array();
+        $nbEnvoi_size['100'] = 0;
+        $delaiEnvoi_size['200'] = array();
+        $nbEnvoi_size['200'] = 0;
+        $delaiEnvoi_size['500'] = array();
+        $nbEnvoi_size['500'] = 0;
+        $delaiEnvoi_size['1000'] = array();
+        $nbEnvoi_size['1000'] = 0;
+        $delaiEnvoi_size['5000'] = array();
+        $nbEnvoi_size['5000'] = 0;
+        $delaiEnvoi_size['10000'] = array();
+        $nbEnvoi_size['10000'] = 0;
+       
+        $delaiEnvoi_compare = array();
         $nbEnvoi_compare = 0;
+        $delaiEnvoi_size_compare = [];
+        $nbEnvoi_size_compare = [];
+        $delaiEnvoi_size_compare['100'] = array();
+        $nbEnvoi_size_compare['100'] = 0;
+        $delaiEnvoi_size_compare['200'] = array();
+        $nbEnvoi_size_compare['200'] = 0;
+        $delaiEnvoi_size_compare['500'] = array();
+        $nbEnvoi_size_compare['500'] = 0;
+        $delaiEnvoi_size_compare['1000'] = array();
+        $nbEnvoi_size_compare['1000'] = 0;
+        $delaiEnvoi_size_compare['5000'] = array();
+        $nbEnvoi_size_compare['5000'] = 0;
+        $delaiEnvoi_size_compare['10000'] = array();
+        $nbEnvoi_size_compare['10000'] = 0;
+
 
         foreach
         ($listeCommandeN1 as $commande) {
@@ -165,13 +228,39 @@ class DefaultController extends Controller
         ($listeCommandeM1 as $commande) {
            $totalCommandeM1 = $totalCommandeM1 + $commande->getPrice();
         }
+
         if(isset($listeCommande_compare)){
             foreach
             ($listeCommande_compare as $commande) {
                $totalCommande_compare = $totalCommande_compare + $commande->getPrice();
                if($commande->getDateEnvoi() != null){
-                $delaiEnvoi_compare = $delaiEnvoi_compare + $commande->getDate()->diff($commande->getDateEnvoi())->format('%R%a days');
+                $delaiEnvoi_compare = $delaiEnvoi_compare + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
                 $nbEnvoi_compare = $nbEnvoi_compare +1;
+
+                if($commande->getPrice() < 100){
+                    $delaiEnvoi_size_compare['100'] = $delaiEnvoi_size_compare['100'] +$this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['100'] = $nbEnvoi_size_compare['100'] +1;
+                }
+                elseif($commande->getPrice() >= 100 and $commande->getPrice() < 200){
+                    $delaiEnvoi_size_compare['200'] = $delaiEnvoi_size_compare['200'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['200'] =  $nbEnvoi_size_compare['200'] +1;
+                }
+                elseif($commande->getPrice() >= 200 and $commande->getPrice() < 500){
+                    $delaiEnvoi_size_compare['500'] = $delaiEnvoi_size_compare['500'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['500'] = $nbEnvoi_size_compare['500'] +1;
+                }
+                elseif($commande->getPrice() >= 500 and $commande->getPrice() < 1000){
+                    $delaiEnvoi_size_compare['1000'] = $delaiEnvoi_size_compare['1000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['1000'] = $nbEnvoi_size_compare['1000'] +1;
+                }
+                elseif($commande->getPrice() >= 1000 and $commande->getPrice() < 5000){
+                    $delaiEnvoi_size_compare['5000'] = $delaiEnvoi_size_compare['5000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['5000'] =  $nbEnvoi_size_compare['5000'] +1;
+                }
+                else{
+                    $delaiEnvoi_size_compare['10000'] = $delaiEnvoi_size_compare['10000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size_compare['10000'] =  $nbEnvoi_size_compare['10000'] +1;
+                }
             }
             }
         }
@@ -215,10 +304,35 @@ class DefaultController extends Controller
             if($customer->getIsPro() == 2){
                 $nbCommande_pro = $nbCommande_pro + 1;
             }
-
+            
             if($commande->getDateEnvoi() != null){
-                $delaiEnvoi = $delaiEnvoi + $commande->getDate()->diff($commande->getDateEnvoi())->format('%R%a days');
+                $delaiEnvoi = $delaiEnvoi + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
                 $nbEnvoi = $nbEnvoi +1;
+
+                if($commande->getPrice() < 100){
+                    $delaiEnvoi_size['100'] = $delaiEnvoi_size['100'] +$this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['100'] = $nbEnvoi_size['100'] +1;
+                }
+                elseif($commande->getPrice() >= 100 and $commande->getPrice() < 200){
+                    $delaiEnvoi_size['200'] = $delaiEnvoi_size['200'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['200'] =  $nbEnvoi_size['200'] +1;
+                }
+                elseif($commande->getPrice() >= 200 and $commande->getPrice() < 500){
+                    $delaiEnvoi_size['500'] = $delaiEnvoi_size['500'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['500'] = $nbEnvoi_size['500'] +1;
+                }
+                elseif($commande->getPrice() >= 500 and $commande->getPrice() < 1000){
+                    $delaiEnvoi_size['1000'] = $delaiEnvoi_size['1000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['1000'] = $nbEnvoi_size['1000'] +1;
+                }
+                elseif($commande->getPrice() >= 1000 and $commande->getPrice() < 5000){
+                    $delaiEnvoi_size['5000'] = $delaiEnvoi_size['5000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['5000'] =  $nbEnvoi_size['5000'] +1;
+                }
+                else{
+                    $delaiEnvoi_size['10000'] = $delaiEnvoi_size['10000'] + $this->dateDiff($commande->getDate()->format('Y-m-d H:i:s'), $commande->getDateEnvoi()->format('Y-m-d H:i:s'));
+                    $nbEnvoi_size['10000'] =  $nbEnvoi_size['10000'] +1;
+                }
             }
 
             
@@ -245,19 +359,61 @@ class DefaultController extends Controller
             $nb_commande_Mme = 0;
         }
        
+        foreach ($delaiEnvoi_size as $key => $value) {
+            foreach ($value as $key2 => $value2) {
+                if($nbEnvoi_size[$key] != 0){
+                    $value2 = $value2 / $nbEnvoi_size[$key];
+                }
+                else{
+                    $value = 0;
+                }
+            } 
+        }
+        foreach ($delaiEnvoi_size_compare as $key => $value) {
+            foreach ($value as $key2 => $value2) {
+                if($nbEnvoi_size_compare[$key] != 0){
+                    $value2 = $value2 / $nbEnvoi_size_compare[$key];
+                }
+                else{
+                    $value = 0;
+                }
+            } 
+        }
+
+      
+
+
        if($nbEnvoi != 0){
-        $delaiEnvoi = $delaiEnvoi / $nbEnvoi;
+        $delaiEnvoi['d'] = $delaiEnvoi['d'] / $nbEnvoi;
+        $delaiEnvoi['m'] = $delaiEnvoi['m'] / $nbEnvoi;
+        $delaiEnvoi['h'] = $delaiEnvoi['h'] / $nbEnvoi;
+        $delaiEnvoi['s'] = $delaiEnvoi['s'] / $nbEnvoi;
+        
+        
+        
        }
        else {
-        $delaiEnvoi = 0;
+        $delaiEnvoi['d'] = 0;
+        $delaiEnvoi['m'] = 0;
+        $delaiEnvoi['h'] = 0;
+        $delaiEnvoi['s'] = 0;
        }
        if($nbEnvoi_compare != 0){
-        $delaiEnvoi_compare = $delaiEnvoi_compare / $nbEnvoi_compare;
+        $delaiEnvoi_compare['d'] = $delaiEnvoi_compare['d'] / $nbEnvoi_compare;
+        $delaiEnvoi_compare['m'] = $delaiEnvoi_compare['m'] / $nbEnvoi_compare;
+        $delaiEnvoi_compare['h'] = $delaiEnvoi_compare['h'] / $nbEnvoi_compare;
+        $delaiEnvoi_compare['s'] = $delaiEnvoi_compare['s'] / $nbEnvoi_compare;
+        
+        
+        
        }
        else {
-        $delaiEnvoi_compare = 0;
+        $delaiEnvoi_compare['d'] = 0;
+        $delaiEnvoi_compare['m'] = 0;
+        $delaiEnvoi_compare['h'] = 0;
+        $delaiEnvoi_compare['s'] = 0;
        }
-
+      
 
         $repository        = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
         $listeAddedProduct = $repository->findAll();
@@ -383,20 +539,24 @@ class DefaultController extends Controller
             'nb_user_active' => $nb_user_active,
             'averageOrder' => $averageOrder,
             'averageOrder_compare' => $averageOrder_compare,
-            'nb_code' => $nb_code
-
+            'nb_code' => $nb_code,
+            'companies' => $listeBoutique,
+            'delaiEnvoi_size_compare' => $delaiEnvoi_size_compare,
+            'delaiEnvoi_size' => $delaiEnvoi_size,
+           // 'test' => $test
 
         ));
 
     }
 
     /**
-     * @Route("/s/setFiltre/{in}/{out}/{filtre}/{in_compare}/{out_compare}", name="setFiltre")
+     * @Route("/s/setFiltre/{in}/{out}/{filtre}/{in_compare}/{out_compare}/{boutique}", name="setFiltre")
      */
-    public function setDateAction(Request $request, $in, $out, $filtre, $in_compare, $out_compare)
+    public function setDateAction(Request $request, $in, $out, $filtre, $in_compare, $out_compare, $boutique)
     {
         $page = 'dashboard';
         $session = $request->getSession();
+        $session->set('boutique', $boutique);        
         $session->set('datein', $in);
         $session->set('dateout', $out);
         $session->set('datein_compare', $in_compare);
@@ -2173,6 +2333,21 @@ $user->setParrainage(0);
         return $response;
      }
     
+     public function dateDiff($date1, $date2){
+
+        $date1_timestamp = strtotime($date1);
+        $date2_timestamp = strtotime($date2);
+        $delaiEnvoi_timestamp = abs($date1_timestamp - $date2_timestamp);
+        $delaiEnvoi = array();
+        $delaiEnvoi['s'] =  $delaiEnvoi_timestamp % 60;
+        $delaiEnvoi_timestamp = floor(($delaiEnvoi_timestamp - $delaiEnvoi['s'])/60);
+        $delaiEnvoi['m'] = $delaiEnvoi_timestamp % 60;
+        $delaiEnvoi_timestamp = floor(($delaiEnvoi_timestamp - $delaiEnvoi['m'])/60);
+        $delaiEnvoi['h'] = $delaiEnvoi_timestamp % 24;
+        $delaiEnvoi_timestamp = floor(($delaiEnvoi_timestamp - $delaiEnvoi['h'])/24);
+        $delaiEnvoi['d'] = $delaiEnvoi_timestamp % 24;
+        return $delaiEnvoi;
+     }
   
 
 }
