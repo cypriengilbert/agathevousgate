@@ -136,7 +136,7 @@ window.location = route;
                           <table class="one">
                             <thead>
                               <tr>
-                                <th>Couleur</th>
+                                <th>Couleur / Taille</th>
                                 <th>Quantité</th>
                                 <th>Prix unitaire</th>
                                 <th>Total</th>
@@ -158,6 +158,9 @@ window.location = route;
                                     {% if items.Color3 %}
                                       <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color3.namePublic }}">
                                       <span class="color_name_mobile">{{ items.Color3.namePublic }}</span>
+                                    {% endif %}
+                                    {% if items.size %}
+                                      <span style="text-transform:uppercase;">{{ items.size }}</span>
                                     {% endif %}
                                     <br>
                                     

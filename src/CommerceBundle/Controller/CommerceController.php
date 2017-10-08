@@ -2645,8 +2645,13 @@ class CommerceController extends Controller
             if ($total_commande < $minLivraison->getMontant()) {
 
                 if ($newcommande->getAtelierLivraison() == NULL) {
-                    $total_commande = $total_commande + $coutLivraison;
-
+                    if($user->getIsPro() == 2){
+                        $total_commande = $total_commande + ($coutLivraison / (1 + ($tva/100))) ;
+                    }
+                    else{
+                        $total_commande = $total_commande + $coutLivraison ;
+                    }
+                    
                 }
                 if ($codePromo) {
                     if ($total_commande >= $codePromo->getMinimumCommande()) {

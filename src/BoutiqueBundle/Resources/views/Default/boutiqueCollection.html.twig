@@ -587,7 +587,15 @@ function checkOffset() {
 function addtocart(){
 var finalCart = [];
   {% for color in colors %}
+  {% set isDisplayed = 0 %}
+  {% for company in color.companies %}
+    {% if company == user.company %}
+       {% set isDisplayed = 1 %}
+    {% endif %}
+   {% endfor %}
    {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
+       {% if isDisplayed == 1 %}
+
     {% for product in products %}
       {% for accepted_product in accepted_products %}
         {% if accepted_product == product.name %}
@@ -596,7 +604,7 @@ var finalCart = [];
         {% endif %}
       {% endfor %}
     {% endfor %}
-
+{% endif %}
     {% endif %}
   {% endfor %}
   var finalJsonCart = JSON.stringify(finalCart);
@@ -650,7 +658,14 @@ document.getElementById("buttonValidateCart").click();
   }
 var value_total = 0;
 {% for color in colors %}
+  {% set isDisplayed = 0 %}
+  {% for company in color.companies %}
+    {% if company == user.company %}
+       {% set isDisplayed = 1 %}
+    {% endif %}
+   {% endfor %}
    {% if (collection1 is null and color.isBasic == 1 and color.isActive == 1) or (collection1 and color.isBasic == 0 and color.isActive == 1)  %}
+    {% if isDisplayed == 1 %}
     {% for product in products %}
       {% for accepted_product in accepted_products %}
         {% if accepted_product == product.name %} 
@@ -658,6 +673,7 @@ var value_total = 0;
           {% endif %}
        {% endfor %} 
     {% endfor %}
+    {% endif %}
     {% endif %}
 {% endfor %}
 

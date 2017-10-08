@@ -81,12 +81,13 @@ Accessoires
                                
                               <h2>{{product.price}}€ </h2>
 
-                              </diV>
+                              </div>
                               </div>
                               <div class="row">
+                              {% if product.name != 'tour_de_cou' %}
                               <div class="col-sm-4 text-center">
-
-                              <select class="form-control text-center" id="sel1" style="margin-left:10%;width:80%; margin-bottom:10px;">
+                              
+                              <select class="form-control text-center" id="{{product.id}}" style="margin-left:10%;width:80%; margin-bottom:10px;">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -103,8 +104,78 @@ Accessoires
                                                             <div class="col-sm-8 text-center">
 
 
-                                 <a href="{{path('addGenericToCart', {'id': product.id, 'quantity': 2} )}}"><button  type="submit" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:0px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button></a>
-</div>
+                               <button onclick="addToCart({{product.id}})" type="submit" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:0px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
+                              </div>
+                              {% else %}
+                              <div class="row">
+                              <div class="col-sm-4 text-center">
+                              
+                             Taille S <select class="form-control text-center" id="{{product.id}}_s" style="margin-left:10%;width:80%; margin-bottom:10px;">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+
+                              </select>
+                              </div>
+                              <div class="col-sm-8 text-center">
+
+
+                               <button onclick="addSizeToCart('{{product.id}}_s');"  style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
+                              </div>
+                            </div>
+                             <div class="row">
+                              <div class="col-sm-4 text-center">
+                            Taille M  <select class="form-control text-center" id="{{product.id}}_m" style="margin-left:10%;width:80%; margin-bottom:10px;">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+
+                              </select>
+                               </div>
+                              <div class="col-sm-8 text-center">
+
+
+                               <button onclick="addSizeToCart('{{product.id}}_m');" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col-sm-4 text-center">
+                             Taille L <select class="form-control text-center" id="{{product.id}}_l" style="margin-left:10%;width:80%; margin-bottom:10px;">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+
+                              </select>
+                              </div>
+                                                            <div class="col-sm-8 text-center">
+
+
+                               <button onclick="addSizeToCart('{{product.id}}_l');" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
+                              </div>
+                              </div>
+                              
+                              {% endif %}
                                    </div>
                                    </div>
                             </div>
@@ -119,5 +190,30 @@ Accessoires
 
     </div>
 </body>
+<script>
+  function addToCart(id){
+    var quantity = document.getElementById(id).value;
+
+   var route = "{{ path('addGenericToCart',{'id': 'ID','quantity' : 'QUANTITY'} ) }}";
+   route = route.replace("ID", id);
+   route = route.replace("QUANTITY", quantity);
+
+   window.location = route;
+  }
+
+    function addSizeToCart(id){
+    var quantity = document.getElementById(id).value;
+    var size = id.substr(id.length - 1);
+    id = id.substring(0, id.indexOf('_'));
+
+   var route = "{{ path('addTdcToCart',{'id': 'ID','quantity' : 'QUANTITY', 'size':'SIZE' } ) }}";
+   route = route.replace("ID", id);
+   route = route.replace("SIZE", size);
+
+   route = route.replace("QUANTITY", quantity);
+
+   window.location = route;
+  }
+</script>
 
 {% endblock %}

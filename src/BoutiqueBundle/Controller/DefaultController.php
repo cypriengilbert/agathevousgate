@@ -203,7 +203,27 @@ class DefaultController extends Controller
          */
         public function addedGenerictoCartAction($id, $quantity, Request $request)
         {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            
+            $oldProduct = null;
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $oldProduct    = $repository->findOneBy(array(
+                'product' => $id,
+                'client' => $user,
+                'commande' => null
+            ));
 
+            if($oldProduct != null){
+                $newQuantity = $oldProduct->getQuantity() + $quantity;
+                
+                    $oldProduct->setQuantity($newQuantity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($oldProduct);
+                    $em->flush();
+                    
+                    
+            }
+            else{
 
             $added_product = new AddedProduct();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
@@ -239,13 +259,86 @@ class DefaultController extends Controller
                 $session->set('nb_article', count($listeAddedProduct));
                 $nbarticlepanier = $session->get('nb_article');
             }
-
+        }
             $url      = $this->generateUrl('generic');
             $response = new RedirectResponse($url);
 
             return $response;
 
         }
+        /**
+         * @Route("boutique/addTdcToCart/{id}/{size}/{quantity}", name="addTdcToCart")
+         */
+         public function addedTdctoCartAction($id, $quantity, $size, Request $request)
+         {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+            
+            $oldProduct = null;
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $oldProduct    = $repository->findOneBy(array(
+                'product' => $id,
+                'client' => $user,
+                'size' => $size,
+                'commande' => null
+            ));
+
+            if($oldProduct != null){
+                $newQuantity = $oldProduct->getQuantity() + $quantity;
+                
+                    $oldProduct->setQuantity($newQuantity);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($oldProduct);
+                    $em->flush();
+                    
+                    
+            }
+            else{
+
+            
+ 
+ 
+             $added_product = new AddedProduct();
+             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+             $product    = $repository->findOneBy(array(
+                 'id' => $id
+             ));
+ 
+             $added_product->setProduct($product);
+             $added_product->setCommande(null);
+             $added_product->setQuantity($quantity);
+             $added_product->setSize($size);
+             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                 $user = $this->container->get('security.context')->getToken()->getUser();
+                 $added_product->setClient($user);
+             }
+             $em = $this->getDoctrine()->getManager();
+             $em->persist($added_product);
+ 
+ 
+             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+ 
+                 $em = $this->getDoctrine()->getManager();
+                 $em->persist($added_product);
+                 $em->flush();
+                 $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+ 
+ 
+             } else {
+ 
+                 $listeAddedProduct = $session->get('panier_session');
+                 array_push($listeAddedProduct, $added_product);
+                 $session->set('panier_session', $listeAddedProduct);
+                 $session->set('nb_article', count($listeAddedProduct));
+                 $nbarticlepanier = $session->get('nb_article');
+             }
+            }
+ 
+             $url      = $this->generateUrl('generic');
+             $response = new RedirectResponse($url);
+ 
+             return $response;
+ 
+         }
 
         /**
          * @Route("boutique/addBoutiqueToCart/{name}/", name="addBoutiqueToCart")
