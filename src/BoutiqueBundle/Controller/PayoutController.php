@@ -161,7 +161,7 @@ class PayoutController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-               // $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
 
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
@@ -175,7 +175,7 @@ class PayoutController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-               // $this->get('mailer')->send($message);
+            // $this->get('mailer')->send($message);
 
             } else {
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -190,7 +190,7 @@ class PayoutController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-            //    $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
             }
 
             $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
@@ -208,7 +208,7 @@ class PayoutController extends Controller
                     'tva' => $tva,
                     'AddedProductByProduct' => $AddedProductByProduct,
                 )), 'text/html');
-              // $this->get('mailer')->send($message);
+               // $this->get('mailer')->send($message);
 
 
             foreach ($listePanier as $item) {
@@ -228,7 +228,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                           // $this->get('mailer')->send($message);
+                            // $this->get('mailer')->send($message);
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -240,7 +240,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                          //  $this->get('mailer')->send($message);
+                            // $this->get('mailer')->send($message);
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -252,7 +252,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                         //   $this->get('mailer')->send($message);
+                            // $this->get('mailer')->send($message);
                     }
                 }
                 elseif ($item->getProduct()->getName() == 'Coffret1') {
@@ -266,7 +266,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                        //   $this->get('mailer')->send($message);
+                           // $this->get('mailer')->send($message);
                     }
                 }
                 elseif ($item->getProduct()->getName() == "Coffret2") {
@@ -280,7 +280,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                          //  $this->get('mailer')->send($message);
+                            // $this->get('mailer')->send($message);
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -292,7 +292,7 @@ class PayoutController extends Controller
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                         //   $this->get('mailer')->send($message);
+                            // $this->get('mailer')->send($message);
                     }
                 }
                 else{
@@ -307,7 +307,7 @@ class PayoutController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                           //     $this->get('mailer')->send($message);
+                               // $this->get('mailer')->send($message);
                         }
                     }
                     else{
@@ -321,7 +321,7 @@ class PayoutController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                          //    $this->get('mailer')->send($message);
+                              // $this->get('mailer')->send($message);
                         }
                     }
                     
@@ -434,6 +434,16 @@ class PayoutController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($payout);
             $em->flush();
+
+
+           $message = \Swift_Message::newInstance()->setSubject('AgatheVousGate - prélèvement mensuel')->setFrom('commande@agathevousgate.fr')->setTo($user->getEmail())->setBody($this->renderView(
+                'emails/payout.html.twig', array(
+                'payout' => $payout,
+                'user' => $user,
+            )), 'text/html');
+            // $this->get('mailer')->send($message);
+           
+        
 
             return new  RedirectResponse($this->generateUrl('companiesView', array('id' => $user->getId())));
         }else{

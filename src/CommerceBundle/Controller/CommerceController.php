@@ -1440,7 +1440,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
 
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
@@ -1454,7 +1454,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
 
                 } else {
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1469,7 +1469,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
                 }
 
 
@@ -1490,7 +1490,7 @@ class CommerceController extends Controller
                             'tva' => $tva,
                             'AddedProductByProduct' => $AddedProductByProduct,
                         )), 'text/html');
-                       $this->get('mailer')->send($message);
+                       // $this->get('mailer')->send($message);
                     
                 }else{
                     
@@ -1507,7 +1507,7 @@ class CommerceController extends Controller
                     'parrainage' => $remiseParrainage,
                     'commande' => $commandeEnCours
                 )), 'text/html');
-                $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
             }
 
                 if ($user->getParrainEmail() != null) {
@@ -1538,14 +1538,14 @@ class CommerceController extends Controller
                             'nb' => $minParrainage->getMontant()
 
                         )), 'text/html');
-                       $this->get('mailer')->send($message);
+                       // $this->get('mailer')->send($message);
                         $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
                             'user' => $parrain,
                             'nb' => $minParrainage->getMontant()
                         )), 'text/html');
-                       $this->get('mailer')->send($message);
+                       // $this->get('mailer')->send($message);
 
 
                     } else {
@@ -1566,7 +1566,7 @@ class CommerceController extends Controller
                             'nb' => $nbparrainage
 
                         )), 'text/html');
-                        $this->get('mailer')->send($message);
+                        // $this->get('mailer')->send($message);
                     }
                 }
 
@@ -1587,7 +1587,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                $this->get('mailer')->send($message);
+                                // $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1599,7 +1599,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                              //  $this->get('mailer')->send($message);
+                                // $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1611,7 +1611,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                $this->get('mailer')->send($message);
+                                // $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == 'Coffret1') {
@@ -1625,7 +1625,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                               $this->get('mailer')->send($message);
+                               // $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == "Coffret2") {
@@ -1639,7 +1639,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                $this->get('mailer')->send($message);
+                                // $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1651,7 +1651,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                $this->get('mailer')->send($message);
+                                // $this->get('mailer')->send($message);
                         }
                     }
                     else{
@@ -1666,7 +1666,7 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                    $this->get('mailer')->send($message);
+                                    // $this->get('mailer')->send($message);
                             }
                         }
                         else{
@@ -1680,7 +1680,7 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                  $this->get('mailer')->send($message);
+                                  // $this->get('mailer')->send($message);
                             }
                         }
                         
@@ -1807,7 +1807,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
 
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
@@ -1821,7 +1821,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
 
             } else {
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1836,7 +1836,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                $this->get('mailer')->send($message);
+                // $this->get('mailer')->send($message);
             }
 
             if($user->getIsPro() == 2){
@@ -1855,7 +1855,7 @@ class CommerceController extends Controller
                         'tva' => $tva,
                         'AddedProductByProduct' => $AddedProductByProduct,
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
                 
             }else{
                 
@@ -1872,7 +1872,7 @@ class CommerceController extends Controller
                 'parrainage' => $remiseParrainage,
                 'commande' => $commandeEnCours
             )), 'text/html');
-            $this->get('mailer')->send($message);
+            // $this->get('mailer')->send($message);
         }
             if ($user->getParrainEmail() != null) {
                 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -1902,14 +1902,14 @@ class CommerceController extends Controller
                         'nb' => $minParrainage->getMontant()
 
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
                     $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/parrainage_valide_agathe.html.twig', array(
                         'user' => $parrain,
                         'nb' => $minParrainage->getMontant()
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
 
 
                 } else {
@@ -1930,7 +1930,7 @@ class CommerceController extends Controller
                         'nb' => $nbparrainage
 
                     )), 'text/html');
-                    $this->get('mailer')->send($message);
+                    // $this->get('mailer')->send($message);
                 }
             }
 
