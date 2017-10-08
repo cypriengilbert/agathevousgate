@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-12 text-right" style="margin-bottom:10px;">
               {% if commande.price > 0 %}   <a href="{{ path("refund_manual",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement</button></a>
-                                  <a href="{{ path("refund",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement Stripe</button></a>{% endif %}
+                            {% if commande.stripeId != null or commande.payout.stripeId != null %}     <a href="{{ path("refund",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement Stripe</button></a>{% endif %}{% endif %}
 
                  <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-fill btn-primary" style=" margin-left:1%;">Voir la facture</button></a>
 {% if commande.isvalid == true %}{% else %}

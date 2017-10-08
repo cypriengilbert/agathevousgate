@@ -16,6 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PayoutController extends Controller
 {
+    private function getProductAdded($allProducts, $product){
+        $listeProduct = [];
+        foreach ($allProducts as $item) {
+            if($item->getProduct() == $product){
+                array_push($listeProduct, $item);
+            }
+        }
+        return $listeProduct;
+    }
     /**
      * @Route("/paiement/addtopayout/", name="addtopayout")
      */
@@ -98,6 +107,109 @@ class PayoutController extends Controller
                 $em->persist($value);
                 $em->flush();
             }
+
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            $minLivraison = $repository->findOneBy(array(
+                'name' => 'Livraison'
+
+            ));
+            $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            if ($commandeEnCours->getTransportMethod() != null) {
+                $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
+            } else {
+                $coutLivraison = 0;
+            }
+            $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+            $remiseParrainage = $repository->findOneBy(array(
+                'name' => 'Parrainage'
+            ));
+            if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                
+                $allreduction    = $this->getBy('ProDiscount', array(
+                    'account' => $user
+                ));
+
+            } else {
+                $allreduction    = array();
+            }
+            $UserEmail = $user->getEmail();
+
+            $repository               = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $query                    = $repository->createQueryBuilder('u')->where('u.commande IS NULL')->andWhere('u.parent IS NOT NULL')->andWhere('u.client = :user')->setParameter('user', $user_id)->getQuery();
+            $listeAddedProductEnfants = $query->getResult();
+            $listeAddedProductParents = $this->getBy('AddedProduct', array(
+                'client' => $user_id,
+                'commande' => null,
+                'parent' => null
+            ));
+            $AddedProductByProduct = [];
+            $AddedProductByProduct_Child = [];
+            $allProduct          = $this->getAll('Product');
+            foreach ($allProduct as $product) {
+                $AddedProductByProduct[$product->getName()] = $this->getProductAdded($listeAddedProductParents, $product);
+                
+            }
+            if ($commandeEnCours->getAtelierLivraison()) {
+                $atelier = $commandeEnCours->getAtelierLivraison();
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour votre atelier')->setFrom('commande@agathevousgate.fr')->setTo($atelier->getEmail())->setBody($this->renderView('emails/new_commande_franchise.html.twig', array(
+                    'franchise' => $atelier->getFranchise(),
+                    'listePanier' => $listePanier,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage
+                )), 'text/html');
+               // $this->get('mailer')->send($message);
+
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/new_commande.html.twig', array(
+                    'franchise' => $atelier->getFranchise(),
+                    'listePanier' => $listePanier,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage
+                )), 'text/html');
+               // $this->get('mailer')->send($message);
+
+            } else {
+                $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/new_commande.html.twig', array(
+                    'listePanier' => $listePanier,
+                    'franchise' => null,
+                    'commande' => $commandeEnCours,
+                    'date' => new \DateTime("now"),
+                    'user' => $user,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage
+                )), 'text/html');
+            //    $this->get('mailer')->send($message);
+            }
+
+            $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                    'emails/confirmation_commande_boutique.html.twig', array(
+                    'user' => $user,
+                    'franchise' => null,
+                    'date' => new \DateTime("now"),
+                    'listePanier' => $listePanier,
+                    'minLivraison' => $minLivraison,
+                    'coutLivraison' => $coutLivraison,
+                    'parrainage' => $remiseParrainage,
+                    'commande' => $commandeEnCours,
+                   'reductions' => $allreduction,
+                    'tva' => $tva,
+                    'AddedProductByProduct' => $AddedProductByProduct,
+                )), 'text/html');
+              // $this->get('mailer')->send($message);
+
 
             foreach ($listePanier as $item) {
                 $rectangle_grand = $this->getOneBy('Product', array('name'=>'Rectangle_grand'));
@@ -306,14 +418,14 @@ class PayoutController extends Controller
 
             try {
                 $charge = \Stripe\Charge::create(array(
-                "amount" => $payout->getAmount()*100,
+                "amount" => round($payout->getAmount()*100, 2),
                 "currency" => "eur",
                 "customer" => $user->getStripeCustomer(),
                 "source" => $payout->getCompany()->getStripeSource(),
               ));
             }
             catch(\Stripe\Error\InvalidRequest $e){
-                return new Response($payout->getCompany()->getStripeSource());
+                return new Response($e);
             }
 
 

@@ -21,6 +21,7 @@ use Stripe\HttpClient;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use Symfony\Component\HttpFoundation\Response;
 
 
 
@@ -2235,13 +2236,19 @@ $user->setParrainage(0);
       
             $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
             if ($form->handleRequest($request)->isValid()) {
+                if($order->getPayout() == null){
+                    $charge = $order->getStripeId();
+                }
+                else{
+                 $charge = $order->getPayout()->getStripeId();
+                }
 
-                \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+                \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_private_key'));
                 if($refund->getType() == 'integral'){
                    
                    try{
                     $re = \Stripe\Refund::create(array(
-                        "charge" => $order->getStripeId(),
+                        "charge" => $charge,
                       ));
                    } 
                    catch (\Stripe\Error\Card $e) {
@@ -2253,7 +2260,7 @@ $user->setParrainage(0);
                 else{
                     try{
                         $re = \Stripe\Refund::create(array(
-                            "charge" => $order->getStripeId(),
+                            "charge" => $charge,
                             "amount" => $refund->getMontant()*100,
                           ));
                        } 
