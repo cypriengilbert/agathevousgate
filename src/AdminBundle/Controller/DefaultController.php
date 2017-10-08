@@ -1597,12 +1597,34 @@ class DefaultController extends Controller
 
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
             $collections  = $repository->findAll();
+            $repository = $this->getDoctrine()->getManager()->getRepository('BoutiqueBundle:Payout');
+            $payouts  = $repository->findBy(array('company' => $company));
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $products  = $repository->findAll();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
             $proReduc  = $repository->findBy(array(
             'account' => $user));
             $erasedReduc = $company->getReductionGeneric();
+            $repository = $this->getDoctrine()->getManager()->getRepository('BoutiqueBundle:Payout');
+            $payouts_pending  = $repository->findBy(array('company' => $company, 'isPayed' => 1));
+            \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+            foreach ($payouts_pending as $payout) {
+                $charge = \Stripe\Charge::retrieve($payout->getStripeId());
+                if ($charge["status"] == "succeeded"){
+                    $payout->setIsPayed(2);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($payout);
+                    $em->flush();
+                }
+                elseif($charge["status"] == "failed"){
+                    $payout->setIsPayed(3);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($payout);
+                    $em->flush();
+                }
+                
+               
+            }
        
 
             $formCompany = $this->get('form.factory')->create('UserBundle\Form\CompanyAllType', $company);
@@ -1611,8 +1633,9 @@ class DefaultController extends Controller
              $em->persist($company);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'modification bien enregistrée.');
-
+                
             $y = 0;
+            
             if($proReduc == null){
             foreach ($collections as $collection ) {
                 foreach ($products as $product) {
@@ -1653,14 +1676,6 @@ class DefaultController extends Controller
 
             }
 
-
-
-
-
-
-
-
-
             return $this->render('AdminBundle:Default:Company.html.twig', array(
                 'user' => $user,
                 'page' => $page,
@@ -1669,6 +1684,7 @@ class DefaultController extends Controller
                 'products' => $products,
                 'collections' => $collections,
                 'reductions' => $proReduc,
+                'payouts' => $payouts,
                 ));
 }
 
@@ -1682,6 +1698,7 @@ class DefaultController extends Controller
                   'formCompany' => $formCompany->createView(),
                                   'commandes' => $commande,
                                                   'reductions' => $proReduc,
+                                                  'payouts' => $payouts,
 
 
 

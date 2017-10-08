@@ -5,6 +5,7 @@ namespace UserBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class CompanyAllType extends AbstractType
 {
@@ -18,6 +19,9 @@ class CompanyAllType extends AbstractType
             ->add('name')
             ->add('siren')
             ->add('reductionGeneric')
+            ->add('isMonthly', CheckboxType::class, array(
+                'required' => false,
+            ))
         ;
     }
     

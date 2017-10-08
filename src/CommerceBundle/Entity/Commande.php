@@ -4,6 +4,7 @@ namespace CommerceBundle\Entity;
 use UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use CommerceBundle\Entity\ModeLivraison;
+use BoutiqueBundle\Entity\Payout;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -152,6 +153,11 @@ class Commande
      * @ORM\Column(name="dateEnvoi", type="datetime", nullable=true)
      */
     private $dateEnvoi;
+
+      /**
+    * @ORM\ManyToOne(targetEntity="BoutiqueBundle\Entity\Payout", inversedBy="payout", cascade={"persist"})
+    */
+    private $payout;
 
     /**
      * Get id
@@ -624,5 +630,29 @@ class Commande
     public function getPaypalId()
     {
         return $this->paypal_id;
+    }
+
+    /**
+     * Set payout
+     *
+     * @param \BoutiqueBundle\Entity\Payout $payout
+     *
+     * @return Commande
+     */
+    public function setPayout(\BoutiqueBundle\Entity\Payout $payout = null)
+    {
+        $this->payout = $payout;
+
+        return $this;
+    }
+
+    /**
+     * Get payout
+     *
+     * @return \BoutiqueBundle\Entity\Payout
+     */
+    public function getPayout()
+    {
+        return $this->payout;
     }
 }

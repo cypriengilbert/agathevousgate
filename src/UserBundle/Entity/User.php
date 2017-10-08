@@ -87,6 +87,13 @@ class User extends BaseUser
       */
      private $parrain_email;
 
+       /**
+      * @var string
+      *
+      * @ORM\Column(name="stripeCustomer", type="string", length=255, nullable=true)
+      */
+      private $stripeCustomer;
+
      /**
       * @var datetime
       *
@@ -409,5 +416,29 @@ class User extends BaseUser
     public function getSignup()
     {
         return $this->signup;
+    }
+
+    /**
+     * Set stripeCustomer
+     *
+     * @param string $stripeCustomer
+     *
+     * @return User
+     */
+    public function setStripeCustomer($stripeCustomer)
+    {
+        $this->stripeCustomer = $stripeCustomer;
+
+        return $this;
+    }
+
+    /**
+     * Get stripeCustomer
+     *
+     * @return string
+     */
+    public function getStripeCustomer()
+    {
+        return $this->stripeCustomer;
     }
 }

@@ -23,7 +23,7 @@
                             <div class="content">
                                 <form>
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                              <div class="form-group" >
                                               {{ form_label(formCompany.name, "Nom de l'entreprise", {'label_attr': {'class': '', 'id': '' }}) }}
                                               {{ form_errors(formCompany.name) }}
@@ -37,11 +37,18 @@
                                               {{ form_widget(formCompany.siren, {'attr': {'class': 'form-control'} })}}
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 {{ form_label(formCompany.reductionGeneric, "Réduction par défaut ", {'label_attr': {'class': '', 'id': '' }}) }}
                                               {{ form_errors(formCompany.reductionGeneric) }}
                                               {{ form_widget(formCompany.reductionGeneric, {'attr': {'class': 'form-control'} })}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                {{ form_label(formCompany.isMonthly, "Paiement mensuel ? ", {'label_attr': {'class': '', 'id': '' }}) }}
+                                              {{ form_errors(formCompany.isMonthly) }}
+                                              {{ form_widget(formCompany.isMonthly, {'attr': {'class': 'form-control'} })}}
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +137,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="max-height:530px; overflow:scroll">
                         <div class="card ">
                             <div class="header">
                                 <h4 class="title">Historique</h4>
@@ -211,10 +218,111 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12" style="max-height:530px; overflow:scroll">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Prélèvements</h4>
+                                <p class="category">Mensuels</p>
+                            </div>
+                            <div class="content">
+                                <div class="table-full-width">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th width=5%>ID</th>
+                                                <th width=10%>Mois</th>
+                                                <th width=10%>Année</th>
+                                                <th width=15%>Montant</th>
+                                                <th width=15%>Statut</th>
+                                                <th width=20%>Liste commandes</th>
+                                                <th width=15%>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for payout in payouts|reverse %}
+                                            <tr>
+                                                
+                                                <td>{{payout.id}}</td>
+                                                <td>
+                                                    {{payout.date|date("F") }}
+                                                </td>
+                                                <td >
+                                                    {{payout.date|date("Y") }}
+                                                </td>
+                                                <td>
+                                                {{payout.amount}}€
+                                                </td>
+                                            
+                                                <td>
+                                                    {% if payout.isPayed == 2 %}
+                                                        Payé 
+                                                    {% elseif payout.isPayed == 1 %}
+                                                        En cours
+                                                    {% elseif payout.isPayed == 3 %}
+                                                        Echec
+                                                    {% else %}
+                                                        A payer
+                                                    {% endif %} 
+                                                </td>
+                                                <td>
+                                                     {% for commande in payout.commandes %}
+                                                        <a href="{{path('commande', {'id': commande.id})}}">{{commande.id}}</a> ({{commande.date|date("d-m-y")}}, {{commande.price|round(2,'common')}}€)<br>
+                                                     {% endfor %}
+                                                </td>
+                                                <td>
+                                                    {% if (payout.isPayed == 3 or payout.isPayed == 0 ) and ("now"|date("m") > payout.date|date("m") and "now"|date("Y") == payout.date|date("Y")) %}
+                                                        <a href="{{ path('debitStore', {'id' : payout.id }) }}"><button class="btn btn-warning btn-fill">Prélever</button></a>
+                                                    {% elseif (payout.isPayed == 3 or payout.isPayed == 0 ) and ("now"|date("Y") > payout.date|date("Y")) %}
+                                                        <a href="{{ path('debitStore', {'id' : payout.id }) }}"><button class="btn btn-warning btn-fill">Prélever</button></a>
+                                                    {% endif %} 
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
 
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="max-height:530px; overflow:scroll">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">IBAN</h4>
+                                <p class="category">Entrer le nouvel IBAN</p>
+                            </div>
+                            <div class="content">
+                                <form action="{{ path('addIban', {'id':user.id})}}" method="post">
+                                  <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nom complet</label>
+                                                <input type="text" class="form-control" placeholder="Full name" name="full_name" value="{{user.prenom}} {{user.nom}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row"> 
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>IBAN</label>
+                                                <input type="text" class="form-control" name="iban" placeholder="IBAN : FRXXX" >
+                                            </div>
+                                        </div>
+                                         
+                                    </div>
+                                    <input type="submit" class="btn btn-warning btn-fill" value="Enregistrer l'iban">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
             </div>
-
-
 
 
 

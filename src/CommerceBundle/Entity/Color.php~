@@ -224,7 +224,7 @@ class Color
     private $noeud3updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Company", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="UserBundle\Entity\Company", cascade={"persist"})
      */
      private $companies;
      
@@ -857,4 +857,6 @@ class Color
     {
         return $this->codehexa;
     }
+
+    
 }

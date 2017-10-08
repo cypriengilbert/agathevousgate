@@ -60,7 +60,7 @@
 
 																								Bonjour Agathe <br><br>
 
-																								Suite à la dernière commande, le stock de {{stock.product.cartName}} de couleur {{stock.color.name}} est faible.
+																								Suite à la dernière commande, le stock de {{stock.product.cartName}} {% if stock.color %}de couleur {{stock.color.name}}{% endif %} est faible.
                                                 <br>Il en reste exactement {{stock.quantity}} en stock.
                                                 <br><br>
 

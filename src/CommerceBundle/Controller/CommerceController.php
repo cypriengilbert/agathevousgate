@@ -1362,14 +1362,12 @@ class CommerceController extends Controller
                 $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 if ($commandeEnCours->getTransportMethod() != null) {
                     $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
-
                 } else {
                     $coutLivraison = 0;
                 }
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
                 $remiseParrainage = $repository->findOneBy(array(
                     'name' => 'Parrainage'
-
                 ));
                 $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
                 $listePanier      = $repository->findBy(array(
@@ -1379,10 +1377,6 @@ class CommerceController extends Controller
                 $nombrearticle    = count($listePanier);
 
                 foreach ($listePanier as $value) {
-                    $value->setCommande($commandeEnCours);
-
-
-                    
                     $value->setCommande($commandeEnCours);
                 $value->setPrice($value->getPriceTemp());
                 $pricebeforeremise = $value->getPrice();
@@ -3132,14 +3126,14 @@ class CommerceController extends Controller
     /**
      * @Route("/paiement/confirmation", name="paiementconfirmation")
      */
-    public function confirmationPaiementAction()
+    public function confirmationPaiementAction(Request $request)
     {
         $session         = $this->createSession();
         $collection      = $this->getAll('Collection');
         $nbarticlepanier = $this->countArticleCart();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user         = $this->container->get('security.context')->getToken()->getUser();
-        }
+        
         $newResponse = new SurveyResponse();
         $form     = $this->get('form.factory')->create('CommerceBundle\Form\SurveyResponseType', $newResponse);
         if ($form->handleRequest($request)->isValid()) {
@@ -3155,8 +3149,8 @@ class CommerceController extends Controller
             $request->getSession()->getFlashBag()->add('notice', 'Réponse bien enregistrée.');
             return $this->redirect($this->generateUrl('accueil'));
         }
-
-        return $this->render('CommerceBundle:Default:test.html.twig', array(
+    }
+        return $this->render('CommerceBundle:Default:confirmationPaiement.html.twig', array(
             'form' => $form->createView(),
             'nbarticlepanier' => $nbarticlepanier,
             'collection' => $collection

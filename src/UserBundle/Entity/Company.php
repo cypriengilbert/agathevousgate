@@ -28,6 +28,13 @@ class Company
      */
     private $name;
 
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="stripeSource", type="string", length=255, unique=false)
+     */
+     private $stripeSource;
+
     /**
      * @var string
      *
@@ -42,8 +49,19 @@ class Company
      */
     private $reductionGeneric;
 
+    /**
+      * @var bool
+      *
+     * @ORM\Column(name="is_monthly", type="boolean")
+      */
+      private $is_monthly;
 
+      /**
+      * @ORM\OneToMany(targetEntity="BoutiqueBundle\Entity\Payout", mappedBy="payout")
+      */
+      private $payouts;
 
+ 
     /**
      * Get id
      *
@@ -124,5 +142,94 @@ class Company
     public function getReductionGeneric()
     {
         return $this->reductionGeneric;
+    }
+
+    /**
+     * Set isMonthly
+     *
+     * @param boolean $isMonthly
+     *
+     * @return Company
+     */
+    public function setIsMonthly($isMonthly)
+    {
+        $this->is_monthly = $isMonthly;
+
+        return $this;
+    }
+
+    /**
+     * Get isMonthly
+     *
+     * @return boolean
+     */
+    public function getIsMonthly()
+    {
+        return $this->is_monthly;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->payouts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add payout
+     *
+     * @param \BoutiqueBundle\Entity\Payout $payout
+     *
+     * @return Company
+     */
+    public function addPayout(\BoutiqueBundle\Entity\Payout $payout)
+    {
+        $this->payouts[] = $payout;
+
+        return $this;
+    }
+
+    /**
+     * Remove payout
+     *
+     * @param \BoutiqueBundle\Entity\Payout $payout
+     */
+    public function removePayout(\BoutiqueBundle\Entity\Payout $payout)
+    {
+        $this->payouts->removeElement($payout);
+    }
+
+    /**
+     * Get payouts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPayouts()
+    {
+        return $this->payouts;
+    }
+
+    /**
+     * Set stripeSource
+     *
+     * @param string $stripeSource
+     *
+     * @return Company
+     */
+    public function setStripeSource($stripeSource)
+    {
+        $this->stripeSource = $stripeSource;
+
+        return $this;
+    }
+
+    /**
+     * Get stripeSource
+     *
+     * @return string
+     */
+    public function getStripeSource()
+    {
+        return $this->stripeSource;
     }
 }

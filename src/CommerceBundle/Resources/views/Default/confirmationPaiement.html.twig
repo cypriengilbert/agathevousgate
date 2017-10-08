@@ -9,7 +9,10 @@
 				<br>
 				Vous en serez informé par mail.
 				<br>
-				<a href="{{ path('compte') }}">Accéder à mon compte</a>
+        <a href="{{ path('compte') }}">Accéder à mon compte</a>
+      </div>
+
+				
 				{{ form_start(form, {'method': 'post', 'attr': {'class': 'formulaire'} }) }}{{ form_errors(form) }}
           <div class="form-group">
             {{ form_label(form.response1, "Comment avez-vous connu Agathe Vous Gâte ?", {'label_attr': {'class': ''}}) }}
@@ -28,10 +31,11 @@
           </div>
           
           <div>
-            <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Modifier le commentaire </button>
+            <button type="submit" value="{{ 'registration.submit'|trans }}" class="btn btn-primary" style="margin-bottom:10px;">Envoyer </button>
           </div>
 				{{ form_end(form) }}
 			</div>
 		</div>
 	</section>
 </body>
+{%  endblock %}

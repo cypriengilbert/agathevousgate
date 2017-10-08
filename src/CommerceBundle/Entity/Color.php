@@ -858,14 +858,16 @@ class Color
         return $this->codehexa;
     }
 
+    
+
     /**
      * Add company
      *
-     * @param \CommerceBundle\Entity\Company $company
+     * @param \UserBundle\Entity\Company $company
      *
      * @return Color
      */
-    public function addCompany(\CommerceBundle\Entity\Company $company)
+    public function addCompany(\UserBundle\Entity\Company $company)
     {
         $this->companies[] = $company;
 
@@ -875,9 +877,9 @@ class Color
     /**
      * Remove company
      *
-     * @param \CommerceBundle\Entity\Company $company
+     * @param \UserBundle\Entity\Company $company
      */
-    public function removeCompany(\CommerceBundle\Entity\Company $company)
+    public function removeCompany(\UserBundle\Entity\Company $company)
     {
         $this->companies->removeElement($company);
     }
