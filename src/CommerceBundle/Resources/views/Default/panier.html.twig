@@ -86,6 +86,7 @@
                               {% if listepanier.product.name == 'Noeud' %}
                                     Noeud {% if listepanier.collection %}{{ listepanier.collection.title }}{% endif %}
                                     {% set price_line =  listepanier.priceTemp %}
+                                    
                               {% else %}
                                 {{ listepanier.product.cartName }}
                               {% endif  %}
