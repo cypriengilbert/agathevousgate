@@ -1,0 +1,133 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Product</h4>
+            <p class="category">
+              Edition
+            </p>
+          </div>          
+        </div>
+    </div>
+	<div class="content">
+	{{ form_start(form, {'attr': { 'class': '' } }) }}
+
+<div class="mdl-cell mdl-cell--12-col">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="form-group">
+                {{ form_label(form.cartName, "Nom", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.cartName) }}
+                {{ form_widget(form.cartName, {'attr': {'class': 'form-control'}}) }}
+            </div>
+		</div>
+		
+        <div class="col-md-4">
+            <div class="form-group" >
+                {{ form_label(form.price, "Prix par défaut", {'label_attr': {'class': ''}}) }}<br>
+                {{ form_errors(form.price) }}
+                {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+            </div>
+		</div>
+	</div>
+	<div class="row">
+	<div class="col-md-6">
+			<div class="form-group">
+                {{ form_label(form.description, "Description", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+	</div>
+
+	
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-4">	
+            <div class="form-group">
+                {{ form_label(form.productTime, "Temps de production en heures", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.productTime) }}
+                {{ form_widget(form.productTime, {'attr': {'class': 'form-control'}}) }}  
+            </div>
+		</div>
+		
+		
+		</div>
+	</div>
+	
+    <div class="row" style="margin-top:20px">
+		<div class="col-md-4">
+		    <img src="{{ asset('/upload/product/' ~ product.imageProductName ) }}" style="max-height:200px">
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+                {{ form_label(form.productFile, "Image Exterieur") }}
+                {{ form_errors(form.productFile) }}
+                {{ form_widget(form.productFile, {'attr': {'class': ''}}) }}
+            </div>
+		</div>
+		
+	</div>
+   
+
+<div class="row" style="margin-top:20px">
+	<div class="col-md-12">
+		<div class="form-group">
+        <input type="submit" value="Valider" class="btn btn-primary" />
+
+		</div>
+	</div>
+</div>
+
+{{ form_end(form) }}
+</div>
+	</div> </div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+
+
+{% endblock %}

@@ -2373,5 +2373,52 @@ $user->setParrainage(0);
         return $delaiEnvoi;
      }
   
+     /**
+     * @Route("/s/products", name="products")
+     */
+    public function productsAction()
+    {
 
+      $page = 'products';
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+        $listeProducts = $repository->findAll();
+
+        return $this->render('AdminBundle:Default:listeProduct.html.twig', array(
+            'listeProducts' => $listeProducts,
+            'page' => $page,
+
+
+
+        ));
+    }
+
+     /**
+     * @Route("/s/edit/{id}", name="editProduct")
+     */
+     public function editProductAction(Request $request, $id)
+     {
+ 
+       $page = 'products';
+ 
+         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+         $product = $repository->findOneBy(array('id' => $id));
+         $form = $this->get('form.factory')->create('CommerceBundle\Form\ProductType', $product);
+         if ($form->handleRequest($request)->isValid()) {
+             $em = $this->getDoctrine()->getManager();
+             $em->persist($product);
+             $em->flush();
+             $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+             return $this->redirect($this->generateUrl('products'));
+         }
+ 
+         return $this->render('AdminBundle:Default:editProduct.html.twig', array(
+             'product' => $product,
+             'page' => $page,
+             'form' => $form->createView()
+ 
+ 
+         ));
+     }
+ 
 }

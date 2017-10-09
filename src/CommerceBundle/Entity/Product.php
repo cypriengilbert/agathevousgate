@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="product")
  * @ORM\Entity(repositoryClass="CommerceBundle\Repository\ProductRepository")
+  * @Vich\Uploadable
  */
 class Product
 {
@@ -38,6 +39,14 @@ class Product
      */
     private $price;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="productTime", type="float")
+     */
+     private $productTime;
+
+     
     /**
      * @var string
      *
@@ -67,7 +76,7 @@ class Product
          *
          * @var File
          */
-        private $productFile;
+        public $productFile;
 
         /**
          * @ORM\Column(type="string", length=255)
@@ -292,5 +301,29 @@ class Product
     public function getIsStock()
     {
         return $this->isStock;
+    }
+
+    /**
+     * Set productTime
+     *
+     * @param float $productTime
+     *
+     * @return Product
+     */
+    public function setProductTime($productTime)
+    {
+        $this->productTime = $productTime;
+
+        return $this;
+    }
+
+    /**
+     * Get productTime
+     *
+     * @return float
+     */
+    public function getProductTime()
+    {
+        return $this->productTime;
     }
 }

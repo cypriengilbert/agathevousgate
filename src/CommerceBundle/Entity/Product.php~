@@ -39,6 +39,14 @@ class Product
     private $price;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="productTime", type="float")
+     */
+     private $productTime;
+
+     
+    /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
@@ -268,5 +276,29 @@ class Product
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set isStock
+     *
+     * @param boolean $isStock
+     *
+     * @return Product
+     */
+    public function setIsStock($isStock)
+    {
+        $this->isStock = $isStock;
+
+        return $this;
+    }
+
+    /**
+     * Get isStock
+     *
+     * @return boolean
+     */
+    public function getIsStock()
+    {
+        return $this->isStock;
     }
 }
