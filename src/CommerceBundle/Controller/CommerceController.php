@@ -295,6 +295,10 @@ class CommerceController extends Controller
                 $AddedProductByProduct[$product->getCartName()] = $this->getProductAdded($listeAddedProductParents, $product);
                 
             }
+            $delaiProd = 0;
+            foreach ($listeAddedProduct as $value) {
+                $delaiProd += ($value->getProduct()->getProductTime() * $value->getQuantity());
+            }
           
 
 
@@ -352,6 +356,7 @@ class CommerceController extends Controller
             'AddedProductByProduct' => $AddedProductByProduct,
             'AddedProductByProduct_Child' => $AddedProductByProduct_Child,
             'discountAuto' => $discount_valid,
+            'delaiProd' => $delaiProd,
         ));
         }
         else{

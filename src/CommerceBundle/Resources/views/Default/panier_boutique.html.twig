@@ -253,8 +253,16 @@ window.location = route;
                         </div>
                 </div>
                 </div>
+                
                 <div class="col-md-4">
+                <div class="row">
+                        <div class="col-md-12 text-center" >
+                        Temps de prodution estimé : {% if delaiProd < 8 %} Moins d'une journée {% else %}entre {{(delaiProd/8)|round(0, 'floor')}} et {{(delaiProd/8)|round(0, 'ceil')}} jours{% endif %} 
+                        </div>
+                        </div>
+                        <div class="row">
                      <div class="col-md-12"  style="border:1px solid #A94141">
+                        
                         <div class="row">
                            <div class="col-xs-7 " style="">
                               <p></p>
@@ -345,6 +353,8 @@ window.location = route;
                         </div>
                         <div class="col-md-3">
                         </div>
+                        
+                     </div>
                      </div>
                   </div>
                </div>

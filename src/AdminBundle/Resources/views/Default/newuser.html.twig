@@ -15,7 +15,15 @@
         });
     });
 </script>
-
+{% if error != null %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-danger" role="alert" style="font-size:20px;">
+           {{ error }}    
+       </div>
+      </div>
+</div>
+ {% endif %}
 <div class="mdl-grid demo-content">
 <div><h4>Nouvel utilisateur</h4></div>
   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">

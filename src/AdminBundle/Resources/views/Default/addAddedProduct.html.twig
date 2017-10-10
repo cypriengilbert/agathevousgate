@@ -14,130 +14,93 @@
 
 
 
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Ajout produit </h4>
+            <p class="category">
+              Dans commande n°{{id}}
+            </p>
+          </div>          
+        </div>
+    </div>
+	<div class="content">
+        {{ form_start(form, {'attr': { 'class': '' } }) }}
+            <div class="mdl-cell mdl-cell--12-col">
+	            <div class="row">
+		            <div class="col-md-4">
+                        <div class="form-group" >
+                            {{ form_label(form.product, "Produit", {'label_attr': {'class': '', 'id': 'dropdown_product' }}) }}
+                            {{ form_errors(form.product) }}
+                            {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {{ form_label(form.size, "Taille", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.size) }}
+                            {{ form_widget(form.size, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                     <div class="col-md-4">
+                        <div class="form-group" >
+                            {{ form_label(form.accessoire, "Accessoire", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.accessoire) }}
+                            {{ form_widget(form.accessoire, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
 
-<div class="mdl-grid demo-content">
-<div class="mdl-cell mdl-cell--12-col mdl-grid" style="height:60%; padding:20px;">
-<div class="mdl-cell mdl-cell--4-col">
-</div>
-<div style="height:130%" class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-<center>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" >
+                            {{ form_label(form.quantity, "Quantité", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.quantity) }}
+                            {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                
+                    
+                    <div class="col-md-4">
+                        <div class="form-group" id="color1" style="display:none">
+                            {{ form_label(form.color1, "Couleur Exterieure", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.color1) }}
+                            {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="color2" style="display:none">
+                            {{ form_label(form.color2, "Couleur intérieure", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.color2) }}
+                            {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group" id="color3" style="display:none">
+                            {{ form_label(form.color3, "Couleur milieu", {'label_attr': {'class': ''}}) }}
+                            {{ form_errors(form.color3) }}
+                            {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-4">      
+                        <input type="submit" value="Ajouter ce produit" class="btn btn-primary" style="margin-bottom:20px" />
+                    </div>
+                    <div class="col-md-4">      
+                        <a href="{{ path('encours') }}"><input value="Commande terminée " class="btn btn-primary" /></a><br>
+                       <span style="color:#b0b0b0; font-size:10px;"> *(n'ajoute pas le produit en cours)</span>
+                    </div>
+                </div>
 
-<div style="padding-bottom:20px;"><h5>Ajouter une commande</h5></div>
-
-{{ form_start(form, {'attr': { 'class': '' } }) }}
-
-<div class="form-group" >
-    {{ form_label(form.product, "Produit", {'label_attr': {'class': '', 'id': 'dropdown_product' }}) }}
-    {{ form_errors(form.product) }}
-    {{ form_widget(form.product, {'attr': {'class': 'form-control', 'id': 'dropdown_product', 'onchange': 'hide()'}}) }}
-
-</div>
-
-<div class="form-group" >
-    {{ form_label(form.accessoire, "Accessoire", {'label_attr': {'class': 'radio'}}) }}
-    {{ form_errors(form.accessoire) }}
-    {{ form_widget(form.accessoire, {'attr': {'class': ''}}) }}
-
-</div>
-
-
-<div class="form-group" >
-    {{ form_label(form.quantity, "Quantité", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.quantity) }}
-    {{ form_widget(form.quantity, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-<div class="form-group">
-    {{ form_label(form.size, "Taille", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.size) }}
-    {{ form_widget(form.size, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-
-<div class="form-group" id="color1" style="display:none">
-    {{ form_label(form.color1, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color1) }}
-    {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color2" style="display:none">
-    {{ form_label(form.color2, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color2) }}
-    {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color3" style="display:none">
-    {{ form_label(form.color3, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color3) }}
-    {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color4" style="display:none">
-    {{ form_label(form.color4, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color4) }}
-    {{ form_widget(form.color4, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color5" style="display:none">
-    {{ form_label(form.color5, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color5) }}
-    {{ form_widget(form.color5, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color6" style="display:none">
-    {{ form_label(form.color6, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color6) }}
-    {{ form_widget(form.color6, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-
-<div class="form-group" id="color7" style="display:none">
-    {{ form_label(form.color7, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color7) }}
-    {{ form_widget(form.color7, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-<div class="form-group" id="color8" style="display:none">
-    {{ form_label(form.color8, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color8) }}
-    {{ form_widget(form.color8, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-
-<div class="form-group" id="color9" style="display:none">
-    {{ form_label(form.color9, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color9) }}
-    {{ form_widget(form.color9, {'attr': {'class': 'form-control'}}) }}
-
-</div>
-
-
-
-<div class="form-group" id="color10" style="display:none">
-    {{ form_label(form.color10, "color", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.color10) }}
-    {{ form_widget(form.color10, {'attr': {'class': 'form-control'}}) }}
-
-</div>
+                {{ form_end(form) }}
 
 
 
@@ -146,11 +109,21 @@
 
 
 
-<div>
-        <input type="submit" value="Enregistrer" class="btn btn-primary" style="margin-bottom:20px" />
-      <a href="{{ path('encours') }}"><input value="Terminer" class="btn btn-primary" /></a>
-</div>
-{{ form_end(form) }}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </div>
 <div class="mdl-cell mdl-cell--4-col">

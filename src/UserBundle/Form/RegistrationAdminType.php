@@ -24,7 +24,6 @@ class RegistrationAdminType extends AbstractType
         $builder
             ->add('nom')
             ->add('prenom')
-          
             ->add('genre', ChoiceType::class, array(
             'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
             ->add('adress', new UserAdressType());

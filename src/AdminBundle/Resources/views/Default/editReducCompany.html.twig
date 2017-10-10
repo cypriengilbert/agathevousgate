@@ -10,34 +10,43 @@
 
 
 
-<div class="mdl-grid demo-content">
 
-<div class="mdl-cell mdl-cell--12-col mdl-grid" style="padding:20px;">
-<div class="mdl-cell mdl-cell--4-col">
-</div>
-<div class="demo-graphs mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--4-col">
-<center>
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="title">Activation compte pro</h4>
+                        <p class="category">
+                        Validation réduction
+                        </p>
+                    </div>          
+                </div>
+            </div>
+        
+            <div class="content">
+                {{ form_start(form, {'attr': { 'class': '' } }) }}
 
-<div style="padding-bottom:20px;"><h5>Valider le montant de la réduction par défaut</h5></div>
-{{ form_start(form, {'attr': { 'class': '' } }) }}
+                <div class="form-group">
+                    {{ form_label(form.reductionGeneric, "En pourcentage", {'label_attr': {'class': ''}}) }}
+                    {{ form_errors(form.reductionGeneric) }}
+                    {{ form_widget(form.reductionGeneric, {'attr': {'class': 'form-control'}}) }}
 
-<div class="form-group">
-    {{ form_label(form.reductionGeneric, "En pourcentage", {'label_attr': {'class': ''}}) }}
-    {{ form_errors(form.reductionGeneric) }}
-    {{ form_widget(form.reductionGeneric, {'attr': {'class': 'form-control'}}) }}
+                </div>
 
-</div>
+                <div>
+                        <input type="submit" value="Valider l'activation du compte pro" class="btn btn-primary" />
+                </div>
+                {{ form_end(form) }}
 
-<div>
-        <input type="submit" value="Valider l'activation du compte pro" class="btn btn-primary" />
-</div>
-{{ form_end(form) }}
-
-
-</center>
-</div>
-<div class=" mdl-cell mdl-cell--4-col">
-</div>
+            </div>
+        </div>
+    </div>
+     <div class="col-md-4">
+    </div>
 </div>
 
 

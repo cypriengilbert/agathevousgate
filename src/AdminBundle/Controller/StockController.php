@@ -79,7 +79,8 @@ class StockController extends Controller
         $producer = new Producer();
       }
       $producer->setActive(true);
-     
+      $em = $this->getDoctrine()->getManager();
+      
       $user->setIsPro(4);
       $producer->setUser($user);
       $em->persist($user);

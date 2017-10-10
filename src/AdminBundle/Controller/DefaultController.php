@@ -20,7 +20,7 @@ use UserBundle\Form\CompanyAllType;
 use Stripe\HttpClient;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -64,7 +64,7 @@ class DefaultController extends Controller
         
 
         if ($session->get('datein') === null) {
-            $referenceDate = date('01-01-Y');
+            $referenceDate = date('01-m-Y');
             $datein = new \DateTime($referenceDate);
             $dateinN1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 year")));
             $dateinM1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 month")));
@@ -817,10 +817,10 @@ class DefaultController extends Controller
         $newCommande->setIsValid(false);
         $newCommande->setIsPanier(false);
         $newCommande->setPrice(0);
-        $datetime = new \Datetime('now');
-        $newCommande->setDate($datetime);
+      
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addCommandeType', $newCommande);
         if ($form->handleRequest($request)->isValid()) {
+            $newCommande->setTransportCost(0);
             $em = $this->getDoctrine()->getManager();
             $em->persist($newCommande);
             $em->flush();
@@ -1034,6 +1034,7 @@ class DefaultController extends Controller
             'listeCommande' => $listeCommande,
             'listeProduct' => $listeProduct,
             'page' => $page,
+            'id' => $id,
 
 
 
@@ -1867,7 +1868,7 @@ class DefaultController extends Controller
             return $this->render('AdminBundle:Default:editReducCompany.html.twig', array(
                 'user' => $user,
                 'page' => $page,
-               // 'form' => $form->createView(),
+               'form' => $form->createView(),
 
             ));
 
@@ -2132,24 +2133,36 @@ class DefaultController extends Controller
       $page = 'users';
 
         $user = new User();
-$user->setParrainage(0);
+        $user->setParrainage(0);
         $form = $this->get('form.factory')->create('UserBundle\Form\RegistrationAdminType', $user);
         $form->submit($request);
         if ($form->isValid()) {
+            $user->setUsername($user->getEmail());
+            $datetime = new \Datetime('now');
+            $user->setSignup($datetime);
             $userManager = $this->get('fos_user.user_manager');
             $exists      = $userManager->findUserBy(array(
                 'email' => $user->getEmail()
             ));
             if ($exists instanceof User) {
-                throw new HttpException(409, 'Email already taken');
+                return $this->render('AdminBundle:Default:newuser.html.twig', array(
+                    'form' => $form->createView(),
+                    'page' => $page,
+                    'error' => 'Email déjà utilisé',
+                ));
             }
 
             $userManager->updateUser($user);
+
+            return $this->redirect($this->generateUrl('userView', array(
+                'id' => $user->getId(),
+            )));
         }
 
         return $this->render('AdminBundle:Default:newuser.html.twig', array(
             'form' => $form->createView(),
             'page' => $page,
+            'error' => null,
 
 
 

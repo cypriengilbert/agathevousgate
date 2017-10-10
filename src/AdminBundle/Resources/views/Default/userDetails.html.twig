@@ -87,30 +87,24 @@
 
 
                                   {% if user.isPro == 2 %}
-                                  <a href="{{path('settouser', {'id': user.id })}}">
+                                 
 
-                                   <button type="submit" class="btn btn-danger btn-fill pull-left">Supprimer le statut Boutique</button></a>
+                                   <a href="{{path('settouser', {'id': user.id })}}" class="btn btn-danger btn-fill pull-left">Supprimer le statut Boutique</a>
                                    {% elseif user.isPro == 3 %}
-                                    <a href="{{path('settopro', {'id': user.id })}}">
-
-                                    <button type="submit" class="btn btn-warning  btn-fill pull-left">Valider le statut Boutique</button>
-                                     </a>
+                                   
+                                    <a href="{{path('settopro', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left">Valider le statut Boutique</a>
                                     {% elseif user.isPro == 4 %}
-                                    <a href="{{path('settouser', {'id': user.id })}}">
+                                    
 
-                                    <button type="submit" class="btn btn-warning  btn-fill pull-left">Desactiver le statut producteur</button>
-                                     </a>
+                                    <a href="{{path('settouser', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left">Desactiver le statut producteur</a>
+                                    
                                      {% else %}
-                                    <a href="{{path('newProducer', {'id': user.id })}}">
 
-                                    <button type="submit" class="btn btn-warning  btn-fill pull-left">Activer le statut producteur</button>
-                                    </a>
-                                    <a href="{{path('settopro', {'id': user.id })}}">
-                                    <button type="submit" class="btn btn-warning  btn-fill pull-left">Activer le statut Boutique</button>
+                                    <a href="{{path('newProducer', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left">Activer le statut producteur</a> 
+                                   {# <a href="{{path('settopro', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left" style="margin-left:10px;">Activer le statut Boutique</a>#}
 
-                                     </a>
                                    {% endif %}
-                                   <a href="{{ path('desactiveuser', { 'id' : user.id }) }}"> {% if user.enabled == 1 %}<button type="submit" style="margin-left:10px;" class="btn btn-primary  btn-fill pull-left">Désactiver l'utilisateur</button> {% else %} <button type="submit" style="margin-left:10px;" class="btn btn-primary  btn-fill pull-left">Activer l'utilisateur</button> {% endif %}</a>
+                                   {% if user.enabled == 1 %}<a href="{{ path('desactiveuser', { 'id' : user.id }) }} style="margin-left:20px;" class="btn btn-primary  btn-fill pull-left">Désactiver l'utilisateur</a> {% else %} <a href="{{ path('desactiveuser', { 'id' : user.id }) }} style="margin-left:20px;" class="btn btn-primary  btn-fill pull-left">Activer l'utilisateur</a> {% endif %}
 
 
                                     <button type="submit" class="btn btn-info btn-fill pull-right">Mettre à jour</button>

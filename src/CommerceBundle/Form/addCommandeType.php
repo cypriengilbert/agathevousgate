@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class addCommandeType extends AbstractType
 {
@@ -24,15 +25,14 @@ class addCommandeType extends AbstractType
         'Chèque' => 'Chèque',
         'Carte bancaire' => 'Carte bancaire'
     ),))
-            ->add('transportMethod', ChoiceType::class, array(
-    'choices'  => array(
-        'La Poste' =>  'La Poste',
-        'Chronopost' => 'Chronopost',
-        'Fedex' => 'Fedex',
-        'DHL' => 'DHL',
-        'Sur place' => 'Sur place'
-    ),))
+    ->add('transportMethod', EntityType::class , array(
+        'class' => 'CommerceBundle:ModeLivraison',
+        'choice_label' => 'description',
+
+
+    ))
             ->add('client')
+            ->add('date', 'date')
         ;
     }
 

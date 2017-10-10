@@ -55,7 +55,7 @@
        </thead>
 
        <tbody>
-            {% for commande in listeCommande %}
+            {% for commande in listeCommande|reverse %}
             {% if commande.AtelierLivraison %}
             {% if (commande.AtelierLivraison.franchise == app.user or is_granted('ROLE_SUPER_ADMIN')) %}
                 <tr>

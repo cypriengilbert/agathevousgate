@@ -42,48 +42,7 @@ class addAddedProductType extends AbstractType
 
 
    	))
-      ->add('color4', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-      ->add('color5', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-      ->add('color6', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-      ->add('color7', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-      ->add('color8', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-    ->add('color9', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
-      ->add('color10', EntityType::class , array(
-   		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
-      'required'    => false,
-
-   	))
+     
       ->add('product', EntityType::class , array(
    		'placeholder' => 'Choose an option',
    		'class' => 'CommerceBundle:Product',
@@ -102,7 +61,6 @@ class addAddedProductType extends AbstractType
           'Standard' => 'Standard',
       ),
     ))
-    ->add('save', SubmitType::class, array('label' => 'Ajouter au Panier')); //here is the problem
 
 
 
