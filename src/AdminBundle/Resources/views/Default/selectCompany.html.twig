@@ -1,0 +1,140 @@
+{% extends 'templateadmin.html.twig' %}
+
+
+
+{% block script_calcul %}
+
+{% endblock %}
+
+{% block body %}
+
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                {#<div class="col-md-4">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Choisir une boutique existante</h4>
+                                <p class="category"></p>
+                            </div>
+                            <div class="content">
+                                <div class="table-full-width">
+                                    <table class="table">
+                                        <tbody>
+                                          {% for company in companies %}
+                                            <tr>
+                                                
+                                                <td>Boutique n°{{company.id}}</td>
+                                                <td>{{company.name}}</td>
+                                                <td class="td-actions text-right">
+                                                    <a href="{{ path('setBoutique', {'id':user.id, 'id_boutique' : company.id})}}"><button class="btn btn-success btn-fill">Selectionner</button></a>
+                                                    
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>#}
+                    <div class="col-md-12">
+
+                     
+                         <div class="card">
+                            <div class="header">
+                                <h4 class="title">Créer une nouvelle boutique</h4>
+                                <p class="category"></p>
+                            </div>
+                            <div class="content">
+                                {{ form_start(form, {'attr': { 'class': '' } }) }}
+                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.name, "Nom de la boutique", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.name) }}
+                                                {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.siren, "SIREN", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.siren) }}
+                                                {{ form_widget(form.siren, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.reductionGeneric, "Reduction (en pourcentage)", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.reductionGeneric) }}
+                                                {{ form_widget(form.reductionGeneric, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.adressBilling.adress, "Adresse de facturation", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.adressBilling.adress) }}
+                                                {{ form_widget(form.adressBilling.adress, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                {{ form_label(form.adressBilling.adressMore, "Adresse suite ", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.adressBilling.adressMore) }}
+                                                {{ form_widget(form.adressBilling.adressMore, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.adressBilling.zipcode, "Code postal", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.adressBilling.zipcode) }}
+                                                {{ form_widget(form.adressBilling.zipcode, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                {{ form_label(form.adressBilling.city, "Code postal", {'label_attr': {'class': ''}}) }}
+                                                {{ form_errors(form.adressBilling.city) }}
+                                                {{ form_widget(form.adressBilling.city, {'attr': {'class': 'form-control'}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <div>
+                                                <input type="submit" value="Créer la boutique" class="btn btn-primary text-right" />
+                                            </div>
+                                        </div>
+                                    </div>
+                               {{ form_end(form) }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+
+
+
+
+
+{% endblock %}
+
+{% block script_chart %}
+
+{% endblock %}

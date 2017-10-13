@@ -26,6 +26,9 @@ class addCommandeType extends AbstractType
         'Carte bancaire' => 'Carte bancaire'
     ),))
     ->add('transportMethod', EntityType::class , array(
+        'placeholder' => 'Livraison ?',
+        'required'   => false,
+        
         'class' => 'CommerceBundle:ModeLivraison',
         'choice_label' => 'description',
 

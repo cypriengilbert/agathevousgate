@@ -91,6 +91,12 @@ class CodePromo
     */
     private $productAuto2;
 
+           /**
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Product")
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $productAuto3;
+
 
         /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
@@ -103,6 +109,12 @@ class CodePromo
     * @ORM\JoinColumn(nullable=true)
     */
     private $collectionAuto2;
+
+            /**
+    * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection")
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $collectionAuto3;
 
       /**
      * @var integer
@@ -117,6 +129,13 @@ class CodePromo
      * @ORM\Column(name="quantity_min2", type="integer", nullable=true)
      */
      private $quantityMin2;
+
+           /**
+     * @var integer
+     *
+     * @ORM\Column(name="quantity_min3", type="integer", nullable=true)
+     */
+     private $quantityMin3;
      
     
 
@@ -417,5 +436,101 @@ class CodePromo
     public function getCollectionAuto2()
     {
         return $this->collectionAuto2;
+    }
+
+    /**
+     * Set quantityMin1
+     *
+     * @param integer $quantityMin1
+     *
+     * @return CodePromo
+     */
+    public function setQuantityMin1($quantityMin1)
+    {
+        $this->quantityMin1 = $quantityMin1;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityMin1
+     *
+     * @return integer
+     */
+    public function getQuantityMin1()
+    {
+        return $this->quantityMin1;
+    }
+
+    /**
+     * Set quantityMin2
+     *
+     * @param integer $quantityMin2
+     *
+     * @return CodePromo
+     */
+    public function setQuantityMin2($quantityMin2)
+    {
+        $this->quantityMin2 = $quantityMin2;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityMin2
+     *
+     * @return integer
+     */
+    public function getQuantityMin2()
+    {
+        return $this->quantityMin2;
+    }
+
+    /**
+     * Set quantityMin3
+     *
+     * @param integer $quantityMin3
+     *
+     * @return CodePromo
+     */
+    public function setQuantityMin3($quantityMin3)
+    {
+        $this->quantityMin3 = $quantityMin3;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityMin3
+     *
+     * @return integer
+     */
+    public function getQuantityMin3()
+    {
+        return $this->quantityMin3;
+    }
+
+    /**
+     * Set collectionAuto3
+     *
+     * @param \CommerceBundle\Entity\Collection $collectionAuto3
+     *
+     * @return CodePromo
+     */
+    public function setCollectionAuto3(\CommerceBundle\Entity\Collection $collectionAuto3 = null)
+    {
+        $this->collectionAuto3 = $collectionAuto3;
+
+        return $this;
+    }
+
+    /**
+     * Get collectionAuto3
+     *
+     * @return \CommerceBundle\Entity\Collection
+     */
+    public function getCollectionAuto3()
+    {
+        return $this->collectionAuto3;
     }
 }

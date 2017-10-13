@@ -1,85 +1,121 @@
 {% extends 'templateadmin.html.twig' %}
-
-
-
 {% block script_calcul %}
-
 {% endblock %}
-
 {% block body %}
-
-
 <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                                                <div class="header">
-
-                                        <div class="row">
-                    <div class="col-md-6">        
-
-                                <h4 class="title">Couleurs</h4>
-                                <p class="category">Toutes collections confondues</p>
-                                </div>
-                                <div class="col-md-6">        
-
-                                <a href="{{ path('newColor') }}"><button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right">
-  <i class="material-icons">nouveau</i>
-</button></a>
-                                </div>
-                                </div>
-                            </div>
-
-
-  <div class="content table-responsive table-full-width">
-  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
-  <thead>
-           <tr>
-           <th width=5%>ID</th>
-          <th width=5%>Nom</th>
-           <th width=15%>Description</th>
-           <th width=25% >Statut</th>
-           <th width=10%>Action</th>
-           </tr>
-       </thead>
-
-       <tbody>
-{% for color in colors %}
-                <tr>
-                  <td>{{ color.id }}</td>
-                  <td>{{ color.name }}</td>
-                  <td>  <img src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></td>
-                  <td>
-                    {% if color.isactive == true %}
-                    <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
-                    {% else %}
-                  <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
-                    {% endif %}
-                  </td>
-                  <td>
-                  {% if color.isactive == true %}
-                  <a href="{{ path('deactivateColor', {'id': color.id }) }}">désactiver</a>
-                  {% else %}
-                  <a href="{{ path('activateColor',{'id': color.id }) }}">activer</a>
-                  {% endif %}
-                  - <a href="{{ path('editColor',{'id': color.id }) }}">Modifier</a>
-                  </td>
-
-                </tr>
-      {% endfor %}
-
-
-       </tbody>
-  </table>
-
-  </div>
-
-
+   <div class="col-md-12">
+      <div class="card">
+         <div class="header">
+            <div class="row">
+               <div class="col-md-6">
+                  <h4 class="title">Couleurs</h4>
+                  <p class="category">Toutes collections confondues</p>
+               </div>
+               <div class="col-md-6">        
+                  <a href="{{ path('newColor') }}"><button style="text-transform:uppercase" class="btn btn-info btn-fill pull-right">
+                  <i class="material-icons">nouveau</i>
+                  </button></a>
+               </div>
+            </div>
+         </div>
+         <div class="content table-responsive table-full-width">
+            <ul role="tablist" class="nav nav-tabs">
+            <li role="presentation" class="active">
+                  <a href="#Basic" data-toggle="tab">Basique</a>
+               </li>
+               {% for collection in collections %}
+               <li role="presentation" class="">
+                  <a href="#{{collection.title}}" data-toggle="tab">{{collection.title}}</a>
+               </li>
+               {% endfor %}
+               
+            </ul>
+            <div class="tab-content">
+               <div id="Basic" class="tab-pane active">
+                  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+                     <thead>
+                        <tr>
+                           <th width=5%>ID</th>
+                           <th width=5% data-sortable="true">Nom</th>
+                           <th width=15%>Description</th>
+                           <th width=25% data-sortable="true" >Statut</th>
+                           <th width=10%>Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for color in colors %}
+                       
+                        <tr>
+                           <td>{{ color.id }}</td>
+                           <td>{{ color.namepublic }}</td>
+                           <td>  <img src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
+                              {% else %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
+                              {% endif %}
+                           </td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <a href="{{ path('deactivateColor', {'id': color.id }) }}">désactiver</a>
+                              {% else %}
+                              <a href="{{ path('activateColor',{'id': color.id }) }}">activer</a>
+                              {% endif %}
+                              - <a href="{{ path('editColor',{'id': color.id }) }}">Modifier</a>
+                           </td>
+                        </tr>
+                      
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+               {% for collection in collections %}
+               <div id="{{collection.title}}" class="tab-pane">
+                  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+                     <thead>
+                        <tr>
+                           <th width=5%>ID</th>
+                           <th width=5% data-sortable="true">Nom</th>
+                           <th width=15%>Description</th>
+                           <th width=25% data-sortable="true" >Statut</th>
+                           <th width=10%>Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for color in collection.colors %}
+                        {% if color.IsBasic == false %}
+                        <tr>
+                           <td>{{ color.id }}</td>
+                           <td>{{ color.namepublic }}</td>
+                           <td>  <img src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
+                              {% else %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
+                              {% endif %}
+                           </td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <a href="{{ path('deactivateColor', {'id': color.id }) }}">désactiver</a>
+                              {% else %}
+                              <a href="{{ path('activateColor',{'id': color.id }) }}">activer</a>
+                              {% endif %}
+                              - <a href="{{ path('editColor',{'id': color.id }) }}">Modifier</a>
+                           </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
-</div>
-</div>
-
 {% endblock %}
-
 {% block script_chart %}
-
 {% endblock %}

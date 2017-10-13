@@ -52,6 +52,7 @@ class CodePromoType extends AbstractType
            'expanded' => false,
             'required' => false,
      ))
+
      ->add('collectionAuto1', EntityType::class, array(
         'class' => 'CommerceBundle:Collection',
         'choice_label' => 'title',

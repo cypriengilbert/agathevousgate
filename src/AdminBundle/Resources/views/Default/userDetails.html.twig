@@ -101,7 +101,7 @@
                                      {% else %}
 
                                     <a href="{{path('newProducer', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left">Activer le statut producteur</a> 
-                                   {# <a href="{{path('settopro', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left" style="margin-left:10px;">Activer le statut Boutique</a>#}
+                                    <a href="{{path('selectBoutique', {'id': user.id })}}" class="btn btn-warning  btn-fill pull-left" style="margin-left:10px;">Activer le statut Boutique</a>
 
                                    {% endif %}
                                    {% if user.enabled == 1 %}<a href="{{ path('desactiveuser', { 'id' : user.id }) }} style="margin-left:20px;" class="btn btn-primary  btn-fill pull-left">Désactiver l'utilisateur</a> {% else %} <a href="{{ path('desactiveuser', { 'id' : user.id }) }} style="margin-left:20px;" class="btn btn-primary  btn-fill pull-left">Activer l'utilisateur</a> {% endif %}

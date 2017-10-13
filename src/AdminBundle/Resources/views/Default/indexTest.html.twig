@@ -1,16 +1,32 @@
 {% extends 'templateadmin.html.twig' %}
 {% block body %}
-
+<script>
+</script>
 <div class="row">
   <div class="col-md-12">
     <div class="card">
       <div class="header">
         <div class="row">
-          <div class="col-md-5">
+        <div class="col-md-3 text-left">
+             <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1d')">- 1 jour</button>
+
+           <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1w')">- 1 semaine</button>
+            <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1m')">- 1 mois</button>
+
+          </div>
+          
+          <div class="col-md-3 text-left">
            Date de début
           </div>
-          <div class="col-md-5">
+          <div class="col-md-2 text-left">
            Date de fin 
+          </div>
+          <div class="col-md-4 text-right">
+             <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1d')">+ 1 jour</button>
+
+           <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1w')">+1 semaine</button>
+            <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1m')">+1 mois</button>
+
           </div>
         </div>
       </div>
@@ -356,6 +372,40 @@
         <div class="row">
             <div class="col-md-12">
                 <div id="chart_by_day" class="ct-chart "></div>
+            </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="row">
+            <div class="col-md-12">
+                <h6>Légende</h6>
+                <span class="label label-info">Pro</span>
+                <span class="label label-danger">Particulier</span>
+                <span class="label label-warning">Cumulé</span>
+
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+<div class="row">
+ <div class="col-md-12">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Commandes par jour</h4>
+            <p class="category">
+              Montant
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="chart_by_month" class="ct-chart "></div>
             </div>
         </div>
       </div>
@@ -744,6 +794,8 @@
           </div>
     <script src="{{ asset('admin/assets/js/moment.min.js')}}"></script>
 
+<script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}" ></script>
+
     <script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
     <script src="{{ asset('admin/assets/js/fullcalendar.min.js')}}"></script>
     <script src="{{ asset('admin/assets/js/chartist.min.js')}}"></script>
@@ -758,6 +810,7 @@
 <script>
 
 $('#date_in').datetimepicker({
+   
     icons: {
         time: "fa fa-clock-o",
         date: "fa fa-calendar",
@@ -826,9 +879,11 @@ $('#date_out_compare').datetimepicker({
 
 });
 </script>
+
+
 <script>
 
-var dataSales = {
+/*var dataSales = {
 
   labels: [{% set total=0 %}{% for ca in listeCommande %}'{{ ca.date|date("d-m") }}'{% if loop.last == false %},{% endif %}{% endfor %}],
 
@@ -843,27 +898,78 @@ var dataSales = {
             
         ]
 
+};*/
+
+var dataSales = {
+
+  labels: [{% set total=0 %}{% for key, amount in order_amount %}'{{ key }}'{% if loop.last == false %},{% endif %}{% endfor %}],
+
+  series: [
+
+            [{% for key, amount in order_amount_pro %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% for key, amount in order_amount_part %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% for key, amount in order_amount %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+            
+            
+        ]
+
 };
 
+var dataSales_month = {
 
+  labels: [{% set total=0 %}{% for key, amount in order_amount_month %}'{{ key }}'{% if loop.last == false %},{% endif %}{% endfor %}],
+
+  series: [
+
+            [{% for key, amount in order_amount_month_pro %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% for key, amount in order_amount_month_part %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+
+            [{% for key, amount in order_amount_month %}{{ amount }}{% if loop.last == false %},{% endif %}{% endfor %}],
+            
+            
+        ]
+
+};
 
 var optionsSales = {
 
-  lineSmooth: false,
+seriesBarDistance: 10,
+axisX: {
 
-  axisY: {
+        showGrid: false
 
-    offset: 40
-
-  },
-
-  low: 0
+    }
 
 };
 
+var responsiveOptions = [
+
+  ['screen and (max-width: 640px)', {
+
+    seriesBarDistance: 5,
+
+    axisX: {
+
+      labelInterpolationFnc: function (value) {
+
+        return value[0];
+
+      }
+
+    }
+
+  }]
+
+];
 
 
-Chartist.Line('#chart_by_day', dataSales, optionsSales);
+
+
+Chartist.Bar('#chart_by_day', dataSales, optionsSales, responsiveOptions);
+Chartist.Bar('#chart_by_month', dataSales_month, optionsSales, responsiveOptions);
 
 
 
@@ -996,6 +1102,89 @@ Chartist.Pie('#chartPie_category', {
             
             docu
           }
+        </script>
+        <script>
+        function addDate(duration){
+          var boutique = document.getElementById('filtre_boutique').value;
+            if(boutique == ''){
+              boutique = 'Choisir une boutique';
+            }
+                        filtre = {% if app.session.get('filtre') is null %}'all'{% else %}'{{ app.session.get('filtre')}}'{% endif%};
+
+          datein = document.getElementById('date_in').value;
+            dateout = document.getElementById('date_out').value;
+            datein_compare = document.getElementById('date_in_compare').value;
+            dateout_compare = document.getElementById('date_out_compare').value;
+            datein_compare = moment(datein_compare, 'Do MMMM YYYY');
+            dateout_compare = moment(dateout_compare, 'Do MMMM YYYY');
+            datein = moment(datein, 'Do MMMM YYYY');
+            dateout = moment(dateout, 'Do MMMM YYYY');
+
+            if(duration == 'p1d'){
+              datein = datein.add(1, 'day'); 
+              dateout = dateout.add(1, 'day'); 
+              datein_compare = datein_compare.add(1, 'day'); 
+              dateout_compare = dateout_compare.add(1, 'day'); 
+
+            }
+            else if(duration == 'p1w'){
+              datein = datein.add(1, 'week'); 
+              dateout = dateout.add(1, 'week'); 
+              datein_compare = datein_compare.add(1, 'week'); 
+              dateout_compare = dateout_compare.add(1, 'week'); 
+            }
+            else if(duration == 'p1m'){
+              datein = datein.add(1, 'month'); 
+              dateout = dateout.add(1, 'month'); 
+              datein_compare = datein_compare.add(1, 'month'); 
+              dateout_compare = dateout_compare.add(1, 'month'); 
+            }
+
+            else if(duration == 'm1d'){
+              datein = datein.subtract(1, 'day'); 
+              dateout = dateout.subtract(1, 'day'); 
+              datein_compare = datein_compare.subtract(1, 'day'); 
+              dateout_compare = dateout_compare.subtract(1, 'day'); 
+
+                        }
+            else if(duration == 'm1w'){
+              datein = datein.subtract(1, 'week'); 
+              dateout = dateout.subtract(1, 'week'); 
+              datein_compare = datein_compare.subtract(1, 'week'); 
+              dateout_compare = dateout_compare.subtract(1, 'week'); 
+            }
+            else if(duration == 'm1m'){
+ datein = datein.subtract(1, 'month'); 
+              dateout = dateout.subtract(1, 'month'); 
+              datein_compare = datein_compare.subtract(1, 'month'); 
+              dateout_compare = dateout_compare.subtract(1, 'month'); 
+            }
+            
+
+
+            datein = datein.format('YYYY-MM-DD');
+            dateout = dateout.format('YYYY-MM-DD');
+            datein_compare = datein_compare.format('YYYY-MM-DD');
+            dateout_compare = dateout_compare.format('YYYY-MM-DD');
+
+           
+            if(datein_compare == "Invalid date" || dateout_compare == "Invalid date"){
+              datein_compare = null;
+              dateout_compare = null;
+            }
+
+            var route = "{{ path('setFiltre', {'in': 'DATEIN', 'out' : 'DATEOUT', 'filtre' : 'FILTRE', 'in_compare': 'DATEINCOMPARE', 'out_compare' : 'DATEOUTCOMPARE', 'boutique' : 'BOUTIQUE'}) }}";
+            route = route.replace("DATEIN", datein);
+            route = route.replace("DATEOUT", dateout);
+            route = route.replace("DATEINCOMPARE", datein_compare);
+            route = route.replace("DATEOUTCOMPARE", dateout_compare);
+            route = route.replace("FILTRE", filtre);
+            route = route.replace("BOUTIQUE", boutique);
+
+            window.location.href = route;
+
+
+        }
         </script>
         <script>
         if($(".selectpicker").length != 0){

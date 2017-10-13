@@ -180,7 +180,7 @@ public function listeProducerAction()
     $colors = $this->getAll('Color');
     $stocks = $this->getAll('Stock');
 
-    return $this->render('AdminBundle:Default:stock.html.twig', array(
+    return $this->render('AdminBundle:Default:Stock.html.twig', array(
       'page' => $page,
       'products' => $products,
       'colors' => $colors,

@@ -31,7 +31,7 @@ class Company
       /**
      * @var string
      *
-     * @ORM\Column(name="stripeSource", type="string", length=255, unique=false)
+     * @ORM\Column(name="stripeSource", type="string", length=255, unique=false, nullable=true)
      */
      private $stripeSource;
 
@@ -60,6 +60,12 @@ class Company
       * @ORM\OneToMany(targetEntity="BoutiqueBundle\Entity\Payout", mappedBy="payout")
       */
       private $payouts;
+
+         /**
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\UserAdress", cascade={"persist"})
+      * @ORM\JoinColumn(nullable=false)
+      */
+     private $adressBilling;
 
  
     /**

@@ -86,7 +86,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Adress</label>
+                                                <label>Adresse de livraison</label>
                                                 <input type="text" class="form-control" placeholder="Home Address" disabled value="{{user.adress.adress}}">
                                             </div>
                                         </div>
@@ -114,6 +114,41 @@
                                             <div class="form-group">
                                                 <label>Code postal</label>
                                                 <input type="number" class="form-control"  disabled value="{{user.adress.zipcode}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Adresse de facturation</label>
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{user.company.adressBilling.adress}}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if user.adress.adressMore %}
+                                     <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Adresse (suite)</label>
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{ user.company.adressBilling.adressMore }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Ville</label>
+                                                <input type="text" class="form-control" placeholder="City"  disabled value="{{user.company.adressBilling.city}}">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Code postal</label>
+                                                <input type="number" class="form-control"  disabled value="{{user.company.adressBilling.zipcode}}">
                                             </div>
                                         </div>
                                     </div>

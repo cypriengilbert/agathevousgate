@@ -15,6 +15,7 @@ use CommerceBundle\Entity\Product;
 use CommerceBundle\Controller\SessionController;
 use Symfony\Component\HttpFoundation\Request;
 use Stripe\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
 
 
 
@@ -334,6 +335,7 @@ class CommerceController extends Controller
 
         $this->setTemporaryPrice();
         $discount_valid = $this->getVoucherAuto($listeAddedProduct);
+       
         
 
         if($this->get('security.authorization_checker')->isGranted('ROLE_USER') and $this->container->get('security.context')->getToken()->getUser()->getIsPro() == 2){
@@ -3446,6 +3448,7 @@ private function getVoucherAuto($listeAddedProduct){
     ));
     $is_product1_cart = false;
     $is_product2_cart = false;
+    $is_product3_cart = false;
     $discount_valid = new CodePromo();
     foreach ($auto_discounts as $discount) {
         foreach ($listeAddedProduct as $addedProduct) {
@@ -3478,9 +3481,10 @@ private function getVoucherAuto($listeAddedProduct){
                 elseif($discount->getProductAuto2() == null){
                     $is_product2_cart = true;
                 }
+                
         }
 
-        if ($is_product1_cart == true && $is_product2_cart == true) {
+        if ($is_product1_cart == true && $is_product2_cart == true ) {
             $discount_valid = $discount;
         }
     }

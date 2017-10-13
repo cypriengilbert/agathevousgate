@@ -31,7 +31,8 @@
         "stripe/stripe-php": "3.4.0",
         "paymentsuite/stripe-bundle": "^2.0",
         "cosenary/instagram": "^2.3",
-        "royopa/fpdf-symfony2": "^2.0"
+        "royopa/fpdf-symfony2": "^2.0",
+        "stinger/momentjs-bundle": "~2.10"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

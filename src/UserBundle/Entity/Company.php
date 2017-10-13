@@ -31,7 +31,7 @@ class Company
       /**
      * @var string
      *
-     * @ORM\Column(name="stripeSource", type="string", length=255, unique=false)
+     * @ORM\Column(name="stripeSource", type="string", length=255, unique=false, nullable=true)
      */
      private $stripeSource;
 
@@ -60,6 +60,12 @@ class Company
       * @ORM\OneToMany(targetEntity="BoutiqueBundle\Entity\Payout", mappedBy="payout")
       */
       private $payouts;
+
+         /**
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\UserAdress", cascade={"persist"})
+      * @ORM\JoinColumn(nullable=false)
+      */
+     private $adressBilling;
 
  
     /**
@@ -231,5 +237,29 @@ class Company
     public function getStripeSource()
     {
         return $this->stripeSource;
+    }
+
+    /**
+     * Set adressBilling
+     *
+     * @param \UserBundle\Entity\UserAdress $adressBilling
+     *
+     * @return Company
+     */
+    public function setAdressBilling(\UserBundle\Entity\UserAdress $adressBilling)
+    {
+        $this->adressBilling = $adressBilling;
+
+        return $this;
+    }
+
+    /**
+     * Get adressBilling
+     *
+     * @return \UserBundle\Entity\UserAdress
+     */
+    public function getAdressBilling()
+    {
+        return $this->adressBilling;
     }
 }

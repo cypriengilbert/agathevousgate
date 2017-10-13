@@ -15,6 +15,7 @@ use CommerceBundle\Entity\CodePromo;
 use CommerceBundle\Entity\defined_product;
 use CommerceBundle\Entity\ProDiscount;
 use UserBundle\Entity\User;
+use UserBundle\Entity\Company;
 use UserBundle\Form\RegistrationType;
 use UserBundle\Form\CompanyAllType;
 use Stripe\HttpClient;
@@ -41,8 +42,7 @@ class DefaultController extends Controller
     {
         $page = 'dashboard';
         $session = $request->getSession();
-       
-        
+    
         $repository = $this->getDoctrine()->getRepository('UserBundle:Company');
         $boutique = $repository->findOneBy(array('name' => $session->get('boutique')));
         
@@ -57,40 +57,62 @@ class DefaultController extends Controller
        
        
         $dateout = $session->get('dateout');
+        $datein = $session->get('datein');
         $filtre = $session->get('filtre');
-       
-        $datein_compare = $session->get('datein_compare');
-        $dateout_compare = $session->get('dateout_compare');
-        
 
         if ($session->get('datein') === null) {
             $referenceDate = date('01-m-Y');
             $datein = new \DateTime($referenceDate);
             $dateinN1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 year")));
             $dateinM1 = new \DateTime(date('d-m-Y', strtotime($datein->format('Y-m-d'). "- 1 month")));
+            $datein_date = $datein;
             
            
         } else {
+
             $datein = $session->get('datein');
+            $datein_date = new \DateTime($datein);
             $dateinN1 = date('Y-m-d', strtotime($datein. "- 1 year"));
             $dateinM1 = date('Y-m-d', strtotime($datein. "- 1 month"));
             
-            
-
         }
 
         if ($session->get('dateout') === null) {
             $dateout = new \Datetime('now');
             $dateoutN1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 year")));
             $dateoutM1 = new \DateTime(date('d-m-Y', strtotime($dateout->format('Y-m-d'). "- 1 month")));
-            
+            $dateout_date = $dateout;
             
         } else {
 
             $dateout = $session->get('dateout');
+            $dateout_date = new \DateTime($dateout);
             $dateoutN1 = date('Y-m-d', strtotime($dateout. "- 1 year"));
             $dateoutM1 = date('Y-m-d', strtotime($dateout. "- 1 month"));
         }
+
+
+
+
+
+        $datein_compare = $session->get('datein_compare');
+        $dateout_compare = $session->get('dateout_compare');
+        
+
+
+
+        if ($session->get('datein_compare') === null) {
+       
+        $datein_compare_date = new \DateTime($datein_compare);
+        }
+        
+        if ($session->get('dateout_compare') === null) {
+        $dateout_compare_date = new \DateTime($dateout_compare);
+        }
+        
+        
+
+        
        
                 
         $repository = $this->getDoctrine()->getRepository('CommerceBundle:Commande');
@@ -219,7 +241,13 @@ class DefaultController extends Controller
         $nbEnvoi_size_compare['5000'] = 0;
         $delaiEnvoi_size_compare['10000'] = array();
         $nbEnvoi_size_compare['10000'] = 0;
-
+        $order_amount = [];
+        $order_amount_month = [];
+        $order_amount_month_pro = [];
+        $order_amount_month_part = [];
+        $order_amount_compare = [];
+        $order_amount_pro = [];
+        $order_amount_part = [];
 
         foreach
         ($listeCommandeN1 as $commande) {
@@ -266,14 +294,56 @@ class DefaultController extends Controller
             }
         }
         
+        for ($i = $datein_date;$i <= $dateout_date; $i->modify('+ 1day')){
+            
+                $order_amount[$i->format('d-m-Y')] = 0; 
+                $order_amount_pro[$i->format('d-m-Y')] = 0; 
+                $order_amount_part[$i->format('d-m-Y')] = 0; 
+                $order_amount_compare[$i->format('d-m-Y')] = 0;
+                $order_amount_month[$i->format('m-Y')] = 0;
+                $order_amount_month_pro[$i->format('m-Y')] = 0;
+                $order_amount_month_part[$i->format('m-Y')] = 0;
+                
+        }
+        
+        if ($session->get('datein') === null) {
+            $referenceDate = date('01-m-Y');
+            $datein = new \DateTime($referenceDate);
+            
+           
+        }
+
+        $datein_compare = $session->get('datein_compare');
+        $dateout_compare = $session->get('dateout_compare');
+        
 
         foreach
          ($listeCommande as $commande) {
             $totalCommande = $totalCommande + $commande->getPrice();
             $customer = $commande->getClient();
             $yearCustomer = $customer->getNaissance()->format("Y");
-
+            $date_order = $commande->getDate()->format("d-m-Y");
             $age = date("Y") - $yearCustomer;
+            $date_formatted = new \DateTime($date_order);
+            if(isset($order_amount[$date_order])){
+                $order_amount_compare[$date_order] += $commande->getPrice(); 
+                $order_amount_month[$date_formatted->format('m-Y')] += $commande->getPrice();
+                $order_amount[$date_order] += $commande->getPrice(); 
+                if($customer->getIsPro() == 2){
+                    $order_amount_pro[$date_order] += $commande->getPrice();
+                    $order_amount_month_pro[$date_formatted->format('m-Y')] += $commande->getPrice();
+                    
+                }
+                else{
+                    $order_amount_part[$date_order] += $commande->getPrice(); 
+                    $order_amount_month_part[$date_formatted->format('m-Y')] += $commande->getPrice();
+                }
+                
+            }
+            else{
+                $order_amount[$date_order] = $commande->getPrice(); 
+            }
+            
             if($age < 20 ){
                 $nbCommande_Age['020'] = $nbCommande_Age['020'] + 1;
             }
@@ -339,6 +409,7 @@ class DefaultController extends Controller
             
         }
 
+        
         if($nbCommande != 0){
             $nbCommande_part = (($nbCommande-$nbCommande_pro)/$nbCommande)*100;
             $nbCommande_pro = ($nbCommande_pro/$nbCommande)*100;
@@ -498,7 +569,6 @@ class DefaultController extends Controller
     
 
 
-      
 
         return $this->render('AdminBundle:Default:indexTest.html.twig', array(
             'listeAddedProducts' => $listeAddedProduct,
@@ -544,6 +614,13 @@ class DefaultController extends Controller
             'companies' => $listeBoutique,
             'delaiEnvoi_size_compare' => $delaiEnvoi_size_compare,
             'delaiEnvoi_size' => $delaiEnvoi_size,
+            'order_amount' => $order_amount,
+            'order_amount_compare' => $order_amount_compare,
+            'order_amount_pro' => $order_amount_pro,
+            'order_amount_part' => $order_amount_part,
+            'order_amount_month' => $order_amount_month,
+            'order_amount_month_pro' => $order_amount_month_pro,
+            'order_amount_month_part' => $order_amount_month_part
            // 'test' => $test
 
         ));
@@ -627,7 +704,7 @@ class DefaultController extends Controller
             )));
         }
 
-        return $this->render('AdminBundle:Default:commande.html.twig', array(
+        return $this->render('AdminBundle:Default:Commande.html.twig', array(
             'commande' => $Commande,
             'form' => $form->createView(),
             'page' => $page,
@@ -800,7 +877,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/s/add", name="add")
+     * @Route("/s/order/new", name="add")
      */
 
     public function addCommandeAction(Request $request)
@@ -1254,11 +1331,15 @@ class DefaultController extends Controller
 
       $page = 'color';
 
+        $colors = [];
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-        $color      = $repository->findAll();
-
+        $color      = $repository->findBy(array('isBasic' => 1));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $collections      = $repository->findAll();
+       
         return $this->render('AdminBundle:Default:listecolor.html.twig', array(
             'colors' => $color,
+            'collections' => $collections,
             'page' => $page,
 
         ));
@@ -1981,6 +2062,88 @@ class DefaultController extends Controller
 
 
     /**
+     * @Route("/s/set/boutique/select/{id}", name="selectBoutique")
+     */
+     public function selectBoutiqueAction($id, Request $request)
+     {
+       $page = 'users';
+ 
+         
+         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+         $User       = $repository->findOneBy(array(
+             'id' => $id
+         ));
+ 
+        
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:Company');
+        $companies = $repository->findAll();
+
+        $newCompany = new Company();
+
+        $form = $this->get('form.factory')->create('UserBundle\Form\CompanyAdminType', $newCompany);
+        
+                if ($form->handleRequest($request)->isValid()) {
+                    $newCompany->setIsMonthly(false);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newCompany);
+                    $em->flush();
+                    $User->setIsPro(2);
+                    $User->setRoles(array(
+                        'ROLE_USER'
+                    ));
+                    $User->setCompany($newCompany);
+                    $em->persist($User);
+                    $em->flush();
+                    $request->getSession()->getFlashBag()->add('notice', 'Company bien enregistrée.');
+        
+        
+                    return $this->redirect($this->generateUrl('companiesView', array('id' => $User->getId())));
+        
+                }
+
+       
+         return $this->render('AdminBundle:Default:selectCompany.html.twig', array(
+             'companies' => $companies,
+             'page' => $page,
+             'user' => $User,
+             'form' => $form->createView(),
+         ));
+ 
+     }
+
+      /**
+     * @Route("/s/set/boutique/{id}/{id_boutique}", name="setBoutique")
+     */
+     public function setBoutiqueAction($id, $id_boutique, Request $request)
+     {
+       $page = 'users';
+ 
+         
+         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+         $User       = $repository->findOneBy(array(
+             'id' => $id
+         ));
+         $repository = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+         $company       = $repository->findOneBy(array(
+             'id' => $id_boutique
+         ));
+ 
+         $User->setIsPro(2);
+         $User->setRoles(array(
+             'ROLE_USER'
+         ));
+         $User->setCompany($company);
+         $em->persist($User);
+         $em->flush();
+
+        
+       
+         return $this->redirect($this->generateUrl('companiesView', array('id' => $User->getId())));
+         
+ 
+     }
+    /**
      * @Route("/s/setToPro/{id}", name="settopro")
      */
     public function setToProAction($id, Request $request)
@@ -2125,7 +2288,7 @@ class DefaultController extends Controller
 
     }
     /**
-     * @Route("/s/newUser", name="newuser")
+     * @Route("/s/new/User", name="newuser")
      */
     public function newUserAction(Request $request)
     {
@@ -2134,10 +2297,11 @@ class DefaultController extends Controller
 
         $user = new User();
         $user->setParrainage(0);
+        $user->setUsername($user->getEmail());
         $form = $this->get('form.factory')->create('UserBundle\Form\RegistrationAdminType', $user);
         $form->submit($request);
         if ($form->isValid()) {
-            $user->setUsername($user->getEmail());
+            
             $datetime = new \Datetime('now');
             $user->setSignup($datetime);
             $userManager = $this->get('fos_user.user_manager');

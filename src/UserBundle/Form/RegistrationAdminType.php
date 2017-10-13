@@ -33,7 +33,6 @@ class RegistrationAdminType extends AbstractType
         {
             return 'FOS\UserBundle\Form\Type\RegistrationFormType';
 
-
         }
 
         public function getBlockPrefix()
