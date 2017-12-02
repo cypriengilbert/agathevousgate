@@ -4,7 +4,9 @@
 {% if listeCommande %}
 
 
-{% for liste in listeCommande %}
+{% for liste in listeCommande|reverse %}
+        {% if liste.paiementMethod != "Prelevement" %}
+
 
 <div class="panel panel-info">
     <div class="panel-heading"><h3 class="panel-title">Commande #{{ liste.id }} du {{ liste.date|date("d/m/Y")}} - <a href="{{path('commandedetails', {'id': liste.id} )}}">Voir les détails <i class="fa fa-download" aria-hidden="true"></i>
@@ -16,6 +18,7 @@
 
     </div>
 </div>
+{% endif %}
 {% endfor %}
 
 

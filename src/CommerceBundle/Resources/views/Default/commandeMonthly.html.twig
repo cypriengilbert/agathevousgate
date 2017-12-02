@@ -1,0 +1,27 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+{% if listeCommandeDone %}
+    {% for payout in payouts|reverse %}
+            <div class="panel panel-info">
+                 <div class="panel-heading">
+                    <h3 class="panel-title">{{ payout.month|date(payout.month ~ '-' ~ payout.month ~ '-01') |date('F') }} {{  payout.year}} - <a href="{{ path('monthlyInvoice',{'id_user': user.id, 'annee':payout.year, 'mois': payout.month}) }}"> Télécharger la facture <i class="fa fa-download" aria-hidden="true"></i></h3>
+                 </div>
+            <div class="panel-body">
+                {% for commande in payout.commandes %}
+                   
+                        {{ commande.date|date("d/m/Y")}} - Commande {{ commande.id}}  -  <a href="{{path('commandedetails', {'id': commande.id} )}}">Voir le détail <i class="fa fa-eye" aria-hidden="true"></i></a><br>
+                        {% if commande.transportmethod %}
+                            {{ commande.transportmethod.name }}<br>
+                        {% else %}retrait en atelier<br>
+                        {% endif %}
+
+                    
+                {% endfor %}
+                </div>
+                 </div>
+    {% endfor %} 
+  
+{% else %}
+    <div class="alert alert-info" role="alert">Vous n'avez pas encore fait de commande</div>
+{% endif %}

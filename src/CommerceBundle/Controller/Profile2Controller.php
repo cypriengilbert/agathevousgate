@@ -132,6 +132,14 @@ if ($formAdress->handleRequest($request)->isValid()) {
 
 
 }
+if($user->getCompany() !== null ){
+    $repository    = $this->getDoctrine()->getManager()->getRepository('BoutiqueBundle:Payout');
+    $payouts = $repository->findBy(array('company' => $user->getCompany()));
+}
+else{
+    $payouts = null;
+}
+
 
         return $this->render('CommerceBundle:Default:show2.html.twig', array(
             'user' => $user,
@@ -142,7 +150,8 @@ if ($formAdress->handleRequest($request)->isValid()) {
             'collection' => $collectionActive,
             'form' => $form->createView(),
             'formAdress' => $formAdress->createView(),
-            'formPassword' => $formPassword->createView()
+            'formPassword' => $formPassword->createView(),
+            'payouts' => $payouts
 
         ));
     }
@@ -162,6 +171,7 @@ if ($formAdress->handleRequest($request)->isValid()) {
       $detailcommande  = $repository->findBy(array('commande' => $id, 'client' => $id_user));
       $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
       $Commandeencours = $repository->findOneBy(array('id' => $id, 'client' => $id_user));
+
       $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
       $minLivraison     = $repository->findOneBy(array(
           'name' => 'Livraison'
@@ -181,7 +191,7 @@ if ($formAdress->handleRequest($request)->isValid()) {
           'commande' => $Commandeencours,
       'minLivraison' => $minLivraison,
       'coutLivraison' => $coutLivraison,
-      'tva' => $tva
+      'tva' => $tva,
       ));
     }
 

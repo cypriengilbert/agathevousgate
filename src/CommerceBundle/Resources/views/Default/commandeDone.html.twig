@@ -2,7 +2,8 @@
 
 
 {% if listeCommandeDone %}
-    {% for liste in listeCommandeDone %}
+    {% for liste in listeCommandeDone|reverse %}
+        {% if liste.paiementMethod != "Prelevement" %}
 
         <div class="panel panel-info">
 
@@ -11,11 +12,12 @@
             </div>
             <div class="panel-body">
 
-                {{ liste.date|date("m/d/Y")}}
+                {{ liste.date|date("d/m/Y")}}
                 {% if liste.transportmethod %}{{ liste.transportmethod.name }}{% else %}retrait en atelier{% endif %}
 
             </div>
         </div>
+        {% endif %}
     {% endfor %}
 {% else %}
     <div class="alert alert-info" role="alert">Vous n'avez pas encore fait de commande</div>

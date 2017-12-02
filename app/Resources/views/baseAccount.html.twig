@@ -50,8 +50,12 @@
                 <a onClick="viewDone()"  > <i class="fa fa-check-circle" aria-hidden="true" style="margin-right:10px;cursor:pointer" id="logo_done"></i></a>
                   <a onClick="viewDone()" class="details_menu_account"> Commandes terminées</a>
                </div>
+               <div style="margin-bottom:15px;">
+                <a onClick="viewMonthly()"  > <i class="fa fa-check-circle" aria-hidden="true" style="margin-right:10px;cursor:pointer" id="logo_monthly"></i></a>
+                  <a onClick="viewMonthly()" class="details_menu_account"> Factures Mensuelles</a>
+               </div>
             </div>
-            <div class="col-md-8" style=" padding:20px; min-height:200px" >
+            <div class="col-md-8" style=" padding:20px; height:460px; overflow:scroll" >
                <div id="div_info">
                   <div style="margin-left:20px" >
                 <center>     <h3>Informations personnelles </h3></center>
@@ -84,6 +88,13 @@
                   <div style="margin-left:20px" >
                      <center><h3>Commandes terminées </h3></center>
                      {% block commandedone %}
+                    {% endblock %}
+                  </div>
+               </div>
+               <div style="display:none" id="div_monthly">
+                  <div style="margin-left:20px" >
+                     <center><h3>Factures mensuelles </h3></center>
+                     {% block monthly %}
                     {% endblock %}
                   </div>
                </div>
@@ -125,6 +136,8 @@
           document.getElementById('logo_encours').style.color='black';
           document.getElementById('logo_done').style.color='black';
           document.getElementById('logo_adresse').style.color='black'
+          document.getElementById('div_monthly').style.display='none';
+            document.getElementById('logo_monthly').style.color='black';
       }
       function viewMdp() {
           document.getElementById('div_info').style.display='none';
@@ -137,6 +150,8 @@
           document.getElementById('logo_encours').style.color='black';
           document.getElementById('logo_done').style.color='black';
           document.getElementById('logo_adresse').style.color='black';
+          document.getElementById('div_monthly').style.display='none';
+            document.getElementById('logo_monthly').style.color='black';
       }
       function viewEncours() {
           document.getElementById('div_info').style.display='none';
@@ -149,6 +164,8 @@
           document.getElementById('logo_encours').style.color='#A94141';
           document.getElementById('logo_done').style.color='black';
           document.getElementById('logo_adresse').style.color='black';
+          document.getElementById('div_monthly').style.display='none';
+            document.getElementById('logo_monthly').style.color='black';
       }
       function viewDone() {
           document.getElementById('div_info').style.display='none';
@@ -161,6 +178,8 @@
           document.getElementById('logo_encours').style.color='black';
           document.getElementById('logo_done').style.color='#A94141';
           document.getElementById('logo_adresse').style.color='black';
+          document.getElementById('div_monthly').style.display='none';
+            document.getElementById('logo_monthly').style.color='black';
       }
       function viewAdresse() {
           document.getElementById('div_info').style.display='none';
@@ -173,6 +192,23 @@
           document.getElementById('logo_encours').style.color='black';
           document.getElementById('logo_done').style.color='black';
           document.getElementById('logo_adresse').style.color='#A94141';
+          document.getElementById('div_monthly').style.display='none';
+            document.getElementById('logo_monthly').style.color='black';
+      }
+
+      function viewMonthly() {
+          document.getElementById('div_info').style.display='none';
+          document.getElementById('div_mdp').style.display='none';
+          document.getElementById('div_encours').style.display='none';
+          document.getElementById('div_adresse').style.display='none';
+          document.getElementById('div_monthly').style.display='block';
+            document.getElementById('logo_monthly').style.color='#A94141';
+          document.getElementById('div_done').style.display='none';
+          document.getElementById('logo_info').style.color='black';
+          document.getElementById('logo_mdp').style.color='black';
+          document.getElementById('logo_encours').style.color='black';
+          document.getElementById('logo_done').style.color='black';
+          document.getElementById('logo_adresse').style.color='black';
       }
 
 

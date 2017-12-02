@@ -2571,7 +2571,7 @@ class DefaultController extends Controller
     }
 
      /**
-     * @Route("/s/edit/{id}", name="editProduct")
+     * @Route("/s/product/edit/{id}", name="editProduct")
      */
      public function editProductAction(Request $request, $id)
      {

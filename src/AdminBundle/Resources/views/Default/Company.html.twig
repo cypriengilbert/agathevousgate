@@ -179,10 +179,11 @@
                                 <div class="table-full-width">
                                     <table class="table">
                                         <tbody>
-                                          {% for commande in commandes %}
+                                          {% for commande in commandes|reverse %}
                                             <tr>
                                                 
                                                 <td>Commande n°{{commande.id}} du {{commande.date|date("d-m-Y") }}</td>
+                                              <td> {% if commande.paiementMethod == "Prelevement" %} <a href="{{ path('monthlyInvoice',{'id_user': user.id, 'annee':commande.date|date("Y"), 'mois': commande.date|date("m")}) }}"><button class="btn btn-success btn-xs btn-fill">Factu mensuelle</button></a>{% endif %}</td>
                                                 <td class="td-actions text-right">
                                                     <a href="{{ path('commande', {'id': commande.id })}}"><button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Voir la commnde">
                                                         <i class="fa fa-edit"></i>
@@ -307,7 +308,11 @@
                                                         <a href="{{ path('debitStore', {'id' : payout.id }) }}"><button class="btn btn-warning btn-fill">Prélever</button></a>
                                                     {% elseif (payout.isPayed == 3 or payout.isPayed == 0 ) and ("now"|date("Y") > payout.date|date("Y")) %}
                                                         <a href="{{ path('debitStore', {'id' : payout.id }) }}"><button class="btn btn-warning btn-fill">Prélever</button></a>
+                                                    {% else %}
+                                                    <a href="{{ path('monthlyInvoice',{'id_user': user.id, 'annee':payout.year, 'mois': payout.month}) }}"><button class="btn btn-success btn-xs btn-fill">Factu mensuelle</button></a>
+
                                                     {% endif %} 
+                                                    
                                                 </td>
                                             </tr>
                                             {% endfor %}

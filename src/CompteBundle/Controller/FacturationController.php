@@ -49,7 +49,7 @@ class FacturationController extends Controller
 
     /**
 
-     * @Route("/generatefactu/{id}", name="facture")
+     * @Route("/facture/{id}", name="facture")
      */
     public function factuAction($id)
     {
@@ -65,24 +65,102 @@ class FacturationController extends Controller
           $commande = $repository->findOneBy(array('id' => $id));
           $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
           $tva = $repository->findOneBy(array('name' => 'tva'))->getMontant();
+          $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+          $refunds = $repository->findBy(array('order' => $commande));
         }
           else{
         $listeAddedProduct = null;
           }
         if($commande->getClient() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-          $content = $this->renderView('CommerceBundle:Default:test.html.twig', array('user'=>$commande->getClient(),'tva' => $tva, 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande));
-          $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
+          $content = $this->renderView('CommerceBundle:Default:facture.html.twig', array('user'=>$commande->getClient(),'tva' => $tva, 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande, 'refunds' => $refunds));
+         $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
           $html2pdf->pdf->SetDisplayMode('real');
           $html2pdf->writeHTML($content);
           $content = $html2pdf->Output('facture.pdf', 'D');
           return new Response();
-
         }
         else {
           throw new NotFoundHttpException(sprintf('Accès refusé'));
         }
 
    }
+
+   /**
+
+     * @Route("/facture/{id_user}/{annee}/{mois}", name="monthlyInvoice")
+     */
+     public function monthlyInvoiceAction($id_user, $annee, $mois)
+     {
+         if (TRUE === $this->get('security.authorization_checker')->isGranted(
+           'ROLE_USER'
+           )) {
+           $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+           $user = $repository->findOneBy(array('id' => $id_user));
+
+           $referenceDate = date($annee.'-'.$mois.'-01');
+           
+           $datein = new \DateTime($referenceDate);
+           if($mois == 12){
+             $mois = 01;
+             $annee += 1;
+           }
+           else{
+            $mois += 1;
+           }
+           
+           $referenceDate = date($annee.'-'.$mois.'-01');
+           $dateout = new \DateTime($referenceDate);
+           $dateout = $dateout->format('Y-m-d');
+           
+           $datein = $datein->format('Y-m-d');
+           
+           $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+           $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date < :dateout')->setParameter('dateout', $dateout)->andwhere('a.paiementMethod = :Prelevement')->setParameter('Prelevement', 'Prelevement')->andWhere('a.isPanier = 0')->orderBy('a.date', 'ASC');
+           $listeCommande = $query->getQuery()->getResult();
+           $listeAddedProduct = [];
+           $listeRefunds = [];
+           foreach ($listeCommande as $commande) {
+            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $listeProduct = $repository->findBy(array('commande' => $commande));
+            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+            $refunds = $repository->findBy(array('order' => $commande));
+            array_push($listeAddedProduct, $listeProduct);
+            foreach ($refunds as $value) {
+              array_push($listeRefunds, $value);            }
+           
+           }
+           $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+           $tva = $repository->findOneBy(array('name' => 'tva'))->getMontant();
+           
+           if($mois == 1){
+            $mois = 12;
+            $annee -= 1;
+          }
+          else{
+           $mois -= 1;
+          }
+         }
+           else{
+         $listeAddedProduct = null;
+           }
+
+           
+         if( $this->container->get('security.context')->getToken()->getUser() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+          $content = $this->renderView('CommerceBundle:Default:monthlyInvoice.html.twig', array('mois' => $mois, 'annee' => $annee, 'user'=>$user,'tva' => $tva, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commandes' => $listeCommande, 'refunds' => $listeRefunds));
+           
+
+           $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
+           $html2pdf->pdf->SetDisplayMode('real');
+           $html2pdf->writeHTML($content);
+           $content = $html2pdf->Output('facture'.$mois.$annee.'.pdf', 'D');
+           return new Response();
+ 
+         }
+         else {
+           throw new NotFoundHttpException(sprintf('Accès refusé'));
+         }
+ 
+    }
 
 
 
