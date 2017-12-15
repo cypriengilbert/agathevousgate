@@ -178,6 +178,7 @@ background-color:#EEEEEE;
     height:40px;
     border-radius:20px;
     margin-top:30px;
+    width:200px;
   }
   .productName{
     min-height:50px;
@@ -359,15 +360,25 @@ background-color:#EEEEEE;
       
           {% if collection1 is null %}
          <option> Couleurs unies</option>
+        
          {% for collectionList in allCollection %}
+         {% for company in collectionList.companies %}
+         {% if company == user.company %}
           <option>{{ collectionList.title }}</option>  
+          {% endif %}
+           {% endfor %}
           {% endfor %}
           {% else %}
+          <option>Couleurs unies</option>
           <option>Collection {{ collection1.title }} </option>
           {% for collectionList in allCollection %}
+           {% for company in collectionList.companies %}
+         {% if company == user.company %}
           <option>{{ collectionList.title }}</option>  
+          {% endif %}
+           {% endfor %}
           {% endfor %}
-          <option>Couleurs unies</option>
+          
            {% endif %}
 
       </select>
@@ -534,7 +545,7 @@ background-color:#EEEEEE;
     {% endfor %}
     </div>
     <div class="col-sm-2 no_padding">
-    <div class="validate_cart_button  text-center" onclick="addtocart()" style="position:fixed; width:200px" >
+    <div class="validate_cart_button  text-center" onclick="addtocart()" style="" >
                <p style=""><span class="glyphicon glyphicon-shopping-cart"></span> Ajouter <span id='nb_item_pending'></span> </p>
           </div>
     </div>

@@ -357,7 +357,6 @@ class DefaultController extends Controller
           $cartArray = json_decode($cart);
           foreach ($cartArray as $line) {
             if($line[2] == 0){
-
             }
             else{
                 $oldProduct = null;

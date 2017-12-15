@@ -418,7 +418,7 @@ class PayoutController extends Controller
 
             try {
                 $charge = \Stripe\Charge::create(array(
-                "amount" => round($payout->getAmount()*100, 2),
+                "amount" => round($payout->getAmount(), 2)*100,
                 "currency" => "eur",
                 "customer" => $user->getStripeCustomer(),
                 "source" => $payout->getCompany()->getStripeSource(),
@@ -429,7 +429,7 @@ class PayoutController extends Controller
             }
 
 
-            $payout->setStripeId($charge["id"]);
+            $payout->setStripeId($charge["id"]); 
             $payout->setIsPayed(1);
             $em = $this->getDoctrine()->getManager();
             $em->persist($payout);

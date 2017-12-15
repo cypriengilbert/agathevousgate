@@ -94,13 +94,13 @@ td    { vertical-align: top; }
             <td style='width: 12%; text-align: left'>{{ listepanier.product.cartname }}</td>
             <td style='width: 52%; text-align: left'>
             {% if listepanier.Color1 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
             {% endif %}
             {% if listepanier.Color2 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
             {% endif %}
             {% if listepanier.Color3 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
             {% endif %}
             </td>
             <td style='width: 13%; text-align: right'>{{ listepanier.price }}</td>
@@ -148,7 +148,7 @@ td    { vertical-align: top; }
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
-            <th style='width: 87%; text-align: right;'>Dont TVA {{tva}}% </th>
+            <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
             <th style='width: 13%; text-align: right;'>{{ (totalsum + commande.transportCost - commande.remise - refundTotal) * (tva/100) }}€</th>
         </tr>
     </table>

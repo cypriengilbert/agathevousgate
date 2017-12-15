@@ -28,17 +28,21 @@ class addAddedProductType extends AbstractType
 
       ->add('color1', EntityType::class , array(
    		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
+           'choice_label' => 'name',
+           'required' => false
 		))
       ->add('color2', EntityType::class , array(
    		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
+           'choice_label' => 'name',
+           
+           'required' => false
 
 
    	))
       ->add('color3', EntityType::class , array(
    		'class' => 'CommerceBundle:Color',
-   		'choice_label' => 'name',
+           'choice_label' => 'name',
+           'required' => false
 
 
    	))
@@ -46,13 +50,15 @@ class addAddedProductType extends AbstractType
       ->add('product', EntityType::class , array(
    		'placeholder' => 'Choose an option',
    		'class' => 'CommerceBundle:Product',
-   		'choice_label' => 'name',
+           'choice_label' => 'name',
+           'required' => false
 
    	))
       ->add('accessoire', EntityType::class , array(
    		'placeholder' => 'Choose an option',
    		'class' => 'CommerceBundle:Accessoire',
-   		'choice_label' => 'name',
+           'choice_label' => 'name',
+           'required' => false,
    		'multiple' => false
    	))
     ->add('size', ChoiceType::class , array(

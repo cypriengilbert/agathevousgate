@@ -7,27 +7,29 @@
     <div class="card">
       <div class="header">
         <div class="row">
-        <div class="col-md-3 text-left">
-             <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1d')">- 1 jour</button>
+        <div class="col-md-6 text-left">
+             <span onclick="addDate('m1m')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-prev"></i> </span>
+             <span onclick="addDate('m1w')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-angle-left-circle"></i> </span>
+             <span onclick="addDate('m1d')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-angle-left"></i> </span>
 
-           <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1w')">- 1 semaine</button>
-            <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('m1m')">- 1 mois</button>
-
+         
           </div>
-          
-          <div class="col-md-3 text-left">
+          <div class="col-md-6 text-right">
+           <span onclick="addDate('p1d')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-angle-right"></i> </span>
+             <span onclick="addDate('p1w')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-angle-right-circle"></i> </span>
+             <span onclick="addDate('p1m')"><i  style="font-size:30px;cursor:pointer" class="pe-7s-next"></i> </span>
+            
+          </div>
+        </div>
+        <div class="row">
+       
+          <div class="col-md-6 text-left">
            Date de début
           </div>
-          <div class="col-md-2 text-left">
+          <div class="col-md-6 text-left">
            Date de fin 
           </div>
-          <div class="col-md-4 text-right">
-             <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1d')">+ 1 jour</button>
-
-           <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1w')">+1 semaine</button>
-            <button class="btn btn-primary btn-fill" id="validate_date_button" onclick="addDate('p1m')">+1 mois</button>
-
-          </div>
+         
         </div>
       </div>
       <div class="content">
@@ -794,7 +796,6 @@
           </div>
     <script src="{{ asset('admin/assets/js/moment.min.js')}}"></script>
 
-<script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}" ></script>
 
     <script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
     <script src="{{ asset('admin/assets/js/fullcalendar.min.js')}}"></script>

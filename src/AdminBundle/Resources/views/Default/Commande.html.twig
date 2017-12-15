@@ -93,12 +93,41 @@
                      
                          
                     </div>
+                    <script src={{ asset('/js/clipboard.js-master/dist/clipboard.min.js' ) }}></script>
+                    <script>
+                    var clipboard = new Clipboard('.btn_copy');
+                    clipboard.on('success', function(e) {
+                        color = Math.floor((Math.random() * 4) + 1);
+                        $.notify({
+                            icon: "pe-7s-copy-file",
+                            message: "Adresse bien copiée"
+                        },{
+                            type: "success",
+                            timer: 200,
+                            placement: {
+                                from: 'top',
+                                align: 'center'
+                            }
+                        });
+                                            
+                    });
+
+                    </script>
+
+                    <!-- button to trigger the action -->
+
+
+                    
+
                     <div class="col-md-8">
                       <div class="row">
                       <div class="col-md-12">
                       <div class="card">
+
+
+
                             <div class="header">
-                                <h4 class="title">Client </h4> <a href="{{path('userView', {'id': commande.client.id })}}"><button class="btn btn-primary" >Voir </button></a>
+                                <h4 class="title">Client </h4> <a href="{{path('userView', {'id': commande.client.id })}}"><button class="btn btn-primary" >Voir </button></a><button style="margin-left:20px;" class="btn btn-primary btn_copy" data-clipboard-action="copy" data-clipboard-target="#foo"> Copier les info de livraison </button>
                             </div>
                             <div class="content">
                                 <form>
@@ -209,8 +238,8 @@
                                           <th width=5% >Quantité</th>
                                           <th width=30%>Produit</th>
                                           <th width=25%>Accessoire</th>
-                                          <th width=7%> Couleur Exterieur </th>
-                                          <th width=7%> Couleur Milieu </th>
+                                          <th width=7%> Couleur Arrière </th>
+                                          <th width=7%> Couleur Avant </th>
                                           <th width=7%> Couleur Attache </th>
                                           <th width=7%> Couleur 4 </th>
                                           <th width=7%> Couleur 5 </th>
@@ -356,7 +385,12 @@
 
 
   </div>
+<textarea id="foo" style="height:0px;width:0px;">
+{{commande.client.prenom}} {{commande.client.nom}}
+{{commande.client.adress.adress}}{% if commande.client.adress.adressMore %}
+{{ commande.client.adress.adressMore }}{% endif %}
 
+{{commande.client.adress.zipcode}} {{commande.client.adress.city}}</textarea>
 
 
 {% endblock %}

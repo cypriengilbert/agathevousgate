@@ -35,6 +35,9 @@
     .color_name_mobile{
     display:block;
     }
+    .colonne_total{
+      display:none;
+    }
     }
 
     @media (min-width: 768px) {
@@ -139,7 +142,7 @@ window.location = route;
                                 <th>Couleur / Taille</th>
                                 <th>Quantité</th>
                                 <th>Prix unitaire</th>
-                                <th>Total</th>
+                                <th class="colonne_total">Total</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -185,7 +188,7 @@ window.location = route;
                                 <td>
                                   {{ items.priceTemp|round(2, 'common') }}€<br>
                                 </td>
-                                <td>
+                                <td class="colonne_total">
                                  {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
                                 </td>
                                 <td>
@@ -232,7 +235,7 @@ window.location = route;
                                       {{ items_child.priceTemp|round(2, 'common') }}€<br>
 
                                     </td>
-                                     <td>
+                                     <td class="colonne_total">
                                      {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
 
                                     </td>
@@ -261,23 +264,8 @@ window.location = route;
                         </div>
                         </div>
                         <div class="row">
-                     <div class="col-md-12"  style="border:1px solid #A94141">
-                        
-                        <div class="row">
-                           <div class="col-xs-7 " style="">
-                              <p></p>
-                              <p>Sous-total</p>
-                              {% if is_granted('ROLE_USER') %}
-                              <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% else %}Remise{% endif %}</p>
-                              {% else %}
-                              <p> Remise </p>
-                              {% endif %}
-                              <p>Total</p>
-                           </div>
-                           <div class="col-xs-5" >
-                              <p></p>
-                              <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
-                              {% set codePromo = app.session.get('codePromo') %}
+                     <div class="col-md-12"  style="border:1px solid #A94141; border-bottom:0px;">
+                        {% set codePromo = app.session.get('codePromo') %}
                               {% set remise = 0 %}
                               {% if discountAuto %}
                                 {% if discountAuto.genre == 'pourcentage' %}
@@ -322,12 +310,33 @@ window.location = route;
                               {% endif %}
                               {% endif %}
                               {% endif %}
+                        <div class="row">
+                           <div class="col-xs-7 " style="">
+                              <p></p>
+                              <p>Sous-total</p>
+                              {% if is_granted('ROLE_USER') %}
+                              <p> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% elseif remise !=0 %}Remise{% endif %}</p>
+                              {% elseif remise != 0 %}
+                              <p> Remise </p>
+                              {% endif %}
+                              <p>Total</p>
+                           </div>
+                           <div class="col-xs-5" >
+                              <p></p>
+                              <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
+                              
+                              {% if remise != 0 %}
                                <p class="text-right"><strong> - {{ remise|round(2, 'common') }} €</strong></p>
-
+                              {% endif %}
                               <p class="text-right"> <strong>  {{ totalsum|round(2,'common') }} €</strong></p>
                            </div>
                         </div>
                      </div>
+                     {% if tva == 0 %}
+                     <div class="col-md-12 text-center"  style="border:1px solid #A94141; border-top:0px; font-size:9px;">
+                      Prix HT = Prix TTC (TVA non applicable - <a style="font-size:9px; text-decoration:none;" href="https://www.legifrance.gouv.fr/affichCodeArticle.do?cidTexte=LEGITEXT000006069577&idArticle=LEGIARTI000021645089">article 293 B du CGI </a>)
+                        </div>
+                      {% endif %}
                      <div class="col-md-12" style="position:relative">
                         <div class="col-md-4" style="">
                            <input type="text" id="input_promo" placeholder="XXXXX" style=" height:31px; position:absolute; left:-15px ;" {% if is_granted('ROLE_USER') %}

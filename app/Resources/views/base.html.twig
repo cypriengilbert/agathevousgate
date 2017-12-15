@@ -162,11 +162,11 @@
         <li class="{% if page == 'quisommesnous' %}active{% endif%}"><a href="{{ path('quisommesnous') }}">Qui sommes nous ?</a></li>
         {% if is_granted('ROLE_USER') %}
           {% if app.user.isPro == 2 %}
-            {% if collection is defined %}
-        <li class="{% if page == 'boutique' %}active{% endif%}"><a  href="{{path ('boutique_collection', {'name': 'Basic' })}}" >Boutique</a>
+           
+        <li class="{% if page == 'boutique' %}active{% endif%}"><a  href="{{path ('boutique_collection', {'name': 'Basic' })}}" >Espace boutique</a>
          
         </li>
-          {% endif %}
+         
           {% endif %}
         {% endif %}
 
@@ -271,7 +271,7 @@ display:none;
 
                       <a href="{{ path('personnalisation', {'idCollection': 30 }) }}" style="color:white"><div class="col-sm-4">Un noeud sur-mesure</div>
                       <a href="{{path('faq')}}" style="color:white"><div class="col-sm-4">Paiement 100% sécurisé</div>
-                     {# <a href="{{path('fos_user_registrationcompany_register')}}" style="color:white"><div class="col-sm-4">Je suis un pro !</div>#}
+                      <a href="{{path('fos_user_registrationcompany_register')}}" style="color:white"><div class="col-sm-4">Accéder à l'espace boutique</div>
 
                     <div class="col-sm-4"></div>
                 </div>

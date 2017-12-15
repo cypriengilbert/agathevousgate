@@ -34,7 +34,16 @@ class addCommandeType extends AbstractType
 
 
     ))
-            ->add('client')
+            ->add('client', EntityType::class , array(
+                'required'   => true,
+                
+                'class' => 'UserBundle:User',
+                'choice_label'=> function ($user) {
+                    $full_name = $user->getPrenom().' '.$user->getNom();
+                    return $full_name;
+                }
+                
+                ))
             ->add('date', 'date')
         ;
     }

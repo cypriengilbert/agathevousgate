@@ -176,14 +176,14 @@ margin-top:5px
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-                {{ form_label(form.colorNoeud1File, "Image Exterieur", {'label_attr': {'class': ''}}) }}
+			{{ form_label(form.colorNoeud1File, "Image Arrière", {'label_attr': {'class': ''}}) }}
                 {{ form_errors(form.colorNoeud1File) }}
                 {{ form_widget(form.colorNoeud1File, {'attr': {'class': ''}}) }}
             </div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-                {{ form_label(form.colorNoeud2File, "Image Interieur", {'label_attr': {'class': ''}}) }}
+                {{ form_label(form.colorNoeud2File, "Image Avant", {'label_attr': {'class': ''}}) }}
                 {{ form_errors(form.colorNoeud2File) }}
                 {{ form_widget(form.colorNoeud2File, {'attr': {'class': ''}}) }}
             </div>
@@ -203,21 +203,21 @@ margin-top:5px
     <div class="row" style="margin-top:20px;">
 		<div class="col-md-4">	
             <div class="form-group">
-                {{ form_label(form.colorNoeud3File, "Image milieu", {'label_attr': {'class': ''}}) }}
+                {{ form_label(form.colorNoeud3File, "Image attache milieu", {'label_attr': {'class': ''}}) }}
                 {{ form_errors(form.colorNoeud3File) }}
                 {{ form_widget(form.colorNoeud3File, {'attr': {'class': ''}}) }}
             </div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-                {{ form_label(form.tissuColorFile, "Coffret, tissu", {'label_attr': {'class': ''}}) }}
+                {{ form_label(form.tissuColorFile, "Coffret, rectangle", {'label_attr': {'class': ''}}) }}
                 {{ form_errors(form.tissuColorFile) }}
                 {{ form_widget(form.tissuColorFile, {'attr': {'class': ''}}) }}
             </div>
 		</div>
 		<div class="col-md-4">
 			<div class="form-group">
-                {{ form_label(form.tissuMilieuColorFile, "Coffret, noeud central", {'label_attr': {'class': ''}}) }}
+                {{ form_label(form.tissuMilieuColorFile, "Coffret, attache milieu", {'label_attr': {'class': ''}}) }}
                 {{ form_errors(form.tissuMilieuColorFile) }}
                 {{ form_widget(form.tissuMilieuColorFile, {'attr': {'class': ''}}) }}
             </div>

@@ -49,6 +49,7 @@ class Company
      */
     private $reductionGeneric;
 
+
     /**
       * @var bool
       *
@@ -262,4 +263,7 @@ class Company
     {
         return $this->adressBilling;
     }
+
+
+
 }

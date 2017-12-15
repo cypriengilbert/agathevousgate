@@ -13,12 +13,12 @@ window.onbeforeunload = function () {
 <script>
 var stocks = new Array();
 {% for stock in stocks %}
-{% if stock.color %}
-stocks[{{loop.index - 1}}] = new Array();
-stocks[{{loop.index - 1}}]['produit'] = '{{stock.product.name}}';
-stocks[{{loop.index - 1 }}]['color'] = {{stock.color.id}};
-stocks[{{loop.index -1 }}]['quantity'] = {{stock.quantity}};
-{% endif %}
+    {% if stock.color %}
+    stocks[{{loop.index - 1}}] = new Array();
+    stocks[{{loop.index - 1}}]['produit'] = '{{stock.product.name}}';
+    stocks[{{loop.index - 1 }}]['color'] = {{stock.color.id}};
+    stocks[{{loop.index -1 }}]['quantity'] = {{stock.quantity}};
+    {% endif %}
 {% endfor %}
 </script>
 
@@ -1147,6 +1147,7 @@ document.getElementById('pochette_img').innerHTML = route;
 
 for(var i= 0; i < stocks.length; i++)
                 {
+                     if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Pochette' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1157,6 +1158,7 @@ for(var i= 0; i < stocks.length; i++)
                             }
                         }
                     }
+                }
                 }
 
 
@@ -1169,6 +1171,7 @@ route = route.replace("URL2", url);
 document.getElementById('boutons_img').innerHTML = route;
 for(var i= 0; i < stocks.length; i++)
                 {
+ if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Boutons' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1179,6 +1182,7 @@ for(var i= 0; i < stocks.length; i++)
                             }
                         }
                     }
+ }
                 }
 
 }
@@ -1198,6 +1202,7 @@ for(var i= 0; i < stocks.length; i++)
             
                 for(var i= 0; i < stocks.length; i++)
                 {
+                     if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Rectangle_grand' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1209,6 +1214,7 @@ for(var i= 0; i < stocks.length; i++)
                         }
                     }
                 }
+                }
 
         }
       else if (noeud_place == 'noeudderriere') {
@@ -1216,23 +1222,27 @@ for(var i= 0; i < stocks.length; i++)
       document.getElementById('coffret_big_2').style.backgroundImage = "url("+c1+")";
       document.getElementById('Coffret_petit_2').style.backgroundImage = "url("+c2+")";
         for(var i= 0; i < stocks.length; i++)
-                {
-                    if(stocks[i]['produit'] == 'Rectangle_grand' ){
-                        if(stocks[i]['color'] == id){
-                            if(stocks[i]['quantity'] <= {{stocks_faible}}){
-                                document.getElementById('stock_faible_info_noeudderriere').style.display = 'block';
+                {                    
+                    if(typeof stocks[i] !== 'undefined'){
+                             if(stocks[i]['produit'] == 'Rectangle_grand' ){
+                                if(stocks[i]['color'] == id){
+                                    if(stocks[i]['quantity'] <= {{stocks_faible}}){
+                                        document.getElementById('stock_faible_info_noeudderriere').style.display = 'block';
+                                    }
+                                    else{
+                                        document.getElementById('stock_faible_info_noeudderriere').style.display = 'none';
+                                    }
+                                }
                             }
-                            else{
-                                document.getElementById('stock_faible_info_noeudderriere').style.display = 'none';
-                            }
-                        }
                     }
+                    
                 }
       }
       else if (noeud_place == 'noeudpetit') {
       document.getElementById(noeud_place).style.backgroundImage = "url("+n3+")";
       for(var i= 0; i < stocks.length; i++)
                 {
+                     if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Milieu' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1244,6 +1254,7 @@ for(var i= 0; i < stocks.length; i++)
                         }
                     }
                 }
+                }
 
       }
       else if (noeud_place == 'coffret_1') {
@@ -1252,6 +1263,7 @@ for(var i= 0; i < stocks.length; i++)
 
 for(var i= 0; i < stocks.length; i++)
                 {
+                     if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Rectangle_grand' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1263,12 +1275,14 @@ for(var i= 0; i < stocks.length; i++)
                         }
                     }
                 }
+                }
       }
       else if (noeud_place == 'coffret_2') {
         document.getElementById('coffret_big_4').style.backgroundImage = "url("+c1+")";
         document.getElementById('Coffret_petit_4').style.backgroundImage = "url("+c2+")";
         for(var i= 0; i < stocks.length; i++)
                 {
+                     if(typeof stocks[i] !== 'undefined'){
                     if(stocks[i]['produit'] == 'Rectangle_grand' ){
                         if(stocks[i]['color'] == id){
                             if(stocks[i]['quantity'] <= {{stocks_faible}}){
@@ -1279,6 +1293,7 @@ for(var i= 0; i < stocks.length; i++)
                             }
                         }
                     }
+                     }
                 }
       }
 

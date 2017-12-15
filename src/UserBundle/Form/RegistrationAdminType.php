@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 
 
@@ -26,7 +27,11 @@ class RegistrationAdminType extends AbstractType
             ->add('prenom')
             ->add('genre', ChoiceType::class, array(
             'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
-            ->add('adress', new UserAdressType());
+            ->add('adress', new UserAdressType())
+            ->add('naissance', BirthdayType::class, array(
+                'widget' => 'choice',
+               'html5' => false,
+               ));
 }
 
     public function getParent()

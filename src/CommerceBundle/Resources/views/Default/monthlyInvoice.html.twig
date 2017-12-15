@@ -100,13 +100,13 @@ td    { vertical-align: top; }
             <td style='width: 20%; text-align: center'>{{ listepanier.product.cartname }}</td>
             <td style='width: 25%; text-align: center'>
             {% if listepanier.Color1 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
             {% endif %}
             {% if listepanier.Color2 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
             {% endif %}
             {% if listepanier.Color3 %}
-            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
+            <img style="width:30px; height:30px" src="http://dev.agathevousgate.com/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
             {% endif %}
             </td>
             <td style='width: 10%; text-align: center'>{{ listepanier.price|round(2, 'common') }}</td>
@@ -157,7 +157,7 @@ td    { vertical-align: top; }
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
-            <th style='width: 87%; text-align: right;'>Dont TVA {{tva}}% </th>
+            <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
             <th style='width: 13%; text-align: right;'>{{ ((totalsum + totalTransportCost - totalRemise - refundTotal) * (tva/100))|round(2, 'common') }}€</th>
         </tr>
     </table>

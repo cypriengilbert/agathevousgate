@@ -260,6 +260,9 @@ class CommerceController extends Controller
         $tva              = $this->getOneBy('Variable', array(
             'name' => 'tva'
         ))->getMontant();
+        $tva_delivery              = $this->getOneBy('Variable', array(
+            'name' => 'tva_delivery'
+        ))->getMontant();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user                     = $this->container->get('security.context')->getToken()->getUser();
             $id_user                  = $user->getId();
@@ -355,6 +358,7 @@ class CommerceController extends Controller
             'parrainage' => $remiseParrainage,
             'reductions' => $allreduction,
             'tva' => $tva,
+            'tva_delivery' => $tva_delivery,
             'AddedProductByProduct' => $AddedProductByProduct,
             'AddedProductByProduct_Child' => $AddedProductByProduct_Child,
             'discountAuto' => $discount_valid,
@@ -377,6 +381,7 @@ class CommerceController extends Controller
             'parrainage' => $remiseParrainage,
             'reductions' => $allreduction,
             'tva' => $tva,
+            'tva_delivery' => $tva_delivery,            
             'discountAuto' => $discount_valid,
             
         ));
@@ -1424,8 +1429,10 @@ class CommerceController extends Controller
                 ));
                
                 $allProduct          = $this->getAll('Product');
-                $tva          = $this->getBy('Variable', array('name' => 'tva'));
-                
+                $tva          = $this->getOneBy('Variable', array('name' => 'tva'));
+                $tva_delivery              = $this->getOneBy('Variable', array(
+                    'name' => 'tva_delivery'
+                ));
                 
                 $AddedProductByProduct = [];
                 $AddedProductByProduct_Child = [];
@@ -1447,7 +1454,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
 
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
@@ -1461,7 +1468,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
 
                 } else {
                     $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1476,7 +1483,7 @@ class CommerceController extends Controller
                         'coutLivraison' => $coutLivraison,
                         'parrainage' => $remiseParrainage
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
                 }
 
 
@@ -1493,11 +1500,11 @@ class CommerceController extends Controller
                             'coutLivraison' => $coutLivraison,
                             'parrainage' => $remiseParrainage,
                             'commande' => $commandeEnCours,
-                           'reductions' => $allreduction,
-                            'tva' => $tva,
+                            'tva' => $tva->getMontant(),
+                            'tva_delivery' => $tva_delivery->getMontant(),
                             'AddedProductByProduct' => $AddedProductByProduct,
                         )), 'text/html');
-                       // $this->get('mailer')->send($message);
+                        $this->get('mailer')->send($message);
                     
                 }else{
                     
@@ -1514,7 +1521,7 @@ class CommerceController extends Controller
                     'parrainage' => $remiseParrainage,
                     'commande' => $commandeEnCours
                 )), 'text/html');
-                // $this->get('mailer')->send($message);
+                 $this->get('mailer')->send($message);
             }
 
                 if ($user->getParrainEmail() != null) {
@@ -1545,14 +1552,14 @@ class CommerceController extends Controller
                             'nb' => $minParrainage->getMontant()
 
                         )), 'text/html');
-                       // $this->get('mailer')->send($message);
+                        $this->get('mailer')->send($message);
                         $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         // app/Resources/views/Emails/registration.html.twig
                             'emails/parrainage_valide_agathe.html.twig', array(
                             'user' => $parrain,
                             'nb' => $minParrainage->getMontant()
                         )), 'text/html');
-                       // $this->get('mailer')->send($message);
+                        $this->get('mailer')->send($message);
 
 
                     } else {
@@ -1573,7 +1580,7 @@ class CommerceController extends Controller
                             'nb' => $nbparrainage
 
                         )), 'text/html');
-                        // $this->get('mailer')->send($message);
+                         $this->get('mailer')->send($message);
                     }
                 }
 
@@ -1594,7 +1601,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                // $this->get('mailer')->send($message);
+                                 $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1606,7 +1613,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                // $this->get('mailer')->send($message);
+                                 $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1618,7 +1625,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                // $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == 'Coffret1') {
@@ -1632,7 +1639,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                               // $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);
                         }
                     }
                     elseif ($item->getProduct()->getName() == "Coffret2") {
@@ -1646,7 +1653,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                // $this->get('mailer')->send($message);
+                                 $this->get('mailer')->send($message);
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                         $stock->setQuantity($stock->getQuantity()-1);
@@ -1658,7 +1665,7 @@ class CommerceController extends Controller
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                // $this->get('mailer')->send($message);
+                                 $this->get('mailer')->send($message);
                         }
                     }
                     else{
@@ -1673,7 +1680,7 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                    // $this->get('mailer')->send($message);
+                                 $this->get('mailer')->send($message);
                             }
                         }
                         else{
@@ -1687,7 +1694,7 @@ class CommerceController extends Controller
                                         'emails/alerte_stock.html.twig', array(
                                         'stock' => $stock,
                                     )), 'text/html');
-                                  // $this->get('mailer')->send($message);
+                                   $this->get('mailer')->send($message);
                             }
                         }
                         
@@ -1791,9 +1798,11 @@ class CommerceController extends Controller
             ));
            
             $allProduct          = $this->getAll('Product');
-            $tva          = $this->getBy('Varibale', array('name' => 'tva'));
+            $tva          = $this->getOneBy('Varibale', array('name' => 'tva'));
             
-            
+            $tva_delivery              = $this->getOneBy('Variable', array(
+                'name' => 'tva_delivery'
+            ));
             $AddedProductByProduct = [];
             $AddedProductByProduct_Child = [];
 
@@ -1814,7 +1823,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                // $this->get('mailer')->send($message);
+                 $this->get('mailer')->send($message);
 
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande pour un atelier')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                 // app/Resources/views/Emails/registration.html.twig
@@ -1828,7 +1837,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                // $this->get('mailer')->send($message);
+                 $this->get('mailer')->send($message);
 
             } else {
                 $message = \Swift_Message::newInstance()->setSubject('Nouvelle commande')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1843,7 +1852,7 @@ class CommerceController extends Controller
                     'coutLivraison' => $coutLivraison,
                     'parrainage' => $remiseParrainage
                 )), 'text/html');
-                // $this->get('mailer')->send($message);
+                 $this->get('mailer')->send($message);
             }
 
             if($user->getIsPro() == 2){
@@ -1859,10 +1868,11 @@ class CommerceController extends Controller
                         'parrainage' => $remiseParrainage,
                         'commande' => $commandeEnCours,
                         'reductions' => $allreduction,
-                        'tva' => $tva,
+                        'tva' => $tva->getMontant(),
+                        'tva_delivery' => $tva_delivery->getMontant(),
                         'AddedProductByProduct' => $AddedProductByProduct,
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
                 
             }else{
                 
@@ -1879,7 +1889,7 @@ class CommerceController extends Controller
                 'parrainage' => $remiseParrainage,
                 'commande' => $commandeEnCours
             )), 'text/html');
-            // $this->get('mailer')->send($message);
+             $this->get('mailer')->send($message);
         }
             if ($user->getParrainEmail() != null) {
                 $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
@@ -1909,14 +1919,14 @@ class CommerceController extends Controller
                         'nb' => $minParrainage->getMontant()
 
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
                     $message = \Swift_Message::newInstance()->setSubject('Nouveau parrainage validé')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
                         'emails/parrainage_valide_agathe.html.twig', array(
                         'user' => $parrain,
                         'nb' => $minParrainage->getMontant()
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                     $this->get('mailer')->send($message);
 
 
                 } else {
@@ -1937,7 +1947,7 @@ class CommerceController extends Controller
                         'nb' => $nbparrainage
 
                     )), 'text/html');
-                    // $this->get('mailer')->send($message);
+                 $this->get('mailer')->send($message);
                 }
             }
 
@@ -2546,6 +2556,9 @@ class CommerceController extends Controller
             $tva          = $this->getOneBy('Variable', array(
                 'name' => 'tva'
             ))->getMontant();
+            $tva_delivery              = $this->getOneBy('Variable', array(
+                'name' => 'tva_delivery'
+            ))->getMontant();
             $repository   = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
 
             $nbarticle  = count($repository->findBy(array(
@@ -2573,20 +2586,19 @@ class CommerceController extends Controller
                 'name' => 'Livraison'
 
             ));
-            if ($commandeEnCours->getTransportMethod() != null) {
-                $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
-
-            } else {
-                $coutLivraison = 0;
-                $allreduction = array();
-            }
+            
 
             $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
             $remiseParrainage = $repository->findOneBy(array(
                 'name' => 'Parrainage'
 
             ));
-
+            if ($commandeEnCours->getTransportMethod() != null  ) {
+                
+ 
+             } else {
+                 $allreduction = array();
+             }
             if ($commandeEnCours) {
 
                 $newcommande = $commandeEnCours;
@@ -2609,6 +2621,7 @@ class CommerceController extends Controller
             $codePromo = $session->get('codePromo');
 
             $remise = 0;
+            
             $discount_auto = $this->getVoucherAuto($listePanier);
             if ($codePromo) {
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
@@ -2649,44 +2662,6 @@ class CommerceController extends Controller
                 }
             }
 
-            if ($total_commande < $minLivraison->getMontant()) {
-
-                if ($newcommande->getAtelierLivraison() == NULL) {
-                    if($user->getIsPro() == 2){
-                        $total_commande = $total_commande + ($coutLivraison / (1 + ($tva/100))) ;
-                    }
-                    else{
-                        $total_commande = $total_commande + $coutLivraison ;
-                    }
-                    
-                }
-                if ($codePromo) {
-                    if ($total_commande >= $codePromo->getMinimumCommande()) {
-                        if ($codePromo->getGenre() == 'fdp') {
-                            $total_commande = $total_commande - $coutLivraison;
-                            //$newcommande->setCodePromo($codePromo);
-                            
-                        } else if ($codePromo->getGenre() == 'fdp-remise') {
-                            $total_commande = $total_commande - $coutLivraison;
-                           // $newcommande->setCodePromo($codePromo);
-                            
-                        }
-
-                    }
-                }
-                elseif($discount_auto){
-                    if ($discount_auto->getGenre() == 'fdp') {
-                        $total_commande = $total_commande - $coutLivraison;
-                     //   $newcommande->setCodePromo($discount_auto);
-                        
-                    } else if ($discount_auto->getGenre() == 'fdp-remise') {
-                        $total_commande = $total_commande - $coutLivraison;
-                      //  $newcommande->setCodePromo($discount_auto);
-                        
-                    }
-                }
-            }
-            
             $total_commande = $total_commande - $remise;
             if(isset($user) && $user->getIsPro() == 2){
                 $total_commande = ($total_commande * (1+$tva/100));
@@ -2696,6 +2671,41 @@ class CommerceController extends Controller
                 }
                 $newcommande->setRemisePro($remisePro);
             }
+
+            if ($total_commande < $minLivraison->getMontant()) {
+                
+
+                if ($newcommande->getAtelierLivraison() == NULL) {
+                    $coutLivraison = $commandeEnCours->getTransportMethod()->getPrice();
+                    $coutLivraison =  ($coutLivraison / (1 + ($tva_delivery/100))) ;
+                    
+                }
+                else{
+                    $coutLivraison =0;
+                }
+            
+                if ($codePromo) {
+                    if ($total_commande >= $codePromo->getMinimumCommande()) {
+                        if ($codePromo->getGenre() != 'fdp' and $codePromo->getGenre() != 'fdp-remise' ) {
+                            $total_commande = $total_commande + $coutLivraison;
+                            //$newcommande->setCodePromo($codePromo);
+                        }
+
+                    }
+                }
+                elseif($discount_auto){
+                    if ($discount_auto->getGenre() == 'fdp' and $discount_auto->getGenre() == 'fdp-remise') {
+                        $total_commande = $total_commande + $coutLivraison;
+                     //   $newcommande->setCodePromo($discount_auto);
+                        
+                    } 
+                }
+            }
+            else{
+                $coutLivraison =0 ;
+            }
+            
+            $total_commande += $coutLivraison; 
             $newcommande->setRemise($remise);
             $total_commande_100 = $total_commande * 100;
             $newcommande->setPrice($total_commande);
@@ -2718,6 +2728,7 @@ class CommerceController extends Controller
                 'price' => $total_commande,
                 'reductions' => $allreduction,
                 'tva'=> $tva,
+                'tva_delivery' => $tva_delivery,
                 'rem' => $newcommande->getRemise(),
                 'autoVoucher'=> $discount_auto,
 
@@ -2971,6 +2982,9 @@ class CommerceController extends Controller
         $tva               = $this->getOneBy('Variable', array(
             'name' => 'tva'
         ))->getMontant();
+        $tva_delivery              = $this->getOneBy('Variable', array(
+            'name' => 'tva_delivery'
+        ))->getMontant();
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             $user         = $this->container->get('security.context')->getToken()->getUser();
             $allreduction = $this->getBy('ProDiscount', array(
@@ -2986,6 +3000,7 @@ class CommerceController extends Controller
             'coffret' => $coffret,
             'allproduct' => $allproduct,
             'tva' => $tva,
+            'tva_delivery' => $tva_delivery,
             'collection_on' => $collectionOngoing,
             'reductions' => $allreduction,
             'stock_coffret' => $stock_coffret,
@@ -3284,7 +3299,9 @@ class CommerceController extends Controller
       $tva              = $this->getOneBy('Variable', array(
           'name' => 'tva'
       ))->getMontant();
-
+      $tva_delivery              = $this->getOneBy('Variable', array(
+        'name' => 'tva_delivery'
+    ))->getMontant();
       if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
           $user                     = $this->container->get('security.context')->getToken()->getUser();
           $id_user                  = $user->getId();

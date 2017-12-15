@@ -50,6 +50,12 @@ class Company
     private $reductionGeneric;
 
     /**
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Collection")
+     */
+     private $collections;
+     
+
+    /**
       * @var bool
       *
      * @ORM\Column(name="is_monthly", type="boolean")
@@ -237,5 +243,29 @@ class Company
     public function getStripeSource()
     {
         return $this->stripeSource;
+    }
+
+    /**
+     * Set adressBilling
+     *
+     * @param \UserBundle\Entity\UserAdress $adressBilling
+     *
+     * @return Company
+     */
+    public function setAdressBilling(\UserBundle\Entity\UserAdress $adressBilling)
+    {
+        $this->adressBilling = $adressBilling;
+
+        return $this;
+    }
+
+    /**
+     * Get adressBilling
+     *
+     * @return \UserBundle\Entity\UserAdress
+     */
+    public function getAdressBilling()
+    {
+        return $this->adressBilling;
     }
 }

@@ -1883,47 +1883,47 @@ class DefaultController extends Controller
 
            $form = $this->get('form.factory')->create('UserBundle\Form\CompanyReducType', $company);
             if ($form->handleRequest($request)->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $y = 0;
-            if($proReduc == null){
-            foreach ($collections as $collection ) {
-                foreach ($products as $product) {
-                    $reduction = new ProDiscount();
-                    $reduction->setAccount($user);
-                    $reduction->setProduct($product);
-                    $reduction->setCollection($collection);
-                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
-                        $em->persist($reduction);
-                        $em->flush();
-                    }
-                }
-            }
-            else{
+                $em = $this->getDoctrine()->getManager();
+                $y = 0;
+                if($proReduc == null){
                 foreach ($collections as $collection ) {
-                foreach ($products as $product) {
-                    foreach ($proReduc as $oldReduc) {
-                        if($oldReduc->getProduct() == $product and $oldReduc->getCollection() == $collection and $oldReduc->getReduction() == $erasedReduc){
-                            $oldReduc->setReduction($user->getCompany()->getReductionGeneric());
-                             $em->persist($oldReduc);
-                        $em->flush();
-                        $y = 1;
+                    foreach ($products as $product) {
+                        $reduction = new ProDiscount();
+                        $reduction->setAccount($user);
+                        $reduction->setProduct($product);
+                        $reduction->setCollection($collection);
+                        $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                            $em->persist($reduction);
+                            $em->flush();
                         }
                     }
-                    if($y == 0){
-                        $reduction = new ProDiscount();
-                    $reduction->setAccount($user);
-                    $reduction->setProduct($product);
-                    $reduction->setCollection($collection);
-                    $reduction->setReduction($user->getCompany()->getReductionGeneric());
-                        $em->persist($reduction);
-                        $em->flush();
-                        $y=1;
-                    }
-                    
-                    }
                 }
-
-            }
+                else{
+                    foreach ($collections as $collection ) {
+                    foreach ($products as $product) {
+                        foreach ($proReduc as $oldReduc) {
+                            if($oldReduc->getProduct() == $product and $oldReduc->getCollection() == $collection and $oldReduc->getReduction() == $erasedReduc){
+                                $oldReduc->setReduction($user->getCompany()->getReductionGeneric());
+                                 $em->persist($oldReduc);
+                            $em->flush();
+                            $y = 1;
+                            }
+                        }
+                        if($y == 0){
+                            $reduction = new ProDiscount();
+                        $reduction->setAccount($user);
+                        $reduction->setProduct($product);
+                        $reduction->setCollection($collection);
+                        $reduction->setReduction($user->getCompany()->getReductionGeneric());
+                            $em->persist($reduction);
+                            $em->flush();
+                            $y=1;
+                        }
+                        
+                        }
+                    }
+    
+                }
 
             
         $em->persist($company);
@@ -2095,6 +2095,36 @@ class DefaultController extends Controller
                     $User->setCompany($newCompany);
                     $em->persist($User);
                     $em->flush();
+                    $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                    $collections = $repository->findAll();
+                    foreach ($collections as $value) {
+                        $value->addCompany($User->getCompany());
+                    }
+                    
+                    $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+                    $colors = $repository->findAll();
+                    foreach ($colors as $value) {
+                        $value->addCompany($User->getCompany());
+                    }
+                    $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+                    $products = $repository->findAll();
+                    $em = $this->getDoctrine()->getManager();
+                    $y = 0;
+                    foreach ($collections as $collection ) {
+                        foreach ($products as $product) {
+                            $reduction = new ProDiscount();
+                            $reduction->setAccount($User);
+                            $reduction->setProduct($product);
+                            $reduction->setCollection($collection);
+                            $reduction->setReduction($User->getCompany()->getReductionGeneric());
+                                $em->persist($reduction);
+                                $em->flush();
+                            }
+                        }
+                    
+                    
+                    $em->persist($User);
+                    $em->flush();
                     $request->getSession()->getFlashBag()->add('notice', 'Company bien enregistrée.');
         
         
@@ -2128,7 +2158,7 @@ class DefaultController extends Controller
          $company       = $repository->findOneBy(array(
              'id' => $id_boutique
          ));
- 
+         
          $User->setIsPro(2);
          $User->setRoles(array(
              'ROLE_USER'
@@ -2137,6 +2167,20 @@ class DefaultController extends Controller
          $em->persist($User);
          $em->flush();
 
+         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+         $collections = $repository->findAll();
+         foreach ($collections as $value) {
+             return new Response(404);
+             $value->addCompany($User->getCompany());
+         }
+         
+         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+         $colors = $repository->findAll();
+         foreach ($colors as $value) {
+             $value->addCompany($User->getCompany());
+         }
+         $em->persist($User);
+         $em->flush();
         
        
          return $this->redirect($this->generateUrl('companiesView', array('id' => $User->getId())));

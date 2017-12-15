@@ -7,14 +7,9 @@
 {% endblock %}
 
 {% block body %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('.js-datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
-</script>
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 {% if error != null %}
 <div class="row">
     <div class="col-md-12">
@@ -47,6 +42,12 @@
           {{ form_label(form.prenom, "Prénom", {'label_attr': {'class': ''}}) }}
           {{ form_errors(form.prenom) }}
           {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+
+      </div>
+       <div class="form-group">
+          {{ form_label(form.naissance, "Date de naissance", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.naissance) }}
+          {{ form_widget(form.naissance, {'attr': {'class': 'form-control js-datepicker'}}) }}
 
       </div>
 
@@ -100,7 +101,14 @@
       {{ form_end(form) }}
 
   </div>
+      
+<script>
 
+
+</script>
+<script>
+
+</script>
 
 {% endblock %}
 

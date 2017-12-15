@@ -53,7 +53,7 @@ class Color
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     public $name;
 
@@ -67,21 +67,21 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="colorFile", fileNameProperty="imageColorName", maxSize = "5M")
+     * @Vich\UploadableField(mapping="colorFile", fileNameProperty="imageColorName", maxSize = "5M" , nullable=true)
      *
      * @var File
      */
     private $colorFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
     private $imageColorName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -91,14 +91,14 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="tissuColorFile", fileNameProperty="tissuColorName", maxSize = "5M")
+     * @Vich\UploadableField(mapping="tissuColorFile", fileNameProperty="tissuColorName", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $tissuColorFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
@@ -106,14 +106,14 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="tissuMilieuColorFile", fileNameProperty="tissuMilieuColorName", maxSize = "5M")
+     * @Vich\UploadableField(mapping="tissuMilieuColorFile", fileNameProperty="tissuMilieuColorName", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $tissuMilieuColorFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
@@ -122,14 +122,14 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="couleurPochette", fileNameProperty="couleurPochetteName", maxSize = "5M")
+     * @Vich\UploadableField(mapping="couleurPochette", fileNameProperty="couleurPochetteName", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $couleurPochette;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
@@ -138,14 +138,14 @@ class Color
 
         /**
          *
-         * @Vich\UploadableField(mapping="couleurBoutons", fileNameProperty="couleurBoutonsName", maxSize = "5M")
+         * @Vich\UploadableField(mapping="couleurBoutons", fileNameProperty="couleurBoutonsName", maxSize = "5M", nullable=true)
          *
          * @var File
          */
         private $couleurBoutons;
 
         /**
-         * @ORM\Column(type="string", length=255)
+         * @ORM\Column(type="string", length=255, nullable=true)
          *
          * @var string
          */
@@ -156,21 +156,21 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="colorNoeud1File", fileNameProperty="imagecolorNoeud1Name", maxSize = "5M",)
+     * @Vich\UploadableField(mapping="colorNoeud1File", fileNameProperty="imagecolorNoeud1Name", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $colorNoeud1File;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
     private $imagecolorNoeud1Name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -180,21 +180,21 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="colorNoeud2File", fileNameProperty="imagecolorNoeud2Name", maxSize = "5M",)
+     * @Vich\UploadableField(mapping="colorNoeud2File", fileNameProperty="imagecolorNoeud2Name", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $colorNoeud2File;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
     private $imagecolorNoeud2Name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */
@@ -203,21 +203,21 @@ class Color
 
     /**
      *
-     * @Vich\UploadableField(mapping="colorNoeud3File", fileNameProperty="imagecolorNoeud3Name", maxSize = "5M",)
+     * @Vich\UploadableField(mapping="colorNoeud3File", fileNameProperty="imagecolorNoeud3Name", maxSize = "5M", nullable=true)
      *
      * @var File
      */
     private $colorNoeud3File;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @var string
      */
     private $imagecolorNoeud3Name;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTime
      */

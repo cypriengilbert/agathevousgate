@@ -50,10 +50,12 @@
                 <a onClick="viewDone()"  > <i class="fa fa-check-circle" aria-hidden="true" style="margin-right:10px;cursor:pointer" id="logo_done"></i></a>
                   <a onClick="viewDone()" class="details_menu_account"> Commandes terminées</a>
                </div>
+               {% if user.isPro == 2 %}
                <div style="margin-bottom:15px;">
                 <a onClick="viewMonthly()"  > <i class="fa fa-check-circle" aria-hidden="true" style="margin-right:10px;cursor:pointer" id="logo_monthly"></i></a>
                   <a onClick="viewMonthly()" class="details_menu_account"> Factures Mensuelles</a>
                </div>
+               {% endif %}
             </div>
             <div class="col-md-8" style=" padding:20px; height:460px; overflow:scroll" >
                <div id="div_info">

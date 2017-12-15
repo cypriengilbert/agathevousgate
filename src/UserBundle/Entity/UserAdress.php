@@ -22,9 +22,9 @@ class UserAdress
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="zipcode", type="integer")
+     * @ORM\Column(name="zipcode", type="string")
      */
     private $zipcode;
 
