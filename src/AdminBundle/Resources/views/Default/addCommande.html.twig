@@ -47,12 +47,147 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
+                            {% if isNewUser == true %}
+                              <div class="col-lg-4 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.genre, "Genre *", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.genre) }}
+        {{ form_widget(form.client.genre, {'attr': {'class': 'form-control'}}) }}
+</div>
+    </div>
+   
+                                <div class="col-lg-4 text-center">
+    <div class="form-group">
+        {{ form_label(form.client.nom, "Nom *", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.nom) }}
+        {{ form_widget(form.client.nom, {'attr': {'class': 'form-control'}}) }}
+</div>
+    </div>
+    <div class="col-lg-4 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.prenom, "Prénom *", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.prenom) }}
+        {{ form_widget(form.client.prenom, {'attr': {'class': 'form-control'}}) }}
+</div>
+    </div>
+   
+    <div class="col-lg-12 text-center">
+    <div class="form-group">
+        {{ form_label(form.client.email, "Email *", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.email) }}
+        {{ form_widget(form.client.email, {'attr': {'class': 'form-control'}}) }}
+
+    </div>    </div>
+    
+    <div class="col-lg-12 text-center">
+  <div class="form-group">
+                                {{ form_label(form.client.naissance, "Naissance", {'label_attr': {'class': 'control-label '}}) }}
+                                {{ form_errors(form.client.naissance) }}
+                                {{ form_widget(form.client.naissance, {'attr': {'class': 'form-control js-datepicker'}}) }}
+                            </div>  </div>
+
+        <div class="col-lg-12 text-center">
+
+</div>
+
+<div class="col-lg-12 text-center">
+
+<div class="alert alert-info" role="alert">Les informations ci-dessous seront utilisées commme adresse de livraison par défaut. <span class="caret"></span></div>
+
+</div>
+<div class="col-lg-12 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.adress.adress, "Adresse", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.adress.adress) }}
+        {{ form_widget(form.client.adress.adress, {'attr': {'class': 'form-control'}}) }}
+</div>
+    </div>
+
+
+    <div class="col-lg-12 text-center">
+
+<div class="form-group">
+        {{ form_label(form.client.adress.adressMore, "Adresse (Suite)", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.adress.adressMore) }}
+        {{ form_widget(form.client.adress.adressMore, {'attr': {'class': 'form-control'}}) }}
+
+    </div></div>
+    <div class="col-lg-6 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.adress.zipcode, "Code Postal", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.adress.zipcode) }}
+        {{ form_widget(form.client.adress.zipcode, {'attr': {'class': 'form-control'}}) }}
+
+    </div></div>
+    <div class="col-lg-6 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.adress.city, "Ville", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.adress.city) }}
+        {{ form_widget(form.client.adress.city, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+</div>
+<div class="col-lg-12 text-center">
+
+      <div class="form-group">
+          {{ form_label(form.client.phone, "Téléphone", {'label_attr': {'class': ''}}) }}
+          {{ form_errors(form.client.phone) }}
+          {{ form_widget(form.client.phone, {'attr': {'class': 'form-control'}}) }}
+  </div>
+      </div>
+
+
+
+
+        <div class="col-lg-12 text-center">
+
+            <div class="form-group">
+                {{ form_label(form.client.is_newsletter, "Recevoir par mail les nouvelles d'Agathe Vous Gâte", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.client.is_newsletter) }}
+                {{ form_widget(form.client.is_newsletter, {'attr': {'class': 'form-control input_boolean'}}) }}
+        </div>
+</div>
+<span style="display:none">
+      <div class="col-lg-12 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.plainPassword.first, "Password", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.plainPassword.first) }}
+        {{ form_widget(form.client.plainPassword.first, {'attr': {'class': 'form-control'}, 'value':'123456789'} ) }}
+</div>
+    </div>  
+         <div class="col-lg-12 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.plainPassword.second, "PasswordConfirm", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.plainPassword.second) }}
+        {{ form_widget(form.client.plainPassword.second, {'attr': {'class': 'form-control'}, 'value':'123456789'}) }}
+</div>
+    </div>
+       <div class="col-lg-12 text-center">
+
+    <div class="form-group">
+        {{ form_label(form.client.parrainEmail, "PasswordConfirm", {'label_attr': {'class': ''}}) }}
+        {{ form_errors(form.client.parrainEmail) }}
+        {{ form_widget(form.client.parrainEmail, {'attr': {'class': 'form-control'}}) }}
+</div>
+    </div>
+</span>
+
+                            {% else %}
                                 {{ form_label(form.client, "Client", {'label_attr': {'class': ''}}) }}
                                 {{ form_errors(form.client) }}
                                 {{ form_widget(form.client, {'attr': {'class': 'form-control js-example-basic-single'}}) }}
+                            {% endif %}
                             </div>
                         </div>
                     </div>
@@ -97,6 +232,15 @@ $('.datetimepicker').datetimepicker({
         close: 'fa fa-remove'
     }
 });
+
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
 </script>
 <script>
 $(document).ready(function() {

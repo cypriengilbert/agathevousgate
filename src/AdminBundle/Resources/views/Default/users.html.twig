@@ -60,7 +60,7 @@
                   <td>{{ user.prenom }} {{ user.nom }}</td>
                   <td>{{ user.email }}
                   </td>
-                  <td>{{ user.adress.adress }} <br> {{ user.adress.zipcode }} {{ user.adress.city }} </td>
+                  <td>{% if user.adress %}{{ user.adress.adress }} <br> {{ user.adress.zipcode }} {{ user.adress.city }}{% endif %} </td>
                   <td>{{ user.lastlogin|date("d-m-Y") }}</td>
                   <td>
                     {% if user.isPro == 1 %}

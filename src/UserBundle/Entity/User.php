@@ -39,7 +39,7 @@ class User extends BaseUser
 
      /**
       * @ORM\ManyToOne(targetEntity="UserBundle\Entity\UserAdress", cascade={"persist"})
-      * @ORM\JoinColumn(nullable=false)
+      * @ORM\JoinColumn(nullable=true)
       */
      private $adress;
 

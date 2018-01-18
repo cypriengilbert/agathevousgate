@@ -60,7 +60,7 @@
                   <td>{{ commande.client.id }}</td>
 
                   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
-                  <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
+                  <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
                       {% for product in commande.addedproducts %}
@@ -118,7 +118,7 @@
   <td>{{ commande.client.id }}</td>
 
   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
-  <td>{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }} </td>
+                  <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
   <td>{{ commande.date|date("d-m-Y") }}</td>
   <td>
 

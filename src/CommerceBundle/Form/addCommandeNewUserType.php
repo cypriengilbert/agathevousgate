@@ -4,12 +4,12 @@ namespace CommerceBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use UserBundle\Form\RegistrationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class addCommandeType extends AbstractType
+class addCommandeNewUserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -34,17 +34,9 @@ class addCommandeType extends AbstractType
 
 
     ))
-             ->add('client', EntityType::class , array(
-                'required'   => true,
-                
-                'class' => 'UserBundle:User',
-                'choice_label'=> function ($user) {
-                    $full_name = $user->getPrenom().' '.$user->getNom();
-                    return $full_name;
-                }
-                
-                ))
-                
+    ->add('client', new RegistrationType())
+
+             
             ->add('date', 'date')
         ;
     }

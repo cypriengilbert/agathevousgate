@@ -877,7 +877,7 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/s/order/new", name="add")
+     * @Route("/s/order/new/existUser", name="add")
      */
 
     public function addCommandeAction(Request $request)
@@ -919,11 +919,63 @@ class DefaultController extends Controller
             'form' => $form->createView(),
             'listeCommande' => $listeCommande,
             'page' => $page,
+            'isNewUser'=>false
 
 
         ));
     }
 
+    /**
+     * @Route("/s/order/new/newUser", name="addOrderNewUser")
+     */
+
+    public function addCommandeNewAction(Request $request)
+    {
+      $page = 'commande';
+
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $listeCommande = $repository->findBy(array(
+            'isValid' => false
+        ), array(
+            'date' => 'ASC'
+        ));
+        $newCommande   = new Commande();
+        $newCommande->setIsValid(false);
+        $newCommande->setIsPanier(false);
+        $newCommande->setPrice(0);
+      
+        $form = $this->get('form.factory')->create('CommerceBundle\Form\addCommandeNewUserType', $newCommande);
+        if ($form->handleRequest($request)->isValid()) {
+            $newCommande->setTransportCost(0);
+            $newClient = $newCommande->getClient();
+            $newClient->setSignUp(new \Datetime('now'));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newCommande);
+            $em->flush();
+            $em->persist($newClient);
+            $em->flush();
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
+            $newId     = $newCommande->getId();
+
+            return $this->redirect($this->generateUrl('addProduct', array(
+                'validate' => 'Commande ajoutée',
+                'id' => $newId,
+                'page' => $page,
+
+                'client' => $newClient,
+                'listeCommande' => $listeCommande
+
+            )));
+        }
+        return $this->render('AdminBundle:Default:addCommande.html.twig', array(
+            'form' => $form->createView(),
+            'listeCommande' => $listeCommande,
+            'page' => $page,
+            'isNewUser'=>true
+
+
+        ));
+    }
     /**
      * @Route("/s/addCodePromo", name="addCodePromo")
      */

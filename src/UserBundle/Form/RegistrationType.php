@@ -32,7 +32,9 @@ class RegistrationType extends AbstractType
     'attr' => ['class' => 'js-datepicker']))
             ->add('genre', ChoiceType::class, array(
             'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
-            ->add('adress', new UserAdressType())
+            ->add('adress', new UserAdressType(), array(
+                'required' => false
+            ))
             ->add('parrainEmail' );
 }
 

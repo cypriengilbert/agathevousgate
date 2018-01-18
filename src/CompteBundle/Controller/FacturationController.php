@@ -156,6 +156,8 @@ class FacturationController extends Controller
            return new Response();
  
          }
+
+         
          else {
            throw new NotFoundHttpException(sprintf('Accès refusé'));
          }
