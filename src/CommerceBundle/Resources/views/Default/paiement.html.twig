@@ -230,9 +230,9 @@ data-label="Payer en carte bancaire"></script>
                      <div style="margin-bottom:5px; font-size:10px;">
                         *Paiement sécurisé par Stripe, pour en savoir plus, cliquez <a href="{{ path('faq')}}">ici</a><br><br>
                      </div>
-                   <div style="margin-bottom:5px; font-size:10px;"> OU <br>
+                   {#<div style="margin-bottom:5px; font-size:10px;"> OU <br>
                       <a href="{{ path('chargepaypal') }}"><button type="submit" class="btn btn-primary btn-lg active btn_send" ><i class="fa fa-paypal" aria-hidden="true"></i> Payer avec Paypal </button></a>
-                    </div>
+                    </div> #}
                     {% if app.user.isPro == 2 and app.user.company.isMonthly == true %}
                     <div style="margin-bottom:5px; font-size:10px;"> OU <br>
                       <a href="{{ path('addtopayout') }}"><button type="submit" class="btn btn-primary btn-lg active btn_sendimg" style="padding-left:15px; padding-right:15px"> Prélèvement fin de mois </button></a>

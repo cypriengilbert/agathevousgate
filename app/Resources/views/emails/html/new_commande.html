@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" style="     margin:0;
+   padding:0;">
+   <head>
+      <!-- If you delete this tag, the sky will fall on your head -->
+      <meta name="viewport" content="width=device-width" />
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+      <link href="http://allfont.net/allfont.css?fonts=montserrat-light" rel="stylesheet" type="text/css" />
+      <link href="http://allfont.net/allfont.css?fonts=montserrat-hairline" rel="stylesheet" type="text/css" />
+      <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Agathe Vous Gâte</title>
+      <link rel="stylesheet" type="text/css" href="stylesheets/email.css" />
+   </head>
+   <body  >
+      <table cellpadding="0" cellspacing="0" width="100%" style="width:100%;background-color:#F5F5F5; font-family: 'Montserrat', 'Helvetica', Helvetica, Arial, sans-serif;" >
+         <tbody>
+            <tr>
+               <td align="center">
+                  <table class="head-wrap" style="width:100%;max-width: 600px;">
+                     <tbody>
+                        <tr>
+                           <td class="header container" style="margin:0; padding:0;">
+                              <div class="content" style="padding:15px 0px 0px 0px ;max-width:600px;margin:0 auto;">
+                                 <table bgcolor="#F5F5F5" style="width: 100%;">
+                                    <tbody>
+                                       <tr>
+                                          <td><img style="width:auto; height:22px;" alt="logo_AGV" src="{{ asset('images/home_menu_1.png') }}"/> <img src="{{ asset('images/home_menu_2.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:22px"></td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <table class="body-wrap" cellpadding="0" cellspacing="0" style="width:100%;margin:0 auto;max-width:600px; padding:0;">
+                     <tbody>
+                        <tr>
+                           <td class="container" style="    ;margin:0;padding:0px;border:1px solid #b8b7bb"  bgcolor="#FFFFFF">
+                              <div class="content" style="max-width:598px;display:block; ">
+                                 <table style="width: 100%;border-spacing:0px; " >
+                                    <tr>
+                                       <td cellpadding="0" style="padding:0px;width:100%; background-color:#252259; height:239px;max-height:239px;color:white;" valigne="middle" height="239px" >
+                                          <div  align="center"   border="0"  >
+                                             <p style=" font-family: 'Montserrat Light', 'Helvetica', Helvetica, Arial, sans-serif;vertical-align:middle;margin:0px;font-size:28px; width:100%; height:100%;">Nouvelle commande  {% if franchise %} atelier {% else %} pour vous{% endif %} ! :)</p>
+                                             <!-- /hero -->
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </table>
+                              </div>
+                              <div class="content" style="max-width:598px;display:block; ">
+                                 <table style="width: 90%;border-spacing:0px; margin: 10px auto; " >
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <div>
+                                                <h2 style=" font-family: 'Montserrat', 'Helvetica', Helvetica, Arial, sans-serif;font-size:15px"> Hello Agathe. {% if franchise %}Une nouvelle commande vient d'être passée pour l'atelier {{  franchise.name }}{% else %}Une nouvelle commande vient d'être passée pour vous {% endif %} </h2>
+                                                <br>
+
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+															<div>
+																<table style="width: 90%;border-spacing:0px; margin: 10px auto; " >
+																	 <tbody>
+																			<tr>
+																				 <td>
+																						<div style=" font-family: 'Montserrat', 'Helvetica', Helvetica, Arial, sans-serif;font-size:15px">
+																							 Commande n°{{ commande.id }} du {{ date|date("d/m/Y") }}
+																							 <br>
+																								{{ user.prenom }} {{ user.nom }} - {{ user.email }}
+																								<br>
+																								{{ user.adress.adress}}<br>
+																								{% if user.adress.adressMore %}
+																								{{ user.adress.adressMore }}<br>
+																								{% endif %}
+																								{{ user.adress.zipcode}} {{ user.adress.city}}<br>
+																						</div>
+																				 </td>
+																			</tr>
+																	 </tbody>
+																</table>
+															</div>
+                              <div class="content" style="max-width:598px;display:block; ">
+                                 <table style="width: 90%;border-spacing:0px; margin: 10px auto;  border-bottom:2px solid #b8b7bb" >
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <div>
+                                                <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" class="gmail_msg">
+                                                   <tbody>
+                                                      <tr class="gmail_msg">
+                                                         <td align="center" class="gmail_msg">
+                                                            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;max-width:740px;background-color:#ffffff;border:none" bgcolor="#FFFFFF">
+                                                               <tbody>
+                                                                  <tr>
+                                                                     <td align="center">
+                                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0"  style="border-spacing:0;border-collapse:collapse;width:100%;max-width:610px;border:none">
+                                                                           <tbody>
+                                                                              <tr>
+                                                                                 <td align="center">
+                                                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0"  align="left" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                       <tbody>
+                                                                                          <tr>
+                                                                                             <td style="padding-right:15px;padding-left:15px;padding-top:25px">
+                                                                                                <div class="gmail_msg">
+                                                                                                   <input type="checkbox" id="m_2691187929940511126event1"  style="display:none!important;max-height:0px;overflow:hidden">
+                                                                                                   <label for="m_2691187929940511126event1" >
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" >
+                                                                                                         <tbody>
+                                                                                                            <tr>
+                                                                                                               <td style="font-size:20px;line-height:30px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;text-align:left;padding-bottom:25px" align="left">
+                                                                                                               </td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" >
+                                                                                                         <tbody>
+                                                                                                            <tr >
+                                                                                                               <td  style="padding-bottom:30px">
+                                                                                                                  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                                     <tbody>
+                                                                                                                        <tr >
+                                                                                                                           <td height="1" style="background-color:#bfbfbf;font-size:0px;line-height:0px" bgcolor="#bfbfbf">
+                                                                                                                              <img src="https://ci6.googleusercontent.com/proxy/bjlmwp1lfIp2fevkoEO9P7LRLJDB3htzJ41P3i-rSE5ZwtA6fw0XQ__C7XIfeKMxLCjsuN8uGnjTZ77lPg_2Q3X-nIE1drc87j_Mf3u2_Iy1exK-tg=s0-d-e1-ft#http://d1a3f4spazzrp4.cloudfront.net/receipt_v2/no_collapse.png" style="outline:none;text-decoration:none;display:block" >
+                                                                                                                           </td>
+                                                                                                                        </tr>
+                                                                                                                     </tbody>
+                                                                                                                  </table>
+                                                                                                               </td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                   </label>
+                                                                                                   <div >
+                                                                                                     {% set totalsum = null %}{% set numero_ligne = 0 %}
+
+
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="m_2691187929940511126normalFare" style="display:table;border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody>
+                                                                                                          <! - for each element --!>
+																																																					{% for listepanier in listePanier %}
+																																																					{% set totalsum = totalsum + listepanier.product.price * listepanier.quantity %}
+                                                                                                            <tr>
+                                                                                                               <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> {{ listepanier.product.name }} </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ listepanier.product.price * listepanier.quantity }}€ </td>
+                                                                                                            </tr>
+																																																						<tr>
+																																																							 <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">
+																																																								  {% if listepanier.Color1 %}
+																																																								<img style="width:30px; height:30px" src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color1.imageColorName ) }}">
+																																																								{% endif %}
+																																																								{% if listepanier.Color2 %}
+																																																								<img style="width:30px; height:30px" src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color2.imageColorName ) }}">
+																																																								{% endif %}
+																																																								{% if listepanier.Color3 %}
+																																																								<img style="width:30px; height:30px" src="{{ asset('/upload/color/thumbnail/' ~ listepanier.Color3.imageColorName ) }}">
+																																																								{% endif %}
+																																																								 </td>
+																																																							 <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px"> </td>
+																																																						</tr>
+                                                                                                            <! - endfor --!>
+																																																						{% endfor %}
+
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="m_2691187929940511126function gmail_msg" id="m_2691187929940511126hr2" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody>
+                                                                                                            <tr >
+                                                                                                               <td  style="padding-bottom:30px">
+                                                                                                                  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" class="gmail_msg">
+                                                                                                                     <tbody>
+                                                                                                                        <tr>
+                                                                                                                           <td height="1"  style="background-color:#bfbfbf;font-size:0px;line-height:0px" bgcolor="#bfbfbf"></td>
+                                                                                                                        </tr>
+                                                                                                                     </tbody>
+                                                                                                                  </table>
+                                                                                                               </td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="m_2691187929940511126subtotalFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody>
+                                                                                                            <tr >
+                                                                                                               <td align="left"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">Sous-total </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:24px">{{ totalsum }}€ </td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      {% if totalsum - commande.remise|round(2, 'floor') > minLivraison.montant or commande.atelierLivraison is not null%}
+                                                                                                        {% set livraison = 0 %}
+                                                                                                      {% else %}
+                                                                                                        {% set livraison = coutLivraison.montant %}
+                                                                                                      {% endif %}
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="m_2691187929940511126bookingFeeFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody >
+                                                                                                            <tr >
+                                                                                                               <td align="left"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">Livraison </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{{ livraison }}€</td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0" id="m_2691187929940511126bookingFeeFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody >
+                                                                                                            <tr >
+                                                                                                               <td align="left"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">Remise </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#5dbb5f;padding-bottom:24px">- {{ commande.remise }}€ </td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                      <table width="100%" border="0" cellpadding="0" cellspacing="0"  id="m_2691187929940511126bookingFeeFare" style="border-spacing:0;border-collapse:collapse;width:100%;border:none">
+                                                                                                         <tbody class="gmail_msg">
+                                                                                                            <tr class="gmail_msg">
+                                                                                                               <td align="left" style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">Dont TVA </td>
+                                                                                                               <td align="right"  style="font-size:14px;line-height:22px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#898989;padding-bottom:24px">{{ totalsum * 0.2 }}€</td>
+                                                                                                            </tr>
+                                                                                                         </tbody>
+                                                                                                      </table>
+                                                                                                   </div>
+                                                                                                   <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" >
+                                                                                                      <tbody>
+                                                                                                         <tr >
+                                                                                                            <td style="padding-bottom:30px">
+                                                                                                               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" >
+                                                                                                                  <tbody>
+                                                                                                                     <tr >
+                                                                                                                        <td height="1"  style="background-color:#bfbfbf;font-size:0px;line-height:0px" bgcolor="#bfbfbf"></td>
+                                                                                                                     </tr>
+                                                                                                                  </tbody>
+                                                                                                               </table>
+                                                                                                            </td>
+                                                                                                         </tr>
+                                                                                                      </tbody>
+                                                                                                   </table>
+                                                                                                   <table width="100%" border="0" cellpadding="0" cellspacing="0" id="m_2691187929940511126Charged" style="border-spacing:0;border-collapse:collapse;width:100%;border:none" class="gmail_msg">
+                                                                                                      <tbody>
+                                                                                                         <tr>
+                                                                                                            <td align="left"style="font-size:16px;line-height:20px;font-family:'ClanPro-News','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;text-transform:uppercase;color:#898989">TOTAL RÉGLÉ</td>
+                                                                                                            <td rowspan="2" align="right"  style="font-size:32px;line-height:40px;font-family:'ClanPro-Book','HelveticaNeue-Light','Helvetica Neue Light',Helvetica,Arial,sans-serif;color:#000000;padding-bottom:10px"> {{ totalsum + livraison - commande.remise }}€ </td>
+                                                                                                         </tr>
+                                                                                                      </tbody>
+                                                                                                   </table>
+
+
+                                                                                                </div>
+                                                                                             </td>
+                                                                                          </tr>
+                                                                                       </tbody>
+                                                                                    </table>
+                                                                                 </td>
+                                                                              </tr>
+                                                                              <tr>
+                                                                                 <td style="padding-top:40px"> </td>
+                                                                              </tr>
+                                                                           </tbody>
+                                                                        </table>
+                                                                     </td>
+                                                                  </tr>
+                                                               </tbody>
+                                                            </table>
+                                                         </td>
+                                                      </tr>
+                                                      <tr >
+                                                         <td style="padding-top:60px"> </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="content" style="max-width:598px;display:block; ">
+                                 <table style="width: 90%;border-spacing:0px; margin: 0 auto; ">
+                                    <tbody>
+                                       <tr>
+                                          <td>
+                                             <div>
+                                                <h3 style="color:#A94141; font-size:14px;">
+                                                   Vous avez une question ?
+                                                </h3>
+                                                <p style="font-size:14px; ">
+                                                   <a style="text-decoration:none; color:black" target="_blank" href="mailto:hello@agathevousgate.fr"> Un problème ? Envie de nous dire bonjour ? Contactez-nous !  </a>
+                                                </p>
+                                             </div>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+                  <table cellpadding="0" cellspacing="0" width="100%" style="margin:10px auto;max-width:600px; padding:0;" >
+                     <tbody>
+                        <tr>
+                           <td>
+                              <div style="position:relative; color:white">
+                                 <table  cellpadding="0" cellspacing="0" width="100%">
+                                    <tbody>
+                                       <tr>
+                                          <td align="center">
+                                             <p style="height:100%; margin:0px;font-size:25px; width:100%">
+                                                <img style="width:auto; height:22px;" alt="logo_AGV" src="{{ asset('images/home_menu_1.png') }}"/> <img src="{{ asset('images/home_menu_2.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:22px">                                             </p>
+                                             <p style="height:100%; margin:0px;font-size:25px;width:100%; margin-top:10px;">
+                                                <a target="_blank" href="https://www.facebook.com/agathevousgate/"><img style="margin-right:20px" src="{{ asset('img/icones/facebook.png') }}"></a>
+                                                <a target="_blank" href="https://www.instagram.com/agathevousgate/"><img src="{{ asset('img/icones/instagram.png') }}"></a>
+                                             </p>
+                                             <p style="height:100%;color:#696f6f;margin:0px;font-size:10px;width:100%; margin-top:20px;">
+                                                2016 <a  target="_blank" href="https://agathevousgate.fr">AgatheVousGâte</a> - Tous droits réservés | CGU
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </td>
+            </tr>
+         </tbody>
+      </table>
+   </body>
+</html>

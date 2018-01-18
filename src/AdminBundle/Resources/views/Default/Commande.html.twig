@@ -255,7 +255,7 @@
 
                                           <td>{{ product.quantity }}</td>
                                           <td>{{ product.product.name }}</td>
-                                          <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}</td>
+                                          <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}{% if product.accessoire and product.size %} - {% endif %}{% if product.size %} {{product.size}}{% endif %}</td>
                                           <td>
                                           {% if product.Color1 %}
                                           {% set color1 = color1 +1 %}

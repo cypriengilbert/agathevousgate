@@ -38,7 +38,6 @@ security:
         - { path: ^/admin/done, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin/validate, roles: ROLE_SUPER_ADMIN }
         - { path: ^/admin/s, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/paiement/debit, roles: ROLE_SUPER_ADMIN }
         - { path: ^/franchise, roles: ROLE_SUPER_ADMIN}
         - { path: ^/pro/, roles: ROLE_SUPER_ADMIN}
 

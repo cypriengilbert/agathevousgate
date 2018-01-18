@@ -122,7 +122,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse de facturation</label>
-                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{user.company.adressBilling.adress}}">
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{% if user.company.adressBilling %}{{user.company.adressBilling.adress}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse (suite)</label>
-                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{ user.company.adressBilling.adressMore }}">
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{% if user.company.adressBilling %}{{ user.company.adressBilling.adressMore }}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -141,14 +141,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Ville</label>
-                                                <input type="text" class="form-control" placeholder="City"  disabled value="{{user.company.adressBilling.city}}">
+                                                <input type="text" class="form-control" placeholder="City"  disabled value="{% if user.company.adressBilling %}{{user.company.adressBilling.city}}{% endif %}">
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Code postal</label>
-                                                <input type="number" class="form-control"  disabled value="{{user.company.adressBilling.zipcode}}">
+                                                <input type="number" class="form-control"  disabled value="{% if user.company.adressBilling %}{{user.company.adressBilling.zipcode}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>

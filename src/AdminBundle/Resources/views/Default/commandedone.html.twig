@@ -38,13 +38,14 @@
 
   <thead>
            <tr>
-           <th width=5%>ID</th>
-          <th width=5%>ID Client</th>
-           <th width=15%>Client</th>
-           <th width=25% >Adresse de livraison</th>
-           <th width=10%>Date de commande</th>
+           <th width=3%>ID</th>
+          <th width=3%>ID Client</th>
+           <th width=15%  data-sortable="true">Client</th>
+           <th width=19% >Adresse de livraison</th>
+           <th width=10%  data-sortable="true">Date de commande</th>
            <th width=20%>Produit</th>
             <th width=10%> Price </th>
+            <th width=10%> Paiement </th>
            <th width=10%>Action</th>
            </tr>
        </thead>
@@ -99,8 +100,13 @@
 
                       {% endfor %}
                   </td>
+
+
                   <td>
 {{ commande.price }}
+                  </td>
+                   <td>
+{{ commande.paiementMethod }}
                   </td>
 
                   <td> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
@@ -157,7 +163,9 @@
   <td>
 {{ commande.price }}
   </td>
-
+ <td>
+{{ commande.paiementMethod }}
+                  </td>
   <td> <a href="{{ path('commande', {'id': commande.id })}}"><i class="fa fa-info-circle fa-2" aria-hidden="true"></i></a></td>
 </tr>
 {% endif %}
