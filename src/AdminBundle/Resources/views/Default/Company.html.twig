@@ -208,7 +208,7 @@
                             <ul class="nav nav-icons" role="tablist">
                             {% for collection in collections %}
                                 <li class="">
-                                    <a href="#{{collection.title}}" role="tab" data-toggle="tab">
+                                    <a href="#{{collection.title|replace({' ':''})}}" role="tab" data-toggle="tab">
                                         <i class="fa fa-info-circle"></i><br>
                                         {{collection.title}}
                                     </a>
@@ -219,7 +219,7 @@
 
                         <div class="tab-content">
                             {% for collection in collections %}
-                            <div class="tab-pane" id="{{collection.title}}">
+                            <div class="tab-pane" id="{{collection.title|replace({' ':''})}}">
                                 <div class="card">
                                     <div class="header">
                                         <h4 class="title">Collection {{collection.title}}</h4>
