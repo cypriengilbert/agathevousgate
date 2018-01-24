@@ -1,0 +1,40 @@
+@media screen and (min-width: 1500px){
+    .resume_cart{
+        border:1px solid rgb(169, 65, 65);
+        min-height: 250px;
+        min-width: 150px;
+        width:10%;
+        position: fixed;
+        top:120px;
+        right:5px;
+    background-color: white;
+
+    }
+    .resume_cart_h2{
+        border-bottom: 1px solid rgb(36, 34, 88);
+    }
+    .resume_cart_checkout{
+        position: absolute;
+        bottom:5px;
+        margin-top: 10px;
+    }
+    .resume_cart_article, .resume_cart_h2, .resume_cart_checkout {
+        width:100%;
+
+    }
+    .resume_cart_article{
+        margin-left: 5px;
+    }
+    .resume_cart_quit{
+    color:grey;
+    cursor:pointer;
+    position:absolute;
+    top : 3px;
+    right:6px;
+    }
+}
+@media screen and (max-width: 1500px){
+    .resume_cart{
+    display:none;
+    }
+}

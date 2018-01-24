@@ -15,6 +15,10 @@
     background-color: rgba(255, 255, 255, 0.7);
 }
 
+nav_agathe_3 > button{
+    margin-top: 1.75rem;
+}
+
 .navbar-nav {
     margin-left: 0px;
 }
@@ -51,12 +55,8 @@
 }
 
 .navbar-default .navbar-nav>.active>a {
-    /*test center-better*/
-    /*padding-top: 10px;
-    padding-bottom: 15px;*/
     font-weight: bold;
     margin-top: 0px;
-
 }
 
 .navbar-default .navbar-nav>li>a {
@@ -215,4 +215,25 @@ html, body {
   border-bottom: 5px solid rgba(255, 0, 0, 0.01)!important;
   border-top: 5px solid rgba(255, 0, 0, 0.01)!important;
   height: 56px;
+}
+
+.logo_nav{
+    position:relative;
+}
+
+.logo_nav > img {
+    height: auto;
+    max-height:35px;
+}
+
+.text-nav-up{
+    margin-right:10px;
+    color:#242258;
+}
+
+.social-icons > img {
+    width: 100%; 
+    height: auto;
+    max-width:2.8rem;
+    margin: -0.9rem;
 }

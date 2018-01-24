@@ -1,9 +1,3 @@
-/*!
- * Start Bootstrap - Creative Bootstrap Theme (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
-
 html,
 body {
     width: 99%;
@@ -178,7 +172,6 @@ header {
     min-height: auto;
     text-align: center;
     color: #696767;
-    /*background-image: url(../img/background-top-test.jpg);*/
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;

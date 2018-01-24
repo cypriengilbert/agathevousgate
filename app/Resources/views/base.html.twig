@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,57 +10,45 @@
     <title>Agathe vous gâte - Personnalisez vos noeuds papillon</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
 
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.cookiebar.css') }}" />
-
+    
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-
-
     <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('js/datepicker/css/datepicker.css') }}" type="text/css">
 
     <!-- Plugin CSS -->
     <link rel="stylesheet" href="{{ asset('css/animate.min.css') }}" type="text/css">
-
-    <!-- Awesome Bootstrap pour radio et checkbox CSS -->
-    <link rel="stylesheet" href="{{ asset('css/awesome-bootstrap-checkbox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.cookiebar.css') }}" />
 
     <!-- Custom CSS -->
+    {% block css %}{% endblock %}
+    {% if is_granted('ROLE_USER') and app.user.isPro == 2 %}
+        <link rel="stylesheet" href="{{ asset('css/styles_resume_cart.css') }}" type="text/css">
+    {% endif %}
     <link href="{{ asset('css/sequence-theme.modern-slide-in.css') }}" rel="stylesheet" media="all">
-
-
-    <!-- BB CSS menu -->
     <link rel="stylesheet" href="{{ asset('css/styles_home.css') }}" type="text/css">
-
     <link rel="stylesheet" href="{{ asset('css/styles_menu.css') }}" type="text/css">
-    <!-- BB CSS FAQ -->
-    <link rel="stylesheet" href="{{ asset('css/styles_faq.css') }}" type="text/css">
-     <!-- BB CSS Plugin -->
     <link rel="stylesheet" href="{{ asset('css/styles_plugin.css') }}" type="text/css">
 
     <!--Jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-   
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
 <!-- Follow Us -->
 <div class="wrapper">
     <div class="container flwus">
         <a href="{{path('accueil')}}" >
             <div class="row text-center">
-                <div class="col-sm-1 col-xs-5 text-left" style="position:relative">
-                    <img src="{{ asset('images/home_menu_1.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:35px">
+                <div class="col-sm-1 col-xs-5 text-left logo_nav">
+                    <img src="{{ asset('images/home_menu_1.png') }}" alt="agathevousgate-logo-noeudpapillon" >
                 </div>
-                <div class="col-sm-2 col-xs-8 text-left hidden_small no_padding" style="position:relative">
-                    <img src="{{ asset('images/home_menu_2.png') }}" alt="logo_agathevousgate" style="height: auto; max-height:35px">
+                <div class="col-sm-2 col-xs-8 text-left hidden_small no_padding logo_nav">
+                    <img src="{{ asset('images/home_menu_2.png') }}" alt="agathevousgate-logo-text">
                 </div>
             
         </a>
@@ -69,17 +56,19 @@
         </div>
         <div class="col-sm-3 col-xs-5">
             <div class="row text-center">
-                <div class="col-sm-8 col-xs-4 no_padding text-right gfy" ><p class="hidden_small" style="margin-right:10px; color:#242258">
-                    Nous suivre
+                <div class="col-sm-8 col-xs-4 no_padding text-right gfy" >
+                    <p class="hidden_small text-nav-up">
+                        Nous suivre
+                    </p>
                 </div>
                 <a href="https://www.facebook.com/agathevousgate/" target="_blank">
-                    <div class="col-sm-2 col-xs-2 no_padding">
-                        <img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook" style="width: 100%; height: auto;max-width:1.5rem;margin: -0.9rem; /*margin-right:100px*/">
+                    <div class="col-sm-2 col-xs-2 no_padding social-icons">
+                        <img src="{{ asset('images/header/icone_facebook.png') }}" alt="facebook-icon" >
                     </div>
                 </a>
                 <a href="https://www.instagram.com/agathevousgate/" target="_blank">
-                    <div class="col-sm-2 col-xs-2 no_padding">
-                        <img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram" style="width: 100%; height: auto;max-width:2.8rem;margin: -0.9rem;">
+                    <div class="col-sm-2 col-xs-2 no_padding social-icons">
+                        <img src="{{ asset('images/header/icone_instagram.png') }}" alt="instagram-icon" >
                     </div>
                 </a>
             </div>
@@ -93,7 +82,7 @@
 <nav class="navbar navbar-default nav_agathe_1" data-spy="affix" data-offset-top="48">
     <div class="container nav_agathe_2">
         <div class="navbar-header nav_agathe_3">
-            <button type="button" class="navbar-toggle navbar_agathe" data-toggle="collapse" data-target="#myNavbar" style="margin-top: 1.75rem;">
+            <button type="button" class="navbar-toggle navbar_agathe" data-toggle="collapse" data-target="#myNavbar">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -263,50 +252,7 @@
 
 
 <body>
-    <style>
-        @media screen and (min-width: 1500px){
-            .resume_cart{
-                border:1px solid rgb(169, 65, 65);
-                min-height: 250px;
-                min-width: 150px;
-                width:10%;
-                position: fixed;
-                top:120px;
-                right:5px;
-            background-color: white;
-
-            }
-            .resume_cart_h2{
-                border-bottom: 1px solid rgb(36, 34, 88);
-            }
-            .resume_cart_checkout{
-                position: absolute;
-                bottom:5px;
-                margin-top: 10px;
-            }
-            .resume_cart_article, .resume_cart_h2, .resume_cart_checkout {
-                width:100%;
-
-            }
-            .resume_cart_article{
-                margin-left: 5px;
-            }
-            .resume_cart_quit{
-            color:grey;
-            cursor:pointer;
-            position:absolute;
-            top : 3px;
-            right:6px;
-            }
-        }
-        @media screen and (max-width: 1500px){
-            .resume_cart{
-            display:none;
-            }
-        }
-    </style>
     {% block body %} {% endblock %}
-    {% block javascripts %}{% endblock %}
 </body>
 </div>
 <footer class="general-footer">
@@ -443,4 +389,6 @@ $(document).ready(function(){
     });
   });
 </script>
+{% block javascripts %}{% endblock %}
+
 </html>

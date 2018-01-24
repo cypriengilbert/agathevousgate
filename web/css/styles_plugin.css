@@ -33,9 +33,6 @@
 
 .fa-2x {
     color: #A94141;
-    /*border: 2px solid #A94141;
-    border-radius: 25px;
-    padding: 10px 40px;*/
 }
 
 .accordeon_noeud {
@@ -294,7 +291,6 @@ input[type="radio"].radio_colors:checked+label {
     height: 100vh;
 }*/
 
-/* Un gros bordel de cyp qui était sur la page product */
 .main_personnalisation {
     padding-bottom: 1rem;
 }
@@ -351,9 +347,7 @@ input[type="radio"].radio_colors:checked+label {
     color: #FFF !important;
 }
 
-/*Fin bordel cyp*/
 
-/*Les boutons à la con pour changer de "page"*/
 .numberCircle {
     border-radius: 50%;
     behavior: url(PIE.htc);
@@ -401,7 +395,6 @@ input[type="radio"].radio_colors:checked+label {
     font-weight: bold;
 }
 
-/* Popinette amour éternel de cyp*/
 
 /* Outer */
 .popup {

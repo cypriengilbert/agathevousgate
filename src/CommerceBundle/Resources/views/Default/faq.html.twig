@@ -1,23 +1,27 @@
-{% extends 'base.html.twig' %} {% block body %}
-
+{% extends 'base.html.twig' %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/styles_faq.css') }}" type="text/css">
+{% endblock css %}
+{% block body %}
 <body>
-    <!-- FAQ START -->
     <div class="container">
         <div class="row text-center">
             <div class="col-sm-12">
                 <h1 class="heading">FOIRE AUX QUESTIONS</h1></div>
+            </div>
         </div>
-    </div>
-    <div class="container text-center">
-    <div class="panel-group" id="accordion">
-
+        <div class="container text-center">
+        <div class="panel-group" id="accordion">
         {% for text in text_question %}
             <div class="panel panel-default" style="margin-bottom: 1.25em;">
                 <div class="panel-heading" aria-hidden="true" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index}}">
                     <div class="row text-center">
                         <div class="col-sm-11">
                             <h4 class="panel-title">
-                            <a>{{text.text}}</a></h4>
+                                <a>
+                                    {{text.text}}
+                                </a>
+                            </h4>
                         </div>
                         <div class="col-sm-1">
                             <i class="fa fa-2x fa-{% if loop.index == 1 %}minus{% else %}plus{% endif %}-circle"></i>
@@ -25,20 +29,17 @@
                     </div>
                 </div>
                 <div id="collapse{{loop.index}}" class="panel-collapse collapse {% if loop.index == 1 %}in{% endif %}">
-                    <div class="panel-body">{{ text_reponse[loop.index-1].text| raw  }}</div>
-              </div>
-              </div>
-
+                    <div class="panel-body">
+                        {{ text_reponse[loop.index-1].text| raw  }}
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-
-
-</div></div>
-</div>
-
-
-        </div>
     </div>
-    <!-- FAQ FIN -->
+</body>
+{% endblock %}
+
+{% block javascripts %}
 <script>
 $(document).ready(function(){
 
@@ -46,26 +47,13 @@ $(".panel-heading").on("click", function() {
     /*Change tout les minus en plus*/
 if ($('.fa-plus-circle',this).hasClass("fa-plus-circle")){
     $('.fa-minus-circle','.panel-heading').addClass('fa-plus-circle').removeClass('fa-minus-circle');
-    /*Change CE plus en moins*/
     $('.fa-plus-circle',this).addClass('fa-minus-circle').removeClass('fa-plus-circle');}
     else if ($('.fa-minus-circle',this).hasClass("fa-minus-circle")){
         $('.fa-minus-circle','.panel-heading').addClass('fa-plus-circle').removeClass('fa-minus-circle');
-        /*Change CE plus en moins*/
         }
+    });
+});
 
-
-
-})
-
-
-
-
-
-
-;})
 </script>
-</body>
+{% endblock javascripts %}
 
-
-
-{% endblock %}
