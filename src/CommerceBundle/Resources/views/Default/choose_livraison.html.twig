@@ -2,92 +2,108 @@
 
 
 {% block body %}
-
 <body>
     <section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="col-lg-8 text-center">
-                    <h2 class="section-heading">Choisissez votre mode de livraison </h2>
-
+                        <h2 class="section-heading">
+                            Choisissez votre mode de livraison 
+                        </h2>
                         <div class="row">
                             <div class="col-lg-6 text-center">
-                                <center><button type="submit" onclick="livraison()"  class="btn btn-primary btn-lg active btn_send" >Livraison</button></center>
+                                <center>
+                                    <button type="submit" onclick="livraison()"  class="btn btn-primary btn-lg active btn_send" >
+                                        Livraison
+                                    </button>
+                                </center>
                             </div>
                             <div class="col-lg-6 text-center">
-                                <center><button type="submit" onclick="retrait()"  class="btn btn-primary btn-lg active btn_send" >Retrait en atelier</button></center>
+                                <center>
+                                    <button type="submit" onclick="retrait()"  class="btn btn-primary btn-lg active btn_send">
+                                        Retrait en atelier
+                                    </button>
+                                </center>
                             </div>
                         </div>
                         <div class="row">
-
                             <div class="col-lg-12 text-center" style="margin-top:20px;">
-
-                              <div class="form-group" style="display:none" id="btn_livraison">
-                                {{ form_start(form) }}
-                                Choisissez votre mode de livraison - Livraison gratuite pour toute commande supérieur à 99€
-                                {{ form_label(form.transportMethod, " ", {'label_attr': {'class': ''}}) }}
-                                {{ form_errors(form.transportMethod) }}
-                                {{ form_widget(form.transportMethod, {'attr': {'class': 'form-control'}}) }}
-                                <button type="submit" class="btn btn-primary btn-lg active btn_send" >Confirmer</button>
-                                {{ form_end(form) }}
-                              </div>
-                              <div class="form-group" style="display:none" id="btn_atelier">
-                                  {% for atelier in ateliers %}
-                                      <div class="panel panel-info">
-                                        <div class="panel-heading" style="position:relative;"><h3 class="panel-title">{{ atelier.name }}</h3>
-                                        </div>
-                                        <div class="panel-body">
-                                          {{ atelier.adresse1 }}<br>
-                                          {% if atelier.adresse2 is not empty %}{{ atelier.adresse2 }}<br>{% endif %}
-                                          {{ atelier.zipcode }} {{ atelier.city }}<br>
-                                          <center><a class="btn btn-primary btn-lg active btn_send" href="{{ path('choosen_atelier', {'id': atelier.id }) }}" >Je choisis cet atelier</a></center>
-                                        </div>
-                                      </div>
-                                  {% endfor %}
-                                  {% if ateliers is empty %}
-                                  <div class="panel panel-info">
-                                    <div class="panel-heading" style="position:relative;"><h3 class="panel-title"></h3>
-                                    </div>
-                                    <div class="panel-body">
-                                      Malheureusement, aucun atelier n'est disponible pour un retrait.
-                                    </div>
-                                  </div>
-                                  {% endif %}
+                                <div class="form-group" style="display:none" id="btn_livraison">
+                                    {{ form_start(form) }}
+                                        Choisissez votre mode de livraison - Livraison gratuite pour toute commande supérieur à 99€
+                                        {{ form_label(form.transportMethod, " ", {'label_attr': {'class': ''}}) }}
+                                        {{ form_errors(form.transportMethod) }}
+                                        {{ form_widget(form.transportMethod, {'attr': {'class': 'form-control'}}) }}
+                                        <button type="submit" class="btn btn-primary btn-lg active btn_send" >
+                                            Confirmer
+                                        </button>
+                                    {{ form_end(form) }}
                                 </div>
-                              </div>
-
-                              <hr class="primary"><br />
-                          </div>
+                                <div class="form-group" style="display:none" id="btn_atelier">
+                                    {% for atelier in ateliers %}
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading" style="position:relative;">
+                                                <h3 class="panel-title">
+                                                    {{ atelier.name }}
+                                                </h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                {{ atelier.adresse1 }}<br>
+                                                {% if atelier.adresse2 is not empty %}
+                                                    {{ atelier.adresse2 }}
+                                                    <br>
+                                                {% endif %}
+                                                {{ atelier.zipcode }} {{ atelier.city }}<br>
+                                                <center>
+                                                    <a class="btn btn-primary btn-lg active btn_send" href="{{ path('choosen_atelier', {'id': atelier.id }) }}" >
+                                                        Je choisis cet atelier
+                                                    </a>
+                                                </center>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    {% if ateliers is empty %}
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading" style="position:relative;">
+                                                <h3 class="panel-title">
+                                                </h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                Malheureusement, aucun atelier n'est disponible pour un retrait.
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr class="primary"><br />
+                        </div>
                     </div>
                     <div class="col-lg-4 text-center">
-                      <h3>Votre adresse</h3>
-                      {% set user = app.user %}
-                      {% block adresses %}
-                      {% include "CommerceBundle:Default:adresse.html.twig" %}
-                      {% endblock %}
-
-
+                        <h3>
+                            Votre adresse
+                        </h3>
+                        {% set user = app.user %}
+                        {% block adresses %}
+                        {% include "CommerceBundle:Default:adresse.html.twig" %}
+                        {% endblock %}
                     </div>
-
-            </div>
+                </div>
             </div>
         </div>
-
-<script>
-function retrait(){
-document.getElementById('btn_livraison').style.display = 'none';
-document.getElementById('btn_atelier').style.display = 'block';
-
-}
-function livraison(){
-document.getElementById('btn_atelier').style.display = 'none';
-document.getElementById('btn_livraison').style.display = 'block';
-
-}
-</script>
-
-
-
-
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        function retrait(){
+        document.getElementById('btn_livraison').style.display = 'none';
+        document.getElementById('btn_atelier').style.display = 'block';
+        }
+        function livraison(){
+        document.getElementById('btn_atelier').style.display = 'none';
+        document.getElementById('btn_livraison').style.display = 'block';
+        }
+    </script>
+{% endblock %}
+
+
