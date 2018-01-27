@@ -383,7 +383,7 @@
                               <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
                               {% set codePromo = app.session.get('codePromo') %}
                               {% set remise = 0 %}
-                              {% if discountAuto %}
+                              {% if discountAuto and codePromo is null %}
                                 {% if discountAuto.genre == 'pourcentage' %}
                                 {% set remise = totalsum * discountAuto.montant / 100 %}
                                 {% elseif discountAuto.genre  == 'remise' %}
@@ -398,6 +398,7 @@
                               
                               {% if codePromo %}
                                 {% if codePromo.minimumCommande <= totalsum %}
+                                  {% set remise = 0 %}
                                   {% if codePromo.genre == 'pourcentage' %}
                                   {% set remise = totalsum * codePromo.montant / 100 %}
                                   {% elseif codePromo.genre  == 'remise' %}
@@ -411,6 +412,7 @@
                                 {% endif %}
                               {% elseif nbcommande == 0 and is_granted('ROLE_USER') %}
                               {% if app.user.parrainEmail is not null %}
+                              
                               {% set remise = totalsum * (parrainage.montant / 100) %}
                              
                               {% set totalsum = totalsum - remise|round(2, 'common') %}

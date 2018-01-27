@@ -9,7 +9,7 @@ use CommerceBundle\Entity\AddedProduct;
 use CommerceBundle\Entity\Commande;
 use CommerceBundle\Entity\Photo;
 use CommerceBundle\Entity\CodePromo;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 use CommerceBundle\Entity\SurveyResponse;
 use CommerceBundle\Entity\Product;
 use CommerceBundle\Controller\SessionController;
@@ -237,6 +237,7 @@ class CommerceController extends Controller
             $EntiteCode = $this->getOneBy('CodePromo', array(
                 'code' => $codePromo
             ));
+
             $datetime   = new \Datetime('now');
             if ($EntiteCode) {
                 if ($EntiteCode->getDateDebut() >= $datetime && $EntiteCode->getDateFin() <= $datetime) {
@@ -2619,21 +2620,42 @@ class CommerceController extends Controller
             $newcommande->setDate($datetime);
             $session   = $this->get('session');
             $codePromo = $session->get('codePromo');
-
+            
             $remise = 0;
             
             $discount_auto = $this->getVoucherAuto($listePanier);
-            if ($codePromo) {
+            if (isset($discount_auto)){
+                if ($discount_auto->getGenre() == 'pourcentage') {
+                    $remise = round($total_commande * $discount_auto->getMontant() / 100, 2);
+                    $newcommande->setCodePromo($discount_auto);
+                    
+                } elseif ($discount_auto->getGenre() == 'remise') {
+                    $remise = $discount_auto->getMontant();
+                    $newcommande->setCodePromo($discount_auto);                    
+                } elseif ($discount_auto->getGenre() == 'fdp-remise') {
+                    $remise = $discount_auto->getMontant();
+                    $newcommande->setCodePromo($discount_auto);
+                    
+                }
+            }
+            if (isset($codePromo)) {
+                $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+
+                $codePromo = $repository->findOneBy(array(
+                    'code' => $codePromo->getCode(),
+    
+                ));
                 if ($total_commande >= $codePromo->getMinimumCommande()) {
                     if ($codePromo->getGenre() == 'pourcentage') {
                         $remise = round($total_commande * $codePromo->getMontant() / 100, 2);
-                        //$newcommande->setCodePromo($codePromo);                        
+                        $newcommande->setCodePromo($codePromo);                        
+                        
                     } elseif ($codePromo->getGenre() == 'remise') {
                         $remise = $codePromo->getMontant();
-                       // $newcommande->setCodePromo($codePromo);                        
+                        $newcommande->setCodePromo($codePromo);                        
                     } elseif ($codePromo->getGenre() == 'fdp-remise') {
                         $remise = $codePromo->getMontant();
-                     //   $newcommande->setCodePromo($codePromo);
+                       $newcommande->setCodePromo($codePromo);
                         
                     }
 
@@ -2647,20 +2669,7 @@ class CommerceController extends Controller
                 $remise = round($total_commande * ($remiseParrainage->getMontant()) / 100, 2);
 
             }
-            elseif ($discount_auto){
-                if ($discount_auto->getGenre() == 'pourcentage') {
-                    $remise = round($total_commande * $discount_auto->getMontant() / 100, 2);
-                   // $newcommande->setCodePromo($discount_auto);
-                    
-                } elseif ($discount_auto->getGenre() == 'remise') {
-                    $remise = $discount_auto->getMontant();
-                  //  $newcommande->setCodePromo($discount_auto);                    
-                } elseif ($discount_auto->getGenre() == 'fdp-remise') {
-                    $remise = $discount_auto->getMontant();
-                //    $newcommande->setCodePromo($discount_auto);
-                    
-                }
-            }
+            
 
             $total_commande = $total_commande - $remise;
             if(isset($user) && $user->getIsPro() == 2){
@@ -2684,22 +2693,23 @@ class CommerceController extends Controller
                     $coutLivraison =0;
                 }
             
-                if ($codePromo) {
+                if($discount_auto){
+                    if ($discount_auto->getGenre() == 'fdp' and $discount_auto->getGenre() == 'fdp-remise') {
+                        $total_commande = $total_commande + $coutLivraison;
+                        $newcommande->setCodePromo($discount_auto);
+                        
+                    } 
+                }
+                elseif ($codePromo) {
                     if ($total_commande >= $codePromo->getMinimumCommande()) {
                         if ($codePromo->getGenre() != 'fdp' and $codePromo->getGenre() != 'fdp-remise' ) {
                             $total_commande = $total_commande + $coutLivraison;
-                            //$newcommande->setCodePromo($codePromo);
+                            $newcommande->setCodePromo($codePromo);
                         }
 
                     }
                 }
-                elseif($discount_auto){
-                    if ($discount_auto->getGenre() == 'fdp' and $discount_auto->getGenre() == 'fdp-remise') {
-                        $total_commande = $total_commande + $coutLivraison;
-                     //   $newcommande->setCodePromo($discount_auto);
-                        
-                    } 
-                }
+                
             }
             else{
                 $coutLivraison =0 ;

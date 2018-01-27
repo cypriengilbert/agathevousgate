@@ -16,7 +16,7 @@
                <div class="panel-body">
                {% set totalsum = null %}{% set numero_ligne = 0 %}
                {% set remisePro = 0 %}
-               {% set remise= 0 %}
+               {% set remise= commande.remise %}
 
               {% set total_taxes = 0 %}
                {% set total_reduction = 0 %}
@@ -114,40 +114,12 @@
                             {% set livraison = 0 %}
                             {% set pre_totalsum = totalsum %}
                            {% set codePromo = app.session.get('codePromo') %}
-                           {% if autoVoucher %}
-                                {% if autoVoucher.genre == 'pourcentage' %}
-                                    {% set remise = totalsum * autoVoucher.montant / 100 %}
-                                {% elseif autoVoucher.genre  == 'remise' %}
-                                    {% set remise = autoVoucher.montant %}
-                                {% elseif autoVoucher.genre  == 'fdp' %}
-                                    {% set livraison = 0 %}
-                                {% elseif autoVoucher.genre  == 'fdp-remise' %}
-                                    {% set livraison = 0 %}
-                                    {% set remise = autoVoucher.montant %}
-                                {% endif %}
-                                
-                                {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                            {% elseif codePromo %}
-                                {% if codePromo.minimumCommande <= totalsum %}
-                                    {% if codePromo.genre == 'pourcentage' %}
-                                        {% set remise = totalsum * codePromo.montant / 100 %}
-                                    {% elseif codePromo.genre  == 'remise' %}
-                                        {% set remise = codePromo.montant %}
-                                    {% elseif codePromo.genre  == 'fdp' %}
-                                        {% set livraison = 0 %}
-                                    {% elseif codePromo.genre  == 'fdp-remise' %}
-                                        {% set livraison = 0 %}
-                                        {% set remise = codePromo.montant %}
-                                    {% endif %}
+                           
                                     
                                     {% set totalsum = totalsum - remise|round(2, 'floor') %}
                                 
-                                {% endif %}
-                            {% elseif nbcommande == 0 and app.user.parrainEmail is not null %}
-                                {% set remise = totalsum * (parrainage.montant / 100) %}
                                 
-                                {% set totalsum = totalsum - remise|round(2, 'floor') %}
-                            {% endif %}
+                            
 
                            <p class="text-left"> {% if nbcommande == 0 and app.user.parrainEmail is not null %}Parrainage{% elseif remise != 0  %}Remise{% endif %}</p>
 <p class="text-left">Livraison</p>
@@ -199,7 +171,7 @@
                            <p class="text-right"> + {{ ((totalsum  * (1+tva/100) - totalsum) + livraison - (livraison / (1+tva_delivery/100)))|round(2, 'common') }}€ </p>
 
                            {% endif %}
-                                                      {% if tva == 0 %}<p class="text-right"> <br></p>{% endif %}
+                                                      {% if tva == 0 %}{% endif %}
 
                           {% if app.user and app.user.isPro == 2 %} <p class="text-right"><strong>  {{ ((totalsum * (1+tva/100) + livraison))|round(2, 'common') }} €</strong></p>{% else %}<p class="text-right"><strong>  {{ ((totalsum + livraison))|round(2, 'common') }} €</strong></p> {% endif %}
                         
