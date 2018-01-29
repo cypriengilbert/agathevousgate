@@ -1385,7 +1385,9 @@ class DefaultController extends Controller
 
         $colors = [];
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-        $color      = $repository->findBy(array('isBasic' => 1));
+        $color      = $repository->findBy(array('isBasic' => 1), 
+        array('codehexa' => 'ASC'));
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collections      = $repository->findAll();
        
