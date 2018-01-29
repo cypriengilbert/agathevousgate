@@ -37,7 +37,8 @@ class addCommandeNewUserType extends AbstractType
     ->add('client', new RegistrationType())
 
              
-            ->add('date', 'date')
+            ->add('date', 'date',array(
+                'data' => new \DateTime("now")))
         ;
     }
 

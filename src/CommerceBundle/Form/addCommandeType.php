@@ -45,7 +45,8 @@ class addCommandeType extends AbstractType
                 
                 ))
                 
-            ->add('date', 'date')
+            ->add('date', 'date',array(
+                'data' => new \DateTime("now")))
         ;
     }
 
