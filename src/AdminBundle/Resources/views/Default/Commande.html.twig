@@ -161,6 +161,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {% if commande.client.adress %}
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -194,8 +195,9 @@
                                                 <input type="number" class="form-control"  disabled value="{{commande.client.adress.zipcode}}">
                                             </div>
                                         </div>
-                                    </div>
 
+                                    </div>
+                            {% endif %}        
 
                                 {#  {% if user.isPro == 2 %}
                                   <a href="{{path('settouser', {'id': user.id })}}">
@@ -255,7 +257,7 @@
 
                                           <td>{{ product.quantity }}</td>
                                           <td>{{ product.product.name }}</td>
-                                          <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}</td>
+                                          <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}{% if product.accessoire and product.size %} - {% endif %}{% if product.size %} {{product.size}}{% endif %}</td>
                                           <td>
                                           {% if product.Color1 %}
                                           {% set color1 = color1 +1 %}

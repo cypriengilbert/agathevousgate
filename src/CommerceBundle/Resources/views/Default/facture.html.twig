@@ -51,9 +51,10 @@ td    { vertical-align: top; }
             </td>
             {% else %}
             <td style='width:36%'>
+            {% if user.adress %}
                 {{user.adress.adress}}<br>
                 {{user.adress.zipcode}} {{user.adress.city}}<br>
-
+            {% endif %}
             </td>
             {% endif %}
         </tr>

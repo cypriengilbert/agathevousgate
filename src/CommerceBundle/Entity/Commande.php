@@ -95,7 +95,7 @@ class Commande
     private $isPanier;
 
       /**
-      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",cascade={"persist"})
       * @ORM\JoinColumn(nullable=false)
       */
      private $client;

@@ -3363,11 +3363,12 @@ class CommerceController extends Controller
               }
             }
               else{
+                if($item->getProduct() == $reductionPro->getProduct() && $reductionPro->getCollection()->getId() == 30){
                 $priceitem = $this->getPriceItemGeneric($item->getProduct());
-                $priceitemReduc = ($priceitem * (100 - $user->getCompany()->getReductionGeneric()) /100);
+                $priceitemReduc = ($priceitem * (100 - $reductionPro->getreduction()) /100);
                $priceTemp = $priceitemReduc / (1+$tva/100);
                $priceRemise = ($priceitem - $priceitemReduc) / (1+$tva/100);
-
+                }
               }
             }
             if($priceTemp == null){

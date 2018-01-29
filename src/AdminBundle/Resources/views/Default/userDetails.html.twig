@@ -54,10 +54,11 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adress</label>
-                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{{user.adress.adress}}">
+                                                <input type="text" class="form-control" placeholder="Home Address" disabled value="{% if user.adress %}{{user.adress.adress}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
+                                    {% if user.adress %}
                                     {% if user.adress.adressMore %}
                                      <div class="row">
                                         <div class="col-md-12">
@@ -68,19 +69,21 @@
                                         </div>
                                     </div>
                                     {% endif %}
+                                    {% endif %}
+
 
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Ville</label>
-                                                <input type="text" class="form-control" placeholder="City"  disabled value="{{user.adress.city}}">
+                                                <input type="text" class="form-control" placeholder="City"  disabled value="{% if user.adress %}{{user.adress.city}}{% endif %}">
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Code postal</label>
-                                                <input type="number" class="form-control"  disabled value="{{user.adress.zipcode}}">
+                                                <input type="number" class="form-control"  disabled value="{% if user.adress %}{{user.adress.zipcode}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>

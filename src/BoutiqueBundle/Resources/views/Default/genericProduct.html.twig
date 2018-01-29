@@ -78,8 +78,18 @@ Accessoires
                                         {{product.description}}
                                         </div>
                               <div class="col-sm-12 text-center">
-                              
-                              <h2>{{product.price }} € </h2>
+
+                               {% set product_price = product.price %}
+                            {% for key, discount in discounts %}
+                            
+                            {% if key == product.id %}
+                            {% set product_price = product.price - product.price*(discount.reduction/100) %}
+                            
+                            
+                              {% endif %}
+                              {% endfor %}
+                            
+<h2>{{product_price}} € </h2> 
 
                               </div>
                               </div>

@@ -1,0 +1,62 @@
+[27-Jul-2017 17:42:02 Europe/Paris] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)' in /home/cyprieng/public_html/devagathevougate/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:43
+Stack trace:
+#0 /home/cyprieng/public_html/devagathevougate/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(43): PDO->__construct('mysql:host=loca...', 'root', 'root', Array)
+#1 /home/cyprieng/public_html/devagathevougate/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php(45): Doctrine\DBAL\Driver\PDOConnection->__construct('mysql:host=loca...', 'root', 'root', Array)
+#2 /home/cyprieng/public_html/devagathevougate/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(360): Doctrine\DBAL\Driver\PDOMySql\Driver->connect(Array, 'root', 'root', Array)
+#3 /home/cyprieng/public_html/devagathevougate/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(429): Doctrine\DBAL\Connection->connect()
+#4 /home/cyprieng/public_html/devagathevougate in /home/cyprieng/public_html/devagathevougate/vendor/twig/twig/lib/Twig/Loader/Filesystem.php on line 94
+[19-Sep-2017 16:26:55 Europe/Paris] PHP Fatal error:  Call to a member function getIsPro() on string in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/StockController.php on line 176
+[08-Oct-2017 17:59:27 Europe/Paris] PHP Fatal error:  Call to a member function getTransportMethod() on null in /home/cyprieng/public_html/devagathevougate/src/CommerceBundle/Controller/CommerceController.php on line 2569
+[17-Oct-2017 21:03:46 Europe/Paris] PHP Fatal error:  Call to a member function getMontant() on null in /home/cyprieng/public_html/devagathevougate/src/CommerceBundle/Controller/CommerceController.php on line 265
+[17-Oct-2017 21:13:53 Europe/Paris] PHP Fatal error:  Call to a member function getMontant() on null in /home/cyprieng/public_html/devagathevougate/src/CommerceBundle/Controller/CommerceController.php on line 265
+[20-Oct-2017 11:29:05 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 11:29:13 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 15:32:05 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 15:32:09 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 15:32:19 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 15:32:24 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 18:12:12 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[20-Oct-2017 18:12:42 Europe/Paris] PHP Fatal error:  Call to a member function format() on null in /home/cyprieng/public_html/devagathevougate/src/AdminBundle/Controller/DefaultController.php on line 324
+[21-Nov-2017 14:51:54 Europe/Paris] PHP Fatal error:  Call to a member function get() on null in /home/agathevo/public_html/agathevousgate/src/BoutiqueBundle/Controller/DefaultController.php on line 439
+[11-Dec-2017 19:45:55 Europe/Paris] PHP Fatal error:  Unsupported operand types in /home/agathevo/public_html/agathevousgate/app/cache/prod/classes.php(3765) : eval()'d code on line 290
+[11-Dec-2017 20:57:57 Europe/Paris] PHP Fatal error:  Unsupported operand types in /home/agathevo/public_html/agathevousgate/app/cache/dev/classes.php(3262) : eval()'d code on line 293
+[14-Dec-2017 13:45:54 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[15-Dec-2017 15:26:33 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[16-Dec-2017 20:21:31 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[16-Dec-2017 20:21:33 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[16-Dec-2017 21:37:12 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[23-Dec-2017 05:11:34 Europe/Paris] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] No such file or directory' in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:43
+Stack trace:
+#0 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(43): PDO->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#1 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php(45): Doctrine\DBAL\Driver\PDOConnection->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#2 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(360): Doctrine\DBAL\Driver\PDOMySql\Driver->connect(Array, 'agathevo_agathe', 'Bisounours3$', Array)
+#3 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(429): Doctrine\DBAL\Connection->connect()
+#4 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(389): Doctrine\DBAL\Connecti in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractMySQLDriver.php on line 103
+[23-Dec-2017 05:11:34 Europe/Paris] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] No such file or directory' in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:43
+Stack trace:
+#0 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(43): PDO->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#1 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php(45): Doctrine\DBAL\Driver\PDOConnection->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#2 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(360): Doctrine\DBAL\Driver\PDOMySql\Driver->connect(Array, 'agathevo_agathe', 'Bisounours3$', Array)
+#3 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(429): Doctrine\DBAL\Connection->connect()
+#4 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(389): Doctrine\DBAL\Connecti in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractMySQLDriver.php on line 103
+[23-Dec-2017 05:14:42 Europe/Paris] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] No such file or directory' in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:43
+Stack trace:
+#0 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(43): PDO->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#1 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php(45): Doctrine\DBAL\Driver\PDOConnection->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#2 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(360): Doctrine\DBAL\Driver\PDOMySql\Driver->connect(Array, 'agathevo_agathe', 'Bisounours3$', Array)
+#3 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(429): Doctrine\DBAL\Connection->connect()
+#4 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(389): Doctrine\DBAL\Connecti in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractMySQLDriver.php on line 103
+[23-Dec-2017 05:16:48 Europe/Paris] PHP Fatal error:  Uncaught exception 'PDOException' with message 'SQLSTATE[HY000] [2002] No such file or directory' in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php:43
+Stack trace:
+#0 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOConnection.php(43): PDO->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#1 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php(45): Doctrine\DBAL\Driver\PDOConnection->__construct('mysql:host=loca...', 'agathevo_agathe', 'Bisounours3$', Array)
+#2 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(360): Doctrine\DBAL\Driver\PDOMySql\Driver->connect(Array, 'agathevo_agathe', 'Bisounours3$', Array)
+#3 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(429): Doctrine\DBAL\Connection->connect()
+#4 /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Connection.php(389): Doctrine\DBAL\Connecti in /home/agathevo/public_html/vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/AbstractMySQLDriver.php on line 103
+[04-Jan-2018 21:00:27 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[10-Jan-2018 15:09:43 Europe/Paris] PHP Fatal error:  Call to a member function createView() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 3181
+[10-Jan-2018 21:42:09 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638
+[11-Jan-2018 16:02:22 Europe/Paris] PHP Warning:  require(/home/agathevo/public_html/app/cache/prod/doctrine/orm/Proxies/__CG__CommerceBundleEntityCommande.php): failed to open stream: No such file or directory in /home/agathevo/public_html/vendor/doctrine/common/lib/Doctrine/Common/Proxy/AbstractProxyFactory.php on line 209
+[11-Jan-2018 16:02:22 Europe/Paris] PHP Warning:  require(/home/agathevo/public_html/app/cache/prod/doctrine/orm/Proxies/__CG__CommerceBundleEntityCommande.php): failed to open stream: No such file or directory in /home/agathevo/public_html/vendor/doctrine/common/lib/Doctrine/Common/Proxy/AbstractProxyFactory.php on line 209
+[11-Jan-2018 16:02:22 Europe/Paris] PHP Fatal error:  require(): Failed opening required '/home/agathevo/public_html/app/cache/prod/doctrine/orm/Proxies/__CG__CommerceBundleEntityCommande.php' (include_path='.:/opt/cpanel/ea-php56/root/usr/share/pear') in /home/agathevo/public_html/vendor/doctrine/common/lib/Doctrine/Common/Proxy/AbstractProxyFactory.php on line 209
+[12-Jan-2018 17:29:17 Europe/Paris] PHP Fatal error:  Call to a member function getActive() on null in /home/agathevo/public_html/src/CommerceBundle/Controller/CommerceController.php on line 638

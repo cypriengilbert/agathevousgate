@@ -70,12 +70,22 @@ class DefaultController extends Controller
         if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER') and $user->getIsPro() == 2) {
             $page = 'boutique';
             $nbarticlepanier = $this->countArticleCart();
-
+            $discount_pro = [];
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $products   = $repository->FindBy(array(
                 'nb_color' => 0
             ));
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
+
+            foreach ($products as $key => $product) {
+               $discount_pro[$product->getId()] =  $repository->FindOneBy(array(
+                'account' => $user,
+                'product' => $product,
+                'collection' => 30,
+            ));
+            }
             return $this->render('BoutiqueBundle:Default:genericProduct.html.twig', array(
+                'discounts' => $discount_pro,
                 'products' => $products,
                 'page' => $page,
                 'nbarticlepanier' => $nbarticlepanier,

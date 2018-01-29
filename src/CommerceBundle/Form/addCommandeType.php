@@ -27,14 +27,14 @@ class addCommandeType extends AbstractType
     ),))
     ->add('transportMethod', EntityType::class , array(
         'placeholder' => 'Livraison ?',
-        'required'   => false,
+        'required'   => true,
         
         'class' => 'CommerceBundle:ModeLivraison',
         'choice_label' => 'description',
 
 
     ))
-            ->add('client', EntityType::class , array(
+             ->add('client', EntityType::class , array(
                 'required'   => true,
                 
                 'class' => 'UserBundle:User',
@@ -44,6 +44,7 @@ class addCommandeType extends AbstractType
                 }
                 
                 ))
+                
             ->add('date', 'date')
         ;
     }
