@@ -87,7 +87,10 @@ class Color
      */
     private $updatedAt;
 
-
+    /**
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Collection", mappedBy="colors")
+     */
+    private $collections;
 
     /**
      *

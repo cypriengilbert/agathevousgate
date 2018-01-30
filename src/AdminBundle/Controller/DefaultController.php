@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 
@@ -1103,6 +1103,7 @@ class DefaultController extends Controller
         ), array(
             'date' => 'ASC'
         ));
+        
         $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
         $nouveauClient = $repository->findOneBy(array(
             'username' => $client
@@ -1111,6 +1112,7 @@ class DefaultController extends Controller
         $nouveauID     = $repository->findOneBy(array(
             'id' => $id
         ));
+        
         $totalprice    = 0;
         $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
         $listeProduct  = $repository->findAll();
@@ -1123,6 +1125,16 @@ class DefaultController extends Controller
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addAddedProductType', $newProduct);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $collection = $this->getCollection($newProduct->getColor1(),$newProduct->getColor2(), $newProduct->getColor3());
+            if($newProduct->getColor3() !== null && $newProduct->getColor3()->getIsBasic() == true){
+                $isBasic = true;
+            }
+            else{
+                $isBasic = false;
+            }
+            $priceProduct = $this->getPriceItem($newProduct->getProduct(), $collection,$isBasic);
+            $newProduct->setCollection($collection);
+            $newProduct->setPrice($priceProduct);
             $em->persist($newProduct);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée.');
@@ -1132,14 +1144,12 @@ class DefaultController extends Controller
             $price      = $repository->findBy(array(
                 'commande' => $id
             ));
-            foreach ($price as &$value) {
-                $totalprice = $totalprice + ($value->getProduct()->getPrice() * $value->getQuantity());
+            foreach ($price as $value) {
+                $totalprice = $totalprice + ($value->getPrice() * $value->getQuantity());
 
             }
-            if ($totalprice < 49.90) {
-                $totalprice = $totalprice + 4;
-            }
-            $nouveauID->setPrice($totalprice);
+            
+            $nouveauID->setPrice($totalprice - $nouveauID->getRemise());
             $em = $this->getDoctrine()->getManager();
             $em->persist($nouveauID);
             $em->flush();
@@ -1152,6 +1162,7 @@ class DefaultController extends Controller
                 'listeCommande' => $listeCommande,
                 'listeProduct' => $listeProduct,
                 'page' => $page,
+                'commande' =>$nouveauID,
 
 
 
@@ -1164,6 +1175,8 @@ class DefaultController extends Controller
             'listeProduct' => $listeProduct,
             'page' => $page,
             'id' => $id,
+            'commande' =>$nouveauID,
+
 
 
 
@@ -1172,7 +1185,82 @@ class DefaultController extends Controller
         ));
     }
 
+    /**
+     * @Route("/delete/{id}", name="deleteproductmanual")
+     */
+    public function deleteProductManualAction($id)
+    {
 
+
+        if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            $em             = $this->getDoctrine()->getManager();
+            $id_user        = $this->container->get('security.context')->getToken()->getUser()->getId();
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $enfanttodelete      = $repository->findBy(array(
+                'parent' => $id
+            ));
+            
+            foreach ($enfanttodelete as $value) {
+                $em->remove($value);
+            }
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $articletodelete      = $repository->findOneBy(array(
+                'id' => $id
+            ));
+           
+            $order = $articletodelete->getCommande();
+            $em->remove($articletodelete);
+            $em->flush();
+        } else {
+            $nbarticlepanier   = 0;
+            $listeAddedProduct = null;
+        }
+
+
+       
+            $price      = $repository->findBy(array(
+                'commande' => $order->getId(),
+            ));
+            $totalprice = 0;
+            foreach ($price as $value) {
+                $totalprice = $totalprice + ($value->getPrice() * $value->getQuantity());
+
+            }
+            
+            $order->setPrice($totalprice - $order->getRemise());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+        return $this->redirect($this->generateUrl('addProduct', array(
+            'id' => $order->getId(),
+            'client' => $order->getClient()->getUsername(),
+        ))
+        );
+    }
+/**
+     * @Route("/s/setRemise/{id}/{montant}", name="setRemise")
+     */
+
+    public function setRemiseAction(Request $request, $id, $montant)
+    {
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+        $Commande = $repository->findOneBy(array(
+            'id' => $id
+        ));
+        $priceBefore = $Commande->getPrice() + $Commande->getRemise();
+        $Commande->setRemise($montant);
+        $Commande->setPrice($priceBefore - $montant);
+        $em = $this->getDoctrine()->getManager();
+            $em->persist($Commande);
+            $em->flush();
+        return $this->redirect($this->generateUrl('addProduct', array(
+            'id' => $id,
+            'client' => $Commande->getClient()->getUsername(),
+        ))
+        );
+        
+
+    }
     /**
      * @Route("/s/newcollection", name="newcollection")
      */
@@ -2695,5 +2783,106 @@ class DefaultController extends Controller
  
          ));
      }
+
+     public function getCollection($color1, $color2, $color3){
+
+        $collection1 = $color1->getCollections();
+        $collection = null;
+        if(isset($color2)){
+            $collection2 = $color2->getCollections();
+            if (count($collection1) == 1){
+                $collection = $collection1;
+            }
+            elseif (count($collection2) == 1){
+                $collection = $collection2;
+            }
+            else{
+                foreach ($collection1 as $collection1) {
+                    foreach ($collection2 as $collection2) {
+                        if($collection1 == $collection2){
+                            
+                             $collection = $collection2;
+                             return $collection;
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(isset($color3)){
+            $collection3 = $color3->getCollections();
+            
+
+            if (count($collection1) == 1){
+                $collection = $collection1;
+            }
+            elseif (count($collection2) == 1){
+                $collection = $collection2;
+            }
+            elseif (count($collection3) == 1){
+                $collection = $collection3;
+            }
+            else{
+                foreach ($collection1 as $collection1) {
+                    foreach ($collection2 as $collection2) {
+                        if($collection1 == $collection2){
+                            foreach ($collection3 as $collection3) {
+                                if($collection2 == $collection3){
+                                    $collection = $collection3;
+                                    return $collection[0];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $collection[0];
+       
+     }
  
+     public function getPriceItem($product, $collection, $isBasic){
+
+        if($product->getName() == 'Noeud'){
+          return $collection->getPriceNoeud();
+        }
+        elseif($product->getName() == 'Coffret1'){
+          return $collection->getPriceCoffret1();
+        }
+        elseif($product->getName() == 'Coffret2'){
+          return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
+        }
+        elseif($product->getName()  == 'Pochette'){
+          return $collection->getPricePochette();
+        }
+        elseif($product->getName()  == 'Boutons'){
+          return $collection->getPriceBouton();
+        }
+        elseif($product->getName()  == 'Rectangle_petit'){
+          return $collection->getPriceRectanglePetit();
+        }
+        elseif($product->getName()  == 'Rectangle_grand'){
+          return $collection->getPriceRectangleGrand();
+        }
+        elseif($product->getName()  == 'Milieu'){
+            if($isBasic == true){
+              if($collection->getPriceMilieuBasic() != 0 or $collection->getPriceMilieuBasic() != null){
+                  return $collection->getPriceMilieuBasic();
+              }
+             else{
+                  return $collection->getPriceMilieu();
+                }
+            }else{
+              return $collection->getPriceMilieu();
+            }
+        }
+        elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+          return $product->getPrice();
+        }
+      
+      
+      
+      }
+      
+      
 }

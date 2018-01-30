@@ -124,8 +124,8 @@ class Collection
 
 
      /**
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
-     * @ORM\OrderBy({"codehexa" = "DESC"})
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"}, inversedBy="collections")
+     * @ORM\OrderBy({"codehexa" = "ASC"})
      */
      private $colors;
 
@@ -817,5 +817,39 @@ class Collection
     public function getPriceMilieuBasic()
     {
         return $this->priceMilieuBasic;
+    }
+
+    /**
+     * Add company
+     *
+     * @param \UserBundle\Entity\Company $company
+     *
+     * @return Collection
+     */
+    public function addCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->companies[] = $company;
+
+        return $this;
+    }
+
+    /**
+     * Remove company
+     *
+     * @param \UserBundle\Entity\Company $company
+     */
+    public function removeCompany(\UserBundle\Entity\Company $company)
+    {
+        $this->companies->removeElement($company);
+    }
+
+    /**
+     * Get companies
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompanies()
+    {
+        return $this->companies;
     }
 }

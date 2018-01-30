@@ -15,7 +15,7 @@
 
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-8">
     <div class="card">
       <div class="header">
         <div class="row">
@@ -70,22 +70,22 @@
                     <div class="col-md-4">
                         <div class="form-group" id="color1" style="display:none">
                             {{ form_label(form.color1, "Couleur Exterieure", {'label_attr': {'class': ''}}) }}
-                            {{ form_errors(form.color1) }}
-                            {{ form_widget(form.color1, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.color1) }}<br>
+                            {{ form_widget(form.color1, {'attr': {'class': 'form-control searchabledropdown'}}) }}
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" id="color2" style="display:none">
                             {{ form_label(form.color2, "Couleur intérieure", {'label_attr': {'class': ''}}) }}
-                            {{ form_errors(form.color2) }}
-                            {{ form_widget(form.color2, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.color2) }}<br>
+                            {{ form_widget(form.color2, {'attr': {'class': 'form-control searchabledropdown'}}) }}
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group" id="color3" style="display:none">
                             {{ form_label(form.color3, "Couleur milieu", {'label_attr': {'class': ''}}) }}
-                            {{ form_errors(form.color3) }}
-                            {{ form_widget(form.color3, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.color3) }}<br>
+                            {{ form_widget(form.color3, {'attr': {'class': 'form-control searchabledropdown'}}) }}
                         </div>
                     </div>
                 </div>
@@ -126,12 +126,94 @@
 
 
 </div>
-<div class="mdl-cell mdl-cell--4-col">
 </div>
+</div>
+</div>
+
+<div class="col-md-4">
+    <div class="card">
+      <div class="header">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="title">Récapitulatif </h4>
+            <p class="category">
+              Dans commande n°{{id}} - {{commande.price}}€
+            </p>
+          </div>          
+        </div>
+    </div>
+	<div class="content">
+        <div class="table-full-width">
+            <table class="table">
+                <tbody>
+                   {% for product in commande.addedproducts %}
+                    <tr>
+                                                
+                    <td>{{ product.quantity }} {{product.product.name}} </td>
+                     <td> 
+                     {% if product.color1 %}
+                      <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+                    {% endif %}
+                     {% if product.color2 %}
+                    <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+                     {% endif %}
+                     {% if product.color3 %}
+                     <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color3.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+                     {% endif %}
+
+                     </td>
+                     <td>
+                        {{product.price}}€
+                     </td>
+                    <td class="td-actions text-right">
+                        <a href="{{ path('deleteproductmanual',{'id' : product.id})}}"><button type="button" rel="tooltip" title="" class="btn btn-info btn-simple btn-xs" data-original-title="Voir la commnde">
+                            <i class="fa fa-trash"></i>
+                    </button></a>
+                                                    
+                     </td>
+                     </tr>
+                {% endfor %}
+                {% if commande.remise > 0 %}
+                <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                
+                </td>
+                <td>
+                Remise : {{commande.remise}}€
+                </td>
+                </tr>
+                {% endif %}
+                    </tbody>
+         </table>
+         </div>
+   
+    </div>
+    <div class="content">
+          <input type="number" id="discountPrice"  placeholder="montant remise" class="form-control" step="0.01">
+
+         <input value="Ajouter une remise " class="btn btn-primary" onclick="setRemise()" />
+    </div>
+</div>
+</div>
+
 </div>
 
 
 <script>
+function setRemise(){
+    var amount = document.getElementById('discountPrice').value;
+    var route = "{{ path('setRemise', {'montant': 'AMOUNT', 'id' : commande.id }) }}";
+route = route.replace("AMOUNT", amount);
+
+
+
+window.location = route;
+
+}
 function hide(){
 var liste = {
 {% for listeProduct in listeProduct %}
@@ -167,6 +249,13 @@ document.getElementById("color"+i.toString()).style.display="none";
 }
 </script>
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".searchabledropdown").select2();
+			});
+		</script>
 {% endblock %}
 
 

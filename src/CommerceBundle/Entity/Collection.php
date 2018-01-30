@@ -124,7 +124,7 @@ class Collection
 
 
      /**
-     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"}, inversedBy="collections")
      * @ORM\OrderBy({"codehexa" = "ASC"})
      */
      private $colors;
