@@ -152,7 +152,7 @@
                                      {% if codePromo.genre == 'fdp' %}
 
                                        {% set livraison = 0 %}
-                                       {% elseif codePromo.genre  == 'fdp-remise' %}
+                                      {% elseif codePromo.genre  == 'fdp-remise' %}
                                            {% set livraison = 0 %}
 
                                            {% set remise = codePromo.montant %}
@@ -162,6 +162,22 @@
 
                                    {% endif %}
 
+                                {% elseif autoVoucher %}
+
+                                {% if autoVoucher.minimumCommande <= totalsum + remise|round(2, 'floor')%}
+
+                                     {% if autoVoucher.genre == 'fdp' %}
+
+                                       {% set livraison = 0 %}
+                                      {% elseif autoVoucher.genre  == 'fdp-remise' %}
+                                           {% set livraison = 0 %}
+
+                                           {% set remise = autoVoucher.montant %}
+
+
+                                     {% endif %}
+
+                                   {% endif %}
 
                                {% endif %}
 

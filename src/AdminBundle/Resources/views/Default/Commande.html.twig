@@ -46,7 +46,7 @@
                                       {% endif %}
                                     </div>
                                     <div class="col-md-6 text-center">
-                                      {% if commande.transportmethod is not null %}Livraison : {{ commande.transportmethod.description }}{% else %} Livraison en atelier : {{ commande.atelierlivraison.name }} {% endif %}
+                                      {% if commande.transportmethod is not null %}Livraison : {{ commande.transportmethod.description }}{% elseif comande.atelierlivraison is not null %} Livraison en atelier : {{ commande.atelierlivraison.name }} {% endif %}
                                     </div>
                                     <div class="col-md-6 text-center">
                                       {% if commande.paiementmethod is not null %}Paiement : {{ commande.paiementmethod }}{% endif %}

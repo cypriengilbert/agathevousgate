@@ -2625,6 +2625,7 @@ class CommerceController extends Controller
             
             $discount_auto = $this->getVoucherAuto($listePanier);
             if (isset($discount_auto)){
+
                 if ($discount_auto->getGenre() == 'pourcentage') {
                     $remise = round($total_commande * $discount_auto->getMontant() / 100, 2);
                     $newcommande->setCodePromo($discount_auto);
@@ -2693,18 +2694,34 @@ class CommerceController extends Controller
                     $coutLivraison =0;
                 }
             
-                if($discount_auto){
-                    if ($discount_auto->getGenre() == 'fdp' and $discount_auto->getGenre() == 'fdp-remise') {
+                if(isset($discount_auto)){
+                    $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+                        $discount_auto = $repository->findOneBy(array(
+                            'id' => $discount_auto->getId(),
+                        ));
+                    if ($discount_auto->getGenre() != 'fdp' and $discount_auto->getGenre() != 'fdp-remise') {
                         $total_commande = $total_commande + $coutLivraison;
                         $newcommande->setCodePromo($discount_auto);
-                        
                     } 
+                    else{
+                        $coutLivraison =0;
+                    }
                 }
-                elseif ($codePromo) {
-                    if ($total_commande >= $codePromo->getMinimumCommande()) {
+                if (isset($codePromo)) {
+
+                    if ($total_commande + $remise >= $codePromo->getMinimumCommande()) {
+                        
+                        $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
+                        $codePromo = $repository->findOneBy(array(
+                            'code' => $codePromo->getCode(),
+                        ));
                         if ($codePromo->getGenre() != 'fdp' and $codePromo->getGenre() != 'fdp-remise' ) {
                             $total_commande = $total_commande + $coutLivraison;
                             $newcommande->setCodePromo($codePromo);
+                        }
+                        else{
+                            $coutLivraison =0;
+
                         }
 
                     }
@@ -3514,6 +3531,9 @@ private function getVoucherAuto($listeAddedProduct){
 
         if ($is_product1_cart == true && $is_product2_cart == true ) {
             $discount_valid = $discount;
+        }
+        else{
+            $discount_valid = null;
         }
     }
     return $discount_valid;
