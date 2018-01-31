@@ -193,9 +193,14 @@
    
     </div>
     <div class="content">
-          <input type="number" id="discountPrice"  placeholder="montant remise" class="form-control" step="0.01">
-
-         <input value="Ajouter une remise " class="btn btn-primary" onclick="setRemise()" />
+    <div class="row">
+        <div class="col-md-4">
+          <input type="number" id="discountPrice"  value="{{ commande.remise }}" class="form-control" step="0.01">
+    </div>
+    <div class="col-md-4">
+         <input value="Modifier la remise " class="btn btn-primary" onclick="setRemise()" />
+         </div>
+         </div>
     </div>
 </div>
 </div>
