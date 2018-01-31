@@ -25,7 +25,7 @@
                </li>
                {% for collection in collections %}
                <li role="presentation" class="">
-                  <a href="#{{collection.title}}" data-toggle="tab">{{collection.title}}</a>
+                  <a href="#{{collection.id}}" data-toggle="tab">{{collection.title}}</a>
                </li>
                {% endfor %}
                
@@ -73,7 +73,7 @@
                   </table>
                </div>
                {% for collection in collections %}
-               <div id="{{collection.title}}" class="tab-pane">
+               <div id="{{collection.id}}" class="tab-pane">
                   <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
                      <thead>
                         <tr>

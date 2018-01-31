@@ -27,7 +27,7 @@ class addCommandeNewUserType extends AbstractType
     ),))
     ->add('transportMethod', EntityType::class , array(
         'placeholder' => 'Livraison ?',
-        'required'   => true,
+        'required'   => false,
         
         'class' => 'CommerceBundle:ModeLivraison',
         'choice_label' => 'description',

@@ -29,6 +29,7 @@ class RegistrationType extends AbstractType
             ->add('naissance', DateType::class, array(
     'widget' => 'single_text',
    'html5' => false,
+   'required' =>false,
     'attr' => ['class' => 'js-datepicker']))
             ->add('genre', ChoiceType::class, array(
             'choices' => array('monsieur' => 'Monsieur', 'madame' => 'Madame','mademoiselle' => 'Mademoiselle' )))
