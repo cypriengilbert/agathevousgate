@@ -154,7 +154,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');" class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}', {{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2, '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1, {{colors.id}}); doublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic');" class="radio_colors" value="{{ colors.id }}" />
                                             <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
 
                                         </div>
@@ -172,7 +172,7 @@ Après avoir choisi la collection à personnaliser, choisissez votre couleur 1, 
                                             <style>
                                                 input[type="radio"] + .{{ colors.name }}_1 {background:url({{ asset('/upload/color/thumbnail/' ~ colors.imageColorName ) }})}
                                             </style>
-                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}',{{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
+                                            <input type="radio" id="{{ colors.imageColorName }}_1" name="color1" onclick="get_data('{{ asset("/upload/color/thumbnail/" ~ colors.imageColorName ) }}','panel-heading-plugin-1', '{{ asset("/upload/color/noeud1/" ~ colors.imagecolorNoeud1Name ) }}','{{ asset("/upload/color/noeud2/" ~ colors.imagecolorNoeud2Name ) }}','{{ asset("/upload/color/noeud3/" ~ colors.imagecolorNoeud3Name ) }}','noeudderriere','{{ asset("/upload/color/tissu/grand/" ~ colors.tissucolorname ) }}','{{ asset("/upload/color/tissu/milieu/" ~ colors.TissuMilieuColorName ) }}',{{ colors.id }});  color_selected('{{ colors.imageColorName }}', 2,  '{{ colors.CouleurPochetteName }}', '{{ colors.CouleurBoutonsName }}', 1, {{colors.id}}); redisplaydoublechoice('col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size  couleurs_no_basic 2-nobasic') " class="radio_colors" value="{{ colors.id }}" />
                                             <label data-toggle="tooltip" data-placement="top" title="{{ colors.namePublic }}" class="{{ colors.name }}_1" for="{{ colors.imageColorName }}_1"></label></a>
                                         </div>
                                         <div class="col-sm-1 col-xs-1 text-center color_token no_padding thumbnail_size"></div>
@@ -1105,7 +1105,7 @@ document.getElementById('panel-heading-plugin-3').style.background = "linear-gra
 }}
 
 
-function color_selected(imageColorName, y, couleurPochetteName, couleurBoutonsName, t){
+function color_selected(imageColorName, y, couleurPochetteName, couleurBoutonsName, t, idColor){
 blnBlocage = true;
 var x = document.getElementsByClassName("couleur");
 var i;
@@ -1122,7 +1122,11 @@ if (document.getElementById(imageColorName + '_boutons').style.display == 'block
 }
 else{document.getElementById(imageColorName + '_boutons').style.display = 'block';
 if(t==1){
-changeBoutons(couleurBoutonsName, 1);}
+changeBoutons(couleurBoutonsName, idColor );
+var nameBoutonsId = imageColorName+"_7";
+document.getElementById(nameBoutonsId).checked = true;
+
+}
 document.getElementById(imageColorName + '_boutons').correspondance = y;
 
 
@@ -1131,7 +1135,9 @@ if(document.getElementById(imageColorName + '_pochette').style.display == 'block
 }else{
 document.getElementById(imageColorName + '_pochette').style.display = 'block';
 if(t==1){
-changePochette(couleurPochetteName,1);}
+changePochette(couleurPochetteName, idColor);
+var nameBoutonsId = imageColorName+"_6";
+document.getElementById(nameBoutonsId).checked = true;}
 document.getElementById(imageColorName + '_pochette').correspondance = y;
 }
 
@@ -1184,6 +1190,7 @@ for(var i= 0; i < stocks.length; i++)
                     }
  }
                 }
+
 
 }
 
