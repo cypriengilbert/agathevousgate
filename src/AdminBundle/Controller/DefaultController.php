@@ -979,14 +979,21 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/s/order/new/confirm/{id}", name="confirmNewOrder")
-     */
+     * @Route("/s/order/new/confirm/{id}/{send}", name="confirmNewOrder")
+    */
 
-    public function confirmCommandeNewAction(Request $request, $id)
+    public function confirmCommandeNewAction(Request $request, $id, $send)
     {
+
         $order = $this->getOneBy('Commande', array('id' => $id));
         $listItems = $order->getAddedproducts();
         $this->updateStock($listItems);
+        if($send == 'true'){
+            $order->setIsValid(true);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($order);
+            $em->flush();
+        }
         return $this->redirect($this->generateUrl('commande', array(
             'id' => $id,
         )));

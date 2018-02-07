@@ -186,7 +186,7 @@
                             {% else %}
                                 {{ form_label(form.client, "Client", {'label_attr': {'class': ''}}) }}
                                 {{ form_errors(form.client) }}
-                                {{ form_widget(form.client, {'attr': {'class': 'form-control js-example-basic-single'}}) }}
+                                {{ form_widget(form.client, {'attr': {'class': 'form-control searchabledropdown'}}) }}
                             {% endif %}
                             </div>
                         </div>
@@ -216,38 +216,15 @@
 </div>
   <script src="{{ asset('admin/assets/js/moment.min.js')}}"></script>
 
-    <script src="{{ asset('admin/assets/js/jquery.bootstrap.wizard.min.js')}}"></script>
- <script src="{{ asset('admin/assets/js/bootstrap-datetimepicker.js')}}"></script>
-<script>
-$('.datetimepicker').datetimepicker({
-    icons: {
-        time: "fa fa-clock-o",
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-screenshot',
-        clear: 'fa fa-trash',
-        close: 'fa fa-remove'
-    }
-});
+    
 
-
-</script>
-<script>
-    $(document).ready(function() {
-        $('.js-datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-    });
-</script>
-
-<script>
-$(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
-</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<script type="text/javascript">
+			$(document).ready(function() {
+				$(".searchabledropdown").select2();
+			});
+		</script>
 
 <script>
 document.getElementById('add_commande_new_user_client_email').required = false;
