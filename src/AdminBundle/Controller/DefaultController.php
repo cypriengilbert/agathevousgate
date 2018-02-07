@@ -321,10 +321,16 @@ class DefaultController extends Controller
          ($listeCommande as $commande) {
             $totalCommande = $totalCommande + $commande->getPrice();
             $customer = $commande->getClient();
-            $yearCustomer = $customer->getNaissance()->format("Y");
+            if($customer->getNaissance() != null){
+                $yearCustomer = $customer->getNaissance()->format("Y");
+                $age = date("Y") - $yearCustomer;
+            }
+            else{
+                $age = 0;
+            }
             $date_order = $commande->getDate()->format("d-m-Y");
-            $age = date("Y") - $yearCustomer;
             $date_formatted = new \DateTime($date_order);
+
             if(isset($order_amount[$date_order])){
                 $order_amount_compare[$date_order] += $commande->getPrice(); 
                 $order_amount_month[$date_formatted->format('m-Y')] += $commande->getPrice();
@@ -344,7 +350,10 @@ class DefaultController extends Controller
                 $order_amount[$date_order] = $commande->getPrice(); 
             }
             
-            if($age < 20 ){
+            if($age == 0){
+
+            }
+            elseif($age < 20 ){
                 $nbCommande_Age['020'] = $nbCommande_Age['020'] + 1;
             }
             elseif ($age >= 20 and $age < 30) {
