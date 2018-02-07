@@ -95,7 +95,7 @@
                         <input type="submit" value="Ajouter ce produit" class="btn btn-primary" style="margin-bottom:20px" />
                     </div>
                     <div class="col-md-4">      
-                        <a href="{{ path('encours') }}"><input value="Commande terminée " class="btn btn-primary" /></a><br>
+                        <a href="{{ path('confirmNewOrder', {'id': id}) }}"><input value="Commande terminée " class="btn btn-primary" /></a><br>
                        <span style="color:#b0b0b0; font-size:10px;"> *(n'ajoute pas le produit en cours)</span>
                     </div>
                 </div>

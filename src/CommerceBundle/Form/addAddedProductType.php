@@ -48,10 +48,11 @@ class addAddedProductType extends AbstractType
    	))
      
       ->add('product', EntityType::class , array(
-   		'placeholder' => 'Choose an option',
+        'placeholder' => 'Choose an option',
+
    		'class' => 'CommerceBundle:Product',
            'choice_label' => 'name',
-           'required' => false
+           'required' => false,
 
    	))
       ->add('accessoire', EntityType::class , array(
@@ -63,8 +64,8 @@ class addAddedProductType extends AbstractType
    	))
     ->add('size', ChoiceType::class , array(
       'choices'  => array(
-          'Mini' => 'Mini',
           'Standard' => 'Standard',
+          'Mini' => 'Mini',
       ),
     ))
 

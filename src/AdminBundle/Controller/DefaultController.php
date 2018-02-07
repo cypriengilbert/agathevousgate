@@ -946,8 +946,12 @@ class DefaultController extends Controller
       
         $form = $this->get('form.factory')->create('CommerceBundle\Form\addCommandeNewUserType', $newCommande);
         if ($form->handleRequest($request)->isValid()) {
+            
             $newCommande->setTransportCost(0);
             $newClient = $newCommande->getClient();
+            if($newClient->getEmail() == null){
+                $newClient->setEmail($newClient->getPrenom().$newClient->getNom()."@noemailmanual.fr");
+            }
             $newClient->setSignUp(new \Datetime('now'));
             $em = $this->getDoctrine()->getManager();
             $em->persist($newCommande);
@@ -961,7 +965,6 @@ class DefaultController extends Controller
                 'validate' => 'Commande ajoutée',
                 'id' => $newId,
                 'page' => $page,
-
                 'client' => $newClient,
                 'listeCommande' => $listeCommande
 
@@ -972,10 +975,24 @@ class DefaultController extends Controller
             'listeCommande' => $listeCommande,
             'page' => $page,
             'isNewUser'=>true
-
-
         ));
     }
+
+    /**
+     * @Route("/s/order/new/confirm/{id}", name="confirmNewOrder")
+     */
+
+    public function confirmCommandeNewAction(Request $request, $id)
+    {
+        $order = $this->getOneBy('Commande', array('id' => $id));
+        $listItems = $order->getAddedproducts();
+        $this->updateStock($listItems);
+        return $this->redirect($this->generateUrl('commande', array(
+            'id' => $id,
+        )));
+
+    }
+
     /**
      * @Route("/s/addCodePromo", name="addCodePromo")
      */
@@ -2786,8 +2803,13 @@ class DefaultController extends Controller
 
      public function getCollection($color1, $color2, $color3){
 
-        $collection1 = $color1->getCollections();
         $collection = null;
+        if(isset($color1)){
+            $collection1 = $color1->getCollections();
+            return $collection1[0];
+        }
+        
+        
         if(isset($color2)){
             $collection2 = $color2->getCollections();
             if (count($collection1) == 1){
@@ -2837,7 +2859,9 @@ class DefaultController extends Controller
                 }
             }
         }
-        return $collection[0];
+
+        return null;
+        
        
      }
  
@@ -2882,6 +2906,178 @@ class DefaultController extends Controller
       
       
       
+      }
+
+      public function updateStock($listItem){
+        foreach ($listItem as $item) {
+            $rectangle_petit = $this->getOneBy('Product', array('name'=>'Rectangle_petit'));
+            $rectangle_grand = $this->getOneBy('Product', array('name'=>'Rectangle_grand'));
+            $milieu = $this->getOneBy('Product', array('name'=>'Milieu'));
+            $stock_faible = $this->getOneBy('Variable', array('name'=>'stock_faible'));
+            $tour_de_cou = $this->getOneBy('Product', array('name'=>'tour_de_cou'));
+            
+            if($item->getProduct()->getName() == 'Noeud'){
+                if($item->getSize() == 'Standard'){
+                    $rectangle = $rectangle_grand;
+                }
+                else{
+                    $rectangle = $rectangle_petit;
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $rectangle, 'color'=>$item->getColor1()));
+                $stock->setQuantity($stock->getQuantity() - $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                         $this->get('mailer')->send($message);
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $rectangle, 'color'=>$item->getColor2()));
+                $stock->setQuantity($stock->getQuantity() - $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                         $this->get('mailer')->send($message);
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
+                $stock->setQuantity($stock->getQuantity()- $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $tour_de_cou,'color' => null));
+                $stock->setQuantity($stock->getQuantity() - $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                }
+            }
+            elseif ($item->getProduct()->getName() == 'Coffret1') {
+                if($item->getSize() == 'Standard'){
+                    $rectangle = $rectangle_grand;
+                }
+                else{
+                    $rectangle = $rectangle_petit;
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $rectangle, 'color'=>$item->getColor1()));
+                $stock->setQuantity($stock->getQuantity()- $item->getQuantity() );
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                        $this->get('mailer')->send($message);
+                }
+            }
+            elseif ($item->getProduct()->getName() == "Coffret2") {
+                if($item->getSize() == 'Standard'){
+                    $rectangle = $rectangle_grand;
+                }
+                else{
+                    $rectangle = $rectangle_petit;
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $rectangle, 'color'=>$item->getColor1()));
+                $stock->setQuantity($stock->getQuantity()- $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                         $this->get('mailer')->send($message);
+                }
+                $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
+                $stock->setQuantity($stock->getQuantity()- $item->getQuantity());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($stock);
+                $em->flush();
+                if($stock->getQuantity() <= $stock_faible->getMontant()){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            'emails/alerte_stock.html.twig', array(
+                            'stock' => $stock,
+                        )), 'text/html');
+                         $this->get('mailer')->send($message);
+                }
+            }
+            else{
+                if($item->getProduct()->getNbColor() == 0){
+                    $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>null));
+                    $stock->setQuantity($stock->getQuantity()- $item->getQuantity());
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stock);
+                    $em->flush();
+                    if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                                'emails/alerte_stock.html.twig', array(
+                                'stock' => $stock,
+                            )), 'text/html');
+                         $this->get('mailer')->send($message);
+                    }
+                }
+                else{
+                    $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>$item->getColor1()));
+                    $stock->setQuantity($stock->getQuantity()- $item->getQuantity());
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($stock);
+                    $em->flush();
+                    if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                                'emails/alerte_stock.html.twig', array(
+                                'stock' => $stock,
+                            )), 'text/html');
+                           $this->get('mailer')->send($message);
+                    }
+                }
+                
+            }
+            }
+      }
+
+
+      public function getAll($entity)
+      {
+          $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+          $entities   = $repository->findAll();
+          return $entities;
+      }
+  
+      public function getBy($entity, $arrayParam)
+      {
+          $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+          $entities   = $repository->findBy($arrayParam);
+          return $entities;
+      }
+  
+      public function getOneBy($entity, $arrayParam)
+      {
+          $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:' . $entity);
+          $entities   = $repository->findOneBy($arrayParam);
+          return $entities;
       }
       
       
