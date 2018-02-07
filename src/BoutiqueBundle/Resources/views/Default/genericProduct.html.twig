@@ -95,90 +95,46 @@ Accessoires
                               </div>
                               <div class="row">
                               {% if product.name != 'tour_de_cou' %}
-                              <div class="col-sm-4 text-center">
+                              <div class="col-sm-5 text-center">
                               
-                              <select class="form-control text-center" id="{{product.id}}" style="margin-left:10%;width:80%; margin-bottom:10px;">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-
-                              </select>
+                              <input type="number" class="form-control text-center" id="{{product.id}}" style="margin-left:5%;width:100%; margin-bottom:10px;" value="0"/>
+                                
                               </div>
-                                                            <div class="col-sm-8 text-center">
+                                                            <div class="col-sm-7 text-center">
 
 
                                <button onclick="addToCart({{product.id}})" type="submit" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:0px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
                               </div>
                               {% else %}
                               <div class="row">
-                              <div class="col-sm-4 text-center">
+                              <div class="col-sm-5 text-center">
                               
-                             Taille S <select class="form-control text-center" id="{{product.id}}_s" style="margin-left:10%;width:80%; margin-bottom:10px;">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-
-                              </select>
+                             Taille S <input type="number" class="form-control text-center" id="{{product.id}}_s" style="margin-left:5%;width:80%; margin-bottom:10px;" value="0"/>
+                               
                               </div>
-                              <div class="col-sm-8 text-center">
+                              <div class="col-sm-7 text-center">
 
 
                                <button onclick="addSizeToCart('{{product.id}}_s');"  style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
                               </div>
                             </div>
                              <div class="row">
-                              <div class="col-sm-4 text-center">
-                            Taille M  <select class="form-control text-center" id="{{product.id}}_m" style="margin-left:10%;width:80%; margin-bottom:10px;">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-
-                              </select>
+                              <div class="col-sm-5 text-center">
+                            Taille M  <input type="number" class="form-control text-center" id="{{product.id}}_m" style="margin-left:5%;width:80%; margin-bottom:10px;" value="0"/>
+                               
                                </div>
-                              <div class="col-sm-8 text-center">
+                              <div class="col-sm-7 text-center">
 
 
                                <button onclick="addSizeToCart('{{product.id}}_m');" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
                               </div>
                             </div>
                             <div class="row">
-                              <div class="col-sm-4 text-center">
-                             Taille L <select class="form-control text-center" id="{{product.id}}_l" style="margin-left:10%;width:80%; margin-bottom:10px;">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-
-                              </select>
+                              <div class="col-sm-5 text-center">
+                             Taille L <input type="number" class="form-control text-center" id="{{product.id}}_l" style="margin-left:5%;width:80%; margin-bottom:10px;" value="0" />
+                                
                               </div>
-                                                            <div class="col-sm-8 text-center">
+                                                            <div class="col-sm-7 text-center">
 
 
                                <button onclick="addSizeToCart('{{product.id}}_l');" style=";padding:7px;font-size:14px;border-radius:3px;margin-top:16px;" class="btn btn-primary btn-lg active btn_send text-center">Ajouter au panier</button>
