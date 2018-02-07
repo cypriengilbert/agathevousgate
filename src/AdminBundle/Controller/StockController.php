@@ -179,9 +179,11 @@ public function listeProducerAction()
     $products = $this->getBy('Product', array('isStock' => true));
     $colors = $this->getAll('Color');
     $stocks = $this->getAll('Stock');
+    $collections = $this->getAll('Collection');
 
     return $this->render('AdminBundle:Default:Stock.html.twig', array(
       'page' => $page,
+      'collections' => $collections,
       'products' => $products,
       'colors' => $colors,
       'stocks' => $stocks,

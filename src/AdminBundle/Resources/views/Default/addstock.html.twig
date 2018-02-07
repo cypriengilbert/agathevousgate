@@ -40,10 +40,12 @@
         </div>
 
 
-<table id="bootstrap-table" class="table">
+<table id="bootstrap-table" class="table table-hover table-striped">
     <thead>
      <tr>
          <th>Couleur</th>
+         <th>Nom</th>
+         <th>Collection</th>
          <th>Quantité en stock</th>
              <th>{{ product.cartname }}</th>
 
@@ -57,7 +59,9 @@
 
             <tr>
 
-             <td data-toggle="tooltip" title="{% if stock.color %}{{ stock.color.namePublic }}{% endif %}"{% if stock.color %} style="background:url({{ asset('/upload/color/thumbnail/' ~ stock.color.imageColorName ) }})"{% endif %}></td>
+             <td data-toggle="tooltip" title="{% if stock.color %}{{ stock.color.namePublic }}{% endif %}"{% if stock.color %} {% endif %}><img src="{{ asset('/upload/color/thumbnail/' ~ stock.color.imageColorName ) }}" style="max-height:30px;"></td>
+                  <td>{{ stock.color.namePublic }}</td>
+                  <td>{{stock.color.collections[0].title}}</td>
                   <td>{{stock.quantity}}</td>
                   <td  style="text-align:center">
                       <input type="number" class="form-control" id="stock_{{ stock.id }}" value="0">
@@ -92,7 +96,6 @@
          <script src="{{ asset('admin/assets/js/sweetalert2.js')}}"></script>
          <script src="{{ asset('admin/assets/js/light-bootstrap-dashboard.js')}}"></script>
     <script src="{{ asset('admin/assets/js/bootstrap-datetimepicker.js')}}"></script>
-<script>
 <script type="text/javascript">
     var $table = $('#bootstrap-table');
 
@@ -106,7 +109,7 @@
             showColumns: true,
             pagination: true,
             searchAlign: 'left',
-            pageSize: 8,
+            pageSize: 100,
             clickToSelect: false,
             pageList: [8,10,25,50,100],
 
