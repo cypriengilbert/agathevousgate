@@ -236,7 +236,7 @@ window.location = route;
 
                                     </td>
                                      <td class="colonne_total">
-                                     {{ items.priceTemp|round(2, 'common') * items.quantity }}€<br>
+                                     {{ items_child.priceTemp|round(2, 'common') * items.quantity }}€<br>
 
                                     </td>
                                     <td>
@@ -323,7 +323,7 @@ window.location = route;
                            </div>
                            <div class="col-xs-5" >
                               <p></p>
-                              <p class="text-right"><strong>  {{ totalsum|round(2,'common') }} €</strong></p>
+                              <p class="text-right"><strong>  {{ (totalsum + remise)|round(2,'common') }} €</strong></p>
                               
                               {% if remise != 0 %}
                                <p class="text-right"><strong> - {{ remise|round(2, 'common') }} €</strong></p>

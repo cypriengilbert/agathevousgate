@@ -49,6 +49,7 @@ var stocks = new Array();
 
 {% if app.user %}
 {% if app.user.isPro == 2 %}
+
     {% for reduction in reductions %}
       {% if collection_on == reduction.collection or reduction.collection is null  %}
 
@@ -57,13 +58,12 @@ var stocks = new Array();
         {% elseif reduction.product.id == 4 %}
           {% set coffret2_price = (((100 - reduction.reduction) * collection_on.priceCoffret2)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 10 %}
-          {% set boutons_price = (((100 - reduction.reduction) * collection_on.priceBouton)/100) / (1+tva/100) %}
+          {% set boutons_price = (((100 - reduction.reduction) * reduction.product.price)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 11 %}
-          {% set pochette_price = (((100 - reduction.reduction) * collection_on.pricePochette)/100) / (1+tva/100) %}
+          {% set pochette_price = (((100 - reduction.reduction) * reduction.product.price)/100) / (1+tva/100) %}
         {% elseif reduction.product.id == 12 %}
           {% set coffret1_price = (((100 - reduction.reduction) * collection_on.priceCoffret1)/100) / (1+tva/100) %}
-        {% elseif reduction.product.id == 13 %}
-        {% set boite_price = (((100 - reduction.reduction) * collection_on.priceBoite)/100) / (1+tva/100) %}
+        
         {% endif %}
       {% endif %}
 

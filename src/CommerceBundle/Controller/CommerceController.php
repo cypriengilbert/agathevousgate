@@ -3433,48 +3433,60 @@ class CommerceController extends Controller
 
 
 
-public function getPriceItem($product, $collection, $isBasic){
+      public function getPriceItem($product, $collection, $isBasic){
 
-  if($product->getName() == 'Noeud'){
-    return $collection->getPriceNoeud();
-  }
-  elseif($product->getName() == 'Coffret1'){
-    return $collection->getPriceCoffret1();
-  }
-  elseif($product->getName() == 'Coffret2'){
-    return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
-  }
-  elseif($product->getName()  == 'Pochette'){
-    return $collection->getPricePochette();
-  }
-  elseif($product->getName()  == 'Boutons'){
-    return $collection->getPriceBouton();
-  }
-  elseif($product->getName()  == 'Rectangle_petit'){
-    return $collection->getPriceRectanglePetit();
-  }
-  elseif($product->getName()  == 'Rectangle_grand'){
-    return $collection->getPriceRectangleGrand();
-  }
-  elseif($product->getName()  == 'Milieu'){
-      if($isBasic == true){
-        if($collection->getPriceMilieuBasic() != 0 or $collection->getPriceMilieuBasic() != null){
-            return $collection->getPriceMilieuBasic();
+        if($product->getName() == 'Noeud'){
+          return $collection->getPriceNoeud();
         }
-       else{
-            return $collection->getPriceMilieu();
+        elseif($product->getName() == 'Coffret1'){
+          return $collection->getPriceCoffret1();
+        }
+        elseif($product->getName() == 'Coffret2'){
+          return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
+        }
+        elseif($product->getName()  == 'Pochette'){
+          $user = $this->container->get('security.context')->getToken()->getUser();
+          if($user->getIsPro() == 2){
+              return $product->getPrice();
           }
-      }else{
-        return $collection->getPriceMilieu();
+          else{
+              return $collection->getPricePochette();
+          }
+        }
+        elseif($product->getName()  == 'Boutons'){
+          $user = $this->container->get('security.context')->getToken()->getUser();
+          if($user->getIsPro() == 2){
+              return $product->getPrice();
+          }
+          else{
+          return $collection->getPriceBouton();
+          }
+        }
+        elseif($product->getName()  == 'Rectangle_petit'){
+          return $collection->getPriceRectanglePetit();
+        }
+        elseif($product->getName()  == 'Rectangle_grand'){
+          return $collection->getPriceRectangleGrand();
+        }
+        elseif($product->getName()  == 'Milieu'){
+            if($isBasic == true){
+              if($collection->getPriceMilieuBasic() != 0 or $collection->getPriceMilieuBasic() != null){
+                  return $collection->getPriceMilieuBasic();
+              }
+             else{
+                  return $collection->getPriceMilieu();
+                }
+            }else{
+              return $collection->getPriceMilieu();
+            }
+        }
+        elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+          return $product->getPrice();
+        }
+      
+      
+      
       }
-  }
-  elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
-    return $product->getPrice();
-  }
-
-
-
-}
 
 public function getPriceItemGeneric($product){
 
@@ -3491,6 +3503,12 @@ private function getVoucherAuto($listeAddedProduct){
     $auto_discounts = $this->getBy('CodePromo', array(
         'isAutomatic' => true,
     ));
+    if(empty($auto_discounts) ){
+        return null;
+    }
+    else{
+
+    
     $is_product1_cart = false;
     $is_product2_cart = false;
     $is_product3_cart = false;
@@ -3537,6 +3555,6 @@ private function getVoucherAuto($listeAddedProduct){
         }
     }
     return $discount_valid;
-}
+}}
 
 }
