@@ -33,13 +33,13 @@ security:
                 key: %secret%
 
     access_control:
-        - { path: ^/admin/stock, roles: IS_AUTHENTICATED_ANONYMOUSLY}
-        - { path: ^/admin/encours, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/done, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/validate, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/admin/s, roles: ROLE_SUPER_ADMIN }
-        - { path: ^/franchise, roles: ROLE_SUPER_ADMIN}
-        - { path: ^/pro/, roles: ROLE_SUPER_ADMIN}
+        - { path: ^/admin/stock, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/encours, roles: ROLE_SUPER_ADMIN  }
+        - { path: ^/admin/done, roles: ROLE_SUPER_ADMIN  }
+        - { path: ^/admin/validate, roles: ROLE_SUPER_ADMIN  }
+        - { path: ^/admin/s, roles: ROLE_SUPER_ADMIN  }
+        - { path: ^/franchise, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/pro/, roles: ROLE_SUPER_ADMIN }
 
 
 
