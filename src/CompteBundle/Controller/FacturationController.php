@@ -7,6 +7,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use CommerceBundle\Entity\Photo;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
@@ -119,6 +121,10 @@ class FacturationController extends Controller
            $listeCommande = $query->getQuery()->getResult();
            $listeAddedProduct = [];
            $listeRefunds = [];
+           $listeProductsSorted[] = [];
+           $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+           $products = $repository->findAll();
+
            foreach ($listeCommande as $commande) {
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
             $listeProduct = $repository->findBy(array('commande' => $commande));
@@ -127,8 +133,31 @@ class FacturationController extends Controller
             array_push($listeAddedProduct, $listeProduct);
             foreach ($refunds as $value) {
               array_push($listeRefunds, $value);            }
+
            
            }
+
+
+           foreach ($products as $key => $product) {
+            foreach ($listeAddedProduct as $key2 => $addedProducts) {
+              foreach($addedProducts as $addedProduct){
+                $listeProductsSorted[$product->getCartName()][(string)$addedProduct->getPrice()] = 0; 
+
+              }
+            }
+          }
+          
+
+           foreach ($products as $key => $product) {
+              foreach ($listeAddedProduct as $key2 => $addedProducts) {
+                foreach($addedProducts as $addedProduct){
+                if($product == $addedProduct->getProduct()){
+                    $listeProductsSorted[$product->getCartName()][(string)$addedProduct->getPrice()] += $addedProduct->getQuantity(); 
+                }
+                }
+              }
+           }
+          
            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
            $tva = $repository->findOneBy(array('name' => 'tva'))->getMontant();
            
@@ -146,7 +175,7 @@ class FacturationController extends Controller
 
            
          if( $this->container->get('security.context')->getToken()->getUser() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-          $content = $this->renderView('CommerceBundle:Default:monthlyInvoice.html.twig', array('mois' => $mois, 'annee' => $annee, 'user'=>$user,'tva' => $tva, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commandes' => $listeCommande, 'refunds' => $listeRefunds));
+          $content = $this->renderView('CommerceBundle:Default:monthlyInvoice.html.twig', array('mois' => $mois, 'annee' => $annee, 'user'=>$user,'tva' => $tva, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commandes' => $listeCommande, 'refunds' => $listeRefunds, 'listeProductsSorted' => $listeProductsSorted));
            
 
            $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
@@ -163,6 +192,45 @@ class FacturationController extends Controller
          }
  
     }
+
+
+    /**
+
+     * @Route("/order/details/{id}", name="details_pro")
+     */
+    public function orderDetailsAction($id)
+    {
+        if (TRUE === $this->get('security.authorization_checker')->isGranted(
+          'ROLE_USER'
+          )) {
+          $id_user = $this->container->get('security.context')->getToken()->getUser()->getId();
+          $repository    = $this->getDoctrine()->getManager()->getRepository('UserBundle:User');
+          $user = $repository->findOneBy(array('id' => $id_user));
+                  $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+          $listeAddedProduct = $repository->findBy(array('commande' => $id),array('product' => 'ASC'));
+          $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+          $commande = $repository->findOneBy(array('id' => $id));
+          $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Variable');
+          $tva = $repository->findOneBy(array('name' => 'tva'))->getMontant();
+          $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
+          $refunds = $repository->findBy(array('order' => $commande));
+        }
+          else{
+        $listeAddedProduct = null;
+          }
+        if($commande->getClient() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+          $content = $this->renderView('CommerceBundle:Default:details_pro.html.twig', array('user'=>$commande->getClient(),'tva' => $tva, 'iduser' => $commande->getClient()->getId(),'listePanier' => $listeAddedProduct, 'commande' => $commande, 'refunds' => $refunds));
+         $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');
+          $html2pdf->pdf->SetDisplayMode('real');
+          $html2pdf->writeHTML($content);
+          $content = $html2pdf->Output('facture.pdf', 'D');
+          return new Response();
+        }
+        else {
+          throw new NotFoundHttpException(sprintf('Accès refusé'));
+        }
+
+   }
 
 
 

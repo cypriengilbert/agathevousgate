@@ -13,7 +13,8 @@ td    { vertical-align: top; }
 }
 -->
 </style>
-{% set totalsum = 0 %}{% set numero_ligne = 0 %}{% set totalTransportCost = 0 %}{% set totalRemise = 0 %}{% set refundTotal = 0 %}
+{% set totalsum = null %}{% set numero_ligne = 0 %} {% set refundTotal = 0 %}
+
 
 <div backcolor='#FEFEFE' backimg='./res/bas_page.png' backimgx='center' backimgy='bottom' backimgw='100%' backtop='0' backbottom='30mm' footer='date;heure;page' style='font-size: 12pt'>
 
@@ -22,7 +23,6 @@ td    { vertical-align: top; }
 
             <td style='width: 25%; color: #444444;'>
                 <img src='http://agathevousgate.fr/images/logo_test.jpg' style='margin-right:-150px'>
-
             </td>
             <td style='width: 75%;'>
             </td>
@@ -32,11 +32,7 @@ td    { vertical-align: top; }
     <br>
     <table cellspacing='0' style='width: 100%; text-align: left; font-size: 11pt;'>
         <tr>
-            <td style='width:10%;'>
-            </td>
-            <td style='width:40%;'>
-            AgatheVousGâte
-            </td>
+            <td style='width:50%;'></td>
             <td style='width:14%; '>Client :</td>
              {% if user.company %}
             <td style='width:36%'>{{user.company.name}} - SIREN : {{user.company.siren}}</td>
@@ -45,12 +41,7 @@ td    { vertical-align: top; }
              {% endif %}
         </tr>
         <tr>
-<td style='width:10%;'>
-            </td>
-            <td style='width:40%;'>
-            3 rue Buirette<br>
-            51100 Reims
-            </td>
+            <td style='width:50%;'></td>
             <td style='width:14%; '>Adresse :</td>
             {% if user.company and user.company.adressBilling %}
             <td style='width:36%'>
@@ -60,16 +51,15 @@ td    { vertical-align: top; }
             </td>
             {% else %}
             <td style='width:36%'>
+            {% if user.adress %}
                 {{user.adress.adress}}<br>
                 {{user.adress.zipcode}} {{user.adress.city}}<br>
-
+            {% endif %}
             </td>
             {% endif %}
         </tr>
         <tr>
-            <td style='width:10%;'></td>
-             <td style='width:40%;'></td>
-
+            <td style='width:50%;'></td>
             <td style='width:14%; '>Email :</td>
             <td style='width:36%'>{{user.email}}</td>
         </tr>
@@ -85,66 +75,65 @@ td    { vertical-align: top; }
     </table>
     <br>
     <i>
-        <b><u>Facture N°{{annee}}{{mois}}{{user.id}} de {{mois}}/{{annee}}</u></b><br>
+        <b><u>Details de commande n°{{commande.id}} du {{commande.date|date("d/m/Y")}}</u></b><br>
+        <u>Associé à la facture de {{commande.date|date('m/Y')}}</u><br>
     </i>
     <br>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
-            <th style='width: 40%'>Produit</th>
-            <th style='width: 20%'>Prix Unitaire</th>
-            <th style='width: 20%'>Quantité</th>
-            <th style='width: 20%; text-align:right'>Prix Net</th>
+            <th style='width: 32%'>Produit</th>
+            <th style='width: 32%'>Couleur</th>
+            <th style='width: 13%'>Prix Unitaire</th>
+            <th style='width: 10%'>Quantité</th>
+            <th style='width: 13%'>Prix Net</th>
         </tr>
     </table>
-    {% for commande in commandes %}
-    {% set totalTransportCost = totalTransportCost + commande.transportCost %}
-        {% set totalRemise = totalRemise + commande.remise %}
 
-    {% endfor %}
-    {% for key, listepanier in listeProductsSorted %}
-        {% for key2, value in listepanier %}
-
-       
-    {% set totalsum = totalsum + (value * key2) %}
-    
-{% if value != 0 %}
+    {% for listepanier in listePanier %}
+    {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
-        
         <tr>
-            <td style='width: 40%; text-align: center'>{{ key }} </td>
-            <td style='width: 20%; text-align: center'>{{ key2|round(2, 'common') }}€</td>
-            <td style='width: 20%'>{{ value }}</td>
-            <td style='width: 20%; text-align: right;'>{{ value * key2|round(2, 'common') }}€</td>
+            <td style='width: 12%; text-align: left'>{{ listepanier.product.cartname }}</td>
+            <td style='width: 52%; text-align: left'>
+            {% if listepanier.Color1 %}
+            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
+            {% endif %}
+            {% if listepanier.Color2 %}
+            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color2.imageColorName }}">
+            {% endif %}
+            {% if listepanier.Color3 %}
+            <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color3.imageColorName }}">
+            {% endif %}
+            </td>
+            <td style='width: 13%; text-align: right'>{{ listepanier.price }}</td>
+            <td style='width: 10%'>{{ listepanier.quantity }}</td>
+            <td style='width: 13%; text-align: right;'>{{ listepanier.price * listepanier.quantity }}€</td>
         </tr>
-       
     </table>
-     {% endif %}
     {% endfor %}
-    {% endfor %}
-    
 
 
-    <table cellspacing='0' style='width:100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+ 
+   
+    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Sous-Total : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ totalsum }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Livraison : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalTransportCost|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ commande.transportCost }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remise : </th>
-            <th style='width: 13%; text-align: right;'>- {{ totalRemise|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>- {{ commande.remise }}€</th>
         </tr>
     </table>
-    
-        {% for refund in refunds %}
-        {% if refund %}
+      {% for refund in refunds %}
    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remboursement le {{refund.date|date("d-m-Y")}} </th>
@@ -152,33 +141,17 @@ td    { vertical-align: top; }
             {% set refundTotal = refundTotal + refund.montant %}
         </tr>
     </table>
-    {% endif %}
    {% endfor %}
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Total réglé : </th>
-            <th style='width: 13%; text-align: right;'>{{ (totalsum + totalTransportCost - totalRemise - refundTotal)|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ totalsum + commande.transportCost - commande.remise - refundTotal }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
-            <th style='width: 13%; text-align: right;'>{{ ((totalsum + totalTransportCost - totalRemise - refundTotal) * (tva/100))|round(2, 'common') }}€</th>
-        </tr>
-    </table>
-
-    <table cellspacing='0' style='width: 100%; text-align: center; font-size: 14px; margin-top : 100px'>
-        <tr>
-
-            <td style='width: 100%; color: #444444;'>
-                Paiement par virement sur le compte : <br>
-                FR50 2004 1010 0208 4084 1H02325
-                
-                <br><br>
-                N°Siret : 81349390500018<br><br>
-                Code APE : 9329Z<br>
-            </td>
-            
+            <th style='width: 13%; text-align: right;'>{{ (totalsum + commande.transportCost - commande.remise - refundTotal) * (tva/100) }}€</th>
         </tr>
     </table>
 
