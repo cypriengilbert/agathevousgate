@@ -79,7 +79,7 @@ td    { vertical-align: top; }
         <u>Associé à la facture de {{commande.date|date('m/Y')}}</u><br>
     </i>
     <br>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 32%'>Produit</th>
             <th style='width: 32%'>Couleur</th>
@@ -91,10 +91,10 @@ td    { vertical-align: top; }
 
     {% for listepanier in listePanier %}
     {% set totalsum = totalsum + listepanier.price * listepanier.quantity %}
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
         <tr>
-            <td style='width: 12%; text-align: left'>{{ listepanier.product.cartname }}</td>
-            <td style='width: 52%; text-align: left'>
+            <td style='width: 32%; text-align: center'>{{ listepanier.product.cartname }}</td>
+            <td style='width: 32%; text-align: center'>
             {% if listepanier.Color1 %}
             <img style="width:30px; height:30px" src="http://agathevousgate.fr/web/upload/color/thumbnail/{{listepanier.Color1.imageColorName }}">
             {% endif %}
@@ -115,26 +115,26 @@ td    { vertical-align: top; }
 
  
    
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Sous-Total : </th>
             <th style='width: 13%; text-align: right;'>{{ totalsum }}€</th>
         </tr>
     </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Livraison : </th>
             <th style='width: 13%; text-align: right;'>{{ commande.transportCost }}€</th>
         </tr>
     </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remise : </th>
             <th style='width: 13%; text-align: right;'>- {{ commande.remise }}€</th>
         </tr>
     </table>
       {% for refund in refunds %}
-   <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+   <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remboursement le {{refund.date|date("d-m-Y")}} </th>
             <th style='width: 13%; text-align: right;'>{{ refund.montant }}€</th>
@@ -142,13 +142,13 @@ td    { vertical-align: top; }
         </tr>
     </table>
    {% endfor %}
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Total réglé : </th>
             <th style='width: 13%; text-align: right;'>{{ totalsum + commande.transportCost - commande.remise - refundTotal }}€</th>
         </tr>
     </table>
-    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
+    <table cellspacing='0' style='width: 98%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
             <th style='width: 13%; text-align: right;'>{{ (totalsum + commande.transportCost - commande.remise - refundTotal) * (tva/100) }}€</th>
