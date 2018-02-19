@@ -1670,11 +1670,6 @@ class DefaultController extends Controller
             'listeCommande' => $listeCommande,
             'page' => $page,
 
-
-
-
-
-
         ));
     }
     /**
@@ -2822,28 +2817,33 @@ class DefaultController extends Controller
         $collection = null;
         if(isset($color1)){
             $collection1 = $color1->getCollections();
-            return $collection1[0];
+            if($color1->getIsBasic() == false) {
+                return $collection1[0];
+            }
+            else{
+                $collection = $collection1[0];
+            }
         }
         
         
         if(isset($color2)){
             $collection2 = $color2->getCollections();
-            if (count($collection1) == 1){
-                $collection = $collection1;
-            }
-            elseif (count($collection2) == 1){
-                $collection = $collection2;
+            if (count($collection2) == 1){
+               
+                $collection = $collection2[0];
+                if($color2->getIsBasic() == false){
+                    return $collection;
+                 }
             }
             else{
-                foreach ($collection1 as $collection1) {
                     foreach ($collection2 as $collection2) {
-                        if($collection1 == $collection2){
-                            
-                             $collection = $collection2;
-                             return $collection;
+                        if($collection != $collection2){
+                             if($color2->getIsBasic() == false){
+                                return $collection2;
+                             }                             
                         }
                     }
-                }
+                
             }
         }
         
@@ -2851,32 +2851,26 @@ class DefaultController extends Controller
             $collection3 = $color3->getCollections();
             
 
-            if (count($collection1) == 1){
-                $collection = $collection1;
-            }
-            elseif (count($collection2) == 1){
-                $collection = $collection2;
-            }
-            elseif (count($collection3) == 1){
-                $collection = $collection3;
+            
+            if (count($collection3) == 1){
+                $collection = $collection3[0];
+                if($color3->getIsBasic() == false){
+                    return $collection;
+                 }
             }
             else{
-                foreach ($collection1 as $collection1) {
-                    foreach ($collection2 as $collection2) {
-                        if($collection1 == $collection2){
-                            foreach ($collection3 as $collection3) {
-                                if($collection2 == $collection3){
-                                    $collection = $collection3;
-                                    return $collection[0];
-                                }
-                            }
+                foreach ($collection3 as $collection3) {
+                    if($collection != $collection3){
+                        if($color3->getIsBasic() == false){
+                            return $collection3;
                         }
                     }
                 }
             }
+                   
         }
 
-        return null;
+        return $collection;
         
        
      }
