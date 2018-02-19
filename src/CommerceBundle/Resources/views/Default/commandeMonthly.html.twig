@@ -5,7 +5,7 @@
     {% for payout in payouts|reverse %}
             <div class="panel panel-info">
                  <div class="panel-heading">
-                    <h3 class="panel-title">{{ payout.month|date(payout.month ~ '-' ~ payout.month ~ '-01') |date('F') }} {{  payout.year}} -  {% if payout.year < 'now'|date('Y') or (payout.year == 'now'|date('Y') and payout.month < 'now'|date('m')) %}<a href="{{ path('monthlyInvoice',{'id_user': user.id, 'annee':payout.year, 'mois': payout.month}) }}"> Télécharger la facture <i class="fa fa-download" aria-hidden="true"></i></a>{% else %} <br> Facture disponible à la fin du mois{% endif %}</h3>
+                    <h3 class="panel-title">{{ payout.month|date(payout.month ~ '-' ~ payout.month ~ '-01') |date('F') }} {{  payout.year}} -  {% if payout.year < 'now'|date('Y') or (payout.year == 'now'|date('Y') and payout.month < 'now'|date('m')) %}<a href="{{ path('monthlyInvoice',{'id_user': user.id, 'annee':payout.year, 'mois': payout.month}) }}"> Télécharger la facture <i class="fa fa-download" aria-hidden="true"></i></a>{% else %} <br> Facture dispo à partir du 1er du mois suivant{% endif %}</h3>
                  </div>
             <div class="panel-body">
                 {% for commande in payout.commandes %}

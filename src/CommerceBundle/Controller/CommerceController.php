@@ -2671,8 +2671,8 @@ class CommerceController extends Controller
 
             }
             
-
             $total_commande = $total_commande - $remise;
+
             if(isset($user) && $user->getIsPro() == 2){
                 $total_commande = ($total_commande * (1+$tva/100));
                 $remisePro=0;
@@ -2680,9 +2680,10 @@ class CommerceController extends Controller
                     $remisePro = $remisePro + $item->getpriceRemise() * $item->getQuantity();
                 }
                 $newcommande->setRemisePro($remisePro);
+
             }
 
-            if ($total_commande < $minLivraison->getMontant()) {
+            if ($total_commande + $remise < $minLivraison->getMontant()) {
                 
 
                 if ($newcommande->getAtelierLivraison() == NULL) {
@@ -2706,11 +2707,12 @@ class CommerceController extends Controller
                     else{
                         $coutLivraison =0;
                     }
+
                 }
                 if (isset($codePromo)) {
+                    
+                    if ($total_commande + $remise <= $codePromo->getMinimumCommande()) {
 
-                    if ($total_commande + $remise >= $codePromo->getMinimumCommande()) {
-                        
                         $repository       = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:CodePromo');
                         $codePromo = $repository->findOneBy(array(
                             'code' => $codePromo->getCode(),
@@ -2725,6 +2727,7 @@ class CommerceController extends Controller
                         }
 
                     }
+
                 }
                 
             }
@@ -2732,7 +2735,9 @@ class CommerceController extends Controller
                 $coutLivraison =0 ;
             }
             
+
             $total_commande += $coutLivraison; 
+
             $newcommande->setRemise($remise);
             $total_commande_100 = $total_commande * 100;
             $newcommande->setPrice($total_commande);
@@ -3445,6 +3450,7 @@ class CommerceController extends Controller
           return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
         }
         elseif($product->getName()  == 'Pochette'){
+            if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
           $user = $this->container->get('security.context')->getToken()->getUser();
           if($user->getIsPro() == 2){
               return $product->getPrice();
@@ -3453,7 +3459,12 @@ class CommerceController extends Controller
               return $collection->getPricePochette();
           }
         }
+          else{
+            return $collection->getPricePochette();
+          }
+        }
         elseif($product->getName()  == 'Boutons'){
+            if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
           $user = $this->container->get('security.context')->getToken()->getUser();
           if($user->getIsPro() == 2){
               return $product->getPrice();
@@ -3461,6 +3472,10 @@ class CommerceController extends Controller
           else{
           return $collection->getPriceBouton();
           }
+        }else{
+            return $collection->getPriceBouton();
+
+        }
         }
         elseif($product->getName()  == 'Rectangle_petit'){
           return $collection->getPriceRectanglePetit();

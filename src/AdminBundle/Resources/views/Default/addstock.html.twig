@@ -59,9 +59,9 @@
 
             <tr>
 
-             <td data-toggle="tooltip" title="{% if stock.color %}{{ stock.color.namePublic }}{% endif %}"{% if stock.color %} {% endif %}><img src="{{ asset('/upload/color/thumbnail/' ~ stock.color.imageColorName ) }}" style="max-height:30px;"></td>
-                  <td>{{ stock.color.namePublic }}</td>
-                  <td>{{stock.color.collections[0].title}}</td>
+             <td data-toggle="tooltip" title="{% if stock.color %}{{ stock.color.namePublic }}{% endif %}"{% if stock.color %} ><img src="{{ asset('/upload/color/thumbnail/' ~ stock.color.imageColorName ) }}" style="max-height:30px;">{% endif %}</td>
+                  <td>{% if stock.color %}{{ stock.color.namePublic }}{% endif %}</td>
+                  <td>{% if stock.color %}{{stock.color.collections[0].title}}{% endif %}</td>
                   <td>{{stock.quantity}}</td>
                   <td  style="text-align:center">
                       <input type="number" class="form-control" id="stock_{{ stock.id }}" value="0">
