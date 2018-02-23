@@ -158,9 +158,11 @@ class DefaultController extends Controller
           }else
           {
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-            $sortedColors = $repository->findBy(array(
-                'isBasic' => 1,
-            ));
+            $sortedColors = $repository->findBy(
+                array(
+                'isBasic' => 1),
+                array('codehexa' =>'ASC')
+            );
             $collection = null;
             $accepted_products = array("Boutons","Rectangle_petit","Rectangle_grand","Milieu", "Pochette");
             return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
