@@ -924,6 +924,8 @@ class CommerceController extends Controller
      */
     public function listeProduitAction($id)
     {
+        return $this->redirect($this->generateUrl('accueil'));
+
         $collectionOngoing = $this->getOneBy('Collection', array(
             'id' => $id
         ));
@@ -3262,11 +3264,13 @@ class CommerceController extends Controller
         $listeCollection = $this->getBy('Collection', array(
             'active' => true
         ));
-        return $this->render('CommerceBundle:Default:collections.html.twig', array(
+        return $this->redirect($this->generateUrl('accueil'));
+
+       /* return $this->render('CommerceBundle:Default:collections.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collections' => $listeCollection,
             'page' => $page
-        ));
+        ));*/
     }
 
     
