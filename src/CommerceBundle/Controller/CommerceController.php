@@ -924,6 +924,8 @@ class CommerceController extends Controller
      */
     public function listeProduitAction($id)
     {
+        return $this->redirect($this->generateUrl('accueil'));
+
         $collectionOngoing = $this->getOneBy('Collection', array(
             'id' => $id
         ));
@@ -1511,7 +1513,6 @@ class CommerceController extends Controller
                     
                 
                 $message = \Swift_Message::newInstance()->setSubject('Confirmation de Commande')->setFrom('commande@agathevousgate.fr')->setTo($UserEmail)->setBody($this->renderView(
-                // app/Resources/views/Emails/registration.html.twig
                     'emails/confirmation_commande.html.twig', array(
                     'user' => $user,
                     'franchise' => null,
@@ -1519,6 +1520,7 @@ class CommerceController extends Controller
                     'listePanier' => $listePanier,
                     'minLivraison' => $minLivraison,
                     'coutLivraison' => $coutLivraison,
+                    'tva' => $tva->getMontant(),
                     'parrainage' => $remiseParrainage,
                     'commande' => $commandeEnCours
                 )), 'text/html');
@@ -3262,11 +3264,13 @@ class CommerceController extends Controller
         $listeCollection = $this->getBy('Collection', array(
             'active' => true
         ));
-        return $this->render('CommerceBundle:Default:collections.html.twig', array(
+        return $this->redirect($this->generateUrl('accueil'));
+
+       /* return $this->render('CommerceBundle:Default:collections.html.twig', array(
             'nbarticlepanier' => $nbarticlepanier,
             'collections' => $listeCollection,
             'page' => $page
-        ));
+        ));*/
     }
 
     

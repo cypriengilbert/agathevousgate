@@ -87,16 +87,16 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse de livraison</label>
-                                                <input type="text" class="form-control" placeholder="Home Address"  value="{{user.adress.adress}}">
+                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.adress %}{{user.adress.adress}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
-                                    {% if user.adress.adressMore %}
+                                    {% if user.adress and user.adress.adressMore %}
                                      <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse (suite)</label>
-                                                <input type="text" class="form-control" placeholder="Home Address"  value="{{ user.adress.adressMore }}">
+                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.adress %}{{ user.adress.adressMore }}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -106,14 +106,14 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Ville</label>
-                                                <input type="text" class="form-control" placeholder="City"   value="{{user.adress.city}}">
+                                                <input type="text" class="form-control" placeholder="City"   value="{% if user.adress %}{{user.adress.city}}{% endif %}">
                                             </div>
                                         </div>
                                         
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Code postal</label>
-                                                <input type="number" class="form-control"   value="{{user.adress.zipcode}}">
+                                                <input type="number" class="form-control"   value="{% if user.adress %}{{user.adress.zipcode}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% if user.adress.adressMore %}
+                                    {% if user.adress and user.adress.adressMore %}
                                      <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
