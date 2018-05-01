@@ -429,15 +429,83 @@ margin-top:5px
 			<img src="{{ asset('/upload/image_collection/' ~ collection.imageNameIcone ) }}" style="background-color:grey;width:100%;max-height:100px;height:auto">
 		</div>
 	</div>
-
-
-<div class="row" style="margin-top:20px;">
-	<div class="col-md-12">
-		<div class="form-group">
-			{{ form_row(form.colors) }}
+	
+	
+	
+	<div class="row" style="margin-top:20px;" >
+		<div class="col-md-6" id="colors_collection">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="title" style="color:#23CCEF">Couleurs de la collection</h5>
+							</div>          
+						</div>
+					</div>
+				</div>
+			</div>
+			<table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead>
+         			<tr>
+         				<th>Couleur</th>
+                        <th>Nom</th>
+						<th> Action </th>
+					</tr>                                                                                                                                                                         </tr>
+     			</thead>
+     			<tbody>
+				 	<tr v-for="(color, index) in even(colors)" style="text-align:center" @click="disableColor(index, color.id)">
+					 	<td>
+						 	<img v-bind:src="color.image_url" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+						</td>
+						<td>
+							${color.name}
+						</td>
+						<td>
+							>>
+						</td> 
+					 </tr>
+				 </tbody>
+			</table>
+				
+		</div>
+		<div class="col-md-6" id="all_colors">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="title" style="color:#23CCEF">Couleurs autres</h5>
+							</div>          
+						</div>
+					</div>
+				</div>
+			</div>
+			<table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead>
+         			<tr>
+         				<th>Couleur</th>
+                        <th>Nom</th>
+						<th> Action </th>
+					</tr>                                                                                                                                                                         </tr>
+     			</thead>
+     			<tbody>
+				 	<tr v-for="(color, index) in even(all_colors)" style="text-align:center" @click="enableColor(index, color.id)">
+					 	<td>
+						 	<img v-bind:src="color.image_url" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+						</td>
+						<td>
+							${color.name}
+						</td>
+						<td>
+							<<
+						</td> 
+					 </tr>
+				 </tbody>
+			</table>
+				
 		</div>
 	</div>
-</div>
 
 
 <div class="row" style="margin-top:20px;">
@@ -464,9 +532,89 @@ margin-top:5px
 </div>
 
 
+<script>
+var colors = new Vue({
+   delimiters: ['${', '}'],
+   el: '#colors_collection',
+   data: {
+	   id_collection: {{collection.id}},
+      colors: 
+		  [{% for color in colors %} { name: '{{ color.name_public }}',hexa:'{{ color.codeHexa}}', id: '{{ color.id }}' , image_url:'{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}'}{% if loop.last == false %},{% endif %}{% endfor %}],
+   },
+   methods:{
+       disableColor: function(index, id_color) {
+		    $.ajax({
+         type: "POST",
+         url: "{{ path('enableColor')
+		 }}",
+         data: {id_collection: this.id_collection, id_color:id_color},
+         cache: false,
+         success: function(result){
+			  this.colors.splice(index, 1);
+			  result.forEach(function(element) {
+			  all_colors.all_colors.push(
+              {
+                name: element.name,
+                id: element.id,
+                image_url: "/AgatheVousgate/web/upload/color/thumbnail/" + element.image_url,
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+      },
+	  even: function(arr) {
+      return arr.slice().sort(function(a, b) {
+        return a.hexa - b.hexa;
+      });
+    }
+   }
+});
 
 
 
+var all_colors = new Vue({
+   delimiters: ['${', '}'],
+   el: '#all_colors',
+   data: {
+	   	id_collection: {{collection.id}},
+    	all_colors: 
+		  [{% for color in all_colors %} { name: '{{ color.name_public }}',hexa:'{{ color.codeHexa}}', id: '{{ color.id }}' , image_url:'{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}'}{% if loop.last == false %},{% endif %}{% endfor %}],
+   },
+   methods:{
+       enableColor: function(index, id_color) {
+      $.ajax({
+         type: "POST",
+         url: "{{ path('enableColor')
+		 }}",
+         data: {id_collection: this.id_collection, id_color:id_color},
+         cache: false,
+         success: function(result){
+            this.all_colors.splice(index, 1);
+			  result.forEach(function(element) {
+			  colors.colors.push(
+              {
+                name: element.name,
+                id: element.id,
+                image_url: "/AgatheVousgate/web/upload/color/thumbnail/" + element.image_url,
+              }
+             );
+			  });       
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+      },
+	  even: function(arr) {
+      return arr.slice().sort(function(a, b) {
+        return a.hexa - b.hexa;
+      });
+    }
+   }
+});
+</script>
 
 {% endblock %}
 

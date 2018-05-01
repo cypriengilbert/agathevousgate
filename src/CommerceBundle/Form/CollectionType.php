@@ -99,18 +99,7 @@ class CollectionType extends AbstractType
                                                                                    }
                                                                            ))
 
-          ->add('colors', EntityType::class, array(
-                                   'class' => 'CommerceBundle:Color',
-                                   'choice_label' => 'name',
-                                  'multiple' => true,
-                                  'expanded' => true,
-                                   'required' => true,
-                                   'query_builder' => function (EntityRepository $er) {
-                                           return $er->createQueryBuilder('u')
-                                               ->orderBy('u.id', 'ASC')
-                                                ->where('u.isActive = true');
-                                       }
-                               ))
+          
                                ->add('companies', EntityType::class, array(
                                 'class' => 'UserBundle:Company',
                                 'choice_label' => 'name',

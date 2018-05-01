@@ -1378,10 +1378,23 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl(
             'listeCollection', array('validate' => 'Collection bien modifié')));
         }
+        $colors_collection = $collection->getColors();
+        $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+        $all_colors = $repository->findAll();
+
+        foreach ($all_colors as $color) {
+            if ($colors_collection->contains($color)) {
+                $key = array_search($color, $all_colors);
+                unset($all_colors[$key]);
+            }  
+        }
+        
         return $this->render('AdminBundle:Default:editCollection.html.twig', array(
             'form' => $form->createView(),
             'collection' => $collection,
             'page' => $page,
+            'colors' => $colors_collection,
+            'all_colors' => $all_colors,
 
             ));
 
