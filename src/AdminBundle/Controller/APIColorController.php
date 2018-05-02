@@ -21,13 +21,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class APICollectionController extends Controller
+class APIColorController extends Controller
 {
   /**
-   * @Route("/s/api/collection-color/enable/", name="enableColor")
+   * @Route("/s/api/color-collection/enable/", name="enableCollection")
    * @Method({"POST"})
    */
-  public function enableColorAction(Request $request)
+  public function enableCollectionAction(Request $request)
   {
         if($request->isXMLHttpRequest()){  
             
@@ -45,15 +45,16 @@ class APICollectionController extends Controller
             else{
                 $collection->addColor($color);
             }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($collection);
             $em->flush();
 
+            
+
             $arrayResponse[] = array(
-                'id' => $color->getId(),
-                'name' => $color->getNamePublic(),
-                'image_url' => $color->getImageColorName(),
-                'hexa' => $color->getCodeHexa(),
+                'id' => $collection->getId(),
+                'name' => $collection->getTitle(),
                );
             $response = new JsonResponse($arrayResponse);
             return $response;
@@ -66,39 +67,36 @@ class APICollectionController extends Controller
 
 
     /**
-   * @Route("/s/api/collection-color/enable/all", name="enableAllColor")
+   * @Route("/s/api/color-collection/enable/all", name="enableAllCollections")
    * @Method({"POST"})
    */
-  public function enableAllColorAction(Request $request)
+  public function enableAllCollectionsAction(Request $request)
   {
         if($request->isXMLHttpRequest()){  
             
-            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-            $collection = $repository->findOneBy(array('id' => $request->request->get('id_collection')));
-
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-            $allcolors = $repository->findAll();
+            $color = $repository->findOneBy(array('id' => $request->request->get('id_color')));
 
-            $colors = $collection->getColors();
-            
-            foreach ($allcolors as $color) {
+            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $allCollections = $repository->findAll();
+
+            foreach ($allCollections as $collection) {
+                $colors = $collection->getColors();
                 if (!$colors->contains($color)) {
                     $collection->addColor($color);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($collection);
+                    $em->flush();
                 }
             }
-              
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($collection);
-            $em->flush();
-            $colors = $collection->getColors();
+            
+            $collections = $color->getCollections();
             $arrayResponse = [];
-            foreach ($colors as $color) {
+            foreach ($collections as $collection) {
                 array_push($arrayResponse,
                     array(
-                        'id' => $color->getId(),
-                        'name' => $color->getNamePublic(),
-                        'image_url' => $color->getImageColorName(),
-                        'hexa' => $color->getCodeHexa(),
+                        'id' => $collection->getId(),
+                        'name' => $collection->getTitle(),
                        ) 
                     );
             }
@@ -112,39 +110,35 @@ class APICollectionController extends Controller
 
 
      /**
-   * @Route("/s/api/collection-color/disable/all", name="disableAllColor")
+   * @Route("/s/api/color-collection/disable/all", name="disableAllCollections")
    * @Method({"POST"})
    */
   public function disableAllColorAction(Request $request)
   {
         if($request->isXMLHttpRequest()){  
             
-            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
-            $collection = $repository->findOneBy(array('id' => $request->request->get('id_collection')));
-
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
-            $allcolors = $repository->findAll();
+            $color = $repository->findOneBy(array('id' => $request->request->get('id_color')));
 
-            $colors = $collection->getColors();
-            
-            foreach ($allcolors as $color) {
+            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+            $allCollections = $repository->findAll();
+
+            foreach ($allCollections as $collection) {
+                $colors = $collection->getColors();
                 if ($colors->contains($color)) {
                     $collection->removeColor($color);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($collection);
+                    $em->flush();
                 }
             }
-              
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($collection);
-            $em->flush();
-            $colors = $collection->getColors();
+            $collections = $allCollections;
             $arrayResponse = [];
-            foreach ($allcolors as $color) {
+            foreach ($collections as $collection) {
                 array_push($arrayResponse,
                     array(
-                        'id' => $color->getId(),
-                        'name' => $color->getNamePublic(),
-                        'image_url' => $color->getImageColorName(),
-                        'hexa' => $color->getCodeHexa(),
+                        'id' => $collection->getId(),
+                        'name' => $collection->getTitle(),
                        ) 
                     );
             }

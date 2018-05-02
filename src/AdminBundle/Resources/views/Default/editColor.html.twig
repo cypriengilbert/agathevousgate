@@ -273,6 +273,89 @@ margin-top:5px
 </div>
 
 
+	
+	<div class="row" style="margin-top:20px;" >
+		<div class="col-md-6" id="collections">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="title" style="color:#23CCEF">Collections associées</h5>
+							</div>          
+						</div>
+					</div>
+				</div>
+			</div>
+			<table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead>
+         			<tr>
+         				<th>Nom</th>
+						<th> Action </th>
+					</tr>                                                                                                                                                                         </tr>
+     			</thead>
+     			<tbody>
+				 	<tr>
+					 <td>
+					 </td>
+					 <td>
+					 	<div  @click="enableAll" class="btn btn-alert btn-fill pull-right">Ajouter tout</div>
+					 </td>
+					 </tr>
+				 	<tr v-for="(collection, index) in collections" style="text-align:center" @click="disableCollection(index, collection.id)">
+						<td>
+							${collection.name}
+						</td>
+						<td>
+							>>
+						</td> 
+					 </tr>
+				 </tbody>
+			</table>
+				
+		</div>
+		<div class="col-md-6" id="all_collections">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="header">
+						<div class="row">
+							<div class="col-md-12">
+								<h5 class="title" style="color:#23CCEF">Collections autres</h5>
+							</div>          
+						</div>
+					</div>
+				</div>
+			</div>
+			<table id="commande_en_cours" class="table table-striped table-bordered" cellspacing="0" width="100%">
+				<thead>
+         			<tr>
+                        <th>Nom</th>
+						<th> Action </th>
+					</tr>                                                                                                                                                                         </tr>
+     			</thead>
+     			<tbody>
+				 <tr>
+					 <td>
+					 </td>
+					 <td>
+					 	<div  @click="disableAll" class="btn btn-alert btn-fill pull-right">Supprimer tout</div>
+					 </td>
+					 </tr>
+				 	<tr v-for="(collection, index) in all_collections" style="text-align:center" @click="enableCollection(index, collection.id)">
+						<td>
+							${collection.name}
+						</td>
+						<td>
+							<<
+						</td> 
+					 </tr>
+				 </tbody>
+			</table>
+				
+		</div>
+	</div>
+
+
 <div class="row" style="margin-top:20px;">
 	<div class="col-md-12">
 		<div class="form-group">
@@ -296,6 +379,136 @@ margin-top:5px
 
 
 
+
+<script>
+var collections = new Vue({
+   delimiters: ['${', '}'],
+   el: '#collections',
+   data: {
+	   id_color: {{color.id}},
+      collections: 
+		  [{% for collection in collections %} { name: '{{ collection.title }}', id: '{{ collection.id }}' }{% if loop.last == false %},{% endif %}{% endfor %}],
+   },
+   methods:{
+       disableCollection: function(index, id_collection) {
+		    $.ajax({
+         type: "POST",
+         url: "{{ path('enableCollection')
+		 }}",
+         data: {id_collection: id_collection, id_color:this.id_color},
+         cache: false,
+         success: function(result){
+			  this.collections.splice(index, 1);
+			  result.forEach(function(element) {
+			  all_collections.all_collections.push(
+              {
+                name: element.name,
+                id: element.id,
+                
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+      },
+	  even: function(arr) {
+      return arr.slice().sort(function(a, b) {
+        return a.name - b.name;
+      });
+    },
+	enableAll: function(){
+		$.ajax({
+         type: "POST",
+         url: "{{ path('enableAllCollections')
+		 }}",
+         data: {id_color: this.id_color},
+         cache: false,
+         success: function(result){
+			  all_collections.all_collections = [];
+			   collections.collections = [];
+			  result.forEach(function(element) {
+			  collections.collections.push(
+              {
+                name: element.name,
+                id: element.id,
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+	}
+   }
+});
+
+
+
+var all_collections = new Vue({
+   delimiters: ['${', '}'],
+   el: '#all_collections',
+   data: {
+	   	id_color: {{color.id}},
+    	all_collections: 
+		  [{% for collection in allCollections %} { name: '{{ collection.title }}', id: '{{ collection.id }}'} {% if loop.last == false %},{% endif %}{% endfor %}],
+   },
+   methods:{
+       enableCollection: function(index, id_collection) {
+      $.ajax({
+         type: "POST",
+         url: "{{ path('enableCollection')
+		 }}",
+         data: {id_collection: id_collection, id_color:this.id_color},
+         cache: false,
+         success: function(result){
+            this.all_collections.splice(index, 1);
+			  result.forEach(function(element) {
+			  collections.collections.push(
+              {
+                name: element.name,
+                id: element.id,
+              }
+             );
+			  });       
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+      },
+	  even: function(arr) {
+      return arr.slice().sort(function(a, b) {
+        return a.name - b.name;
+      });
+    },
+	disableAll: function(){
+		$.ajax({
+         type: "POST",
+         url: "{{ path('disableAllCollections')
+		 }}",
+         data: {id_color: this.id_color},
+         cache: false,
+         success: function(result){
+			  collections.collections = [];
+			all_collections.all_collections = [];
+
+			  result.forEach(function(element) {
+			  all_collections.all_collections.push(
+              {
+                name: element.name,
+                id: element.id,
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+	}
+   }
+});
+</script>
 
 
 

@@ -1573,14 +1573,14 @@ class DefaultController extends Controller
                 }
             }
 
+
             $em->persist($newColor);
             $em->flush();
             $request->getSession()->getFlashBag()->add('notice', 'Couleur bien enregistrée.');
 
-            return $this->redirect($this->generateUrl('newColor', array(
+            return $this->redirect($this->generateUrl('editColor', array(
                 'validate' => 'Collection bien ajouté',
-
-                'listeCommande' => $listeCommande,
+                'id' => $newColor->getId(),
                 'page' => $page,
 
 
@@ -1626,14 +1626,23 @@ class DefaultController extends Controller
             return $this->redirect($this->generateUrl('listecolor'));
         }
 
+        $collections = $color->getCollections();
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+        $allCollections      = $repository->findAll();
+        foreach ($allCollections as $collection) {
+            if ($collections->contains($collection)) {
+                $key = array_search($collection, $allCollections);
+                unset($allCollections[$key]);
+            }  
+        }
+
+
         return $this->render('AdminBundle:Default:editColor.html.twig', array(
             'form' => $form->createView(),
             'page' => $page,
             'color' => $color,
-
-
-
-
+            'collections' => $collections,
+            'allCollections' => $allCollections
         ));
     }
 
