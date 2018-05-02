@@ -1346,7 +1346,7 @@ class DefaultController extends Controller
             
 
             return $this->redirect($this->generateUrl(
-            'newcollection', array('validate' => 'Collection bien ajouté','listeCommande' => $listeCommande)));
+            'editcollection', array('validate' => 'Collection bien ajouté','id' => $newCollection->getId())));
         }
         return $this->render('AdminBundle:Default:addCollection.html.twig', array(
             'form' => $form->createView(),

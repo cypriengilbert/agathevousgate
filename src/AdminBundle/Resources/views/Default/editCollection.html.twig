@@ -454,6 +454,15 @@ margin-top:5px
 					</tr>                                                                                                                                                                         </tr>
      			</thead>
      			<tbody>
+				 	<tr>
+					 <td>
+					 </td>
+					 <td>
+					 </td>
+					 <td>
+					 	<div  @click="enableAll" class="btn btn-alert btn-fill pull-right">Ajouter tout</div>
+					 </td>
+					 </tr>
 				 	<tr v-for="(color, index) in even(colors)" style="text-align:center" @click="disableColor(index, color.id)">
 					 	<td>
 						 	<img v-bind:src="color.image_url" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
@@ -490,6 +499,15 @@ margin-top:5px
 					</tr>                                                                                                                                                                         </tr>
      			</thead>
      			<tbody>
+				 <tr>
+					 <td>
+					 </td>
+					 <td>
+					 </td>
+					 <td>
+					 	<div  @click="disableAll" class="btn btn-alert btn-fill pull-right">Supprimer tout</div>
+					 </td>
+					 </tr>
 				 	<tr v-for="(color, index) in even(all_colors)" style="text-align:center" @click="enableColor(index, color.id)">
 					 	<td>
 						 	<img v-bind:src="color.image_url" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
@@ -569,7 +587,30 @@ var colors = new Vue({
       return arr.slice().sort(function(a, b) {
         return a.hexa - b.hexa;
       });
-    }
+    },
+	enableAll: function(){
+		$.ajax({
+         type: "POST",
+         url: "{{ path('enableAllColor')
+		 }}",
+         data: {id_collection: this.id_collection},
+         cache: false,
+         success: function(result){
+			  all_colors.all_colors = [];
+			  result.forEach(function(element) {
+			  colors.colors.push(
+              {
+                name: element.name,
+                id: element.id,
+                image_url: "/AgatheVousgate/web/upload/color/thumbnail/" + element.image_url,
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+	}
    }
 });
 
@@ -611,7 +652,30 @@ var all_colors = new Vue({
       return arr.slice().sort(function(a, b) {
         return a.hexa - b.hexa;
       });
-    }
+    },
+	disableAll: function(){
+		$.ajax({
+         type: "POST",
+         url: "{{ path('disableAllColor')
+		 }}",
+         data: {id_collection: this.id_collection},
+         cache: false,
+         success: function(result){
+			  colors.colors = [];
+			  result.forEach(function(element) {
+			  all_colors.all_colors.push(
+              {
+                name: element.name,
+                id: element.id,
+                image_url: "/AgatheVousgate/web/upload/color/thumbnail/" + element.image_url,
+              }
+             );
+			  });
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+        }
+     });
+	}
    }
 });
 </script>
