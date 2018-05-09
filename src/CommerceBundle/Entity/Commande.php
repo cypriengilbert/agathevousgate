@@ -130,7 +130,9 @@ class Commande
 
 
       /**
-      * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
+    * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
+    * @ORM\OrderBy({"product" = "ASC"})
+
       */
          private $addedproducts;
 

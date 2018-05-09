@@ -25,13 +25,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
-
-
-   
-
-
-
 class DefaultController extends Controller
 {
 
@@ -697,7 +690,9 @@ class DefaultController extends Controller
             'order' => $Commande
         ));
 
+        $addedProducts = $Commande->getAddedproducts();
 
+      
         $form = $this->get('form.factory')->create('CommerceBundle\Form\CommandeModifyType', $Commande);
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -717,8 +712,9 @@ class DefaultController extends Controller
             'commande' => $Commande,
             'form' => $form->createView(),
             'page' => $page,
-            'refunds' => $refunds
-        ));
+            'refunds' => $refunds,
+            'addedProducts' => $addedProducts
+         ));
     }
 
     /**

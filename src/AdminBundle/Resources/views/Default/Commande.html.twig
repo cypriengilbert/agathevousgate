@@ -8,7 +8,7 @@
 
 {% block body %}
 
-
+{% set previous_product %}{% endset %}
 <div class="content">
             <div class="container-fluid">
             <div class="row">
@@ -240,75 +240,160 @@
                                           <th width=5% >Quantité</th>
                                           <th width=30%>Produit</th>
                                           <th width=25%>Accessoire</th>
-                                          <th width=7%> Couleur Arrière </th>
-                                          <th width=7%> Couleur Avant </th>
-                                          <th width=7%> Couleur Attache </th>
-                                          <th width=7%> Couleur 4 </th>
-                                          <th width=7%> Couleur 5 </th>
-                                          <th width=5%> Produit père </th>
+                                          <th width=8%> Rectangle Arrière </th>
+                                          <th width=8%> Rectangle Avant </th>
+                                          <th width=8%> Attache Centrale </th>
+                                          <th width=8%> Couleur 3 </th>
+                                          <th width=8%> Couleur 4 </th>
                                         </tr>
                                         </thead>
 
                                         <tbody>{% set color1 = 0 %}
-                                        {% for product in commande.addedproducts %}
+                                        {% for product in addedProducts %}
+
+                                        {% if product.product.name == "Noeud" %}
                                           <tr>
-
-                                          <td>{{ product.id }}</td>
-
-                                          <td>{{ product.quantity }}</td>
-                                          <td>{{ product.product.name }}</td>
-                                          <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}{% if product.accessoire and product.size %} - {% endif %}{% if product.size %} {{product.size}}{% endif %}</td>
-                                          <td>
-                                          {% if product.Color1 %}
-                                          {% set color1 = color1 +1 %}
-                                            <div id="color1_{{ color1 }}">
-
-                                            <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
-                                            <div>
-
-
-                                            <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
-                                            {{ product.Color1.name }}
+                                            <td>{{ product.id }}</td>
+                                            <td>{{ product.quantity }}</td>
+                                            <td>{{ product.product.name }}</td>
+                                            <td>{% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}{% if product.accessoire and product.size %} - {% endif %}{% if product.size %} {{product.size}}{% endif %}</td>
+                                            <td>
+                                                {% if product.Color1 %}
+                                                {% set color1 = color1 +1 %}
+                                                    <div id="color1_{{ color1 }}">
+                                                    <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+                                                    <div>
+                                                    <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
+                                                    {{ product.Color1.name }}
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if product.Color2 %}
+                                                <div id="color2_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+                                                <div class="mdl-tooltip" for="color2_{{ color1 }}" style="will-change:unset">
+                                                {{ product.Color2.name }}
+                                                </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                            {% if product.Color3 %}
+                                            <div id="color3_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color3.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+                                            <div class="mdl-tooltip" for="color3_{{ color1 }}" style="will-change:unset">
+                                            {{ product.Color3.name }}
                                             </div>
-
                                             {% endif %}
-                                          </td>
-                                          <td>
-                                          {% if product.Color2 %}
-                                          <div id="color2_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
-                                          <div class="mdl-tooltip" for="color2_{{ color1 }}" style="will-change:unset">
-                                          {{ product.Color2.name }}
-                                          </div>
-                                          {% endif %}
-                                          </td>
-                                          <td>
-                                          {% if product.Color3 %}
-                                          <div id="color3_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color3.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
-                                          <div class="mdl-tooltip" for="color3_{{ color1 }}" style="will-change:unset">
-                                          {{ product.Color3.name }}
-                                          </div>{% endif %}
-                                          </td>
-                                          <td>
-                                          {% if product.Color4 %}
-                                          <div id="color4_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color4.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
-                                          <div class="mdl-tooltip" for="color4_{{ color1 }}" style="will-change:unset">
-                                          {{ product.Color4.name }}
-                                          </div>{% endif %}
-                                          </td>
-                                          <td>
-                                          {% if product.Color5 %}
-                                          <div id="color5_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ product.Color5.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
-                                          <div class="mdl-tooltip" for="color5_{{ color1 }}" style="will-change:unset">
-                                          {{ product.Color5.name }}
-                                          </div>{% endif %}
-                                          </td>
-                                          <td>
-                                          {% if product.parent %}{{ product.parent.id }}{% endif %}
-
-                                          </td>
-
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                                {% for sonProduct in addedProducts %}
+                                                    {%  if sonProduct.parent != null and sonProduct.parent == product %}
+                                                        
+                                                            <tr>
+                                                            <td>
+                                                            {{sonProduct.id}}
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            {{sonProduct.product.cartName}}
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            {% if sonProduct.product.name == "Coffret1" or sonProduct.product.name == "Coffret2" %}
+                                                            <td>
+                                                                {{sonProduct.quantity}} x 
+                                                                <div id="color4_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ sonProduct.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+                                                                <div class="mdl-tooltip" for="color4_{{ color1 }}" style="will-change:unset">
+                                                                {{ sonProduct.Color1.name }}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                {% if sonProduct.product.name == "Coffret2" %}
+                                                                {{sonProduct.quantity}} x 
+                                                                <div id="color5_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ sonProduct.Color2.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+                                                                <div class="mdl-tooltip" for="color5_{{ color1 }}" style="will-change:unset">
+                                                                {{ sonProduct.Color2.name }}
+                                                                </div>{% endif %}
+                                                            </td>
+                                                            {% else %}
+                                                            <td>
+                                                            {{sonProduct.quantity}} x 
+                                                                <div id="color4_{{ color1 }}"><img src="{{ asset('/upload/color/thumbnail/' ~ sonProduct.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></div>
+                                                                <div class="mdl-tooltip" for="color4_{{ color1 }}" style="will-change:unset">
+                                                                {{ sonProduct.Color1.name }}
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            {% endif %}
+                                                            </tr>
+                                                        
+                                                        
+                                                    {% endif %}
+                                                {% endfor %}
                                           </tr>
+
+                                          {% elseif product.parent == null %}
+
+                                          
+                                            <tr>
+                                                <td>
+                                                {{ product.id}}
+                                                </td>
+                                                <td>
+                                                {% if not product.Color1 %}
+                                                {{product.quantity}}
+                                                {% endif %}
+                                                </td>
+                                                
+                                                <td>
+                                                {% if previous_product != product.product %}
+                                                {{product.product.name}}
+                                                 {% endif %}
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                {% if product.Color1 %}{{product.quantity}} x
+                                                {% set color1 = color1 +1 %}
+                                                    <div id="color1_{{ color1 }}">
+
+                                                    <img  src="{{ asset('/upload/color/thumbnail/' ~ product.Color1.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px">
+                                                    <div>
+
+
+                                                    <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
+                                                    {{ product.Color1.name }}
+                                                    </div>
+
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                            </tr>
+                                            {% set previous_product = product.product %}
+                                           
+                                          {% endif %}
                                           {% endfor %}
+                                         
+                                         
+
+                                          
                                           </tbody>
                                           </table>
 
