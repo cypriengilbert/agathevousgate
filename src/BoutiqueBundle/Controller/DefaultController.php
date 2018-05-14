@@ -113,7 +113,7 @@ class DefaultController extends Controller
             
             
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
-            $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette'")->getQuery();
+            $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette' OR u.name =  'tour_de_cou_uni'")->getQuery();
             $products = $query->getResult();
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
             $allCollection = $repository->findAll();
@@ -153,6 +153,7 @@ class DefaultController extends Controller
               if($collection->getPriceBouton() != null){
                 array_push($accepted_products,"Boutons");
               }
+              
             
             
           }else
@@ -164,7 +165,7 @@ class DefaultController extends Controller
                 array('codehexa' =>'ASC')
             );
             $collection = null;
-            $accepted_products = array("Boutons","Rectangle_petit","Rectangle_grand","Milieu", "Pochette");
+            $accepted_products = array("Boutons","Rectangle_petit","Rectangle_grand","Milieu", "Pochette","tour_de_cou_uni" );
             return $this->render('BoutiqueBundle:Default:boutiqueCollection.html.twig', array(
                 'products' => $products,
                 'page' => $page,

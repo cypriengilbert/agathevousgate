@@ -85,6 +85,8 @@ class Collection
       * @ORM\Column(name="pricePochette", type="float", nullable=true)
       */
       private $pricePochette;
+
+
       /**
        * @var float
        *

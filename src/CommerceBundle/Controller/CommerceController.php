@@ -3272,6 +3272,7 @@ class CommerceController extends Controller
             'page' => $page
         ));*/
     }
+    
 
     
  
@@ -3510,7 +3511,7 @@ class CommerceController extends Controller
 public function getPriceItemGeneric($product){
 
 
-  if($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+  if($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite' ||  $product->getName() == 'tour_de_cou_uni'){
     return $product->getPrice();
   }
 
