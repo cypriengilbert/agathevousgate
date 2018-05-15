@@ -207,7 +207,7 @@ class PayoutController extends Controller
                 )), 'text/html');
                 $this->get('mailer')->send($message);
 
-
+                $low_stock = [];
             foreach ($listePanier as $item) {
                 $rectangle_grand = $this->getOneBy('Product', array('name'=>'Rectangle_grand'));
                 $milieu = $this->getOneBy('Product', array('name'=>'Milieu'));
@@ -221,11 +221,12 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+                       /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                             $this->get('mailer')->send($message);*/
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -233,11 +234,12 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+                       /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                             $this->get('mailer')->send($message);*/
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -245,11 +247,12 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+                        /*$message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                             $this->get('mailer')->send($message);*/
                     }
                 }
                 elseif ($item->getProduct()->getName() == 'Coffret1') {
@@ -259,11 +262,11 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        /*$message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                            $this->get('mailer')->send($message);
+                            $this->get('mailer')->send($message);*/
                     }
                 }
                 elseif ($item->getProduct()->getName() == "Coffret2") {
@@ -273,11 +276,12 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+                       /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                             $this->get('mailer')->send($message);*/
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
                     $stock->setQuantity($stock->getQuantity()-1);
@@ -285,11 +289,12 @@ class PayoutController extends Controller
                     $em->persist($stock);
                     $em->flush();
                     if($stock->getQuantity() <= $stock_faible->getMontant()){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+                       /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                             $this->get('mailer')->send($message);*/
                     }
                 }
                 else{
@@ -300,11 +305,12 @@ class PayoutController extends Controller
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
-                            $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            array_push($low_stock, $stock);
+                           /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                                $this->get('mailer')->send($message);
+                                $this->get('mailer')->send($message);*/
                         }
                     }
                     else{
@@ -314,15 +320,23 @@ class PayoutController extends Controller
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
-                            $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                            array_push($low_stock, $stock);
+                            /*$message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                     'emails/alerte_stock.html.twig', array(
                                     'stock' => $stock,
                                 )), 'text/html');
-                               $this->get('mailer')->send($message);
+                               $this->get('mailer')->send($message);*/
                         }
                     }
                     
                 }
+                }
+                if(count($low_stock) > 0 ){
+                    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        'emails/alerte_stock.html.twig', array(
+                        'low_stock' => $low_stock,
+                    )), 'text/html');
+                   $this->get('mailer')->send($message);
                 }
                 $url      = $this->generateUrl('paiementconfirmation');
                 $response = new RedirectResponse($url);

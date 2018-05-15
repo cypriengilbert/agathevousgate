@@ -60,8 +60,13 @@
 
 																								Bonjour Agathe <br><br>
 
-																								Suite à la dernière commande, le stock de {{stock.product.cartName}} de couleur {{stock.color.name}} est faible.
-                                                <br>Il en reste exactement {{stock.quantity}} en stock.
+                                                Suite à la dernière commande, certains stock ont un niveau faible :
+                                                <ul>
+                                                  {% for stock in low_stock %}
+                                                  {{stock.quantity}} {{stock.product.cartName}} {% if stock.color %} de couleur {{stock.color.name}}{% endif %}
+                                                  {% endfor %}
+                                                </ul>
+                                                
                                                 <br><br>
 
                                                 A bientôt, 
