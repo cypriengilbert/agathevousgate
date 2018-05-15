@@ -37,12 +37,12 @@ class StockController extends Controller
     if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
       
       $stocks = $this->getAll('Stock');
-      $product = $this->getOneBy('Product', array('id' => 19));
+      $product = $this->getOneBy('Product', array('id' => 20));
       $colors = $this->getAll('Color');
       
       
         foreach ($colors as $color) {
-          if($color->getIsBasic() == true){
+          
             $newStock = new Stock();
             $newStock->setProduct($product);
             $newStock->setColor($color);
@@ -50,7 +50,7 @@ class StockController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($newStock);
             $em->flush();
-          }
+          
           
          
           
