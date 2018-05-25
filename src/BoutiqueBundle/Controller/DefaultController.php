@@ -110,7 +110,7 @@ class DefaultController extends Controller
 
             
             $nbarticlepanier = $this->countArticleCart();
-            
+            $allcolors = $this->getAll('Color');
             
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
             $query      = $repository->createQueryBuilder('u')->where("u.name = 'Milieu' OR u.name =  'Rectangle_petit' OR u.name = 'Rectangle_grand' OR u.name = 'Boutons' OR u.name =  'Pochette' OR u.name =  'tour_de_cou_uni' OR u.name =  'nuancier'")->getQuery();
@@ -178,6 +178,7 @@ class DefaultController extends Controller
                 'accepted_products'=> $accepted_products,
                 'AddedProductByProduct' => $AddedProductByProduct,
                 'user' => $user,
+                'allcolors' => $allcolors,
             ));
             }
 
@@ -195,6 +196,8 @@ class DefaultController extends Controller
                         'accepted_products'=> $accepted_products,
                         'AddedProductByProduct' => $AddedProductByProduct,
                         'user' => $user,
+                        'allcolors' => $allcolors,
+
                     ));
                 }
             }
