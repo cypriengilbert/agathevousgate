@@ -233,6 +233,21 @@ class Color
      
 
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity_alert", type="integer")
+     */
+    private $quantity_alert;
+
+    /**
+ * @var int
+ *
+ * @ORM\Column(name="quantity_warning", type="integer")
+ */
+private $quantity_warning;
+
+
 
 
     /**

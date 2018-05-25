@@ -240,6 +240,23 @@ margin-top:5px
 	</div>
 </div>
 
+<div class="row" style="margin-top:20px;">
+		<div class="col-md-4">	
+            <div class="form-group">
+                {{ form_label(form.quantityWarning, "Quantité limite", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.quantityWarning) }}
+                {{ form_widget(form.quantityWarning, {'attr': {'class': ''}}) }}
+            </div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+                {{ form_label(form.quantityAlert, "Quantité Alerte", {'label_attr': {'class': ''}}) }}
+                {{ form_errors(form.quantityAlert) }}
+                {{ form_widget(form.quantityAlert, {'attr': {'class': ''}}) }}
+            </div>
+		</div>
+	</div>
+
 
 <div class="row" style="margin-top:20px;">
 	<div class="col-md-12">
