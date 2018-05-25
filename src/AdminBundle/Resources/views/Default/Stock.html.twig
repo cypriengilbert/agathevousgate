@@ -68,8 +68,12 @@
                 {% for stock in stocks %}
                   {% if product == stock.product and color == stock.color %}
                     <td  style="text-align:center;{% if stock.quantity < 2 %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 %}background-color:orange;{% else %}{% endif %}">
-                    
-                      {{ stock.quantity }}
+                      <span id="input_{{color.id}}_{{product.id}}" style="display:none" ><input type="number" id="quantity_{{color.id}}_{{product.id}}" style="height:100%; width:80%;" value="{{ stock.quantity }}">
+                        <span style="width:20%;height:100%;background-color:green; cursor:pointer"  onclick="changeQuantity('{{color.id}}', '{{product.id}}')"> 
+                          V
+                        </span>
+                      </span>
+                      <span style="display:block; cursor:pointer" id="span_{{color.id}}_{{product.id}}" onclick="openInput('input_{{color.id}}_{{product.id}}', 'span_{{color.id}}_{{product.id}}')">{{ stock.quantity }}</span>
                        </td>
                     {% set done = 1 %}
                   {% endif %}
@@ -149,7 +153,17 @@
 </div>
 </div>
 
+<script>
+function changeQuantity(id_color, id_product){
+  var quantity = document.getElementById('quantity_'+id_color+'_'+id_product).value;
+  
+}
 
+function openInput(id_open, id_close){
+  document.getElementById(id_open).style.display = 'block';
+ document.getElementById(id_close).style.display = 'none';
+}
+</script>
 
 {% endblock %}
 
