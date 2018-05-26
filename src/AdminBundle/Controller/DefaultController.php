@@ -1875,10 +1875,12 @@ class DefaultController extends Controller
             $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:ProDiscount');
             $proReduc  = $repository->findBy(array(
             'account' => $user));
+
+
             $erasedReduc = $company->getReductionGeneric();
             $repository = $this->getDoctrine()->getManager()->getRepository('BoutiqueBundle:Payout');
             $payouts_pending  = $repository->findBy(array('company' => $company, 'isPayed' => 1));
-            \Stripe\Stripe::setApiKey("sk_test_Suwxs9557UiGJgPXN5hJq9N1");
+            \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_private_key'));
             foreach ($payouts_pending as $payout) {
                 $charge = \Stripe\Charge::retrieve($payout->getStripeId());
                 if ($charge["status"] == "succeeded"){
@@ -1897,6 +1899,16 @@ class DefaultController extends Controller
                
             }
        
+            if($company->getStripeSource()){
+                $iban = \Stripe\Source::retrieve($company->getStripeSource());
+                $last4 = $iban["sepa_debit"]['last4'];
+            }
+            else{
+                $last4 = 0;
+            }
+
+           
+
 
             $formCompany = $this->get('form.factory')->create('UserBundle\Form\CompanyAllType', $company);
             if ($formCompany->handleRequest($request)->isValid()) {
@@ -1956,6 +1968,7 @@ class DefaultController extends Controller
                 'collections' => $collections,
                 'reductions' => $proReduc,
                 'payouts' => $payouts,
+                'last4' => $last4
                 ));
 }
 
@@ -1969,7 +1982,7 @@ class DefaultController extends Controller
                   'formCompany' => $formCompany->createView(),
                                   'commandes' => $commande,
                                                   'reductions' => $proReduc,
-                                                  'payouts' => $payouts,
+                                                  'payouts' => $payouts,'last4' => $last4
 
 
 

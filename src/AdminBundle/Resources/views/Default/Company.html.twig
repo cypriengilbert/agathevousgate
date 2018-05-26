@@ -122,7 +122,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse de facturation</label>
-                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.company.adressBilling %}{{user.company.adressBilling.adress}}{% endif %}">
+                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.company and user.company.adressBilling %}{{user.company.adressBilling.adress}}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +131,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Adresse (suite)</label>
-                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.company.adressBilling %}{{ user.company.adressBilling.adressMore }}{% endif %}">
+                                                <input type="text" class="form-control" placeholder="Home Address"  value="{% if user.company and user.company.adressBilling %}{{ user.company.adressBilling.adressMore }}{% endif %}">
                                             </div>
                                         </div>
                                     </div>
@@ -329,7 +329,7 @@
                     <div class="col-md-12" style="max-height:530px; overflow:scroll">
                         <div class="card ">
                             <div class="header">
-                                <h4 class="title">IBAN</h4>
+                                <h4 class="title">IBAN {% if last4 != 0 %}(iban rentré fini par : {{ last4 }}{% endif %}</h4>
                                 <p class="category">Entrer le nouvel IBAN</p>
                             </div>
                             <div class="content">
