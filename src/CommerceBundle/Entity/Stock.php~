@@ -30,6 +30,8 @@ class Stock
 
 
 
+
+
     /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Color", cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
@@ -43,7 +45,8 @@ class Stock
     */
     public $product;
 
-
+    
+ 
 
 
     /**
@@ -127,5 +130,53 @@ class Stock
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * Set quantityAlert
+     *
+     * @param integer $quantityAlert
+     *
+     * @return Stock
+     */
+    public function setQuantityAlert($quantityAlert)
+    {
+        $this->quantity_alert = $quantityAlert;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityAlert
+     *
+     * @return integer
+     */
+    public function getQuantityAlert()
+    {
+        return $this->quantity_alert;
+    }
+
+    /**
+     * Set quantityWarning
+     *
+     * @param integer $quantityWarning
+     *
+     * @return Stock
+     */
+    public function setQuantityWarning($quantityWarning)
+    {
+        $this->quantity_warning = $quantityWarning;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityWarning
+     *
+     * @return integer
+     */
+    public function getQuantityWarning()
+    {
+        return $this->quantity_warning;
     }
 }

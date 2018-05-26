@@ -83,6 +83,8 @@ class ColorType extends AbstractType
              'expanded' => true,
               'required' => true,
           ))
+          ->add('quantityAlert')
+          ->add('quantityWarning')
 
 
         ;

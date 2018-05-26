@@ -233,6 +233,21 @@ class Color
      
 
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantity_alert", type="integer")
+     */
+    private $quantity_alert;
+
+    /**
+ * @var int
+ *
+ * @ORM\Column(name="quantity_warning", type="integer")
+ */
+private $quantity_warning;
+
+
 
 
     /**
@@ -895,5 +910,53 @@ class Color
     public function getCompanies()
     {
         return $this->companies;
+    }
+
+    /**
+     * Set quantityAlert
+     *
+     * @param integer $quantityAlert
+     *
+     * @return Color
+     */
+    public function setQuantityAlert($quantityAlert)
+    {
+        $this->quantity_alert = $quantityAlert;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityAlert
+     *
+     * @return integer
+     */
+    public function getQuantityAlert()
+    {
+        return $this->quantity_alert;
+    }
+
+    /**
+     * Set quantityWarning
+     *
+     * @param integer $quantityWarning
+     *
+     * @return Color
+     */
+    public function setQuantityWarning($quantityWarning)
+    {
+        $this->quantity_warning = $quantityWarning;
+
+        return $this;
+    }
+
+    /**
+     * Get quantityWarning
+     *
+     * @return integer
+     */
+    public function getQuantityWarning()
+    {
+        return $this->quantity_warning;
     }
 }
