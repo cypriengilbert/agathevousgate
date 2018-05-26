@@ -1590,19 +1590,19 @@ class CommerceController extends Controller
                 foreach ($listePanier as $item) {
                     $rectangle_grand = $this->getOneBy('Product', array('name'=>'Rectangle_grand'));
                     $milieu = $this->getOneBy('Product', array('name'=>'Milieu'));
-                    $stock_faible = $this->getOneBy('Variable', array('name'=>'stock_faible'));
+                    $stock_faible = $this->getOneBy('Variable', array('name'=>'stock_faible'))->getMontant();
                     
                     
                     if($item->getProduct()->getName() == 'Noeud'){
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
                            /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                     'emails/alerte_stock.html.twig', array(
@@ -1611,14 +1611,14 @@ class CommerceController extends Controller
                                  $this->get('mailer')->send($message);*/
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
                           /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                     'emails/alerte_stock.html.twig', array(
@@ -1627,14 +1627,14 @@ class CommerceController extends Controller
                                  $this->get('mailer')->send($message);*/
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
 
                           /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1646,14 +1646,14 @@ class CommerceController extends Controller
                     }
                     elseif ($item->getProduct()->getName() == 'Coffret1') {
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
 
                         /*    $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1665,14 +1665,14 @@ class CommerceController extends Controller
                     }
                     elseif ($item->getProduct()->getName() == "Coffret2") {
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor1()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
 
                           /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1682,14 +1682,14 @@ class CommerceController extends Controller
                                  $this->get('mailer')->send($message);*/
                         }
                         $stock = $this->getOneBy('Stock', array('product' => $rectangle_grand, 'color'=>$item->getColor2()));
-                        $stock->setQuantity($stock->getQuantity()-1);
+                        $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
                         if($stock->getColor()->getQuantityAlert() != 0){
                             $stock_faible = $stock->getColor()->getQuantityAlert();
                         }
-                        if($stock->getQuantity() <= $stock_faible->getMontant()){
+                        if($stock->getQuantity() <= $stock_faible){
                             array_push($low_stock, $stock);
 
                           /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1702,14 +1702,14 @@ class CommerceController extends Controller
                     else{
                         if($item->getProduct()->getNbColor() == 0){
                             $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>null));
-                            $stock->setQuantity($stock->getQuantity()-1);
+                            $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
                             $em->flush();
                             if($stock->getColor()->getQuantityAlert() != 0){
                                 $stock_faible = $stock->getColor()->getQuantityAlert();
                             }
-                            if($stock->getQuantity() <= $stock_faible->getMontant()){
+                            if($stock->getQuantity() <= $stock_faible){
                                 array_push($low_stock, $stock);
 
                               /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1721,14 +1721,14 @@ class CommerceController extends Controller
                         }
                         else{
                             $stock = $this->getOneBy('Stock', array('product' => $item->getProduct(), 'color'=>$item->getColor1()));
-                            $stock->setQuantity($stock->getQuantity()-1);
+                            $stock->setQuantity($stock->getQuantity()-$item->getQuantity());
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
                             $em->flush();
                             if($stock->getColor()->getQuantityAlert() != 0){
                                 $stock_faible = $stock->getColor()->getQuantityAlert();
                             }
-                            if($stock->getQuantity() <= $stock_faible->getMontant()){
+                            if($stock->getQuantity() <= $stock_faible){
                                 array_push($low_stock, $stock);
 
                              /*   $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
