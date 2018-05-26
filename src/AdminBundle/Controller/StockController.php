@@ -177,7 +177,8 @@ public function listeProducerAction()
     if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
     $page  = 'stock';
     $products = $this->getBy('Product', array('isStock' => true));
-    $colors = $this->getAll('Color');
+    $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Color');
+    $colors = $repository->findBy(array(),array('codehexa' => 'ASC'));
     $stocks = $this->getAll('Stock');
     $collections = $this->getAll('Collection');
 
