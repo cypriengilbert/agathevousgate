@@ -1599,6 +1599,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
                            /* $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1612,6 +1615,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
                           /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
@@ -1625,6 +1631,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
 
@@ -1641,6 +1650,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
 
@@ -1657,6 +1669,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
 
@@ -1671,6 +1686,9 @@ class CommerceController extends Controller
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($stock);
                         $em->flush();
+                        if($stock->getColor()->getQuantityAlert() != 0){
+                            $stock_faible = $stock->getColor()->getQuantityAlert();
+                        }
                         if($stock->getQuantity() <= $stock_faible->getMontant()){
                             array_push($low_stock, $stock);
 
@@ -1688,6 +1706,9 @@ class CommerceController extends Controller
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
                             $em->flush();
+                            if($stock->getColor()->getQuantityAlert() != 0){
+                                $stock_faible = $stock->getColor()->getQuantityAlert();
+                            }
                             if($stock->getQuantity() <= $stock_faible->getMontant()){
                                 array_push($low_stock, $stock);
 
@@ -1704,6 +1725,9 @@ class CommerceController extends Controller
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($stock);
                             $em->flush();
+                            if($stock->getColor()->getQuantityAlert() != 0){
+                                $stock_faible = $stock->getColor()->getQuantityAlert();
+                            }
                             if($stock->getQuantity() <= $stock_faible->getMontant()){
                                 array_push($low_stock, $stock);
 
