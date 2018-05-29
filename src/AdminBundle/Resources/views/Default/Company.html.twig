@@ -329,7 +329,7 @@
                     <div class="col-md-12" style="max-height:530px; overflow:scroll">
                         <div class="card ">
                             <div class="header">
-                                <h4 class="title">IBAN {% if last4 != 0 %}(iban rentré fini par : {{ last4 }}{% endif %}</h4>
+                                <h4 class="title">IBAN </h4>
                                 <p class="category">Entrer le nouvel IBAN</p>
                             </div>
                             <div class="content">
@@ -346,7 +346,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>IBAN</label>
-                                                <input type="text" class="form-control" name="iban" placeholder="IBAN : FRXXX" >
+                                                <input type="text" class="form-control" name="iban" placeholder="{% if last4 != 0 %}*************************{{ last4 }}{% else %}IBAN : FRXXX{% endif %}" >
                                             </div>
                                         </div>
                                          

@@ -223,6 +223,28 @@
                       </div>
                       </div>
                       </div>
+                      {% if commande.commentaireClient %}
+                        <div class="row">
+                         <div class="col-md-12">
+                            <div class="card ">
+                            <div class="header">
+
+                                <h4 class="title">Commentaire</h4>
+                                <p class="category">client</p>
+                            </div>
+                            <div class="content">
+                                <div class="table-responsive table-full-width">
+                                <p>
+                                    {{commande.commentaireClient}}
+                                </p>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        {% endif %}
+
+
                       <div class="row">
                          <div class="col-md-12">
                             <div class="card ">

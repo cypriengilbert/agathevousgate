@@ -162,6 +162,13 @@ class Commande
     private $payout;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire_client", type="string", length=5000, nullable=true)
+     */
+    private $commentaire_client;
+
+    /**
      * Get id
      *
      * @return integer
@@ -656,5 +663,29 @@ class Commande
     public function getPayout()
     {
         return $this->payout;
+    }
+
+    /**
+     * Set commentaireClient
+     *
+     * @param string $commentaireClient
+     *
+     * @return Commande
+     */
+    public function setCommentaireClient($commentaireClient)
+    {
+        $this->commentaire_client = $commentaireClient;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaireClient
+     *
+     * @return string
+     */
+    public function getCommentaireClient()
+    {
+        return $this->commentaire_client;
     }
 }

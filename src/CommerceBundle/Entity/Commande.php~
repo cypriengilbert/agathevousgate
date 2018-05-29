@@ -95,7 +95,7 @@ class Commande
     private $isPanier;
 
       /**
-      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User",cascade={"persist"})
       * @ORM\JoinColumn(nullable=false)
       */
      private $client;
@@ -130,7 +130,9 @@ class Commande
 
 
       /**
-      * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
+    * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
+    * @ORM\OrderBy({"product" = "ASC"})
+
       */
          private $addedproducts;
 
@@ -158,6 +160,13 @@ class Commande
     * @ORM\ManyToOne(targetEntity="BoutiqueBundle\Entity\Payout", inversedBy="payout", cascade={"persist"})
     */
     private $payout;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="commentaire_client", type="string", length=5000, nullable=true)
+     */
+    private $commentaire_client;
 
     /**
      * Get id
