@@ -58,13 +58,17 @@
                                           <td>
                                              <div>
 
-																								Bonjour Agathe <br><br>
+																							Bonjour Agathe <br><br>
 
-																								Suite à la dernière commande, le stock de {{stock.product.cartName}} {% if stock.color %}de couleur {{stock.color.name}}{% endif %} est faible.
-                                                <br>Il en reste exactement {{stock.quantity}} en stock.
+                                                Suite à la dernière commande, certains stock ont un niveau faible :
+                                                <ul>
+                                                  {% for stock in low_stock %}
+                                                  <li>{{stock.quantity}} {{stock.product.cartName}} {% if stock.color %} de couleur {{stock.color.name}}{% endif %}</li>
+                                                  {% endfor %}
+                                                </ul>
+                                                
                                                 <br><br>
-
-                                                A bientôt, 
+                                                A bientôt 
                                              </div>
                                           </td>
                                        </tr>

@@ -208,7 +208,6 @@ class PayoutController extends Controller
                 $this->get('mailer')->send($message);
 
                 $low_stock = [];
-
             foreach ($listePanier as $item) {
                 $rectangle_grand = $this->getOneBy('Product', array('name'=>'Rectangle_grand'));
                 $milieu = $this->getOneBy('Product', array('name'=>'Milieu'));
@@ -238,12 +237,17 @@ class PayoutController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($stock);
                     $em->flush();
+                    if($stock->getColor()->getQuantityAlert() != 0){
+                        $stock_faible = $stock->getColor()->getQuantityAlert();
+                    }
                     if($stock->getQuantity() <= $stock_faible){
-                        $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
+                        array_push($low_stock, $stock);
+
+                      /*  $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                                 'emails/alerte_stock.html.twig', array(
                                 'stock' => $stock,
                             )), 'text/html');
-                             $this->get('mailer')->send($message);
+                            $this->get('mailer')->send($message);*/
                     }
                     $stock = $this->getOneBy('Stock', array('product' => $milieu, 'color'=>$item->getColor3()));
                     $stock->setQuantity($stock->getQuantity()-$item->getQuantity());

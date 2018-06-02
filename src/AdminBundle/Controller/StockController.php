@@ -37,26 +37,26 @@ class StockController extends Controller
     if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN') || $user->getIsPro() == 4) {
       
       $stocks = $this->getAll('Stock');
-      $products = $this->getAll('Product');
+      $product = $this->getOneBy('Product', array('id' => 20));
       $colors = $this->getAll('Color');
       
-      foreach ($products as $product) {
+      
         foreach ($colors as $color) {
-          $stock = $this->getOneBy('Stock', array('product' => $product, 'color' => $color));
-          if($stock){
-  
-          }
-          else{
-          $newStock = new Stock();
-          $newStock->setProduct($product);
-          $newStock->setColor($color);
-          $newStock->setQuantity(0);
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($newStock);
-          $em->flush();
+          
+            $newStock = new Stock();
+            $newStock->setProduct($product);
+            $newStock->setColor($color);
+            $newStock->setQuantity(0);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newStock);
+            $em->flush();
+          
+          
+         
+          
+        
         }
-        }
-      }
+      
       return $this->redirect($this->generateUrl('stock'));
   
       }
