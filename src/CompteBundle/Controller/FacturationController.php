@@ -117,11 +117,12 @@ class FacturationController extends Controller
            $datein = $datein->format('Y-m-d');
            
            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
-           $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date < :dateout')->setParameter('dateout', $dateout)->andwhere('a.paiementMethod = :Prelevement')->setParameter('Prelevement', 'Prelevement')->andWhere('a.isPanier = 0')->orderBy('a.date', 'ASC');
+           $query         = $repository->createQueryBuilder('a')->where('a.date >= :datein')->setParameter('datein', $datein)->andWhere('a.date < :dateout')->setParameter('dateout', $dateout)->andwhere('a.paiementMethod = :Prelevement')->setParameter('Prelevement', 'Prelevement')->andWhere('a.isPanier = 0')->andWhere('a.client = :id_client')->setParameter('id_client', $id_user)->orderBy('a.date', 'ASC');
            $listeCommande = $query->getQuery()->getResult();
            $listeAddedProduct = [];
            $listeRefunds = [];
            $listeProductsSorted[] = [];
+           $coutLivraison = 0;
            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
            $products = $repository->findAll();
 
@@ -130,6 +131,7 @@ class FacturationController extends Controller
             $listeProduct = $repository->findBy(array('commande' => $commande));
             $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Refund');
             $refunds = $repository->findBy(array('order' => $commande));
+            $coutLivraison += $commande->getTransportCost();
             array_push($listeAddedProduct, $listeProduct);
             foreach ($refunds as $value) {
               array_push($listeRefunds, $value);            }
@@ -173,9 +175,8 @@ class FacturationController extends Controller
          $listeAddedProduct = null;
            }
 
-           
          if( $this->container->get('security.context')->getToken()->getUser() == $user or TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-          $content = $this->renderView('CommerceBundle:Default:monthlyInvoice.html.twig', array('mois' => $mois, 'annee' => $annee, 'user'=>$user,'tva' => $tva, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commandes' => $listeCommande, 'refunds' => $listeRefunds, 'listeProductsSorted' => $listeProductsSorted));
+          $content = $this->renderView('CommerceBundle:Default:monthlyInvoice.html.twig', array('mois' => $mois, 'annee' => $annee, 'user'=>$user,'tva' => $tva, 'iduser' => $id_user,'listePanier' => $listeAddedProduct, 'commandes' => $listeCommande, 'refunds' => $listeRefunds, 'listeProductsSorted' => $listeProductsSorted, 'totalTransportCost' => $coutLivraison));
            
 
            $html2pdf = new \Html2Pdf_Html2Pdf('P','A4','fr');

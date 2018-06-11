@@ -49,7 +49,7 @@
          <th>Couleur</th>
             {% for product in products %}
              {% if product.nbColor != 0 %}
-             <th><a href="{{path("stockProduct", {'product': product.name})}}">{{ product.name }}</a></th>
+             <th>{{ product.name }}</th>
              {% endif %}
              {% endfor %}
          </tr>
@@ -69,12 +69,12 @@
                   {% if product == stock.product and color == stock.color %}
                   <script>alert('{{stock.color.QuantityAlert}}';alert('{{stock.color.QuantityWarning}}')</script>
                     <td  style="text-align:center;
-                    {% if stock.color.QuantityAlert > 0 and stock.color.QuantityWarning > 0 %}
-                        {% if stock.quantity < stock.color.QuantityAlert %}background-color:red;
-                        {% elseif stock.quantity >= stock.color.QuantityAlert and stock.quantity < stock.color.QuantityWarning %}background-color:orange;
+                    {% if stock.color.QuantityAlert > 0 and stock.color.QuantityWarning > 0  %}
+                        {% if stock.quantity < stock.color.QuantityAlert and stock.product.isAlertStock == true %}background-color:red;
+                        {% elseif stock.quantity >= stock.color.QuantityAlert and stock.quantity < stock.color.QuantityWarning and stock.product.isAlertStock == true %}background-color:orange;
                         {% else %}{% endif %}
                         {% else %}
-                        {% if stock.quantity < 2 %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 %}background-color:orange;{% else %}{% endif %}
+                        {% if stock.quantity < 2 and stock.product.isAlertStock == true %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 and stock.product.isAlertStock == true %}background-color:orange;{% else %}{% endif %}
                         
                         {% endif %}
                     ">
@@ -131,11 +131,11 @@
                   {% if product == stock.product and color == stock.color %}
                     <td  style="text-align:center;
                     {% if stock.color.QuantityAlert > 0 and stock.color.QuantityWarning > 0 %}
-                        {% if stock.quantity < stock.color.QuantityAlert %}background-color:red;
-                        {% elseif stock.quantity >= stock.color.QuantityAlert and stock.quantity < stock.color.QuantityWarning %}background-color:orange;
+                        {% if stock.quantity < stock.color.QuantityAlert and stock.product.isAlertStock == true %}background-color:red;
+                        {% elseif stock.quantity >= stock.color.QuantityAlert and stock.quantity < stock.color.QuantityWarning and stock.product.isAlertStock == true %}background-color:orange;
                         {% else %}{% endif %}
                         {% else %}
-                        {% if stock.quantity < 2 %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 %}background-color:orange;{% else %}{% endif %}
+                        {% if stock.quantity < 2 and stock.product.isAlertStock == true %}background-color:red;{% elseif stock.quantity >= 2 and stock.quantity < 5 and stock.product.isAlertStock == true %}background-color:orange;{% else %}{% endif %}
                         
                         {% endif %}">
                    

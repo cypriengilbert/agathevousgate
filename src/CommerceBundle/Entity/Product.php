@@ -99,6 +99,14 @@ class Product
      */
 
      private $isStock;
+
+     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_alert_stock", type="boolean")
+     */
+
+     private $isAlertStock;
      
 
 
@@ -325,5 +333,29 @@ class Product
     public function getProductTime()
     {
         return $this->productTime;
+    }
+
+    /**
+     * Set isAlertStock
+     *
+     * @param boolean $isAlertStock
+     *
+     * @return Product
+     */
+    public function setIsAlertStock($isAlertStock)
+    {
+        $this->isAlertStock = $isAlertStock;
+
+        return $this;
+    }
+
+    /**
+     * Get isAlertStock
+     *
+     * @return boolean
+     */
+    public function getIsAlertStock()
+    {
+        return $this->isAlertStock;
     }
 }

@@ -2510,8 +2510,10 @@ class CommerceController extends Controller
                 $form = $this->get('form.factory')->create('CommerceBundle\Form\ChooseLivraisonType', $newcommande);
                 if ($form->handleRequest($request)->isValid()) {
                     if (($newcommande->getTransportMethod()) and ($newcommande->getPrice() <= 98)) {
+                        return new Response(404);
                         $newcommande->setTransportCost($newcommande->getTransportMethod()->getPrice());
                     } else {
+                        
                         $newcommande->setTransportCost(0);
                     }
                     $em = $this->getDoctrine()->getManager();

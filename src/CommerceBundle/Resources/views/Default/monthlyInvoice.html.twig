@@ -13,7 +13,7 @@ td    { vertical-align: top; }
 }
 -->
 </style>
-{% set totalsum = 0 %}{% set numero_ligne = 0 %}{% set totalTransportCost = 0 %}{% set totalRemise = 0 %}{% set refundTotal = 0 %}
+{% set totalsum = 0 %}{% set numero_ligne = 0 %}{% set totalRemise = 0 %}{% set refundTotal = 0 %}
 
 <div backcolor='#FEFEFE' backimg='./res/bas_page.png' backimgx='center' backimgy='bottom' backimgw='100%' backtop='0' backbottom='30mm' footer='date;heure;page' style='font-size: 12pt'>
 
@@ -97,9 +97,7 @@ td    { vertical-align: top; }
         </tr>
     </table>
     {% for commande in commandes %}
-    {% set totalTransportCost = totalTransportCost + commande.transportCost %}
         {% set totalRemise = totalRemise + commande.remise %}
-
     {% endfor %}
     {% for key, listepanier in listeProductsSorted %}
         {% for key2, value in listepanier %}

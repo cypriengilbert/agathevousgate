@@ -367,7 +367,7 @@ class PayoutController extends Controller
                 if(count($low_stock) > 0 ){
                     $message = \Swift_Message::newInstance()->setSubject('Stock Faible')->setFrom('commande@agathevousgate.fr')->setTo('agathe.lefeuvre@gmail.com')->setBody($this->renderView(
                         'emails/alerte_stock.html.twig', array(
-                        'stock' => $low_stock,
+                        'low_stock' => $low_stock,
                     )), 'text/html');
                    $this->get('mailer')->send($message);
                 }
