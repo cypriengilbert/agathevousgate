@@ -28,6 +28,9 @@
                   <a href="#{{collection.id}}" data-toggle="tab">{{collection.title}}</a>
                </li>
                {% endfor %}
+                <li role="presentation" class="">
+                  <a href="#no_color" data-toggle="tab">Sans collection</a>
+               </li>
                
             </ul>
             <div class="tab-content">
@@ -117,6 +120,47 @@
                   </table>
                </div>
                {% endfor %}
+               <div id="no_color" class="tab-pane">
+                  <table id="commande_en_cours" class="table table-hover table-striped" cellspacing="0">
+                     <thead>
+                        <tr>
+                              <th width=5%>ID</th>
+                              <th width=5% data-sortable="true">Nom</th>
+                              <th width=15%>Description</th>
+                              <th width=15% data-sortable="true">Code</th>
+                              <th width=25% data-sortable="true" >Statut</th>
+                              <th width=10%>Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% for color in colors_without_collection %}
+                       
+                        <tr>
+                           <td>{{ color.id }}</td>
+                           <td>{{ color.namepublic }}</td>
+                           <td>  <img src="{{ asset('/upload/color/thumbnail/' ~ color.imageColorName ) }}" style="height:30px; width:30px; margin-right:5px;border-radius:10px"></td>
+                        <td> {{color.codehexa}}</td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:green"></i>
+                              {% else %}
+                              <i class="fa fa-circle fa-2" aria-hidden="true" style="color:red"></i>
+                              {% endif %}
+                           </td>
+                           <td>
+                              {% if color.isactive == true %}
+                              <a href="{{ path('deactivateColor', {'id': color.id }) }}">désactiver</a>
+                              {% else %}
+                              <a href="{{ path('activateColor',{'id': color.id }) }}">activer</a>
+                              {% endif %}
+                              - <a href="{{ path('editColor',{'id': color.id }) }}">Modifier</a>
+                           </td>
+                        </tr>
+                      
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
             </div>
          </div>
       </div>

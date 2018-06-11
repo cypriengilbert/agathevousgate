@@ -1518,6 +1518,18 @@ class DefaultController extends Controller
         $color      = $repository->findBy(array('isBasic' => 1), 
         array('codehexa' => 'ASC'));
 
+        $all_color = $repository->findAll();
+
+        $color_without_collection = [];
+
+        foreach ($all_color as $value) {
+
+            if(count($value->getCollections()) == 0){
+
+                array_push($color_without_collection, $value);
+            }
+        }
+
         $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
         $collections      = $repository->findAll();
        
@@ -1525,6 +1537,7 @@ class DefaultController extends Controller
             'colors' => $color,
             'collections' => $collections,
             'page' => $page,
+            'colors_without_collection' => $color_without_collection,
 
         ));
     }
