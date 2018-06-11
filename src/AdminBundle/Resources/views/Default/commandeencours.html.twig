@@ -48,11 +48,12 @@
                <th width=5%>ID</th>
                 <th width=5%>ID Client </th>
                <th width=15% data-sortable="true">Nom Client</th>
+               <th width=10% > Adresse mail</th>
                <th width=25% >Adresse de livraison</th>
                <th width=10% data-sortable="true">Date de commande</th>
-               <th width=20%>Produit</th>
-                <th width=10% data-sortable="true">Price</th>
-            <th width=10%> Paiement </th>
+               <th width=15%>Produit</th>
+                <th width=7% data-sortable="true">Price</th>
+            <th width=8%> Paiement </th>
 
                <th width=10%>Action</th>
            </tr>
@@ -66,6 +67,7 @@
                   <td>{{ commande.id }}</td>
                   <td>{{ commande.client.id }}</td>
                   <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
+                  <td>{{ commande.client.email }}</td>
                   <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
@@ -75,38 +77,6 @@
                         <b>{{ product.product.name }}
                             {% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}:
                               {{ product.quantity }}<br></b>
-                        {% if product.Color1 %}
-                        {{ product.Color1.name }} /
-                          {% endif %}
-                          {% if product.color2 %}
-                          {{ product.Color2.name }} /
-                            {% endif %}
-                            {% if product.Color3 %}
-                            {{ product.Color3.name }} /
-                              {% endif %}
-                              {% if product.Color4 %}
-                              {{ product.Color4.name }} /
-                                {% endif %}
-                                {% if product.Color5 %}
-                                {{ product.Color5.name }} /
-                                  {% endif %}
-                                  {% if product.Color6 %}
-                                  {{ product.Color6.name }} /
-                                    {% endif %}
-                                    {% if product.Color7 %}
-                                    {{ product.Color7.name }} /
-                                      {% endif %}
-                                      {% if product.Color8 %}
-                                      {{ product.Color8.name }} /
-                                        {% endif %}
-                                        {% if product.Color9 %}
-                                        {{ product.Color9.name }} /
-                                          {% endif %}
-                                          {% if product.Color10 %}
-                                          {{ product.Color10.name }} /
-                                            {% endif %}
-
-                        <br>
                       {% endfor %}
 {% endif %}
                   </td>
@@ -129,6 +99,7 @@
                 <td>{{ commande.id }}</td>
                 <td>{{ commande.client.id }}</td>
                 <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
+                <td>{{ commande.client.email }}</td>
                   <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
                 <td>{{ commande.date|date("d-m-Y") }}</td>
                 <td>
