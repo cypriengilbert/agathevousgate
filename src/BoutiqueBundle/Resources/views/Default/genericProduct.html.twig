@@ -82,7 +82,7 @@ Accessoires
                                {% set product_price = product.price %}
                             {% for key, discount in discounts %}
                             
-                            {% if key == product.id %}
+                            {% if key == product.id and discount != null %}
                             {% set product_price = product.price - product.price*(discount.reduction/100) %}
                             
                             

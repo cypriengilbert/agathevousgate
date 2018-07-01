@@ -61,4 +61,72 @@ class APIBoutiqueController extends Controller
             return new Response("Erreur", 400);
         }
     }
+
+    /**
+    * @Route("/s/api/nuancier/add", name="addNuancier")
+    * @Method({"POST"})
+    */
+    public function addNuancierAction(Request $request)
+    {
+        if($request->isXMLHttpRequest()){  
+            
+            $user            = $this->container->get('security.context')->getToken()->getUser();
+            $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Commande');
+            $order = $repository->findOneBy(array(
+                'isPanier' => true, 
+                'client' => $user->getId()
+            ));
+            $nuancier = $request->request->get('collection');
+            if($nuancier == 0){
+                $nuancier = null;
+            }
+            else{
+                $repository    = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Collection');
+                $nuancier = $repository->findOneBy(array(
+                    'id' => $nuancier, 
+                ));
+            }
+
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:AddedProduct');
+            $oldProduct    = $repository->findOneBy(array(
+                'product' => 21,
+                'client' => $user,
+                'collection' =>$nuancier,
+            ));
+            $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');
+            $product    = $repository->findOneBy(array(
+                'id' => 21,
+            ));
+
+            if ($oldProduct == null){
+                $addedNuancier = new AddedProduct();
+                $addedNuancier->setProduct($product);
+                $addedNuancier->setCommande(null);
+                $addedNuancier->setQuantity(1);
+                $addedNuancier->setCollection($nuancier);
+
+             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+                 $user = $this->container->get('security.context')->getToken()->getUser();
+                 $addedNuancier->setClient($user);
+             }
+             $em = $this->getDoctrine()->getManager();
+             $em->persist($addedNuancier);
+ 
+ 
+             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+ 
+                 $em = $this->getDoctrine()->getManager();
+                 $em->persist($addedNuancier);
+                 $em->flush();
+                 $request->getSession()->getFlashBag()->add('notice', 'Produit bien enregistrée.');
+ 
+ 
+             } 
+            }
+            return new Response("OK", 200);
+            }
+        else{
+            return new Response("Erreur", 400);
+        }
+    }
 }

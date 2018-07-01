@@ -70,17 +70,20 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; text-align: left;font-size: 10pt'>
         <tr>
             <td style='width:50%;'></td>
-            <td style='width:50%; '>Reims, le {{ 'now'|date("d/m/Y") }}</td>
+            <td style='width:50%; '>Reims, le {{ invoice.createdAt|date("d/m/Y") }}</td>
         </tr>
     </table>
     <br>
     <i>
-        <b><u>Facture N°{{commande.id}} du {{commande.date|date("d/m/Y")}}</u></b><br>
+        <b><u>Facture N°{{invoice.randomId}} du {{invoice.order.date|date("d/m/Y")}}</u></b><br>
+        {% for edit in edits %}
+            Modifié le {{ edit.createdAt|date("d/m/Y") }} - {{edit.type}}<br>
+        {% endfor %}
     </i>
     <br>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
-            <th style='width: 32%'>Produit</th>
+            <th style='width: 32%'>{{invoice.nbElements}} produit{% if invoice.nbElements > 1%}s{% endif %}</th>
             <th style='width: 32%'>Couleur</th>
             <th style='width: 13%'>Prix Unitaire</th>
             <th style='width: 10%'>Quantité</th>
@@ -117,19 +120,19 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Sous-Total : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ invoice.Price - invoice.TransportCost + invoice.Remise }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Livraison : </th>
-            <th style='width: 13%; text-align: right;'>{{ commande.transportCost }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ invoice.transportCost }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remise : </th>
-            <th style='width: 13%; text-align: right;'>- {{ commande.remise }}€</th>
+            <th style='width: 13%; text-align: right;'>- {{ invoice.remise }}€</th>
         </tr>
     </table>
       {% for refund in refunds %}
@@ -144,13 +147,13 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Total réglé : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum + commande.transportCost - commande.remise - refundTotal }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ invoice.Price - refundTotal }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
-            <th style='width: 13%; text-align: right;'>{{ (totalsum + commande.transportCost - commande.remise - refundTotal) * (tva/100) }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ (invoice.Price - refundTotal) * (tva/100) }}€</th>
         </tr>
     </table>
 

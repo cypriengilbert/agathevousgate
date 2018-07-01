@@ -115,6 +115,18 @@ class AddedProduct
     private $commande;
 
     /**
+    * @ORM\ManyToOne(targetEntity="CompteBundle\Entity\Invoice", inversedBy="addedproducts",cascade={"persist"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $invoice;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="CompteBundle\Entity\MonthlyInvoice", inversedBy="addedproducts",cascade={"persist"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $monthlyinvoice;
+
+    /**
     * @ORM\ManyToOne(targetEntity="CommerceBundle\Entity\Collection",cascade={"persist"})
     * @ORM\JoinColumn(nullable=true)
     */
@@ -676,5 +688,53 @@ class AddedProduct
     public function getPriceTemp()
     {
         return $this->priceTemp;
+    }
+
+    /**
+     * Set invoice
+     *
+     * @param \CompteBundle\Entity\Invoice $invoice
+     *
+     * @return AddedProduct
+     */
+    public function setInvoice(\CompteBundle\Entity\Invoice $invoice = null)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Get invoice
+     *
+     * @return \CompteBundle\Entity\Invoice
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
+    }
+
+    /**
+     * Set monthlyinvoice
+     *
+     * @param \CompteBundle\Entity\MonthlyInvoice $monthlyinvoice
+     *
+     * @return AddedProduct
+     */
+    public function setMonthlyinvoice(\CompteBundle\Entity\MonthlyInvoice $monthlyinvoice = null)
+    {
+        $this->monthlyinvoice = $monthlyinvoice;
+
+        return $this;
+    }
+
+    /**
+     * Get monthlyinvoice
+     *
+     * @return \CompteBundle\Entity\MonthlyInvoice
+     */
+    public function getMonthlyinvoice()
+    {
+        return $this->monthlyinvoice;
     }
 }

@@ -128,6 +128,12 @@ class Commande
        */
        private $remisePro;
 
+       /**
+    * @ORM\ManyToOne(targetEntity="CompteBundle\Entity\MonthlyInvoice", inversedBy="order",cascade={"persist"})
+    * @ORM\JoinColumn(nullable=true)
+    */
+    private $monthlyinvoice;
+
 
       /**
     * @ORM\OneToMany(targetEntity="AddedProduct", mappedBy="commande")
@@ -167,6 +173,13 @@ class Commande
      * @ORM\Column(name="commentaire_client", type="string", length=5000, nullable=true)
      */
     private $commentaire_client;
+
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="invoice", type="string", length=500, nullable=true)
+     */
+    private $invoice;
 
     /**
      * Get id
@@ -663,5 +676,53 @@ class Commande
     public function getPayout()
     {
         return $this->payout;
+    }
+
+    /**
+     * Set commentaireClient
+     *
+     * @param string $commentaireClient
+     *
+     * @return Commande
+     */
+    public function setCommentaireClient($commentaireClient)
+    {
+        $this->commentaire_client = $commentaireClient;
+
+        return $this;
+    }
+
+    /**
+     * Get commentaireClient
+     *
+     * @return string
+     */
+    public function getCommentaireClient()
+    {
+        return $this->commentaire_client;
+    }
+
+    /**
+     * Set invoice
+     *
+     * @param string $invoice
+     *
+     * @return Commande
+     */
+    public function setInvoice($invoice)
+    {
+        $this->invoice = $invoice;
+
+        return $this;
+    }
+
+    /**
+     * Get invoice
+     *
+     * @return string
+     */
+    public function getInvoice()
+    {
+        return $this->invoice;
     }
 }

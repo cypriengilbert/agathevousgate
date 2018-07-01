@@ -162,6 +162,9 @@ window.location = route;
                                       <img src="{{ asset('/upload/color/thumbnail/' ~ items.Color3.imageColorName ) }}" style="height:30px; width:30px; border-radius:10px" data-toggle="tooltip" data-placement="top" title="{{ items.Color3.namePublic }}">
                                       <span class="color_name_mobile">{{ items.Color3.namePublic }}</span>
                                     {% endif %}
+                                    {% if items.collection and items.Color1 == null %}
+                                    {{ items.collection.title }}
+                                    {% endif %}
                                     {% if items.size %}
                                       <span style="text-transform:uppercase;">{{ items.size }}</span>
                                     {% endif %}

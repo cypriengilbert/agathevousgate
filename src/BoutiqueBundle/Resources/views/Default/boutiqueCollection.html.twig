@@ -529,7 +529,7 @@ background-color:#EEEEEE;
                               <div class="row">
 
                                 <div class="col-sm-12 text-center" style="margin-bottom:20px; text-align:center;display: flex;flex-flow: column wrap;align-items: center;">
-                              {% if product.name != "nuancier" %}
+                              {% if product.name != "echantillon" %}
                               <input  type="number" class="form-control input_color" id="quantity_{{product.id}}_{{color.id}}" name="" value="0" min="0" onchange="refresh_items('{{color.id}}');">                                      </center>
                               {% else %}
                                 <input type="checkbox" id="quantity_{{product.id}}_{{color.id}}" onchange="refresh_items('{{color.id}}');"> 
@@ -560,8 +560,8 @@ background-color:#EEEEEE;
     {% endfor %}
     </div>
     <div class="col-sm-2 no_padding">
-    <div class="text-center" style="position:fixed; top:150px;">
-      <input type="checkbox" id="all_nuancier_box"> Ajouter tous les échantillons
+    <div class="text-center" style="position:fixed; top:150px; cursor:pointer" onclick="addNuancier()">
+      <input type="checkbox" id="all_nuancier_box" > Ajouter tous les échantillons
     </div>
     <div class="validate_cart_button  text-center" onclick="addtocart()" style="position:fixed; top:150px;" >
           
@@ -629,7 +629,7 @@ var finalCart = [];
     {% for product in products %}
       {% for accepted_product in accepted_products %}
         {% if accepted_product == product.name %}
-           {% if product.name != "nuancier" %}
+           {% if product.name != "echantillon" %}
         value = document.getElementById('quantity_{{product.id}}_{{color.id}}').value;
         finalCart.push([{{product.id}},{{color.id}},value ]);
         {% else %}
@@ -646,10 +646,6 @@ var finalCart = [];
     {% endif %}
   {% endfor %}
 
-  value = document.getElementById('all_nuancier_box').checked;
-          if (value == true){
-             finalCart.push([20,63,130 ]); 
-          }
   var finalJsonCart = JSON.stringify(finalCart);
 
   var frm = document.getElementById('finalCartField') || null;
@@ -767,6 +763,25 @@ $(document).ready(function(){
     $(".temporary_cart").css('display','none');
   });
 });
+</script>
+
+<script>
+function addNuancier(){
+        var collection = {% if collection1 %}{{ collection1.id }}{% else %}0{% endif %};
+         $.ajax({
+         type: "POST",
+         url: "{{ path('addNuancier')
+		      }}",
+         data: {collection: collection},
+         cache: false,
+         success: function(result){
+            document.getElementById('all_nuancier_box').checked	== true;		  
+        }.bind(this),
+         error : function(resultat, statut, erreur){
+           alert('une erreur est survenue');
+        }
+     });
+      }
 </script>
 
 {% endblock %}

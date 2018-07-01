@@ -16,7 +16,7 @@
               {% if commande.price > 0 %}   <a href="{{ path("refund_manual",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement</button></a>
                             {% if commande.stripeId != null or (commande.payout and commande.payout.stripeId != null) %}     <a href="{{ path("refund",{"id": commande.id}) }}"><button class="btn btn-fill btn-warning">Remboursement Stripe</button></a>{% endif %}{% endif %}
 
-                 <a href="{{ path("facture",{"id": commande.id}) }}"><button class="btn btn-fill btn-primary" style=" margin-left:1%;">Voir la facture</button></a>
+                 <a href="{{ path("facture",{"id_order": commande.id}) }}"><button class="btn btn-fill btn-primary" style=" margin-left:1%;">Voir la facture</button></a>
 {% if commande.isvalid == true %}{% else %}
                                           <button type="submit" onclick="if(confirm('Etes vous sur de vouloir valider l\'envoi cette commande ?')) {
                                             window.location.href = '{{ path("addsuivi",{"id": commande.id}) }}'
@@ -235,7 +235,7 @@
                             <div class="content">
                                 <div class="table-responsive table-full-width">
                                 <p>
-                                    {{commande.commentaireClient}}
+                                    {{commande.commentaireClient |nl2br}}
                                 </p>
                                 </div>
                             </div>
@@ -288,7 +288,10 @@
                                                     <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
                                                     {{ product.Color1.name }}
                                                     </div>
+                                                {% elseif product.collection %}
+                                                {{ product.collection.title }}
                                                 {% endif %}
+
                                             </td>
                                             <td>
                                                 {% if product.Color2 %}
@@ -396,7 +399,8 @@
                                                     <div class="mdl-tooltip" for="color1_{{ color1 }}" style="will-change:unset">
                                                     {{ product.Color1.name }}
                                                     </div>
-
+                                                {% elseif product.collection %}
+                                                {{ product.collection.title }} {{product.quantity}} x
                                                     {% endif %}
                                                 </td>
                                                 <td>

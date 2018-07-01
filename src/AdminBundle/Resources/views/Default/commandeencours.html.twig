@@ -71,14 +71,15 @@
                   <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
                   <td>{{ commande.date|date("d-m-Y") }}</td>
                   <td>
-                      {% if commande.addedproducts %}
-                      {% for product in commande.addedproducts %}
-
-                        <b>{{ product.product.name }}
-                            {% if product.accessoire == true %}{{ product.accessoire.name }} {% endif %}:
-                              {{ product.quantity }}<br></b>
-                      {% endfor %}
-{% endif %}
+                    {% if commande.addedproducts %}
+                        {% for key, number in nbArticle %}
+                            {% if commande.id == key %}
+                                {% if number2 != 0 %}
+                                        <b>{{ key2 }} </b>: {{ number2}} <br>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                   </td>
                   <td>
                 {{ commande.price }}
@@ -103,11 +104,17 @@
                   <td>{% if commande.client.adress %}{{ commande.client.adress.adress }} <br> {{ commande.client.adress.zipcode }} {{ commande.client.adress.city }}{% else %} Salon - aucune adresse {% endif %} </td>
                 <td>{{ commande.date|date("d-m-Y") }}</td>
                 <td>
-                    {% for product in commande.addedproducts %}
-                      <b>{{ product.product.name }} {% if product.accessoire %}{{ product.accessoire.name }} {% endif %}: {{ product.quantity }}<br></b>
-
-
-                    {% endfor %}
+                    {% if commande.addedproducts %}
+                        {% for key, number in nbArticle %}
+                            {% if commande.id == key %}
+                                {% for key2, number2 in number %}
+                                    {% if number2 != 0 %}
+                                        <b>{{ key2 }} </b>: {{ number2}} <br>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </td>
                 <td>
               {{ commande.price|round(2, 'common') }}

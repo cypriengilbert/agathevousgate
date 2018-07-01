@@ -80,12 +80,17 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width: 100%; text-align: left;font-size: 10pt'>
         <tr>
             <td style='width:50%;'></td>
-            <td style='width:50%; '>Reims, le {{ 'now'|date("d/m/Y") }}</td>
+            <td style='width:50%; '>Reims, le {{ invoice.createdAt|date("d/m/Y") }}</td>
         </tr>
     </table>
     <br>
     <i>
-        <b><u>Facture N°{{annee}}{{mois}}{{user.id}} de {{mois}}/{{annee}}</u></b><br>
+        <b><u>Facture N°{{invoice.randomId}} de {{mois}}/{{annee}}</u></b><br>
+        {% for edit in edits %}
+            {% if edit.createdAt > invoice.createdAt %}
+            Modifié le {{ edit.createdAt|date("d/m/Y") }} - {{edit.type}}<br>
+            {% endif %}
+        {% endfor %}
     </i>
     <br>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
@@ -103,7 +108,6 @@ td    { vertical-align: top; }
         {% for key2, value in listepanier %}
 
        
-    {% set totalsum = totalsum + (value * key2) %}
     
 {% if value != 0 %}
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #F7F7F7; text-align: center; font-size: 10pt;'>
@@ -125,13 +129,13 @@ td    { vertical-align: top; }
     <table cellspacing='0' style='width:100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Sous-Total : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalsum|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ invoice.Price - invoice.TransportCost|round(2, 'common') + invoice.Remise }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Livraison : </th>
-            <th style='width: 13%; text-align: right;'>{{ totalTransportCost|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ invoice.TransportCost|round(2, 'common') }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
@@ -140,9 +144,9 @@ td    { vertical-align: top; }
             <th style='width: 13%; text-align: right;'>- {{ totalRemise|round(2, 'common') }}€</th>
         </tr>
     </table>
-    
-        {% for refund in refunds %}
-        {% if refund %}
+     {% for refunds in refunds %}
+     {% for refund in refunds %}
+
    <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Remboursement le {{refund.date|date("d-m-Y")}} </th>
@@ -150,18 +154,19 @@ td    { vertical-align: top; }
             {% set refundTotal = refundTotal + refund.montant %}
         </tr>
     </table>
-    {% endif %}
    {% endfor %}
+   {% endfor %}
+        
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>Total réglé : </th>
-            <th style='width: 13%; text-align: right;'>{{ (totalsum + totalTransportCost - totalRemise - refundTotal)|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ (invoice.Price - refundTotal)|round(2, 'common') }}€</th>
         </tr>
     </table>
     <table cellspacing='0' style='width: 100%; border: solid 1px black; background: #E7E7E7; text-align: center; font-size: 10pt;'>
         <tr>
             <th style='width: 87%; text-align: right;'>{% if tva == 0 %}TVA non applicable - article 293 B du CGI {% else %}Dont TVA {{tva}}% {% endif %}</th>
-            <th style='width: 13%; text-align: right;'>{{ ((totalsum + totalTransportCost - totalRemise - refundTotal) * (tva/100))|round(2, 'common') }}€</th>
+            <th style='width: 13%; text-align: right;'>{{ ((invoice.Price - refundTotal) * (tva/100))|round(2, 'common') }}€</th>
         </tr>
     </table>
 

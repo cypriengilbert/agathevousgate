@@ -3431,9 +3431,17 @@ class CommerceController extends Controller
                   $z = 1;
                 }
                 elseif ($z == 0){
-                    $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),$item->getColor1()->getIsBasic());
-                    $priceTemp =  $priceitem / (1+$tva/100);
-                    $priceRemise = 0;
+                    if($item->getColor1() != null){
+                        $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),$item->getColor1()->getIsBasic());
+                        $priceTemp =  $priceitem / (1+$tva/100);
+                        $priceRemise = 0;
+                    }
+                    else{
+                        $priceitem = $this->getPriceItem($item->getProduct(), $item->getCollection(),false);
+                        $priceTemp =  $priceitem / (1+$tva/100);
+                        $priceRemise = 0;
+                    }
+                    
                 }
               }
             }
@@ -3502,6 +3510,9 @@ class CommerceController extends Controller
         elseif($product->getName() == 'Coffret2'){
           return $collection->getPriceCoffret1() + $collection->getPriceCoffret2();
         }
+        elseif($product->getName() == 'nuancier'){
+            return count($collection->getColors()) * $product->getPrice() ;
+          }
         elseif($product->getName()  == 'Pochette'){
             if (TRUE === $this->get('security.authorization_checker')->isGranted('ROLE_USER')) {
           $user = $this->container->get('security.context')->getToken()->getUser();
@@ -3548,7 +3559,7 @@ class CommerceController extends Controller
               return $collection->getPriceMilieu();
             }
         }
-        elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
+        elseif($product->getName()  == 'tour_de_cou' ||  $product->getName()  == 'pochon' ||  $product->getName()  == 'echantillon' ||  $product->getName()  == 'packaging_coffret' ||  $product->getName()  == 'tuto' ||  $product->getName()  == 'brochure' ||  $product->getName() == 'boite'){
           return $product->getPrice();
         }
       

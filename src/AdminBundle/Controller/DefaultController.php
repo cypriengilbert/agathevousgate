@@ -664,10 +664,26 @@ class DefaultController extends Controller
         ), array(
             'date' => 'ASC'
         ));
+        $repository = $this->getDoctrine()->getManager()->getRepository('CommerceBundle:Product');        
+        $allProducts   = $repository->findAll();
+       
+        foreach ($listeCommande as $order) {
+            $nbArticle[$order->getId()] = [];
+            foreach ($allProducts as $value) {
+                $nbArticle[$order->getId()][$value->getName()] = 0;
+            }
+        }
+        foreach ($listeCommande as $value) {
+            $listItems = $value->getAddedproducts();
+            foreach ($listItems as $item) {
+                $nbArticle[$value->getId()][$item->getProduct()->getName()] = $nbArticle[$value->getId()][$item->getProduct()->getName()] + $item->getQuantity();
+            }
+        }
 
         return $this->render('AdminBundle:Default:commandeencours.html.twig', array(
             'listeCommande' => $listeCommande,
             'page' => $page,
+            'nbArticle' => $nbArticle,
 
 
 
@@ -2622,6 +2638,7 @@ class DefaultController extends Controller
       
 
             $refund = new Refund();
+            $editInvoice = new invoiceEdit();
          
             $form = $this->get('form.factory')->create('CommerceBundle\Form\RefundType', $refund);
             if ($form->handleRequest($request)->isValid()) {
@@ -2632,6 +2649,7 @@ class DefaultController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($refund);
                 $em->flush();
+
                 $request->getSession()->getFlashBag()->add('notice', 'Remboursement bien enregistrée.');
                 $order->setRefund($refund);
                 $order->setPrice($order->getPrice() - $refund->getMontant());
